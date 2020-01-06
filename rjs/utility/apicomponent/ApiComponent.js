@@ -22,7 +22,7 @@ export default class ApiComponent extends React.Component {
         })
     }
     apiPath() {
-        throw new Error('Implement apiPath method');
+        throw new Error('Implementing apiPath method is mandatory for sub class of ApiComponent');
     }
     apiMethod() {
         "get"
@@ -43,6 +43,6 @@ export default class ApiComponent extends React.Component {
         }
     }
     renderAfterApiSuccess() {
-        throw new Error('Implement renderAfterApiSuccess method');
+        throw new Error('Implement renderAfterApiSuccess method is mandatory for sub class of ApiComponent');
     }
 }
