@@ -1,21 +1,21 @@
 {
-  "name": "go-react-template",
+  "name": "rohandvivedi.com",
   "version": "1.0.0",
-  "description": "template react application integrated with go",
+  "description": "rohandvivedi.com",
   "main": "main.js",
   "scripts": {
     "build_js": "webpack"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RohanVDvivedi/go-react-template.git"
+    "url": "git+https://github.com/RohanVDvivedi/rohandvivedi.com.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RohanVDvivedi/go-react-template/issues"
+    "url": "https://github.com/RohanVDvivedi/rohandvivedi.com/issues"
   },
-  "homepage": "https://github.com/RohanVDvivedi/go-react-template#readme",
+  "homepage": "https://github.com/RohanVDvivedi/rohandvivedi.com#readme",
   "dependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"

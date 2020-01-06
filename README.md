@@ -1,2 +1,3 @@
-# go-react-template
-This is a template application with go and react integration.
+# rohandvivedi.com
+This is a web application hosted on rohandvivedi.com,
+sole purpose : showcase projects and act as internet hosted resume
