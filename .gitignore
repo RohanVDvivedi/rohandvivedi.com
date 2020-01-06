@@ -1,0 +1,4 @@
+node_modules
+public/static/js/bundle.js
+src/proto/*.pb.go
+.DS_Store

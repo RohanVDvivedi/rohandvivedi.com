@@ -1,0 +1,47 @@
+.flex-row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-centered-item {
+    margin: auto;
+}
+
+.flex-end-block {
+    display: block;
+}
+
+.logo-pen-color {
+    color: #5b5696;
+}
+
+.logo-pen-backgroundcolor {
+    background-color: #5b5696;
+}
+
+.no-padding-and-no-margin {
+    padding: 0;
+    margin: 0;
+}
+
+.inline-block-vertically-middle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-clear {
+    clear: both;
+}
