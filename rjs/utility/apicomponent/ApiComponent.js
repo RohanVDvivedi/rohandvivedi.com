@@ -4,14 +4,13 @@ import Loading from "../loadingcomponent/Loading.js";
 export default class ApiComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.baseUrl = "http://rohandvivedi.com";
         this.state = {
             api_response_received: false,
             api_response_body: null,
         }
     }
     componentDidMount() {
-        fetch(this.baseUrl + this.apiPath(), {
+        fetch(window.location.origin.toString() + this.apiPath(), {
             method: this.apiMethod(),
             headers: this.apiHeaders(),
             body: this.apiBody()
