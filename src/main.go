@@ -51,7 +51,7 @@ func main() {
 // i.e. ending in /
 func handlerForFolder404(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        if strings.HasSuffix(r.URL.Path, "/") {
+        if strings.HasSuffix(r.URL.Path, "/") && len(r.URL.Path) != 1 {
             http.NotFound(w, r)
             return
         }
