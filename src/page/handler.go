@@ -5,7 +5,7 @@ import (
 )
 
 import (
-	"go-react-template/src/templateManager"
+	"rohandvivedi.com/src/templateManager"
 )
  
 func Handler(w http.ResponseWriter, r *http.Request) {

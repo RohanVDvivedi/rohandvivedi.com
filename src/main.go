@@ -9,15 +9,15 @@ import (
 
 // utilities
 import (
-	"go-react-template/src/templateManager"
-	//"go-react-template/src/data/mysql"
-	//"go-react-template/src/data/memcached"
+	"rohandvivedi.com/src/templateManager"
+	//"rohandvivedi.com/src/data/mysql"
+	//"rohandvivedi.com/src/data/memcached"
 )
 
 // handlers for the pages and apis
 import (
-	"go-react-template/src/page"
-	"go-react-template/src/api"
+	"rohandvivedi.com/src/page"
+	"rohandvivedi.com/src/api"
 )
 
 func main() {
