@@ -5,7 +5,7 @@ git checkout master
 git pull
 
 # kill the application that is running currently on port 80
-kill -9 $(lsof -t -i:80)
+kill -9 `lsof -t -i:80`
 
 # install for newly added go packages 
 # go get
