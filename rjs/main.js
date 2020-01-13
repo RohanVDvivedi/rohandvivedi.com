@@ -1,14 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import ApiCalledComponent from "./content/ApiCalledContent.js";
+import ApiCalledContent from "./content/ApiCalledContent.js";
+import WebSocketUpdatedContent from "./content/WebSocketCalledContent.js";
 
 class Root extends React.Component {
     render() {
         return (
             <div>
                 Hello World!!
-                <ApiCalledComponent />
+                <ApiCalledContent />
+                <WebSocketUpdatedContent />
             </div>
         );
     }
