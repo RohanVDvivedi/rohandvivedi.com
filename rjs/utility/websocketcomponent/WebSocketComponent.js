@@ -34,7 +34,7 @@ export default class WebSocketComponent extends React.Component {
 
     connect() {
         // create a socket connection
-        this.socket = new WebSocket(window.location.origin.toString() + this.socketPath());
+        this.socket = new WebSocket(window.location.origin.toString().replace("http", "ws") + this.socketPath());
 
         var timeoutVar = null;
 

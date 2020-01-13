@@ -1,6 +1,6 @@
 import React from "react";
 
-import ApiComponent from "../utility/apicomponent/ApiComponent.js";
+import WebSocketComponent from "../utility/websocketcomponent/WebSocketComponent.js";
 
 export default class WebSocketUpdatedContent extends WebSocketComponent {
     socketPath() {
