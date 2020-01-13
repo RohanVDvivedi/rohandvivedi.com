@@ -43,6 +43,6 @@ export default class ApiComponent extends React.Component {
         }
     }
     renderAfterApiSuccess() {
-        throw new Error('Implement renderAfterApiSuccess method is mandatory for sub class of ApiComponent');
+        throw new Error('Implementing renderAfterApiSuccess method is mandatory for sub class of ApiComponent');
     }
 }
