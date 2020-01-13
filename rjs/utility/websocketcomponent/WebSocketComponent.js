@@ -1,13 +1,23 @@
 import React from "react";
+import Websocket from 'react-websocket';
 import Loading from "../loadingcomponent/Loading.js";
 
 export default class WebSocketComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = new WebSocket(window.location.origin.toString() + this.socketPath());
+
+        // we donoe initialize the socket variable here, 
+        // because the sockkect connection is made only when we make a socket, 
+        // and that should be after the component is mounted
+        this.socket = null;
         this.socket_connection_timeout = 250;
+
+        // initialize the state variables
         this.state = {
+            // specifies if the connection is active right now
             socket_connection_live: false,
+
+            // the json data the server has sent us
             socket_data_body: null,
         }
     }
@@ -23,8 +33,20 @@ export default class WebSocketComponent extends React.Component {
     }
 
     connect() {
+        // create a socket connection
+        this.socket = new WebSocket(window.location.origin.toString() + this.socketPath());
+
+        var timeoutVar = null;
+
+        // call this is when the socket connection is opened
         this.socket.onopen = () => {
-            // once connected reset the timeout to its default value
+            // clear any timeout event, so we do not try to reconnect
+            if(timeoutVar != null) {
+                clearTimeout(timeoutVar);
+                timeoutVar = null;
+            }
+
+            // and once connected reset the timeout to its default value
             this.socket_connection_timeout = 250;
 
             // to render, when the socket connection is live
@@ -33,7 +55,8 @@ export default class WebSocketComponent extends React.Component {
                 socket_data_body: null,
             });
 
-            // clear any timeout event, so we do not try to reconnect
+            // that response you have to send on connection open, and send it
+            this.sendMEssage(this.onConnectionOpenResponse(message));
         }
 
         // we update state on receving message from server, so the render method gets called to update the component
@@ -46,10 +69,7 @@ export default class WebSocketComponent extends React.Component {
             });
 
             // that response you have to send on this message, and send it
-            response = this.respondOnMessage(message);
-            if(response != null) {
-                this.socket.send(message);
-            }
+            this.sendMessage(this.onMessageReceivedResponse(message));
         }
 
         // we update state, when the socket connection breaks or is closed
@@ -67,21 +87,47 @@ export default class WebSocketComponent extends React.Component {
             console.log("Socket is closed. Reconnect will be attempted in" +  Math.min(10000 / 1000, (this.socket_connection_timeout) / 1000 ) + " millisecond." + e.reason);
 
             // set timeout event, to try to reconnect, when required
+            timeoutVar = setTimeout(function(){
+                if(this.socket == null || this.socket.readyState == WebSocket.CLOSED) {
+                    this.connect();
+                }
+            }, this.socket_connection_timeout);
         }
 
-        // websocket onerror event listener
+        // websocket on error handler, just print the error and close socket
         this.socket.onerror = err => {
             console.error("Socket encountered error: " + err.message + "Closing socket");
             this.socket.close();
+            this.setState({
+                socket_connection_live: false,
+                socket_data_body: null,
+            });
         };
     }
 
-    respondOnMessage(message) {
+    // this is the json data, we send when the connection has just been opened
+    onConnectionOpenResponse() {
         return null;
     }
 
+    // this is the json data, we send when a message has been received, byt he client
+    onMessageReceivedResponse(message) {
+        return null;
+    }
+
+    // call this function to send a message to server, please donot access the send method of socket directly
+    sendMessage(message) {
+        try {
+            if(message != null) {
+                this.socket.send(message);
+            }
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     render() {
-        if(this.state.socket_connection_live == true) {
+        if(this.state.socket_connection_live == true && this.state.socket_data_body != null) {
             return this.renderOnMessage();
         } else {
             return (
