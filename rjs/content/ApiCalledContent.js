@@ -7,7 +7,6 @@ export default class ApiCalledComponent extends ApiComponent {
         return "/api";
     }
     renderAfterApiSuccess() {
-        console.log(this.state);
         return (
             <div>
                 {this.state.api_response_body.Name} is a skilled {this.state.api_response_body.Skill}

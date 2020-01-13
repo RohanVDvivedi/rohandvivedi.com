@@ -17,13 +17,13 @@ export default class WebSocketUpdatedContent extends WebSocketComponent {
 
     onConnectionOpenResponse() {
         return {
-            message: "hello"
+            Message: "hello world!!"
         };
     }
 
     onMessageReceivedResponse(message) {
         return {
-            message: "Time was received"
+            Message: "Time was received for iteration : " + message.Iterator
         };
     }
 }
