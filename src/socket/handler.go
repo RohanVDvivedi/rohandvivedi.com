@@ -12,17 +12,8 @@ type resp struct {
 }
  
 func Handler(conn *websocket.Conn) {
-
-	res := resp{Message: ""};
-	res_buff := []byte{};
-
-	n, err := conn.Read(res_buff);
-	if(err == nil) {
-		json.Unmarshal(res_buff, &res);
-		fmt.Printf("%d : %s\n", n, res.Message);
-	} else {
-		fmt.Println("Error reading response on socket");
-	}
+	
+	go readFromConn(conn);
 
 	for i := 0; i < 20; i++ {
 		// json marshal with time
@@ -35,17 +26,24 @@ func Handler(conn *websocket.Conn) {
 			conn.Write([]byte("{}"));
 		}
 
-		n, err = conn.Read(res_buff);
+		// loop every 2 seconds
+		time.Sleep(2 * time.Second);
+	}
+
+	conn.Close();
+}
+
+func readFromConn(conn *websocket.Conn) {
+	res := resp{Message: ""};
+	res_buff := []byte{};
+
+	for {
+		n, err := conn.Read(res_buff);
 		if(err == nil) {
 			json.Unmarshal(res_buff, &res);
 			fmt.Printf("%d : %s\n", n, res.Message);
 		} else {
 			fmt.Println("Error reading response on socket");
 		}
-
-		// loop every 2 seconds
-		time.Sleep(2 * time.Second);
 	}
-
-	conn.Close();
 }
