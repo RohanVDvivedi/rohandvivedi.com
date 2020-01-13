@@ -56,7 +56,7 @@ export default class WebSocketComponent extends React.Component {
             });
 
             // that response you have to send on connection open, and send it
-            this.sendMEssage(this.onConnectionOpenResponse(message));
+            this.sendMessage(this.onConnectionOpenResponse());
         }
 
         // we update state on receving message from server, so the render method gets called to update the component
@@ -84,7 +84,7 @@ export default class WebSocketComponent extends React.Component {
             this.socket_connection_timeout = Math.min(this.socket_connection_timeout * 2, 10000);
 
             // log the connection closing, and updated timeout
-            console.log("Socket is closed. Reconnect will be attempted in" +  Math.min(10000 / 1000, (this.socket_connection_timeout) / 1000 ) + " millisecond." + e.reason);
+            console.log("Socket is closed. Reconnect will be attempted in" + this.socket_connection_timeout + " millisecond." + e.reason);
 
             // set timeout event, to try to reconnect, when required
             timeoutVar = setTimeout(function(){
@@ -96,7 +96,7 @@ export default class WebSocketComponent extends React.Component {
 
         // websocket on error handler, just print the error and close socket
         this.socket.onerror = err => {
-            console.error("Socket encountered error: " + err.message + "Closing socket");
+            console.error("Socket encountered error: " + err.message + " closing socket.");
             this.socket.close();
             this.setState({
                 socket_connection_live: false,

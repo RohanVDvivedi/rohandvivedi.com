@@ -8,10 +8,9 @@ export default class WebSocketUpdatedContent extends WebSocketComponent {
     }
 
     renderOnMessage() {
-        console.log(this.state);
         return (
             <div>
-                time on server : {this.state.socket_data_body.time_on_server}
+                time on server : {this.state.socket_data_body.Time} iterated : {this.state.socket_data_body.Iterator}
             </div>
         );
     }

@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"golang.org/x/net/websocket"
 	"strings"
 )
 
@@ -18,6 +19,7 @@ import (
 import (
 	"rohandvivedi.com/src/page"
 	"rohandvivedi.com/src/api"
+	"rohandvivedi.com/src/socket"
 )
 
 func main() {
@@ -31,6 +33,10 @@ func main() {
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
 	http.HandleFunc("/index", page.Handler);
+
+	// attach all the handlers for websockets here
+	// we have only one page handler, because this is a react app, but will have many apis
+	http.Handle("/soc", websocket.Handler(socket.Handler));
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
