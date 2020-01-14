@@ -1,16 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import ApiCalledContent from "./content/ApiCalledContent.js";
-import WebSocketUpdatedContent from "./content/WebSocketUpdatedContent.js";
+import AlwaysStayBar from "./content/AlwaysStayBar.js";
+import ScrollAwayBar from "./content/ScrollAwayBar.js";
+import ContentNavigationSideBar from "./content/ContentNavigationSideBar.js";
+import ContentArea from "./content/ContentArea.js";
 
 class Root extends React.Component {
     render() {
         return (
             <div>
-                Hello World!!
-                <ApiCalledContent />
-                <WebSocketUpdatedContent />
+                <AlwaysStayBar />
+                <ScrollAwayBar />
+                <ContentNavigationSideBar />
+                <ContentArea />
             </div>
         );
     }
