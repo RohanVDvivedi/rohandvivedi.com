@@ -119,7 +119,7 @@ export default class WebSocketComponent extends React.Component {
     sendMessage(message) {
         try {
             if(message != null) {
-                this.socket.send(message);
+                this.socket.send(JSON.stringify(message));
             }
         } catch(error) {
             console.log(error);
