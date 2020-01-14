@@ -1,3 +1,6 @@
+# go the application directory
+cd ~/go/src/rohandvivedi.com
+
 # checkout master branch
 git checkout master
 
