@@ -23,4 +23,4 @@ git checkout master
 npm install
 
 # run the application
-sh ./run.sh
+sh ./run.sh &
