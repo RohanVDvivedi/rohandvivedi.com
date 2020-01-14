@@ -14,4 +14,4 @@ kill -9 `lsof -t -i:80`
 npm install
 
 # run the application again
-sh ./run.sh &
+sh ./run.sh
