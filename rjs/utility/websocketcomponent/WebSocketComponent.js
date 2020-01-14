@@ -80,18 +80,18 @@ export default class WebSocketComponent extends React.Component {
                 socket_data_body: null,
             });
 
-            // we will wait for twice the time we waited earlier, but lesser than or equal to 10000 milliseconds (10 seconds)
-            this.socket_connection_timeout = Math.min(this.socket_connection_timeout * 2, 10000);
-
             // log the connection closing, and updated timeout
-            console.log("Socket is closed. Reconnect will be attempted in" + this.socket_connection_timeout + " millisecond." + e.reason);
+            console.log("Socket is closed. Reconnect will be attempted in " + this.socket_connection_timeout + " millisecond." + e.reason);
 
             // set timeout event, to try to reconnect, when required
-            timeoutVar = setTimeout(function(){
+            timeoutVar = setTimeout(function() {
                 if(this.socket == null || this.socket.readyState == WebSocket.CLOSED) {
                     this.connect();
                 }
-            }, this.socket_connection_timeout);
+            }.bind(this), this.socket_connection_timeout);
+
+            // we will wait for twice the time we waited earlier if the socket fails now, but lesser than or equal to 10000 milliseconds (10 seconds)
+            this.socket_connection_timeout = Math.min(this.socket_connection_timeout * 2, 10000);
         }
 
         // websocket on error handler, just print the error and close socket

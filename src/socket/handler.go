@@ -14,11 +14,11 @@ func Handler(conn *websocket.Conn) {
 	
 	go readFromConn(conn);
 
-	for i := 0; i < 20; i++ {
+	for i := 0; i < 5; i++ {
 		websocket.JSON.Send(conn, struct {Time time.Time; Iterator int}{Time: time.Now(), Iterator: i});
 
 		// loop every 2 seconds
-		time.Sleep(2 * time.Second);
+		time.Sleep(1 * time.Second);
 	}
 
 	conn.Close();
