@@ -20,7 +20,7 @@ git checkout master
 # go get
 
 # install necesary node packages as required
-npm install
+npm install --no-optional
 
 # run the application
 sh ./run.sh

@@ -11,7 +11,7 @@ kill -9 `sudo lsof -t -i tcp:80`
 # go get
 
 # install for newly added node packages 
-npm install
+npm install --no-optional
 
 # run the application again
 sh ./run.sh
