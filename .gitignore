@@ -1,4 +1,5 @@
 node_modules
+v8-compile-cache-0
 public/static/js/bundle.js
 src/proto/*.pb.go
 .DS_Store
