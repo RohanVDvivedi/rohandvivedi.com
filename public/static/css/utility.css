@@ -12,10 +12,6 @@
     margin: auto;
 }
 
-.flex-end-block {
-    display: block;
-}
-
 .no-padding-and-no-margin {
     padding: 0;
     margin: 0;
@@ -24,18 +20,6 @@
 .inline-block-vertically-middle {
     display: inline-block;
     vertical-align: middle;
-}
-
-.float-left {
-    float: left;
-}
-
-.float-right {
-    float: right;
-}
-
-.float-clear {
-    clear: both;
 }
 
 #root
