@@ -16,14 +16,6 @@
     display: block;
 }
 
-.logo-pen-color {
-    color: #5b5696;
-}
-
-.logo-pen-backgroundcolor {
-    background-color: #5b5696;
-}
-
 .no-padding-and-no-margin {
     padding: 0;
     margin: 0;
@@ -44,4 +36,13 @@
 
 .float-clear {
     clear: both;
+}
+
+#root
+{
+    --color1: rgba(38, 28, 21, 1);
+    --color2: rgba(178, 70, 214, 1);
+    --color3: rgba(68, 53, 91, 1);
+    --color4: rgba(234, 224, 213, 1);
+    --color5: rgba(245, 239, 255, 1);
 }

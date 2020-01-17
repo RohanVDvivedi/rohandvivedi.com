@@ -1,4 +1,7 @@
 #content_area
 {
+    background-color: var(--color4);
     margin-left: 200px;
+    padding-left: 30px;
+    color: var(--color1);
 }
