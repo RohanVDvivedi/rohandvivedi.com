@@ -13,13 +13,13 @@
     display: inline-block;
 }
 
-.container_style>a:hover
+.container_style a:hover
 {
     background-color: var(--color2);
     cursor: pointer;
 }
 
-.container_style>.active
+.container_style .active
 {
     background-color: var(--color2);
     cursor: none;
