@@ -3,6 +3,7 @@ package main
 // go utilities
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"golang.org/x/net/websocket"
 	"strings"
@@ -49,7 +50,7 @@ func main() {
 	// defer mysql.Close();
 	
 	fmt.Println("Application starting");
-	http.ListenAndServe(":80", nil);
+	log.Fatal(http.ListenAndServe(":80", nil));
 	fmt.Println("Application shutdown");
 }
 
