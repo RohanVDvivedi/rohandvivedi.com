@@ -1,11 +1,11 @@
 .container_style
 {
-    background-color: var(--color3);
+    background-color: var(--color6);
 }
 
 .component_style 
 {
-    background-color: var(--color3);
+    background-color: var(--color6);
     color: var(--color5);
     text-align: center;
     padding: 14px 16px;
@@ -15,12 +15,14 @@
 
 .container_style a:hover
 {
-    background-color: var(--color2);
+    background-color: var(--color5);
+    color: var(--color7);
     cursor: pointer;
 }
 
 .container_style .active
 {
-    background-color: var(--color2);
+    background-color: var(--color5);
+    color: var(--color7);
     cursor: none;
 }

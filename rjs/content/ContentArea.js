@@ -1,61 +1,19 @@
 import React from "react";
 
+import AboutContent from "./contentarea/AboutContent";
+import ProjectsContent from "./contentarea/ProjectsContent";
+import ContactContent from "./contentarea/ContactContent";
+import SocialContent from "./contentarea/SocialContent";
+
 export default class ContentArea extends React.Component {
     render() {
-        //if(this.props.viewname == "Hello") {
-            return (
-                <div id="content_area">
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div>Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-
-
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                <div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div><div >Hello</div>
-                </div>
-            );
-        //}
+        return (
+            <div id="content_area">
+                <AboutContent />
+                <ProjectsContent />
+                <ContactContent />
+                <SocialContent />
+            </div>
+        );
     }
 }

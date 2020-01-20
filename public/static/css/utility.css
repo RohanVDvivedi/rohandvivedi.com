@@ -24,9 +24,11 @@
 
 #root
 {
-    --color1: rgba(38, 28, 21, 1);
-    --color2: rgba(178, 70, 214, 1);
-    --color3: rgba(68, 53, 91, 1);
-    --color4: rgba(234, 224, 213, 1);
-    --color5: rgba(245, 239, 255, 1);
+    --color1: rgba(5, 102, 141, 1);
+    --color2: rgba(66, 122, 161, 1);
+    --color3: rgba(235, 242, 250, 1);
+    --color4: rgba(103, 148, 54, 1);
+    --color5: rgba(165, 190, 0, 1);
+    --color6: #1B9653;
+    --color7: #0D2818;
 }

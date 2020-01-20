@@ -1,19 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import AlwaysStayBar from "./content/AlwaysStayBar.js";
 import ScrollAwayBar from "./content/ScrollAwayBar.js";
-import ContentNavigationSideBar from "./content/ContentNavigationSideBar.js";
 import ContentArea from "./content/ContentArea.js";
 
 class Root extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pageInView: "about",
+        }
+    }
+    setNewPageInView(pageName) {
+        this.setState({
+            pageInView: pageName,
+        });
+    }
     render() {
         return (
             <div>
-                <AlwaysStayBar />
-                <ScrollAwayBar />
-                <ContentNavigationSideBar />
-                <ContentArea />
+                <ScrollAwayBar pageUpdaterCallback={this.setNewPageInView.bind(this)}/>
+                <ContentArea navigateTo={this.state.pageInView}/>
             </div>
         );
     }
