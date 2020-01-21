@@ -15,7 +15,7 @@ export default class AbstractNav extends React.Component {
         var curtop = window.pageYOffset || document.documentElement.scrollTop;
         var finaltop = curtop + document.getElementById(this.getContentId()).getBoundingClientRect().top;
         var timeDelta = 2;
-        var stepDelta = 10;
+        var stepDelta = 25;
         var animateScroll = function(){       
             var curtop = window.pageYOffset || document.documentElement.scrollTop;
             var sign = +1;
