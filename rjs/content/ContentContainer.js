@@ -8,7 +8,7 @@ import SocialContent from "./contentarea/SocialContent";
 export default class ContentArea extends React.Component {
     render() {
         return (
-            <div id="content_area">
+            <div id="content-container">
                 <AboutContent />
                 <ProjectsContent />
                 <ContactContent />

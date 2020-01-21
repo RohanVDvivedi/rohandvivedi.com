@@ -3,7 +3,7 @@ import React from "react";
 export default class SocialContent extends React.Component {
     render() {
         return (
-            <div id="SocialContent" class="content_area_component">
+            <div id="social-content" class="content-component">
                 Social
             </div>
         );

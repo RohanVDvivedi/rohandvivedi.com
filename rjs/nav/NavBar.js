@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class ScrollAwayBar extends React.Component {
+export default class NavBar extends React.Component {
     smoothScrollTo(target) {
         document.getElementById("nav-container").classList.remove("hide-nav");
         var removeNavBar = function() {
