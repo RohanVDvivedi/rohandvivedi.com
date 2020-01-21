@@ -43,6 +43,7 @@ export default class AbstractNav extends React.Component {
         }
     }
     componentDidMount() {
+        this.activateNavIfContentIsInFocus();
         window.addEventListener('scroll', this.activateNavIfContentIsInFocus.bind(this));
     }
     render() {
