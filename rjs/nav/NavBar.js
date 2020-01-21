@@ -1,4 +1,5 @@
 import React from "react";
+import AboutNav from "./navbuttons/AboutNav";
 
 export default class NavBar extends React.Component {
     smoothScrollTo(target) {
@@ -102,24 +103,18 @@ export default class NavBar extends React.Component {
         var container_style = {
             justifyContent: "flex-end",
         };
-        var component_style = {
-            width: "10%",
-        };
         return (
             <div id="nav-container" class="nav-container-style flex-row-container"
             style={container_style}>
-                <a id="about" class="nav-button-style" style={component_style}
-                onClick={this.smoothScrollTo.bind(this,'about-content')}>
-                    About
-                </a>
-                <a id="projects" class="nav-button-style" style={component_style} 
+                <AboutNav />
+                <a id="projects" class="nav-button-style"
                 onClick={this.smoothScrollTo.bind(this,'projects-content')}>
                     Projects
                 </a>
-                <a id="contact" class="nav-button-style" style={component_style}
+                <a id="contact" class="nav-button-style"
                 onClick={this.smoothScrollTo.bind(this,'contact-content')}>
                     Contact</a>
-                <a id="social" class="nav-button-style" style={component_style} 
+                <a id="social" class="nav-button-style"
                 onClick={this.smoothScrollTo.bind(this,'social-content')}>
                     Social
                 </a>

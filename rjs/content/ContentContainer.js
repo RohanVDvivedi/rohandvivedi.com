@@ -4,6 +4,7 @@ import AboutContent from "./contentarea/AboutContent";
 import ProjectsContent from "./contentarea/ProjectsContent";
 import ContactContent from "./contentarea/ContactContent";
 import SocialContent from "./contentarea/SocialContent";
+import ChatContent from "./contentarea/ChatContent";
 
 export default class ContentArea extends React.Component {
     render() {
@@ -13,6 +14,7 @@ export default class ContentArea extends React.Component {
                 <ProjectsContent />
                 <ContactContent />
                 <SocialContent />
+                <ChatContent />
             </div>
         );
     }
