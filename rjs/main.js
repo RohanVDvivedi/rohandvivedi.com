@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import NavBar from "./nav/NavBar.js";
-import ContentArea from "./content/ContentArea.js";
+import ContentContainer from "./content/ContentContainer.js";
 
 class Root extends React.Component {
     render() {
         return (
             <div>
                 <NavBar />
-                <ContentArea />
+                <ContentContainer />
             </div>
         );
     }

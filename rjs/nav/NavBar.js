@@ -33,7 +33,7 @@ export default class NavBar extends React.Component {
     onscroll() {
         var curtop = window.pageYOffset || document.documentElement.scrollTop;
         var navElement = document.getElementById("about");
-        var contentElement = document.getElementById("AboutContent");
+        var contentElement = document.getElementById("about-content");
         var contentElementtop = curtop + contentElement.getBoundingClientRect().top;
         var contentElementbot = curtop + contentElement.getBoundingClientRect().bottom;
         if(window.scrollY >= contentElementtop && window.scrollY < contentElementbot) {
@@ -43,7 +43,7 @@ export default class NavBar extends React.Component {
         }
 
         navElement = document.getElementById("projects");
-        contentElement = document.getElementById("ProjectsContent");
+        contentElement = document.getElementById("projects-content");
         contentElementtop = curtop + contentElement.getBoundingClientRect().top;
         contentElementbot = curtop + contentElement.getBoundingClientRect().bottom;
         if(window.scrollY >= contentElementtop && window.scrollY < contentElementbot) {
@@ -53,7 +53,7 @@ export default class NavBar extends React.Component {
         }
 
         navElement = document.getElementById("contact");
-        contentElement = document.getElementById("ContactContent");
+        contentElement = document.getElementById("contact-content");
         contentElementtop = curtop + contentElement.getBoundingClientRect().top;
         contentElementbot = curtop + contentElement.getBoundingClientRect().bottom;
         if(window.scrollY >= contentElementtop && window.scrollY < contentElementbot) {
@@ -63,7 +63,7 @@ export default class NavBar extends React.Component {
         }
 
         navElement = document.getElementById("social");
-        contentElement = document.getElementById("SocialContent");
+        contentElement = document.getElementById("social-content");
         contentElementtop = curtop + contentElement.getBoundingClientRect().top;
         contentElementbot = curtop + contentElement.getBoundingClientRect().bottom;
         if(window.scrollY >= contentElementtop && window.scrollY < contentElementbot) {
@@ -109,18 +109,18 @@ export default class NavBar extends React.Component {
             <div id="nav-container" class="container_style flex-row-container"
             style={container_style}>
                 <a id="about" class="component_style active" style={component_style}
-                onClick={this.smoothScrollTo.bind(this,'AboutContent')}>
+                onClick={this.smoothScrollTo.bind(this,'about-content')}>
                     About
                 </a>
                 <a id="projects" class="component_style" style={component_style} 
-                onClick={this.smoothScrollTo.bind(this,'ProjectsContent')}>
+                onClick={this.smoothScrollTo.bind(this,'projects-content')}>
                     Projects
                 </a>
                 <a id="contact" class="component_style" style={component_style}
-                onClick={this.smoothScrollTo.bind(this,'ContactContent')}>
+                onClick={this.smoothScrollTo.bind(this,'contact-content')}>
                     Contact</a>
                 <a id="social" class="component_style" style={component_style} 
-                onClick={this.smoothScrollTo.bind(this,'SocialContent')}>
+                onClick={this.smoothScrollTo.bind(this,'social-content')}>
                     Social
                 </a>
             </div>
