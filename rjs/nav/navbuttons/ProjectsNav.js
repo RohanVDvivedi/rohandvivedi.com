@@ -2,10 +2,10 @@ import React from "react";
 
 import AbstractNav from "./AbstractNav";
 
-export default class AboutNav extends AbstractNav {
+export default class ProjectsNav extends AbstractNav {
     constructor(props) {
         super(props);
-        this.name = "about"
-        this.navTitle = "About"
+        this.name = "projects"
+        this.navTitle = "Projects"
     }
 }
