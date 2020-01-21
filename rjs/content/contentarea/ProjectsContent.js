@@ -8,8 +8,9 @@ export default class ProjectsContent extends AbstractContent {
         this.contentTitle = "My Projects"
     }
     content() {
-        <div>
-            
-        </div>
+        return (
+            <>
+            </>
+        );
     }
 }

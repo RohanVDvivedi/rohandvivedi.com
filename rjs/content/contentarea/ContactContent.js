@@ -8,8 +8,9 @@ export default class ContactContent extends AbstractContent {
         this.contentTitle = "Contact Details"
     }
     content() {
-        <div>
-            
-        </div>
+        return (
+            <>
+            </>
+        );
     }
 }

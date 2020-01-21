@@ -8,8 +8,9 @@ export default class SocialContent extends AbstractContent {
         this.contentTitle = "Social Links"
     }
     content() {
-        <div>
-            
-        </div>
+        return (
+            <>
+            </>
+        );
     }
 }

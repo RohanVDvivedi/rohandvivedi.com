@@ -8,8 +8,9 @@ export default class ChatContent extends AbstractContent {
         this.contentTitle = "Chat Live"
     }
     content() {
-        <div>
-            
-        </div>
+        return (
+            <>
+            </>
+        );
     }
 }
