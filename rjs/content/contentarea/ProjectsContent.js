@@ -1,11 +1,9 @@
-import React from "react";
+import AbstractContent from "./AbstractContent";
 
-export default class ProjectsContent extends React.Component {
-    render() {
-        return (
-            <div id="projects-content" class="content-component">
-                Projects
-            </div>
-        );
+export default class ProjectsContent extends AbstractContent {
+    constructor(props) {
+        super(props);
+        this.name = "projects";
+        this.contentTitle = "My Projects"
     }
 }

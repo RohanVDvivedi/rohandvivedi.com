@@ -1,5 +1,3 @@
-import React from "react";
-
 import AbstractNav from "./AbstractNav";
 
 export default class ProjectsNav extends AbstractNav {
