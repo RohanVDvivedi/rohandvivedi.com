@@ -106,20 +106,20 @@ export default class NavBar extends React.Component {
             width: "10%",
         };
         return (
-            <div id="nav-container" class="container_style flex-row-container"
+            <div id="nav-container" class="nav-container-style flex-row-container"
             style={container_style}>
-                <a id="about" class="component_style active" style={component_style}
+                <a id="about" class="nav-button-style" style={component_style}
                 onClick={this.smoothScrollTo.bind(this,'about-content')}>
                     About
                 </a>
-                <a id="projects" class="component_style" style={component_style} 
+                <a id="projects" class="nav-button-style" style={component_style} 
                 onClick={this.smoothScrollTo.bind(this,'projects-content')}>
                     Projects
                 </a>
-                <a id="contact" class="component_style" style={component_style}
+                <a id="contact" class="nav-button-style" style={component_style}
                 onClick={this.smoothScrollTo.bind(this,'contact-content')}>
                     Contact</a>
-                <a id="social" class="component_style" style={component_style} 
+                <a id="social" class="nav-button-style" style={component_style} 
                 onClick={this.smoothScrollTo.bind(this,'social-content')}>
                     Social
                 </a>

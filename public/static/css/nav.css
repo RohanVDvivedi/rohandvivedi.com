@@ -1,4 +1,6 @@
-.container_style
+/* for nav bar conatiner */
+
+.nav-container-style
 {
     background-color: var(--color6);
     position: fixed;
@@ -8,12 +10,28 @@
     transition: transform 0.4s ease;
 }
 
+.nav-container-style a:hover
+{
+    background-color: var(--color5);
+    color: var(--color7);
+    cursor: pointer;
+}
+
+.nav-container-style .active
+{
+    background-color: var(--color5);
+    color: var(--color7);
+    cursor: none;
+}
+
 .hide-nav
 {
     transform: translateY(-100px);
 }
 
-.component_style 
+/* for nav buttons */
+
+.nav-button-style 
 {
     background-color: var(--color6);
     color: var(--color5);
@@ -21,18 +39,4 @@
     padding: 14px 16px;
     font-size: 18px;
     display: inline-block;
-}
-
-.container_style a:hover
-{
-    background-color: var(--color5);
-    color: var(--color7);
-    cursor: pointer;
-}
-
-.container_style .active
-{
-    background-color: var(--color5);
-    color: var(--color7);
-    cursor: none;
 }
