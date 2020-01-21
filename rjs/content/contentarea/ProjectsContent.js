@@ -1,3 +1,4 @@
+import React from "react";
 import AbstractContent from "./AbstractContent";
 
 export default class ProjectsContent extends AbstractContent {
@@ -5,5 +6,10 @@ export default class ProjectsContent extends AbstractContent {
         super(props);
         this.name = "projects";
         this.contentTitle = "My Projects"
+    }
+    content() {
+        <div>
+            
+        </div>
     }
 }

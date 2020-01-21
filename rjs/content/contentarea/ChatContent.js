@@ -1,3 +1,4 @@
+import React from "react";
 import AbstractContent from "./AbstractContent";
 
 export default class ChatContent extends AbstractContent {
@@ -5,5 +6,10 @@ export default class ChatContent extends AbstractContent {
         super(props);
         this.name = "chat";
         this.contentTitle = "Chat Live"
+    }
+    content() {
+        <div>
+            
+        </div>
     }
 }

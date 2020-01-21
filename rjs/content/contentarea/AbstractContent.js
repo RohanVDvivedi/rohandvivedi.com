@@ -13,7 +13,7 @@ export default class AbstractContent extends React.Component {
     render() {
         return (
             <div id={this.getContentId()} class="content-component">
-                {this.contentTitle}
+                {this.content()}
             </div>
         );
     }

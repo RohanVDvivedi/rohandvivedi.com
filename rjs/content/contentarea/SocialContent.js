@@ -1,3 +1,4 @@
+import React from "react";
 import AbstractContent from "./AbstractContent";
 
 export default class SocialContent extends AbstractContent {
@@ -5,5 +6,10 @@ export default class SocialContent extends AbstractContent {
         super(props);
         this.name = "social";
         this.contentTitle = "Social Links"
+    }
+    content() {
+        <div>
+            
+        </div>
     }
 }
