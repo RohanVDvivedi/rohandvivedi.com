@@ -21,6 +21,7 @@ import (
 	"rohandvivedi.com/src/page"
 	"rohandvivedi.com/src/api"
 	"rohandvivedi.com/src/socket"
+	"rohandvivedi.com/src/api/project"
 )
 
 func main() {
@@ -42,6 +43,7 @@ func main() {
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
 	http.HandleFunc("/api", api.Handler);
+	http.HandleFunc("/api/project", project.Handler);
 	
 	// before we start listenning and we start to serve, start the database connections,
 	// both to the cache and the sql database
