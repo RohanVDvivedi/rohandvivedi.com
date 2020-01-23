@@ -39,25 +39,34 @@ export default class Project extends ApiComponent {
                 <div class="flex-row-container"
                     style={{
                         justifyContent: "space-around",
+                        alignItems: "baseline",
                     }}>
                     <a href={project.GithubLink}
                         target="_blank"
                         style={{
-                            marginRight: "5px",
+                            marginLeft: "5px",
                             display: "block",
-                            height: "30px",
-                            width: "30px",
+                            height: "40px",
+                            width: "40px",
+                            
                             backgroundImage: 'url(/icon/github.svg)',
+                            backgroundPosition: "center",
+	                        backgroundRepeat: "no-repeat",
+	                        backgroundSize: "cover",
                         }}>
                     </a>
                     <a href={project.YoutubeLink}
                         target="_blank"
                         style={{
-                            marginLeft: "5px",
+                            marginRight: "5px",
                             display: "block",
-                            height: "30px",
-                            width: "30px",
+                            height: "45px",
+                            width: "45px",
+
                             backgroundImage: 'url(/icon/youtube.svg)',
+                            backgroundPosition: "center",
+	                        backgroundRepeat: "no-repeat",
+	                        backgroundSize: "cover",
                         }}>
                     </a>
                 </div>
