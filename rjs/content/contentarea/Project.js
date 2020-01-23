@@ -12,17 +12,54 @@ export default class Project extends ApiComponent {
         var project = this.state.api_response_body;
         return (
             <div class="project flex-col-container">
-                <div id="project-name">
+                <div id="project-name" style={{
+                    textAlign: "center",
+                    padding: "10px",
+                    fontSize: "20px",
+                    fontFamily: "Arial, Helvetica, sans-serif",
+                    fontWeight: "700",
+                }}>
                     {project.Name}
                 </div>
+
                 <div id="project-thumbnail" style={{
                     height: "45%",
                     width: "100%",
                     backgroundImage: "url('" + project.ProjectImage + "')",
+                }}></div>
+                
+                <div id="project-description" style={{
+                    padding: "10px",
+                    fontFamily: "Arial, Helvetica, sans-serif",
+                    textAlign: "center",
                 }}>
-                </div>
-                <div id="project-description">
                     {project.ProjectDescriptionShort}
+                </div>
+
+                <div class="flex-row-container"
+                    style={{
+                        justifyContent: "space-around",
+                    }}>
+                    <a href={project.GithubLink}
+                        target="_blank"
+                        style={{
+                            marginRight: "5px",
+                            display: "block",
+                            height: "30px",
+                            width: "30px",
+                            backgroundImage: 'url(/icon/github.svg)',
+                        }}>
+                    </a>
+                    <a href={project.YoutubeLink}
+                        target="_blank"
+                        style={{
+                            marginLeft: "5px",
+                            display: "block",
+                            height: "30px",
+                            width: "30px",
+                            backgroundImage: 'url(/icon/youtube.svg)',
+                        }}>
+                    </a>
                 </div>
             </div>
         );

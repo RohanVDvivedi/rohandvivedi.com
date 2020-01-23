@@ -5,8 +5,9 @@
         "ProjectDescriptionShort": "project description short",
         "ProjectDescriptionLong": "project description at length, this will be shown on the inner when the user opens the project",
         "ProjectImage" : "/img/pcb.jpeg",
-        "GithubLink": "github link for the project",
-        "YoutubeLink": "youtube link for the project if any",
+        "GithubLink": "https://github.com/RohanVDvivedi/rohandvivedi.com",
+        "YoutubeLink": "https://www.youtube.com/watch?v=fjIN9XPqp_A",
+        "YoutubeLinks": ["link1", "link2"],
         "Explanation" : [
             {
                 "ExplanationText": "this must be a valid html consisting only of inline contents",

@@ -10,29 +10,23 @@ export default class ProjectsContent extends AbstractContent {
         this.contentTitle = "My Projects"
     }
     render() {
+        var projectNames = [
+            "project-name","project-name","project-name","project-name","project-name","project-name",
+            "project-name","project-name","project-name","project-name","project-name","project-name",
+            "project-name","project-name","project-name","project-name","project-name","project-name",
+        ];
         return (
-            <div id={this.getContentId()} class="content-component flex-row-container"
-            style={{
-                paddingTop: "30px",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-                alignContent: "space-around",
-            }}>
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
-                <Project projectName="project-name" />
+            <div id={this.getContentId()} class="content-component">
+                <div class="flex-row-container"
+                style={{
+                    flexWrap: "wrap",
+                    justifyContent: "flex-start",
+                    alignContent: "space-evenly",
+                }}>
+                    {projectNames.map(function(projectName, i){
+                        return <Project projectName={projectName} />;
+                    })}
+                </div>
             </div>
         );
     }
