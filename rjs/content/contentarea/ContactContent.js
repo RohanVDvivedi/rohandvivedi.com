@@ -7,10 +7,28 @@ export default class ContactContent extends AbstractContent {
         this.name = "contact";
         this.contentTitle = "Contact Details"
     }
-    content() {
+    render() {
         return (
-            <>
-            </>
+            <div id={this.getContentId()} class="content-component">
+                <div>
+                    <div>Formal address</div>
+                </div>
+                <div>
+                    <div>Formal phone number</div>
+                </div>
+                <div>
+                    <div>Linked In Icon</div>
+                    <div>Github</div>
+                    <div>Download curriculum vitae</div>
+                </div>
+                <div>
+                    <div>Email Icon
+                        <div>Send Email now Icon, </div>
+                        <div>also Copies Email To Clipboard</div>
+                    </div>
+                    <div>rohandvivedi@gmail.com</div>
+                </div>
+            </div>
         );
     }
 }

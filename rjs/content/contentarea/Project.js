@@ -69,6 +69,19 @@ export default class Project extends ApiComponent {
 	                        backgroundSize: "cover",
                         }}>
                     </a>
+                    <div style={{
+                            marginRight: "5px",
+                            height: "45px",
+                            width: "45px",
+
+                            backgroundImage: 'url(/icon/youtube.svg)',
+                            backgroundPosition: "center",
+	                        backgroundRepeat: "no-repeat",
+	                        backgroundSize: "cover",
+                        }}>
+                        Feedback Icon With popup,
+                        "I greatly appreciate your feedback on my work"
+                    </div>
                 </div>
             </div>
         );

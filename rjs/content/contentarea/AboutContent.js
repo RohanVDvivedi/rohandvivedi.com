@@ -68,7 +68,7 @@ export default class AboutContent extends AbstractContent {
                         justifyContent: "center",
                     }}
                 >
-                    <AboutParagraph size={22}></AboutParagraph>
+                    <AboutParagraph size={22}>Curriculum Vitae</AboutParagraph>
                     <AboutParagraph size={22}></AboutParagraph>
                     <AboutParagraph size={22}></AboutParagraph>
                     <AboutParagraph size={22}></AboutParagraph>
