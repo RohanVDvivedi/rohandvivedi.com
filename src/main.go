@@ -54,13 +54,6 @@ func main() {
 	// defer mysql.Close();
 
 	mailManager.InitMailClient(os.Getenv("EMAIL_PASS"))
-	fmt.Println(os.Getenv("EMAIL_PASS"))
-	dest := []string{"rohan.dvivedi@oyorooms.com", "rohan.dvivedi@belvilla.com"};
-	mail := mailManager.WritePlainEmail(dest, "hello", "Hello World!!");
-	err := mailManager.SendMail(dest, "hello", mail);
-	if(err != nil){
-		fmt.Println(err);
-	}
 	
 	fmt.Println("Application starting");
 	log.Fatal(http.ListenAndServe(":80", nil));
