@@ -15,10 +15,10 @@ import (
 )
 
 func AttachCron() {
-	//sendEuroExchangeRatesMail()
+	sendEuroExchangeRatesMail()
 	c := cron.New()
-    c.AddFunc(sendMailCron, sendEuroExchangeRatesMail)
-    c.Start()
+	c.AddFunc(sendMailCron, sendEuroExchangeRatesMail)
+	c.Start()
 }
 
 var sendMailCron = "0 * ? * ?";
