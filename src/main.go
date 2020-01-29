@@ -26,6 +26,11 @@ import (
 	"rohandvivedi.com/src/api/project"
 )
 
+// handlers for crons
+import (
+	"rohandvivedi.com/src/cron/euroExchangeRateCron"
+)
+
 func main() {
 	// this will ask the template manager to initialize the templates variable
 	templateManager.InitializeTemplateEngine()
@@ -46,14 +51,12 @@ func main() {
 	// we have only one page handler, because this is a react app, but will have many apis
 	http.HandleFunc("/api", api.Handler);
 	http.HandleFunc("/api/project", project.Handler);
-	
-	// before we start listenning and we start to serve, start the database connections,
-	// both to the cache and the sql database
-	// memcached.Initialize();
-	// mysql.Initialize();
-	// defer mysql.Close();
 
+	// initialize mail client
 	mailManager.InitMailClient(os.Getenv("EMAIL_PASS"))
+
+	// attach cron handlers
+	euroExchangeRateCron.AttachCron()
 	
 	fmt.Println("Application starting");
 	log.Fatal(http.ListenAndServe(":80", nil));

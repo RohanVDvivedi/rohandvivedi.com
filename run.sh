@@ -5,4 +5,4 @@ cd ~/go/src/rohandvivedi.com
 npm run build_js
 
 # compile and run go backend
-sudo go run src/main.go
+go run src/main.go
