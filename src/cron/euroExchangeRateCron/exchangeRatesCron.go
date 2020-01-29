@@ -7,7 +7,7 @@ import (
 	"time"
 	"io/ioutil"
 	"encoding/json"
-	//"github.com/robfig/cron"
+	"github.com/robfig/cron"
 )
 
 import (
@@ -15,13 +15,13 @@ import (
 )
 
 func AttachCron() {
-	sendEuroExchangeRatesMail()
-	/*c := cron.New()
+	//sendEuroExchangeRatesMail()
+	c := cron.New()
     c.AddFunc(sendMailCron, sendEuroExchangeRatesMail)
-    c.Start()*/
+    c.Start()
 }
 
-var sendMailCron = "0 * * ? * *";
+var sendMailCron = "0 * ? * ?";
 
 func sendEuroExchangeRatesMail() {
 	mail_to := []string{"rohandvivedi@gmail.com"};
