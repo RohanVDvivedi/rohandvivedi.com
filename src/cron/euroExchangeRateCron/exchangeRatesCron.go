@@ -22,7 +22,7 @@ func AttachCron() {
 var sendMailCron = "*/20 * * * *";
 
 func sendEuroExchangeRatesMail() {
-	mail_to := []string{"rohandvivedi@gmail.com"};
+	mail_to := []string{"rohandvivedi@gmail.com", "ashishg656@gmail.com"};
 	subject := "EUR --> INR Exchange rates";
 	mail := "";
 
