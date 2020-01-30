@@ -2,9 +2,7 @@ package euroExchangeRateCron
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
-	"time"
 	"io/ioutil"
 	"encoding/json"
 	"github.com/robfig/cron"
@@ -21,14 +19,14 @@ func AttachCron() {
 	c.Start()
 }
 
-var sendMailCron = "0 * ? * ?";
+var sendMailCron = "*/20 * * * *";
 
 func sendEuroExchangeRatesMail() {
 	mail_to := []string{"rohandvivedi@gmail.com"};
 	subject := "EUR --> INR Exchange rates";
 	mail := "";
 
-	currRates := getLatestExchangeRates("EUR", []string{"INR"});
+	currRates := getLatestEUR_INR_USDExchangeRates();
 
 	json, err := json.MarshalIndent(currRates, "", "   ");
 	if(err == nil) {
@@ -44,35 +42,12 @@ func sendEuroExchangeRatesMail() {
 }
 
 type CurrencyRates struct {
-	Err error
-	Base string
-	Date time.Time
 	Rates map[string]float64
+	Err error
 };
 
-/*func (r *CurrencyRates) UnmarshalJSON(b []byte) error {
-    return json.Unmarshal(b, r);
-}
-
-func (r CurrencyRates) MarshalJSON() ([]byte, error) {
-    return json.Marshal(r);
-}*/
-
-func getLatestExchangeRates(from string, to []string) (*CurrencyRates) {
-	baseUrl := "https://api.exchangeratesapi.io/latest"
-	url := baseUrl
-	if(from != "" && len(to) > 0) {
-		url += "?"
-		if(from != "") {
-			url += "base=" + from
-			if(len(to) > 0) {
-				url += "&"
-			}
-		}
-		if(len(to) > 0) {
-			url += "symbols=" + strings.Join(to[:], ",")
-		}
-	}
+func getLatestEUR_INR_USDExchangeRates() (*CurrencyRates) {
+	url := "https://free.currconv.com/api/v7/convert?q=EUR_INR,EUR_USD,USD_INR,USD_EUR,INR_USD,INR_EUR&compact=ultra&apiKey=752975347b77fe583aa3"
 	rates := CurrencyRates{};
 	resp, err := http.Get(url);
 	if(err != nil) {
@@ -85,7 +60,7 @@ func getLatestExchangeRates(from string, to []string) (*CurrencyRates) {
 		rates.Err = err
 		return &rates;
 	}
-	err = json.Unmarshal(body, &rates);
+	err = json.Unmarshal(body, &(rates.Rates));
 	if(err != nil) {
 		rates.Err = err
 		return &rates;
