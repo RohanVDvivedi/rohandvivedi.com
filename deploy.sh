@@ -8,7 +8,7 @@ git checkout master
 git pull
 
 # install for newly added go packages 
-# go get
+go get github.com/mattn/go-sqlite3
 
 # install for newly added node packages 
 npm install --no-optional
