@@ -10,11 +10,15 @@ import (
 	"strings"
 )
 
+// data
+import (
+    "database/sql"
+    _ "github.com/mattn/go-sqlite3"
+)
+
 // utilities
 import (
 	"rohandvivedi.com/src/templateManager"
-	//"rohandvivedi.com/src/data/mysql"
-	//"rohandvivedi.com/src/data/memcached"
 	"rohandvivedi.com/src/mailManager"
 )
 
@@ -26,9 +30,9 @@ import (
 	"rohandvivedi.com/src/api/project"
 )
 
-// handlers for crons
+// data
 import (
-	"rohandvivedi.com/src/cron/euroExchangeRateCron"
+	"rohandvivedi.com/src/data"
 )
 
 func main() {
@@ -55,8 +59,11 @@ func main() {
 	// initialize mail client
 	mailManager.InitMailClient(os.Getenv("EMAIL_PASS"))
 
-	// attach cron handlers
-	euroExchangeRateCron.AttachCron()
+	// setup database connection
+	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
+	defer data.Db.Close()
+	data.InitializeSchema(data.Db)
+
 	
 	fmt.Println("Application starting");
 	log.Fatal(http.ListenAndServe(":80", nil));

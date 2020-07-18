@@ -6,6 +6,7 @@ import ContentContainer from "./content/ContentContainer";
 
 class Root extends React.Component {
     render() {
+    	console.log("Hey man!!");
         return (
             <div>
                 <NavBar />
