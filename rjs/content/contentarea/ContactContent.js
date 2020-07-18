@@ -1,15 +1,9 @@
 import React from "react";
-import AbstractContent from "./AbstractContent";
 
-export default class ContactContent extends AbstractContent {
-    constructor(props) {
-        super(props);
-        this.name = "contact";
-        this.contentTitle = "Contact Details"
-    }
+export default class ContactContent extends React.Component {
     render() {
         return (
-            <div id={this.getContentId()} class="content-component">
+            <div id={this.constructor.name + "-content"} class="content-component">
                 <div>
                     <div>Formal address</div>
                 </div>

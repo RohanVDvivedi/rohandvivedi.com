@@ -1,14 +1,8 @@
 import React from "react";
-import AbstractContent from "./AbstractContent";
 
 import Project from "./Project"
 
-export default class ProjectsContent extends AbstractContent {
-    constructor(props) {
-        super(props);
-        this.name = "projects";
-        this.contentTitle = "My Projects"
-    }
+export default class ProjectsContent extends React.Component {
     render() {
         var projectNames = [
             "project-name","project-name","project-name","project-name","project-name","project-name",
@@ -16,7 +10,7 @@ export default class ProjectsContent extends AbstractContent {
             "project-name","project-name","project-name","project-name","project-name","project-name",
         ];
         return (
-            <div id={this.getContentId()} class="content-component">
+            <div id={this.constructor.name + "-content"} class="content-component">
                 <div class="flex-row-container"
                 style={{
                     flexWrap: "wrap",

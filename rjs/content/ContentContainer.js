@@ -1,20 +1,17 @@
 import React from "react";
 
-import AboutContent from "./contentarea/AboutContent";
-import ProjectsContent from "./contentarea/ProjectsContent";
-import ContactContent from "./contentarea/ContactContent";
-import SocialContent from "./contentarea/SocialContent";
-import ChatContent from "./contentarea/ChatContent";
+import ContentHash from "../ContentHash";
+
+function capitalizeFL(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1)
+}
 
 export default class ContentArea extends React.Component {
     render() {
+    	var ContentComp = ContentHash[this.props.selected];
         return (
             <div id="content-container">
-                <AboutContent />
-                <ProjectsContent />
-                <ContactContent />
-                <SocialContent />
-                <ChatContent />
+            	<ContentComp />
             </div>
         );
     }

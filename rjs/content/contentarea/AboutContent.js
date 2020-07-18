@@ -1,5 +1,4 @@
 import React from "react";
-import AbstractContent from "./AbstractContent";
 
 class AboutParagraph extends React.Component {
     constructor(props) {
@@ -36,7 +35,7 @@ class ColoredBoldWord extends React.Component {
     }
 }
 
-export default class AboutContent extends AbstractContent {
+export default class AboutContent extends React.Component {
     constructor(props) {
         super(props);
         this.name = "about";
@@ -44,7 +43,7 @@ export default class AboutContent extends AbstractContent {
     }
     render() {
         return (
-            <div id={this.getContentId()} class="content-component flex-row-container"
+            <div id={this.constructor.name + "-content"} class="content-component flex-row-container"
             style={{
                 justifyContent: "space-evenly",
             }}>

@@ -1,16 +1,10 @@
 import React from "react";
-import AbstractContent from "./AbstractContent";
 
-export default class ChatContent extends AbstractContent {
-    constructor(props) {
-        super(props);
-        this.name = "chat";
-        this.contentTitle = "Chat Live"
-    }
-    content() {
+export default class ChatContent extends React.Component {
+    render() {
         return (
-            <>
-            </>
+            <div>
+            </div>
         );
     }
 }

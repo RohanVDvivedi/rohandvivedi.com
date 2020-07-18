@@ -1,16 +1,9 @@
 import React from "react";
-import AbstractContent from "./AbstractContent";
 
-export default class SocialContent extends AbstractContent {
-    constructor(props) {
-        super(props);
-        this.name = "social";
-        this.contentTitle = "Social Links"
-    }
-    content() {
+export default class SocialContent extends React.Component {
+    render() {
         return (
-            <>
-            </>
+        	<div></div>
         );
     }
 }

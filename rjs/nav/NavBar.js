@@ -1,5 +1,7 @@
 import React from "react";
 
+import ContentHash from "../ContentHash";
+
 import GenericNavButton from "./navbuttons/GenericNavButton";
 
 export default class NavBar extends React.Component {
@@ -9,10 +11,12 @@ export default class NavBar extends React.Component {
             style={{
                 justifyContent: "flex-end",
             }}>
-                <GenericNavButton name="about"      selected={this.props.selected} ifNavButtonClicked={this.props.ifNavButtonClicked}/>
-                <GenericNavButton name="contact"    selected={this.props.selected} ifNavButtonClicked={this.props.ifNavButtonClicked}/>
-                <GenericNavButton name="projects"   selected={this.props.selected} ifNavButtonClicked={this.props.ifNavButtonClicked}/>
-                <GenericNavButton name="research"   selected={this.props.selected} ifNavButtonClicked={this.props.ifNavButtonClicked}/>
+            	{Object.keys(ContentHash).map((buttonName) => {     
+           			return (
+           				<GenericNavButton name={buttonName}
+           					selected={this.props.selected}
+           					ifNavButtonClicked={this.props.ifNavButtonClicked}/>); 
+        		})}
             </div>
         );
     }
