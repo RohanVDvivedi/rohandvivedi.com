@@ -19,7 +19,8 @@
 	background: linear-gradient(to bottom, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
 
 	border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  	border-bottom-right-radius: 3px;
+  	border-bottom: 5px solid var(--nav_selected_background_color);
 }
 
 .nav-container-style a:hover,
