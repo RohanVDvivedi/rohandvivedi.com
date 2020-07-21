@@ -31,4 +31,10 @@
     --color5: rgba(165, 190, 0, 1);
     --color6: #1B9653;
     --color7: #0D2818;
+    --nav_button_font_color: #eeeeee;
+    --nav_bar_background_color: #222222;
+    --nav_bar_background_color_light: #555555;
+    --nav_selected_background_color: #0f71ba;
+    --nav_selected_background_color_light: #3fa4f0;
+    --nav_selected_font_color: #ffffff;
 }

@@ -1,43 +1,63 @@
 /* for nav bar conatiner */
 
+@import url(http://fonts.googleapis.com/css?family=Capriola);
+
 .nav-container-style
 {
-    background-color: var(--color6);
     position: fixed;
     top: 0px;
     left: 0px;
     width: 100vw;
-    transition: transform 0.4s ease;
+
+    /* given you shaded pretty button background */
+    background: var(--nav_bar_background_color);
+    background: -moz-linear-gradient(top, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, var(--nav_bar_background_color_light)), color-stop(100%, var(--nav_bar_background_color)));
+	background: -webkit-linear-gradient(top, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
+	background: -o-linear-gradient(top, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
+	background: -ms-linear-gradient(top, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
+	background: linear-gradient(to bottom, var(--nav_bar_background_color_light) 0%, var(--nav_bar_background_color) 100%);
+
+	border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.nav-container-style a:hover,
+.nav-container-style .active
+{
+    color: var(--nav_selected_font_color);
+
+    background: var(--nav_selected_background_color);
+	background: -moz-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, var(--nav_selected_background_color_light)), color-stop(100%, var(--nav_selected_background_color)));
+	background: -webkit-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -o-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -ms-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: linear-gradient(to bottom, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
 }
 
 .nav-container-style a:hover
 {
-    background-color: var(--color5);
-    color: var(--color7);
     cursor: pointer;
 }
 
 .nav-container-style .active
 {
-    background-color: var(--color5);
-    color: var(--color7);
     cursor: none;
-}
-
-.hide-nav
-{
-    transform: translateY(-100px);
 }
 
 /* for nav buttons */
 
 .nav-button
 {
-    background-color: var(--color6);
-    color: var(--color5);
+	font-family: Capriola, Helvetica, sans-serif;
+    color: var(--nav_button_font_color);
     text-align: center;
     padding: 14px 16px;
     font-size: 18px;
     display: inline-block;
     width: 10%;
+
+    /* given you shaded pretty button background */
+    background: inherit;
 }
