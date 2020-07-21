@@ -6,10 +6,8 @@ import ChatContent from "./content/contentarea/ChatContent";
 
 var ContentHash = {
 	"about": AboutContent,
-	"projects": ProjectsContent,
 	"contact": ContactContent,
-	"social": SocialContent,
-	"chat": ChatContent,
+	"projects": ProjectsContent,
 };
 
 export default ContentHash;
