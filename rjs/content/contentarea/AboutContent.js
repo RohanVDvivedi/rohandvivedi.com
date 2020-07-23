@@ -10,9 +10,9 @@ class AboutParagraph extends React.Component {
                 fontSize: this.props.size + "px",
                 fontFamily: "lato,sans-serif",
 				fontStyle: "italic",
-                padding: "10px",
+                padding: "6px",
                 fontWeight: 500,
-                color: "#555"
+                color: "#323232"
             }}>
                     {this.props.children}
             </div>
@@ -46,36 +46,20 @@ export default class AboutContent extends React.Component {
     }
     render() {
         return (
-            <div id={this.constructor.name + "-content"} class="content-component flex-row-container"
+            <div id={this.constructor.name + "-content"} class="content-component flex-col-container"
             style={{
-                justifyContent: "space-evenly",
+                justifyContent: "center",
+                alignItems: "center",
             }}>
-                <div class="flex-col-container"
-                    style={{
-                        minWidth: "40%",
-                        justifyContent: "center",
-                    }}
-                >
-                    <AboutParagraph size={26}>Hi, I am Rohan.</AboutParagraph>
-                    <AboutParagraph size={26}>I am a Software and Hardware Developer.</AboutParagraph>
-                    <AboutParagraph size={24}>Predominantly a <ColoredBoldWord color="var(--color6)">Backend Developer</ColoredBoldWord>.</AboutParagraph>
-                    <AboutParagraph size={24}>Tinkering with <ColoredBoldWord color="var(--color6)">Embedded</ColoredBoldWord> and <ColoredBoldWord color="var(--color6)">FPGA systems</ColoredBoldWord> is my hobby</AboutParagraph>
-                    <AboutParagraph size={24}>and I also build some crappy <ColoredBoldWord color="var(--color6)">Frontend</ColoredBoldWord>s like this one</AboutParagraph>
-                    <AboutParagraph size={20}>It is pleasure meeting you..</AboutParagraph>
-
-                </div>
-                <div class="flex-col-container"
-                    style={{
-                        width: "30%",
-                        justifyContent: "center",
-                    }}
-                >
-                    <AboutParagraph size={22}>Curriculum Vitae</AboutParagraph>
-                    <AboutParagraph size={22}></AboutParagraph>
-                    <AboutParagraph size={22}></AboutParagraph>
-                    <AboutParagraph size={22}></AboutParagraph>
-                    <AboutParagraph size={22}></AboutParagraph>
-                    <AboutParagraph size={22}></AboutParagraph>
+            	<div class="flex-col-container"
+            	style={{
+                justifyContent: "center",
+            	}}>
+                	<AboutParagraph size={26}>Hi, I am Rohan.</AboutParagraph>
+                	<AboutParagraph size={26}>I am a Software and Hardware Developer.</AboutParagraph>
+                	<AboutParagraph size={24}>Predominantly a <ColoredBoldWord color="var(--color6)">Backend Developer</ColoredBoldWord>,<br/> who also indulges in building crappy <ColoredBoldWord color="var(--color6)">Frontend</ColoredBoldWord>s like this one.</AboutParagraph>
+                	<AboutParagraph size={24}>My interests also include <ColoredBoldWord color="var(--color6)"> Embedded Systems, Databases,<br/> Computer Vision, Robotics</ColoredBoldWord> and <ColoredBoldWord color="var(--color6)">FPGAs</ColoredBoldWord>.</AboutParagraph>
+                	<AboutParagraph size={22}>Find my Curriculum Vitae <a href={window.location.origin.toString() + "/pdf/rohan_cv.pdf"} target="_blank">here</a>.</AboutParagraph>
                 </div>
             </div>
         );
