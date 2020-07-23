@@ -47,7 +47,7 @@ export default class AboutContent extends React.Component {
             style={{
                 justifyContent: "space-evenly",
             }}>
-                <div class="flex-col-container"
+                <div class="content flex-col-container"
                     style={{
                         minWidth: "40%",
                         justifyContent: "center",

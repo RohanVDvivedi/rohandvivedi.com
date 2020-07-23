@@ -1,20 +1,37 @@
+/* do not touch here */
 #content-container {
     background-color: var(--color3);
     color: var(--color1);
+
+    /* to avoid missing background */
+    min-height: 100vh;
 }
 
 .content-component {
     margin: 0px;
     padding: 0px;
-    min-height: 100vh;
     width: 100vw;
 }
 
+.content {
+	/*to escape nav bar*/
+    padding-top: 65px;
+
+    width: 100%;
+}
+/* do not touch until here */
+/*
+	first two lines for any content page must be
+	<div id={this.constructor.name + "-content"} class="content-component">
+        <div class="content">
+*/
+
 .project {
     margin: 20px;
+    padding: 5px;
 
-    height: 40vh;
-    width: 20vw;
+    /*height: 40vh;
+    width: 20vw;*/
 
     border-radius: 5px;
     border-style: solid;

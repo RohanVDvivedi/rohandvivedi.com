@@ -14,7 +14,6 @@ export default class Project extends ApiComponent {
             <div class="project flex-col-container">
                 <div id="project-name" style={{
                     textAlign: "center",
-                    padding: "10px",
                     fontSize: "20px",
                     fontFamily: "Arial, Helvetica, sans-serif",
                     fontWeight: "700",
@@ -29,7 +28,6 @@ export default class Project extends ApiComponent {
                 }}></div>
                 
                 <div id="project-description" style={{
-                    padding: "10px",
                     fontFamily: "Arial, Helvetica, sans-serif",
                     textAlign: "center",
                 }}>
@@ -44,7 +42,6 @@ export default class Project extends ApiComponent {
                     <a href={project.GithubLink}
                         target="_blank"
                         style={{
-                            marginLeft: "5px",
                             display: "block",
                             height: "40px",
                             width: "40px",
@@ -58,7 +55,6 @@ export default class Project extends ApiComponent {
                     <a href={project.YoutubeLink}
                         target="_blank"
                         style={{
-                            marginRight: "5px",
                             display: "block",
                             height: "45px",
                             width: "45px",
@@ -69,19 +65,6 @@ export default class Project extends ApiComponent {
 	                        backgroundSize: "cover",
                         }}>
                     </a>
-                    <div style={{
-                            marginRight: "5px",
-                            height: "45px",
-                            width: "45px",
-
-                            backgroundImage: 'url(/icon/youtube.svg)',
-                            backgroundPosition: "center",
-	                        backgroundRepeat: "no-repeat",
-	                        backgroundSize: "cover",
-                        }}>
-                        Feedback Icon With popup,
-                        "I greatly appreciate your feedback on my work"
-                    </div>
                 </div>
             </div>
         );

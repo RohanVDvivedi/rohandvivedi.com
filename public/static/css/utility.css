@@ -12,6 +12,11 @@
     margin: auto;
 }
 
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+}
+
 .no-padding-and-no-margin {
     padding: 0;
     margin: 0;
