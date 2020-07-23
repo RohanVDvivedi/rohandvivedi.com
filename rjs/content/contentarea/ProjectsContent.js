@@ -11,12 +11,7 @@ export default class ProjectsContent extends React.Component {
         ];
         return (
             <div id={this.constructor.name + "-content"} class="content-component">
-                <div class="content grid-container"
-                style={{
-                    flexWrap: "wrap",
-                    justifyContent: "flex-start",
-                    alignContent: "space-evenly",
-                }}>
+                <div class="grid-container">
                     {projectNames.map(function(projectName, i){
                         return <Project projectName={projectName} />;
                     })}

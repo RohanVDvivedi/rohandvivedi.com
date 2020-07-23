@@ -4,7 +4,7 @@ export default class ContactContent extends React.Component {
     render() {
         return (
             <div id={this.constructor.name + "-content"} class="content-component">
-            	<div class="content">
+            	<div>
 	                <div>
 	                    <div>Formal address</div>
 	                </div>
