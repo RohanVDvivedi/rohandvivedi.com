@@ -8,8 +8,11 @@ class AboutParagraph extends React.Component {
         return(
             <div style={{
                 fontSize: this.props.size + "px",
-                fontFamily: "'Open Sans',Arial,sans-serif",
+                fontFamily: "lato,sans-serif",
+				fontStyle: "italic",
                 padding: "10px",
+                fontWeight: 500,
+                color: "#555"
             }}>
                     {this.props.children}
             </div>
