@@ -46,11 +46,22 @@ export default class AboutContent extends React.Component {
     }
     render() {
         return (
-            <div id={this.constructor.name + "-content"} class="content-component flex-col-container"
+            <div id={this.constructor.name + "-content"} class="content-component flex-row-container"
             style={{
                 justifyContent: "center",
                 alignItems: "center",
             }}>
+                <div class={"no-padding-and-no-margin"} 
+                    style={{
+                            height: "100%",
+                            width: "200px",
+
+                            backgroundImage: 'url(/img/me.png)',
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover",
+                        }}>
+                </div>
             	<div class="flex-col-container"
             	style={{
                 justifyContent: "center",
