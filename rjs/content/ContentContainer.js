@@ -9,10 +9,6 @@ function capitalizeFL(string) {
 export default class ContentArea extends React.Component {
     render() {
     	var ContentComp = ContentHash[this.props.selected];
-        return (
-            <div id="content-container">
-            	<ContentComp selected={this.props.selected}/>
-            </div>
-        );
+        return <ContentComp selected={this.props.selected}/>;
     }
 }
