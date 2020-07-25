@@ -46,21 +46,12 @@ export default class AboutContent extends React.Component {
                 justifyContent: "center",
                 alignItems: "center",
             }}>
-                <div class={"no-padding-and-no-margin"} 
-                    style={{
-                            height: "200px",
-                            width: "200px",
-
-                            backgroundImage: 'url(/img/me.png)',
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover",
-                        }}>
-                </div>
+                <img src={"/img/me.png"} style={{
+                    height: "200px",
+                    width: "200px"
+                }}></img>
             	<div class="flex-col-container"
-            	style={{
-                justifyContent: "center",
-            	}}>
+            	   style={{justifyContent: "center",}}>
                 	<AboutParagraph size={26}>Hi, I am Rohan.</AboutParagraph>
                 	<AboutParagraph size={26}>I am a Software and Hardware Developer.</AboutParagraph>
                 	<AboutParagraph size={24}>Predominantly a <ColoredBoldWord color="var(--color6)">Backend Developer</ColoredBoldWord>,<br/> who also indulges in building crappy <ColoredBoldWord color="var(--color6)">Frontend</ColoredBoldWord>s like this one.</AboutParagraph>

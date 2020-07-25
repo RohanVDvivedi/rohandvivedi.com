@@ -1,7 +1,6 @@
 /* do not touch here */
 #content-container {
     background-color: var(--content_background_color);
-    color: var(--color1);
 
     /* to avoid missing background */
     min-height: 100vh;
