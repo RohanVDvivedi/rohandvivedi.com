@@ -1,7 +1,19 @@
+.content-root-background {
+    background-color: var(--content_background_color);
+}
+.content-screen-widthed {
+    width: 100vw;
+}
+.content-screen-heighted {
+    height: 100vh;
+}
+.behind-nav{
+    display: block;
+    height: 65px;
+}
+
 /* do not touch here */
 #content-container {
-    background-color: var(--content_background_color);
-
     /* to avoid missing background */
     min-height: 100vh;
 }

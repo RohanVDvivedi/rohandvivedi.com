@@ -41,8 +41,10 @@ class ColoredBoldWord extends React.Component {
 export default class AboutContent extends React.Component {
     render() {
         return (
-            <div id="content-container">
-                <div id={this.props.selected.toLowerCase() + "-content"} class="content-component flex-row-container"
+            <div class="content-root-background content-screen-widthed content-screen-heighted">
+                <div class="behind-nav"></div>
+
+                <div id={this.props.selected.toLowerCase() + "-content"} class="flex-row-container"
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
@@ -60,6 +62,7 @@ export default class AboutContent extends React.Component {
                     	<AboutParagraph size={22}>Find my Curriculum Vitae <a href={window.location.origin.toString() + "/pdf/rohan_cv.pdf"} target="_blank">here</a>.</AboutParagraph>
                     </div>
                 </div>
+
             </div>
         );
     }
