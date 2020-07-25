@@ -60,6 +60,7 @@ export default class AboutContent extends React.Component {
                     	<AboutParagraph size={22}>Find my Curriculum Vitae <a href={window.location.origin.toString() + "/pdf/rohan_cv.pdf"} target="_blank">here</a>.</AboutParagraph>
                     </div>
                 </div>
+            </div>
         );
     }
 }
