@@ -3,7 +3,7 @@ import React from "react";
 export default class ContactContent extends React.Component {
     render() {
         return (
-            <div id={this.constructor.name + "-content"} class="content-component">
+            <div id={this.props.selected.toLowerCase() + "-content"} class="content-component">
             	<div>
 	                <div>
 	                    <div>Formal address</div>

@@ -11,7 +11,7 @@ export default class ContentArea extends React.Component {
     	var ContentComp = ContentHash[this.props.selected];
         return (
             <div id="content-container">
-            	<ContentComp />
+            	<ContentComp selected={this.props.selected}/>
             </div>
         );
     }

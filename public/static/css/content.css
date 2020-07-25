@@ -6,7 +6,6 @@
     /* to avoid missing background */
     min-height: 100vh;
 }
-
 .content-component {
     margin: 0px;
 
@@ -19,7 +18,7 @@
 /* do not touch until here */
 /*
 	first lines for any content page must be
-	<div id={this.constructor.name + "-content"} class="content-component">
+	<div id={this.props.selected.toLowerCase() + "-content"} class="content-component">
 */
 
 .project {

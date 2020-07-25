@@ -39,21 +39,16 @@ class ColoredBoldWord extends React.Component {
 }
 
 export default class AboutContent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.name = "about";
-        this.contentTitle = "About Me"
-    }
     render() {
         return (
-            <div id={this.constructor.name + "-content"} class="content-component flex-row-container"
+            <div id={this.props.selected.toLowerCase() + "-content"} class="content-component flex-row-container"
             style={{
                 justifyContent: "center",
                 alignItems: "center",
             }}>
                 <div class={"no-padding-and-no-margin"} 
                     style={{
-                            height: "100%",
+                            height: "200px",
                             width: "200px",
 
                             backgroundImage: 'url(/img/me.png)',
