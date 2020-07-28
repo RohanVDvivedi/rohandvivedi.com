@@ -32,6 +32,11 @@
 	<div id={this.props.selected.toLowerCase() + "-content"} class="content-component">
 */
 
+.set_sub_content_background_color
+{
+	background-color: var(--sub_content_background_color);
+}
+
 .project {
     margin: 20px;
     padding: 5px;

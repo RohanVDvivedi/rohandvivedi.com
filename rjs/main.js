@@ -17,6 +17,7 @@ class Root extends React.Component {
 		});
 	}
     render() {
+    	console.log("Don't you poke around in my source!!");
         return (
             <div>
                 <NavBar selected={this.state.selected} ifNavButtonClicked={this.ifNavButtonClicked.bind(this)}/>

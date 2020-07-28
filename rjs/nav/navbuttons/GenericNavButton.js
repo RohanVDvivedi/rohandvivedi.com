@@ -5,7 +5,6 @@ export default class GenericNavButton extends React.Component {
 		this.props.ifNavButtonClicked(this.props.name)
 	}
     render() {
-    	console.log(this.props);
         return (
             <a  id={this.props.name + "-nav-button"}
                 class={"nav-button" + (this.props.isSelected ? " active" : "")}

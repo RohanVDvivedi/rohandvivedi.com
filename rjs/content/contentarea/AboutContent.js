@@ -44,10 +44,14 @@ export default class AboutContent extends React.Component {
                 style={{justifyContent: "center",
                         alignItems: "center",}}>
 
-                    <div style={{height: "20%", minHeight: "180px", marginBottom: "2%"}}>
+                    <div class="set_sub_content_background_color" style={{
+                    	height: "20%", 
+                    	minHeight: "180px", 
+                    	padding: "2%",
+                    }}>
                         <div class="flex-row-container" style={{height: "100%"}}>
 
-                            <img src={"/img/me_500h.jpg"} style={{height: "100%", marginLeft: "30px"}}/>
+                            <img src={"/img/me_500h.jpg"} style={{height: "100%"}}/>
                             
                         	<div class="flex-col-container" style={{justifyContent: "space-between", marginLeft: "30px"}}>
                             	<AboutParagraph size={20}>Hi, I am <span style={{ fontSize: "22px", fontWeight: "bold"}}>Rohan Dvivedi</span>.</AboutParagraph>
