@@ -7,12 +7,36 @@ import AdminContent from "./content/contentarea/AdminContent";
 
 
 var ContentHash = {
-	"{ ; }": AboutThisAppContent,
-	"About": AboutContent,
-	"Projects": ProjectsContent,
-	"Past": PastContent,
-	"Contact": ContactContent,
-	"Admin": AdminContent,
+	"app": {
+		"text": "{;}",
+		"nav_pos": "left",
+		"component": AboutThisAppContent,
+	},
+	"about": {
+		"text": "About",
+		"nav_pos": "right",
+		"component": AboutContent,
+	},
+	"projects": {
+		"text": "Projects",
+		"nav_pos": "right",
+		"component": ProjectsContent,
+	},
+	"past": {
+		"text": "Past",
+		"nav_pos": "right",
+		"component": PastContent,
+	},
+	"contact": {
+		"text": "Contact",
+		"nav_pos": "right",
+		"component": ContactContent,
+	},
+	"admin": {
+		"icon": "/icon/spanner.svg",
+		"nav_pos": "right",
+		"component": AdminContent,
+	},
 };
 
 export default ContentHash;

@@ -8,7 +8,7 @@ class Root extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
-			selected: "About",
+			selected: "about",
 		};
     }
 	ifNavButtonClicked(new_selection){

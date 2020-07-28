@@ -10,13 +10,12 @@ export default class ProjectsContent extends React.Component {
             "project-name","project-name","project-name","project-name","project-name","project-name",
         ];
         return (
-            <div id="content-container">
-                <div id={this.props.selected.toLowerCase() + "-content"} class="content-component">
-                    <div class="grid-container">
+            <div class="content-root-background">
+                <div style={{height: "65px"}}></div>
+                <div class="grid-container">
                         {projectNames.map(function(projectName, i){
                             return <Project projectName={projectName} />;
                         })}
-                    </div>
                 </div>
             </div>
         );
