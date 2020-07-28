@@ -37,7 +37,7 @@ class ColoredBoldWord extends React.Component {
     }
 }
 
-export default class AboutContent extends React.Component {
+export default class AdminContent extends React.Component {
     render() {
         return (
             <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
