@@ -1,6 +1,6 @@
 import React from "react";
 import Websocket from 'react-websocket';
-import Loading from "../loadingcomponent/Loading.js";
+import Loading from "./Loading.js";
 
 export default class WebSocketComponent extends React.Component {
     constructor(props) {

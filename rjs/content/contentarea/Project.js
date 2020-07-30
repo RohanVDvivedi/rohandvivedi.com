@@ -1,5 +1,5 @@
 import React from "react";
-import ApiComponent from "../../utility/apicomponent/ApiComponent";
+import ApiComponent from "../../utility/ApiComponent";
 
 export default class Project extends ApiComponent {
     constructor(props) {

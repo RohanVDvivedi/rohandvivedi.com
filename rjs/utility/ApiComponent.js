@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "../loadingcomponent/Loading.js";
+import Loading from "./Loading.js";
 
 export default class ApiComponent extends React.Component {
     constructor(props) {
