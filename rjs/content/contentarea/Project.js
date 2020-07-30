@@ -41,10 +41,10 @@ export default class Project extends ApiComponent {
                         alignItems: "baseline",
                     }}>
                     <a href={project.GithubLink} target="_blank" style={{display: "block",}}>
-                        <Icon height="40px" width="40px" iconPath="/icon/github.svg"/>
+                        <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
                     </a>
                     <a href={project.YoutubeLink} target="_blank" style={{display: "block",}}>
-                        <Icon height="45px" width="45px" iconPath="/icon/youtube.svg"/>
+                        <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
                     </a>
                 </div>
             </div>
