@@ -11,7 +11,7 @@ export default class Project extends ApiComponent {
     renderAfterApiSuccess() {
         var project = this.state.api_response_body;
         return (
-            <div class="project flex-col-container">
+            <div class="project flex-col-container set_sub_content_background_color">
                 <div id="project-name" style={{
                     textAlign: "center",
                     fontSize: "20px",
