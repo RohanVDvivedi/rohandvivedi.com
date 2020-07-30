@@ -1,9 +1,13 @@
+/* Things break and you cry if you remove this, learnt this the hard way */
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
+/* classes for easy setup for flex and grid containers */
 
 .flex-row-container {
     display: flex;
@@ -33,6 +37,28 @@ body {
     display: inline-block;
     vertical-align: middle;
 }
+
+/* Tool tip that pops up as soon as you hover over the tooltip-wrap*/
+
+.tooltip-wrap {
+  position: relative;
+}
+
+.tooltip-wrap .tooltip-content {
+  display: none;
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  right: 5%;
+  background-color: #fff;
+  padding: .5em;
+}
+
+.tooltip-wrap:hover .tooltip-content {
+  display: block;
+}
+
+/* variables for colors */
 
 #root
 {

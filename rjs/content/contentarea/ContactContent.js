@@ -1,6 +1,7 @@
 import React from "react";
 
 import Icon from "../../utility/Icon";
+import CopyToClipboard from "../../utility/Clipboard";
 
 export default class ContactContent extends React.Component {
     render() {
@@ -31,6 +32,9 @@ export default class ContactContent extends React.Component {
 	                    </a>
 			        </div>
 			        <div class="flex-row-container">
+			        	<a onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",}}>
+	                        <Icon height="35px" width="35px" iconPath="/icon/gmail.png"/>
+	                    </a>
 			        	<a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=rohandvivedi@gmail.com&su=Hi&body=Dear%20Rohan,%0D%0A%0D%0ALooking%20forward%20to%20hearing%20from%20you,%0D%0AYours%20sincerely." target="_blank" style={{display: "block",}}>
 	                        <Icon height="35px" width="35px" iconPath="/icon/gmail.png"/>
 	                    </a>
