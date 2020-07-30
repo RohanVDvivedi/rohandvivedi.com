@@ -6,20 +6,16 @@ export default class Icon extends React.Component {
     }
 
     render() {
-        var iconStyle = {
-            backgroundImage: "url('" + this.props.iconUrl + "')",
-            backgroundRepeat: "no-repeat",
-            display: "inherit",
-            verticalAlign: "middle",
-        };
-        if(this.props.hasOwnProperty('height')) {
-            iconStyle.height = this.props.height;
-        }
-        if(this.props.hasOwnProperty('width')) {
-            iconStyle.width = this.props.width;
-        }
         return (
-            <div className={"no-padding-and-no-margin"} style={iconStyle}></div>
+            <div className={"no-padding-and-no-margin"} style={{
+            display: "inherit",
+            backgroundImage: "url('" + this.props.iconPath + "')",
+            backgroundPosition: "center",
+	        backgroundRepeat: "no-repeat",
+	        backgroundSize: "cover",
+	        height: this.props.height,
+	        width: this.props.width,
+        	}}></div>
         );
     }
 }

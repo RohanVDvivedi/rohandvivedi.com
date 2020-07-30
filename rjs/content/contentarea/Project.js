@@ -1,5 +1,6 @@
 import React from "react";
 import ApiComponent from "../../utility/ApiComponent";
+import Icon from "../../utility/Icon";
 
 export default class Project extends ApiComponent {
     constructor(props) {
@@ -39,31 +40,11 @@ export default class Project extends ApiComponent {
                         justifyContent: "space-around",
                         alignItems: "baseline",
                     }}>
-                    <a href={project.GithubLink}
-                        target="_blank"
-                        style={{
-                            display: "block",
-                            height: "40px",
-                            width: "40px",
-                            
-                            backgroundImage: 'url(/icon/github.svg)',
-                            backgroundPosition: "center",
-	                        backgroundRepeat: "no-repeat",
-	                        backgroundSize: "cover",
-                        }}>
+                    <a href={project.GithubLink} target="_blank" style={{display: "block",}}>
+                        <Icon height="40px" width="40px" iconPath="/icon/github.svg"/>
                     </a>
-                    <a href={project.YoutubeLink}
-                        target="_blank"
-                        style={{
-                            display: "block",
-                            height: "45px",
-                            width: "45px",
-
-                            backgroundImage: 'url(/icon/youtube.svg)',
-                            backgroundPosition: "center",
-	                        backgroundRepeat: "no-repeat",
-	                        backgroundSize: "cover",
-                        }}>
+                    <a href={project.YoutubeLink} target="_blank" style={{display: "block",}}>
+                        <Icon height="45px" width="45px" iconPath="/icon/youtube.svg"/>
                     </a>
                 </div>
             </div>
