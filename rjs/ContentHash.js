@@ -7,11 +7,14 @@ import AdminContent from "./content/contentarea/AdminContent";
 
 
 var ContentHash = {
+	/*
+	just as an example, this is you you would add iconned page
 	"app": {
 		"text": "{;}",
 		"nav_pos": "left",
 		"component": AboutThisAppContent,
 	},
+	*/
 	"about": {
 		"text": "About",
 		"nav_pos": "right",
@@ -32,11 +35,13 @@ var ContentHash = {
 		"nav_pos": "right",
 		"component": ContactContent,
 	},
+	/*
+	just as an example, this is you you would add iconned page
 	"admin": {
 		"icon": "/icon/spanner.svg",
 		"nav_pos": "right",
 		"component": AdminContent,
-	},
+	},*/
 };
 
 export default ContentHash;
