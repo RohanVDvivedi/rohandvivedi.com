@@ -23,6 +23,13 @@ var ContentHash = {
 		"text": "Projects",
 		"nav_pos": "right",
 		"component": ProjectsContent,
+		"drop_down": [
+			"All",
+			"Systems Programming (in Linux)",
+			"Embedded System",
+			"Robotics",
+			"Computer Vision",
+		]
 	},
 	"past": {
 		"text": "Past",
