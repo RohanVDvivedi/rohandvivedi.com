@@ -19,6 +19,7 @@ class Project extends ApiComponent {
                     textAlign: "center",
                     fontSize: "20px",
                     fontWeight: "700",
+                    padding: "4%",
                 }}>
                     {project.Name}
                 </div>
@@ -32,6 +33,7 @@ class Project extends ApiComponent {
                 <div id="project-description" style={{
                     textAlign: "center",
             		fontFamily: "Arial, Helvetica, sans-serif",
+            		padding: "4%",
                 }}>
                     {project.ProjectDescriptionShort}
                 </div>
@@ -40,10 +42,10 @@ class Project extends ApiComponent {
                     style={{
                         justifyContent: "space-around",
                     }}>
-                    <a href={project.GithubLink} target="_blank" style={{display: "block",}}>
+                    <a href={project.GithubLink} target="_blank" style={{display: "block", padding: "4%",}}>
                         <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
                     </a>
-                    <a href={project.YoutubeLink} target="_blank" style={{display: "block",}}>
+                    <a href={project.YoutubeLink} target="_blank" style={{display: "block", padding: "4%",}}>
                         <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
                     </a>
                 </div>

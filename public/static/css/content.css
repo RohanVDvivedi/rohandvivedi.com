@@ -22,8 +22,9 @@
 }
 
 .project {
-    margin: 20px;
-    padding: 5px;
+	/* 4 percents of effectively screen width */
+    margin: 4%;
+    padding: 4%;
 
     border-radius: 5px;
     border-style: solid;
