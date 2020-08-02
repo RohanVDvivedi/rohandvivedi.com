@@ -10,7 +10,7 @@ class Project extends ApiComponent {
     renderAfterApiSuccess() {
         var project = this.state.api_response_body;
         return (
-            <div class="flex-col-container set_sub_content_background_color generic-content-box-border"
+            <div class="flex-col-container set_sub_content_background_color generic-content-box-border generic-content-box-hovering-emboss-border"
             	style={{
             		fontFamily: "Capriola, Helvetica, sans-serif",
             		margin: "4%",

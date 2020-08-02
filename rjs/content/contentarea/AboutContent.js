@@ -43,7 +43,7 @@ class ColoredBoldWord extends React.Component {
 class ContactSubContent extends React.Component {
 	render() {
 		return (
-			<div class="generic-content-box-border" style={{
+			<div class="generic-content-box-always-emboss-border" style={{
 				padding: "5px",
 				width: this.props.width,
 			}}>
@@ -72,11 +72,10 @@ export default class AboutContent extends React.Component {
                 style={{justifyContent: "center",
                         alignItems: "center",}}>
 
-                    <div class="set_sub_content_background_color"
+                    <div class="set_sub_content_background_color generic-content-box-border"
                     	style={{
                     		width: "60%",
 	                    	padding: "1.5%",
-						    borderRadius: "1%",
                     	}}>
 
 	                        <div class="flex-row-container" style={{width: "100%"}}>
@@ -102,6 +101,7 @@ export default class AboutContent extends React.Component {
 						            <Icon height="35px" width="35px" iconPath="/icon/pdf.png"/>
 						        </a>
 							</ContactSubContent>
+
 							<ContactSubContent title="Email" width="40%">
 								<a href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block", padding: "2px"}}>
 						        	<div style={{display:"inline-block", fontSize: "15px"}}>rohandvivedi@gmail.com</div>
@@ -112,16 +112,16 @@ export default class AboutContent extends React.Component {
 							</ContactSubContent>
 						        
 			                <ContactSubContent title="Online presence" width="35%">
-								<a href="https://github.com/RohanVDvivedi" target="_blank" style={{display: "block", marginLeft: "5px"}}>
+								<a href="https://github.com/RohanVDvivedi" target="_blank" style={{display: "block"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
 					            </a>
-					            <a href="https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber" target="_blank" style={{display: "block", marginLeft: "5px"}}>
+					            <a href="https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber" target="_blank" style={{display: "block"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
 					            </a>
-					            <a href="https://www.linkedin.com/in/rohan-dvivedi-ab3014128/" target="_blank" style={{display: "block", marginLeft: "5px"}}>
+					            <a href="https://www.linkedin.com/in/rohan-dvivedi-ab3014128/" target="_blank" style={{display: "block"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/linkedin.png"/>
 					            </a>
-					            <a href="https://www.facebook.com/rohan.dvivedi.961" target="_blank" style={{display: "block", marginLeft: "5px"}}>
+					            <a href="https://www.facebook.com/rohan.dvivedi.961" target="_blank" style={{display: "block"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/facebook.png"/>
 					            </a>
 					        </ContactSubContent>
