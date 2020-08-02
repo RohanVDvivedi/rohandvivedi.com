@@ -48,13 +48,10 @@ class Project extends ApiComponent {
                 <div class="flex-row-container"
                     style={{
                         justifyContent: "space-around",
+                        alignItems: "center",
                     }}>
-                    <a class="generic-content-box-hovering-emboss-border" href={project.GithubLink} target="_blank" style={{display: "block", padding: "4%",}}>
-                        <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
-                    </a>
-                    <a class="generic-content-box-hovering-emboss-border" href={project.YoutubeLink} target="_blank" style={{display: "block", padding: "4%",}}>
-                        <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
-                    </a>
+                    <Icon path={project.GithubLink} iconPath="/icon/github.png" height="35px" width="35px" padding="5px" />
+                    <Icon path={project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
                 </div>
             </div>
         );
