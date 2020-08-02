@@ -10,7 +10,7 @@ class Project extends ApiComponent {
     dataWhileApiResponds() {
     	return {
     		Name: "Loading",
-    		ProjectImage: "Loading_Image",
+    		ProjectImage: "/img/pcb.jpeg",
     		ProjectDescriptionShort: "Loading Description",
     		GithubLink: "",
     		YoutubeLink: "",
