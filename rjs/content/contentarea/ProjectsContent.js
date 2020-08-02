@@ -26,19 +26,15 @@ class Project extends ApiComponent {
                     {project.Name}
                 </div>
 
-                <div id="project-thumbnail" style={{
-                	height: "45%",
-                	width: "100%",
-            		backgroundImage: "url('" + project.ProjectImage + "')",
-            	}}></div>
-                
-                <div id="project-description" style={{
-                    textAlign: "center",
-            		fontFamily: "Arial, Helvetica, sans-serif",
-            		padding: "4%",
-                }}>
-                    {project.ProjectDescriptionShort}
-                </div>
+                	<img src={project.ProjectImage} style={{width: "100%"}}/>
+	                
+	                <div id="project-description" style={{
+	                    textAlign: "center",
+	            		fontFamily: "Arial, Helvetica, sans-serif",
+	            		padding: "4%",
+	                }}>
+	                    {project.ProjectDescriptionShort}
+	                </div>
 
                 <div class="flex-row-container"
                     style={{
