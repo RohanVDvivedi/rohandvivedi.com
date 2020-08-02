@@ -43,10 +43,8 @@ class ColoredBoldWord extends React.Component {
 class ContactSubContent extends React.Component {
 	render() {
 		return (
-			<div style={{
+			<div class="generic-content-box-border" style={{
 				padding: "5px",
-				border: "4px solid #c3c3c3",
-				borderRadius: "1%",
 				width: this.props.width,
 			}}>
 				<div style={{
