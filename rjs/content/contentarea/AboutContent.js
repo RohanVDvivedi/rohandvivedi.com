@@ -46,6 +46,7 @@ class ContactSubContent extends React.Component {
 			<div style={{
 				padding: "5px",
 				border: "4px solid #c3c3c3",
+				borderRadius: "1%",
 				width: this.props.width,
 			}}>
 				<div style={{
