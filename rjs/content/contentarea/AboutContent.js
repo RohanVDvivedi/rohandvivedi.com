@@ -107,7 +107,7 @@ export default class AboutContent extends React.Component {
 								<a href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block", padding: "2px"}}>
 						        	<div style={{display:"inline-block", fontSize: "15px"}}>rohandvivedi@gmail.com</div>
 						        </a>
-								<a href="mailto:rohandvivedi@gmail.com" style={{display: "block", padding: "2px"}}>
+								<a href="mailto:rohandvivedi@gmail.com" target="_blank" style={{display: "block", padding: "2px"}}>
 						            <Icon height="35px" width="35px" iconPath="/icon/mail.png"/>
 						        </a>
 							</ContactSubContent>

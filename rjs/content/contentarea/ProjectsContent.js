@@ -10,25 +10,28 @@ class Project extends ApiComponent {
     renderAfterApiSuccess() {
         var project = this.state.api_response_body;
         return (
-            <div class="project flex-col-container set_sub_content_background_color">
+            <div class="project flex-col-container set_sub_content_background_color"
+            	style={{
+            		fontFamily: "Capriola, Helvetica, sans-serif",
+            	}}
+            	>
                 <div id="project-name" style={{
                     textAlign: "center",
                     fontSize: "20px",
-                    fontFamily: "Arial, Helvetica, sans-serif",
                     fontWeight: "700",
                 }}>
                     {project.Name}
                 </div>
 
                 <div id="project-thumbnail" style={{
-                    height: "45%",
-                    width: "100%",
-                    backgroundImage: "url('" + project.ProjectImage + "')",
-                }}></div>
+                	height: "45%",
+                	width: "100%",
+            		backgroundImage: "url('" + project.ProjectImage + "')",
+            	}}></div>
                 
                 <div id="project-description" style={{
-                    fontFamily: "Arial, Helvetica, sans-serif",
                     textAlign: "center",
+            		fontFamily: "Arial, Helvetica, sans-serif",
                 }}>
                     {project.ProjectDescriptionShort}
                 </div>
@@ -36,7 +39,6 @@ class Project extends ApiComponent {
                 <div class="flex-row-container"
                     style={{
                         justifyContent: "space-around",
-                        alignItems: "baseline",
                     }}>
                     <a href={project.GithubLink} target="_blank" style={{display: "block",}}>
                         <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
