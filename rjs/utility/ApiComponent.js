@@ -1,12 +1,11 @@
 import React from "react";
-import Loading from "./Loading.js";
 
 export default class ApiComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             api_response_received: false,
-            api_response_body: null,
+            api_response_body: this.dataWhileApiResponds(),
         }
     }
     componentDidMount() {
@@ -33,16 +32,7 @@ export default class ApiComponent extends React.Component {
     apiBody() {
         return null
     }
-    render() {
-        if(this.state.api_response_received) {
-            return this.renderAfterApiSuccess();
-        } else {
-            return (
-                <Loading />
-            );
-        }
-    }
-    renderAfterApiSuccess() {
-        throw new Error('Implementing renderAfterApiSuccess method is mandatory for sub class of ApiComponent');
+    dataWhileApiResponds() {
+    	throw new Error('Implementing apiPath method is mandatory for sub class of ApiComponent');
     }
 }

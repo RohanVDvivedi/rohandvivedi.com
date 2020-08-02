@@ -7,7 +7,16 @@ class Project extends ApiComponent {
     apiPath() {
         return "/api/project?projectName=" + this.props.projectName;
     }
-    renderAfterApiSuccess() {
+    dataWhileApiResponds() {
+    	return {
+    		Name: "Loading",
+    		ProjectImage: "Loading_Image",
+    		ProjectDescriptionShort: "Loading Description",
+    		GithubLink: "",
+    		YoutubeLink: "",
+    	};
+    }
+    render() {
         var project = this.state.api_response_body;
         return (
             <div class="flex-col-container set_sub_content_background_color generic-content-box-border generic-content-box-hovering-emboss-border"
@@ -26,15 +35,15 @@ class Project extends ApiComponent {
                     {project.Name}
                 </div>
 
-                	<img src={project.ProjectImage} style={{width: "100%"}}/>
+                <img src={project.ProjectImage} style={{padding: "4%", width: "92%"}}/>
 	                
-	                <div id="project-description" style={{
-	                    textAlign: "center",
-	            		fontFamily: "Arial, Helvetica, sans-serif",
-	            		padding: "4%",
-	                }}>
-	                    {project.ProjectDescriptionShort}
-	                </div>
+	            <div id="project-description" style={{
+	                textAlign: "center",
+	            	fontFamily: "Arial, Helvetica, sans-serif",
+	            	padding: "4%",
+	            }}>
+	                {project.ProjectDescriptionShort}
+	            </div>
 
                 <div class="flex-row-container"
                     style={{
