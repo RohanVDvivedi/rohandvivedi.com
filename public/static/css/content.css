@@ -12,25 +12,9 @@
     height: 65px;
 }
 
-/* do not touch here */
-#content-container {
-    /* to avoid missing background */
+.content-container {
     min-height: 100vh;
 }
-.content-component {
-    margin: 0px;
-
-    /*to escape nav bar*/
-    padding-top: 65px;
-
-    width: 100%;
-    height: 100%;
-}
-/* do not touch until here */
-/*
-	first lines for any content page must be
-	<div id={this.props.selected.toLowerCase() + "-content"} class="content-component">
-*/
 
 .set_sub_content_background_color
 {
