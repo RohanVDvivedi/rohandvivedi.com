@@ -97,31 +97,31 @@ export default class AboutContent extends React.Component {
 		                    }}>
 
 		                    <ContactSubContent title="CV" width="8%">
-						        <a href="https://drive.google.com/file/d/12hE5q84en4QAsGkIlOcPEjlFL4kzgHxw/view?usp=sharing" target="_blank" style={{display: "block",}}>
+						        <a class="generic-content-box-hovering-emboss-border" href="https://drive.google.com/file/d/12hE5q84en4QAsGkIlOcPEjlFL4kzgHxw/view?usp=sharing" target="_blank" style={{display: "block",padding:"5px"}}>
 						            <Icon height="35px" width="35px" iconPath="/icon/pdf.png"/>
 						        </a>
 							</ContactSubContent>
 
 							<ContactSubContent title="Email" width="40%">
-								<a href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block", padding: "2px"}}>
+								<a class="generic-content-box-hovering-emboss-border" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",padding:"5px"}}>
 						        	<div style={{display:"inline-block", fontSize: "15px"}}>rohandvivedi@gmail.com</div>
 						        </a>
-								<a href="mailto:rohandvivedi@gmail.com" target="_blank" style={{display: "block", padding: "2px"}}>
+								<a class="generic-content-box-hovering-emboss-border" href="mailto:rohandvivedi@gmail.com" target="_blank" style={{display: "block",padding:"5px"}}>
 						            <Icon height="35px" width="35px" iconPath="/icon/mail.png"/>
 						        </a>
 							</ContactSubContent>
 						        
 			                <ContactSubContent title="Online presence" width="35%">
-								<a href="https://github.com/RohanVDvivedi" target="_blank" style={{display: "block"}}>
+								<a class="generic-content-box-hovering-emboss-border" href="https://github.com/RohanVDvivedi" target="_blank" style={{display: "block",padding:"5px"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
 					            </a>
-					            <a href="https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber" target="_blank" style={{display: "block"}}>
+					            <a class="generic-content-box-hovering-emboss-border" href="https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber" target="_blank" style={{display: "block",padding:"5px"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
 					            </a>
-					            <a href="https://www.linkedin.com/in/rohan-dvivedi-ab3014128/" target="_blank" style={{display: "block"}}>
+					            <a class="generic-content-box-hovering-emboss-border" href="https://www.linkedin.com/in/rohan-dvivedi-ab3014128/" target="_blank" style={{display: "block",padding:"5px"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/linkedin.png"/>
 					            </a>
-					            <a href="https://www.facebook.com/rohan.dvivedi.961" target="_blank" style={{display: "block"}}>
+					            <a class="generic-content-box-hovering-emboss-border" href="https://www.facebook.com/rohan.dvivedi.961" target="_blank" style={{display: "block",padding:"5px"}}>
 					                <Icon height="35px" width="35px" iconPath="/icon/facebook.png"/>
 					            </a>
 					        </ContactSubContent>

@@ -49,10 +49,10 @@ class Project extends ApiComponent {
                     style={{
                         justifyContent: "space-around",
                     }}>
-                    <a href={project.GithubLink} target="_blank" style={{display: "block", padding: "4%",}}>
+                    <a class="generic-content-box-hovering-emboss-border" href={project.GithubLink} target="_blank" style={{display: "block", padding: "4%",}}>
                         <Icon height="35px" width="35px" iconPath="/icon/github.png"/>
                     </a>
-                    <a href={project.YoutubeLink} target="_blank" style={{display: "block", padding: "4%",}}>
+                    <a class="generic-content-box-hovering-emboss-border" href={project.YoutubeLink} target="_blank" style={{display: "block", padding: "4%",}}>
                         <Icon height="35px" width="35px" iconPath="/icon/youtube.png"/>
                     </a>
                 </div>
