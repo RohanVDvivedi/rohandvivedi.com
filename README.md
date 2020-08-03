@@ -19,6 +19,12 @@ to access DB in console:
 to delete the database
  * ``rm ./db/data.db``
 
+to setup new owner
+ * delete the database file
+ * update the owner.json file
+ * deploy
+ * then use sqlite3 shell, to insert rest of the data (I know, this will become easier after the admin panel is developed)
+
 The Schema is public
 Schema :
  * table: persons (this mostly would carry only 1 entry of the owner of this project)
