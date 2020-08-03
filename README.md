@@ -16,28 +16,38 @@ to access DB in console:
  * ***you do not need to install sqlite3 library for deploying, go will get its own binaries, while setup.***
  * ``sqlite3 ./db/data.db``
 
+to delete the database
+ * ``rm ./db/data.db``
+
 The Schema is public
 Schema :
- * table: people (this mostly would carry only 1 entry of the owner of this project)
+ * table: persons (this mostly would carry only 1 entry of the owner of this project)
    * id
    * fname
    * lname
    * email
    * ph_no
-   * linkedin
-   * github
    * type ("owner" = Rohan, there can be only 1 owner)
+ * table: social
+   * id
+   * descr
+   * profile_link
+   * link_type (must be youtube_channel, pdf_document, github, linkedin, facebook, this helps how to interpret the link)
+   * person_id
  * table: projects
    * id
    * name
    * descr
-   * type (embedded system, systems programming, robotics, etc)
+   * project_type (embedded system, systems programming, robotics, etc)
+   * github_link
+   * youtube_link
+   * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id
    * href
    * descr
-   * type (must be youtube, pdf_document, github, technopedia, this helps in deciding the)
+   * link_type (must be youtube, pdf_document, github, technopedia, this helps how to interpret the link)
    * project_id
  * table: person_project
    * person_id
-   * project_id 
+   * project_id
