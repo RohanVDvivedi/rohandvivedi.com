@@ -15,7 +15,7 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ := db.Prepare(`CREATE TABLE IF NOT EXISTS social (
+    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS social (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									descr VARCHAR(512), 
 									profile_link VARCHAR(512) NOT NULL, 
@@ -25,7 +25,7 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ := db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
+    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									name VARCHAR(128) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
@@ -37,7 +37,7 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ := db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
+    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									href VARCHAR(512) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
@@ -46,7 +46,7 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ := db.Prepare(`CREATE TABLE IF NOT EXISTS person_project (
+    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS person_project (
 									person_id INTEGER,
 									project_id INTEGER,
 									FOREIGN KEY(person_id) REFERENCES person(id),
