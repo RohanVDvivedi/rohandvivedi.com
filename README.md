@@ -38,7 +38,7 @@ Schema :
    * id
    * descr
    * profile_link
-   * link_type (must be youtube_channel, pdf_document, github, linkedin, facebook, this helps how to interpret the link)
+   * link_type (must be youtube, pdf, github, linkedin, facebook, this helps how to interpret the link)
    * person_id
  * table: projects
    * id
@@ -52,7 +52,7 @@ Schema :
    * id
    * href
    * descr
-   * link_type (must be youtube, pdf_document, github, technopedia, this helps how to interpret the link)
+   * link_type (must be youtube, pdf, github, technopedia, this helps how to interpret it)
    * project_id
  * table: person_project
    * person_id

@@ -1,12 +1,6 @@
 {
-	"fname": "Rohan",
-	"lname": "Dvivedi",
-	"email": "rohandvivedi@gmail.com",
-	"ph_no": null,
-	"social_profiles":{
-		"github": "https://github.com/RohanVDvivedi",
-		"youtube": "https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber",
-		"linkedin": "https://www.linkedin.com/in/rohan-dvivedi-ab3014128/",
-		"facebook": "https://www.facebook.com/rohan.dvivedi.961"
-	}
+	"Fname": "Rohan",
+	"Lname": "Dvivedi",
+	"Email": "rohandvivedi@gmail.com",
+	"PhNo": null
 }

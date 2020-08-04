@@ -2,6 +2,9 @@ package data
 
 import (
     "database/sql"
+    "io/ioutil"
+    "encoding/json"
+    "fmt"
 )
 
 func InitializeSchema(db *sql.DB) {
@@ -53,5 +56,22 @@ func InitializeSchema(db *sql.DB) {
 									FOREIGN KEY(project_id) REFERENCES project(id)
 								)`);
     statement.Exec()
+
+    // below piece of code is required to update owner information
+    // as and when needed, using the owner.json file
+    // this is for convinience
+
+    p_new_owner := Person{}
+    data, _ := ioutil.ReadFile("./owner.json")
+	_ = json.Unmarshal(data, &p_new_owner);
+	p_new_owner.UserType = "owner"
+
+	p := GetOwner(db);
+    if(p != nil) {	// there exists an owner, just update everything except name
+    	p_new_owner.Id = p.Id
+    	UpdatePerson(&p_new_owner, db)
+    } else {	// insert an owner from the owner.json file
+    	InsertPerson(&p_new_owner, db)
+    }
 }
 
