@@ -27,7 +27,6 @@ import (
 	"rohandvivedi.com/src/page"
 	"rohandvivedi.com/src/api"
 	"rohandvivedi.com/src/socket"
-	"rohandvivedi.com/src/api/project"
 )
 
 // data
@@ -54,7 +53,8 @@ func main() {
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
 	http.HandleFunc("/api", api.Handler);
-	http.HandleFunc("/api/project", project.Handler);
+	http.HandleFunc("/api/project", api.FindProject);
+	http.HandleFunc("/api/owner", api.GetOwner);
 
 	// initialize mail client
 	mailManager.InitMailClient(os.Getenv("EMAIL_PASS"))
@@ -62,7 +62,7 @@ func main() {
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
 	defer data.Db.Close()
-	data.InitializeSchema(data.Db)
+	data.InitializeSchema()
 
 	
 	fmt.Println("Application starting");

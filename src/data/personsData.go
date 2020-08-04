@@ -1,9 +1,5 @@
 package data
 
-import (
-    "database/sql"
-)
-
 type Person struct {
 	Id int
 	Fname string
@@ -17,7 +13,7 @@ func personSelectBaseQuery() string {
 	return "select id, fname, lname, email, type from persons ";
 }
 
-func baseScanPerson(r *sql.Row) *Person {
+func baseScanPerson(r Row) *Person {
 	p := Person{};
 	err := r.Scan(&p.Id, &p.Fname, &p.Lname, &p.Email, &p.UserType);
 	if err != nil {
@@ -26,20 +22,20 @@ func baseScanPerson(r *sql.Row) *Person {
 	return &p;
 }
 
-func GetOwner(db *sql.DB) *Person {
-	return baseScanPerson(db.QueryRow(personSelectBaseQuery() + "where type = ?", "owner"));
+func GetOwner() *Person {
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where type = ?", "owner"));
 }
 
-func GetPerson(id int, db *sql.DB) *Person {
-	return baseScanPerson(db.QueryRow(personSelectBaseQuery() + "where id = ?", id));
+func GetPerson(id int) *Person {
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where id = ?", id));
 }
 
-func UpdatePerson(p *Person, db *sql.DB) {
-	db.Exec("update persons set fname = ?, lname = ?, email = ?, type = ? where id = ?", p.Fname, p.Lname, p.Email, p.UserType, p.Id);
+func UpdatePerson(p *Person) {
+	Db.Exec("update persons set fname = ?, lname = ?, email = ?, type = ? where id = ?", p.Fname, p.Lname, p.Email, p.UserType, p.Id);
 }
 
-func InsertPerson(p *Person, db *sql.DB) {
-	db.Exec("insert into persons (fname, lname, email, type) values (?,?,?,?)", p.Fname, p.Lname, p.Email, p.UserType);
+func InsertPerson(p *Person) {
+	Db.Exec("insert into persons (fname, lname, email, type) values (?,?,?,?)", p.Fname, p.Lname, p.Email, p.UserType);
 }
 
 type Social struct {
@@ -54,7 +50,7 @@ func socialSelectBaseQuery() string {
 	return "select id, descr, profile_link, link_type, person_id from social ";
 }
 
-func baseScanSocial(r *sql.Rows) *Social {
+func baseScanSocial(r Row) *Social {
 	s := Social{};
 	err := r.Scan(&s.Id, &s.Descr, &s.ProfileLink, &s.LinkType, &s.PersonId);
 	if err != nil {
@@ -63,9 +59,9 @@ func baseScanSocial(r *sql.Rows) *Social {
 	return &s;
 }
 
-func (p *Person) FindSocials(db *sql.DB) []Social {
+func (p *Person) FindSocials() []Social {
 	s := []Social{}
-	rows, _ := db.Query(socialSelectBaseQuery() + "where person_id = ?", p.Id)
+	rows, _ := Db.Query(socialSelectBaseQuery() + "where person_id = ?", p.Id)
 	defer rows.Close()
 	for rows.Next() {
 		social_p := baseScanSocial(rows)

@@ -1,23 +1,23 @@
 package data
 
 import (
-    "database/sql"
     "io/ioutil"
     "encoding/json"
 )
 
-func InitializeSchema(db *sql.DB) {
-    statement, _ := db.Prepare(`CREATE TABLE IF NOT EXISTS persons (
+func InitializeSchema() {
+    statement, _ := Db.Prepare(`CREATE TABLE IF NOT EXISTS persons (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									fname VARCHAR(255) NOT NULL, 
 									lname VARCHAR(255) NOT NULL, 
 									email VARCHAR(128) NOT NULL, 
 									ph_no VARCHAR(30), 
-									type VARCHAR(30)
+									type VARCHAR(30),
+									CONSTRAINT unique_person_name UNIQUE (fname, lname)
 								)`);
     statement.Exec()
 
-    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS social (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS social (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									descr VARCHAR(512), 
 									profile_link VARCHAR(512) NOT NULL, 
@@ -27,19 +27,20 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									name VARCHAR(128) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
-									project_type VARCHAR(255) NOT NULL,
+									project_type VARCHAR(512) NOT NULL,
 									github_link VARCHAR(512),
 									youtube_link VARCHAR(512),
 									project_owner,
-									FOREIGN KEY(project_owner) REFERENCES persons(id)
+									FOREIGN KEY(project_owner) REFERENCES persons(id),
+									CONSTRAINT unique_project_name UNIQUE (name)
 								)`);
     statement.Exec()
 
-    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									href VARCHAR(512) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
@@ -48,7 +49,7 @@ func InitializeSchema(db *sql.DB) {
 								)`);
     statement.Exec()
 
-    statement, _ = db.Prepare(`CREATE TABLE IF NOT EXISTS person_project (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS person_project (
 									person_id INTEGER,
 									project_id INTEGER,
 									FOREIGN KEY(person_id) REFERENCES person(id),
@@ -65,12 +66,12 @@ func InitializeSchema(db *sql.DB) {
 	_ = json.Unmarshal(data, &p_new_owner);
 	p_new_owner.UserType = "owner"
 
-	p := GetOwner(db);
+	p := GetOwner();
     if(p != nil) {	// there exists an owner, just update everything except name
     	p_new_owner.Id = p.Id
-    	UpdatePerson(&p_new_owner, db)
+    	UpdatePerson(&p_new_owner)
     } else {	// insert an owner from the owner.json file
-    	InsertPerson(&p_new_owner, db)
+    	InsertPerson(&p_new_owner)
     }
 }
 
