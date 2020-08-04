@@ -13,7 +13,7 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 	project := data.GetProjectByName(project_name);
 
 	if(project != nil) {
-		json, _ := json.Marshal(*data.GetOwner());
+		json, _ := json.Marshal(*project);
 		w.Write(json);
 	} else {
 		w.Write([]byte(`{
