@@ -4,7 +4,6 @@ import (
     "database/sql"
     "io/ioutil"
     "encoding/json"
-    "fmt"
 )
 
 func InitializeSchema(db *sql.DB) {
