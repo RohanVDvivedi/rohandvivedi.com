@@ -1,7 +1,6 @@
 Backend
  * add projects data to sqlite database
  * use github apis for updating your opensource project states atleast every 3 days
- * expose apis for owner data, and socials
  * expose apis to search, projects by name, by type, and by using their description
 
 
@@ -11,3 +10,6 @@ Front end
  * provide search box and project type box for user to search your projects
  * complete Admin page
  * complete About this app page
+
+Intergration
+ * integrate apis and front end pay loads
