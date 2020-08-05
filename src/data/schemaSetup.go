@@ -34,6 +34,7 @@ func InitializeSchema() {
 									project_type VARCHAR(512) NOT NULL,
 									github_link VARCHAR(512),
 									youtube_link VARCHAR(512),
+									image_link VARCHAR(512),
 									project_owner,
 									FOREIGN KEY(project_owner) REFERENCES persons(id),
 									CONSTRAINT unique_project_name UNIQUE (name)
