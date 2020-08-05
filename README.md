@@ -47,6 +47,7 @@ Schema :
    * project_type (embedded system, systems programming, robotics, etc)
    * github_link
    * youtube_link
+   * image_link (additional github, youtube and images may be added in the project_hyperlinks table)
    * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id
