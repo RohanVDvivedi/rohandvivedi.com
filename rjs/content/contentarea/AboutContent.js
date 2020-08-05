@@ -1,5 +1,7 @@
 import React from "react";
 
+import ApiComponent from "../../utility/ApiComponent";
+
 import Icon from "../../utility/Icon";
 import CopyToClipboard from "../../utility/Clipboard";
 
@@ -65,8 +67,26 @@ class ContactSubContent extends React.Component {
 	}
 }
 
-export default class AboutContent extends React.Component {
+function checkIfSocialIsA_CV(social)
+{
+	return social.Descr.includes("CV");
+}
+
+export default class AboutContent extends ApiComponent {
+	apiPath() {
+        return "/api/owner?get_socials=true";
+    }
+    dataWhileApiResponds() {
+    	return {Fname:"Firstname",Lname:"Lastname",Email:"loading email id","Socials":[]};
+    }
     render() {
+    	var owner = this.state.api_response_body;
+    	var cv = owner.Socials.find(checkIfSocialIsA_CV);
+    	if(cv != null) {
+    		cv = (<Icon path={cv.ProfileLink} iconPath={"/icon/" + cv.LinkType + ".png"} height="35px" width="35px" padding="5px" />);
+    	} else {
+    		cv = "";
+    	}
         return (
             <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
                 style={{justifyContent: "center",
@@ -83,7 +103,7 @@ export default class AboutContent extends React.Component {
 	                            <img src={"/img/me_500h.jpg"} style={{width: "25%"}}/>
 	                            
 	                        	<div class="flex-col-container" style={{justifyContent: "space-between", marginLeft: "30px"}}>
-	                            	<AboutParagraph size={20}>Hi, I am <span style={{ fontSize: "22px", fontWeight: "bold"}}>Rohan Dvivedi</span>.</AboutParagraph>
+	                            	<AboutParagraph size={20}>Hi, I am <span style={{ fontSize: "22px", fontWeight: "bold"}}>{owner.Fname + " " + owner.Lname}</span>.</AboutParagraph>
 	                            	<AboutParagraph size={20}>I am a Software and Hardware Developer.</AboutParagraph>
 	                            	<AboutParagraph size={20}>Predominantly a <ColoredBoldWord color="var(--color6)">Backend Developer</ColoredBoldWord>, who also indulges in building crappy <ColoredBoldWord color="var(--color6)">Frontend</ColoredBoldWord>s like this one.</AboutParagraph>
 	                            	<AboutParagraph size={20}>My interests also include <ColoredBoldWord color="var(--color6)">Systems Programming, Databases, Computer Vision, Embedded Systems, Robotics, </ColoredBoldWord> and <ColoredBoldWord color="var(--color6)">FPGAs</ColoredBoldWord>.</AboutParagraph>
@@ -97,21 +117,20 @@ export default class AboutContent extends React.Component {
 		                    }}>
 
 		                    <ContactSubContent title="CV" width="8%">
-						        <Icon path="https://drive.google.com/file/d/12hE5q84en4QAsGkIlOcPEjlFL4kzgHxw/view?usp=sharing" iconPath="/icon/pdf.png" height="35px" width="35px" padding="5px" />
+						        {cv}
 							</ContactSubContent>
 
 							<ContactSubContent title="Email" width="40%">
 								<a class="generic-content-box-hovering-emboss-border" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",padding:"5px"}}>
-						        	<div style={{display:"inline-block", fontSize: "15px"}}>rohandvivedi@gmail.com</div>
+						        	<div style={{display:"inline-block", fontSize: "15px"}}>{owner.Email}</div>
 						        </a>
-						        <Icon path="mailto:rohandvivedi@gmail.com" iconPath="/icon/mail.png" height="35px" width="35px" padding="5px" />
+						        <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" height="35px" width="35px" padding="5px" />
 							</ContactSubContent>
 						        
 			                <ContactSubContent title="Online presence" width="35%">
-					            <Icon path="https://github.com/RohanVDvivedi" iconPath="/icon/github.png" height="35px" width="35px" padding="5px" />
-					            <Icon path="https://www.youtube.com/channel/UCgn_REjbUH2Dm8CaOXvajJg?view_as=subscriber" iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
-					            <Icon path="https://www.linkedin.com/in/rohan-dvivedi-ab3014128/" iconPath="/icon/linkedin.png" height="35px" width="35px" padding="5px" />
-					            <Icon path="https://www.facebook.com/rohan.dvivedi.961" iconPath="/icon/facebook.png" height="35px" width="35px" padding="5px" />
+			                	{owner.Socials.filter(function(social){return !checkIfSocialIsA_CV(social);}).map(function(social){
+					            	return <Icon path={social.ProfileLink} iconPath={"/icon/" + social.LinkType + ".png"} height="35px" width="35px" padding="5px" />
+					        	})}
 					        </ContactSubContent>
 
 				    	</div>

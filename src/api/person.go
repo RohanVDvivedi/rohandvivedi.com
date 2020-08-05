@@ -14,7 +14,22 @@ type Person struct {
 }
  
 func GetOwner(w http.ResponseWriter, r *http.Request) {
-	json, _ := json.Marshal(*data.GetOwner());
+	var p *Person = nil;
+
+	p_db := data.GetOwner()
+
+	if(p_db != nil) {
+		p = &Person{};
+		p.Person = *p_db
+		requested_socials, exists_get_socials := r.URL.Query()["get_socials"];
+		if exists_get_socials {
+			if(requested_socials[0] == "true") {
+				p.Socials = p_db.FindSocials();
+			}
+		}
+	}
+
+	json, _ := json.Marshal(*p);
 	w.Write(json);
 }
 
