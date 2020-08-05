@@ -5,15 +5,15 @@ import Icon from "../../utility/Icon";
 
 class Project extends ApiComponent {
     apiPath() {
-        return "/api/project?projectName=" + this.props.projectName;
+        return "/api/project?name=" + this.props.projectName;
     }
     dataWhileApiResponds() {
     	return {
     		Name: "Loading",
-    		ProjectImage: "/img/pcb.jpeg",
-    		ProjectDescriptionShort: "Loading Description",
+    		Descr: "Loading Description",
     		GithubLink: "",
     		YoutubeLink: "",
+    		ImageLink: "/img/pcb.jpeg",
     	};
     }
     render() {
@@ -35,14 +35,14 @@ class Project extends ApiComponent {
                     {project.Name}
                 </div>
 
-                <img src={project.ProjectImage} style={{padding: "4%", width: "92%"}}/>
+                <img src={project.ImageLink} style={{padding: "4%", width: "92%"}}/>
 	                
 	            <div id="project-description" style={{
 	                textAlign: "center",
 	            	fontFamily: "Arial, Helvetica, sans-serif",
 	            	padding: "4%",
 	            }}>
-	                {project.ProjectDescriptionShort}
+	                {project.Descr}
 	            </div>
 
                 <div class="flex-row-container"
