@@ -26,8 +26,12 @@ func GetOwner() *Person {
 	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where type = ?", "owner"));
 }
 
-func GetPerson(id int) *Person {
+func GetPersonById(id int) *Person {
 	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where id = ?", id));
+}
+
+func GetPersonByName(fname string, lname string) *Person {
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where fname = ? and lname = ?", fname, lname));
 }
 
 func UpdatePerson(p *Person) {
