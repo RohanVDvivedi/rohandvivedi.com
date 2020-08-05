@@ -2,6 +2,7 @@ Backend
  * add projects data to sqlite database
  * use github apis for updating your opensource project states atleast every 3 days
  * expose apis to search, projects by name, by type, and by using their description
+ * add a table for past work experience aswell
 
 
 Front end
