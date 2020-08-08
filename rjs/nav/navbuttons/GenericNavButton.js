@@ -4,13 +4,11 @@ import { NavLink } from 'react-router-dom';
 
 export default class GenericNavButton extends React.Component {
     render() {
-    	const isActive = (path, match, location) => !!(match || path === location.pathname);
         return (
             <NavLink to={this.props.description["route_path"]} activeClassName="nav-button active"
                 className="nav-button"
                 class="nav-button"
-                style={(this.props.description["text"] != null && this.props.description["text"].length >= 4) ? {width: "100px"} : {}}
-                isActive={isActive.bind(this, this.props.description["route_path"])}>
+                style={(this.props.description["text"] != null && this.props.description["text"].length >= 4) ? {width: "100px"} : {}}>
 
                 {this.props.description["text"]}
 
