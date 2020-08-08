@@ -1,7 +1,7 @@
 import React from "react";
 
-import ApiComponent from "../../utility/ApiComponent";
-import Icon from "../../utility/Icon";
+import ApiComponent from "../utility/ApiComponent";
+import Icon from "../utility/Icon";
 
 class Project extends ApiComponent {
     apiPath() {

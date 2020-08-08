@@ -1,9 +1,8 @@
 import React from "react";
 
-import ApiComponent from "../../utility/ApiComponent";
-
-import Icon from "../../utility/Icon";
-import CopyToClipboard from "../../utility/Clipboard";
+import ApiComponent from "../utility/ApiComponent";
+import Icon from "../utility/Icon";
+import CopyToClipboard from "../utility/Clipboard";
 
 class AboutParagraph extends React.Component {
     constructor(props) {

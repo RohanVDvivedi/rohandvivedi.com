@@ -12,34 +12,34 @@ var ContentHash = {
 		"text": "{;}",
 		"nav_pos": "left",
 		"component": AboutThisAppContent,
-		"route_path": "/about_this_app",
+		"route_path": "/pages/about_this_app",
 	},
 	*/
 	"about": {
 		"text": "About",
 		"nav_pos": "right",
 		"component": AboutContent,
-		"route_path": "/about",
+		"route_path": "/pages/about",
 	},
 	"projects": {
 		"text": "Projects",
 		"nav_pos": "right",
 		"component": ProjectsContent,
-		"route_path": "/projects",
+		"route_path": "/pages/projects",
 	},
 	"past": {
 		"text": "Past",
 		"nav_pos": "right",
 		"component": PastContent,
-		"route_path": "/past",
+		"route_path": "/pages/past",
 	},
 	/*
-	just as an example, this is you you would add iconned page
+	just as an example, this is how you would add iconned page
 	"admin": {
 		"icon": "/icon/spanner.svg",
 		"nav_pos": "right",
 		"component": AdminContent,
-		"route_path": "/admin",
+		"route_path": "/pages/admin",
 	},*/
 };
 

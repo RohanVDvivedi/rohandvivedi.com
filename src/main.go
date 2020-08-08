@@ -44,7 +44,7 @@ func main() {
 
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
-	http.HandleFunc("/index", page.Handler);
+	http.HandleFunc("/pages/", page.Handler);
 
 	// attach all the handlers for websockets here
 	// we have only one page handler, because this is a react app, but will have many apis

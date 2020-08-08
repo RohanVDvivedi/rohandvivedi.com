@@ -41,6 +41,12 @@
 
 /* for changing nav buttons while hovering or is clicked*/
 
+#nav-container a
+{
+	/*remove underlines from anchor tags of all nav links*/
+    text-decoration: none;
+}
+
 #nav-container a:hover,
 #nav-container .active
 {
