@@ -1,28 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import NavBar from "./nav/NavBar";
-import ContentContainer from "./content/ContentContainer";
+import ContentHash from "./ContentHash";
 
 class Root extends React.Component {
-	constructor(props) {
-        super(props);
-        this.state = {
-			selected: "about",
-		};
-    }
-	ifNavButtonClicked(new_selection){
-		this.setState({
-			selected: new_selection,
-		});
-	}
     render() {
+    	const defaultContent = "about";
     	console.log("Don't you poke around in my source!!");
         return (
-            <div>
-                <NavBar selected={this.state.selected} ifNavButtonClicked={this.ifNavButtonClicked.bind(this)}/>
-                <ContentContainer selected={this.state.selected}/>
-            </div>
+            <BrowserRouter>
+                <NavBar/>
+	            <Switch>
+	                <Route path="/" exact component={ContentHash[defaultContent]["component"]} />
+	                {Object.keys(ContentHash).map((buttonName) => {     
+		           		return (<Route path={ContentHash[buttonName]["route_path"]} component={ContentHash[buttonName]["component"]}/>)
+		        	})}
+	            </Switch>
+            </BrowserRouter>
         );
     }
 }

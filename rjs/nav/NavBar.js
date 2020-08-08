@@ -15,9 +15,8 @@ export default class NavBar extends React.Component {
 	            	{leftButtons.map((buttonName) => {     
 	           			return (<GenericNavButton
 	           					name = {buttonName}
-	           					buttonDescription={ContentHash[buttonName]} 
-	           					isSelected={this.props.selected == buttonName}
-	           					ifNavButtonClicked={this.props.ifNavButtonClicked}/>); 
+	           					description={ContentHash[buttonName]} 
+	           					isSelected={this.props.selected == buttonName}/>); 
 	        			})
 	            	}
 	        	</div>
@@ -26,9 +25,8 @@ export default class NavBar extends React.Component {
 	            	{rightButtons.map((buttonName) => {     
 	           			return (<GenericNavButton
 	           					name = {buttonName}
-	           					buttonDescription={ContentHash[buttonName]}
-	           					isSelected={this.props.selected == buttonName}
-	           					ifNavButtonClicked={this.props.ifNavButtonClicked}/>); 
+	           					description={ContentHash[buttonName]}
+	           					isSelected={this.props.selected == buttonName}/>); 
 	        			})
 	            	}
 	        	</div>
