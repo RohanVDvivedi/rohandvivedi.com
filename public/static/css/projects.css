@@ -1,0 +1,28 @@
+.project-lister-element{
+	margin: 4%;
+    padding: 4%;/*padding and margin from almost the 100% screen widthed parent*/
+    color: var(--font_color_lighter);
+}
+
+/* 2% padding are from their parent container project-lister-element's width 
+which is decided by the grid that is formed*/
+
+.project-lister-element-name{
+	text-align: center;
+	font-family: Capriola, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 2%;
+}
+
+.project-lister-element-image{
+	padding: 2%;
+	width: 96%;
+}
+
+.project-lister-element-description{
+	text-align: center;
+	font-family: lato, sans-serif;
+	font-size: 17px;
+	padding: 2%;
+}

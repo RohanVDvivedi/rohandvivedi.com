@@ -3,7 +3,7 @@ import React from "react";
 import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
 
-class Project extends ApiComponent {
+class ProjectListerComponent extends ApiComponent {
     apiPath() {
         return "/api/project?name=" + this.props.projectName;
     }
@@ -19,38 +19,13 @@ class Project extends ApiComponent {
     render() {
         var project = this.state.api_response_body;
         return (
-            <div class="flex-col-container set_sub_content_background_color generic-content-box-border generic-content-box-hovering-emboss-border"
-            	style={{
-            		fontFamily: "Capriola, Helvetica, sans-serif",
-            		margin: "4%",
-    				padding: "4%",
-    				color: "rgb(50, 50, 50)",
-            	}}
-            	>
-                <div id="project-name" style={{
-                    textAlign: "center",
-                    fontSize: "20px",
-                    fontWeight: "700",
-                    padding: "4%",
-                }}>
-                    {project.Name}
-                </div>
+            <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border generic-content-box-hovering-emboss-border">
+                <div class="project-lister-element-name">{project.Name}</div>
+                <img class="project-lister-element-image" src={project.ImageLink}/>
+	            <div class="project-lister-element-description">{project.Descr}</div>
 
-                <img src={project.ImageLink} style={{padding: "4%", width: "92%"}}/>
-	                
-	            <div id="project-description" style={{
-	                textAlign: "center",
-	            	fontFamily: "lato, sans-serif",
-	            	padding: "4%",
-	            }}>
-	                {project.Descr}
-	            </div>
-
-                <div class="flex-row-container"
-                    style={{
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                    }}>
+                <div class="flex-row-container" style={{justifyContent: "space-around",
+                										alignItems: "center",}}>
                     <Icon path={project.GithubLink} iconPath="/icon/github.png" height="35px" width="35px" padding="5px" />
                     <Icon path={project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
                 </div>
@@ -68,10 +43,10 @@ export default class ProjectsContent extends React.Component {
         ];
         return (
             <div class="content-container content-root-background">
-                <div style={{height: "65px"}}></div>
+                <div class="behind-nav"></div>
                 <div class="grid-container">
                         {projectNames.map(function(projectName, i){
-                            return <Project projectName={projectName} />;
+                            return <ProjectListerComponent projectName={projectName} />;
                         })}
                 </div>
             </div>
