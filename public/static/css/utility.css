@@ -67,7 +67,6 @@ body {
     --color3: rgba(235, 242, 250, 1);
     --color4: rgba(103, 148, 54, 1);
     --color5: rgba(165, 190, 0, 1);
-    --color6: #1B9653;
     --color7: #0D2818;
 
     --nav_button_font_color: #eeeeee;
@@ -82,4 +81,5 @@ body {
     --sub_content_background_color: #f1f1f1;
 
     --font_color_lighter: #323232;
+    --font_color_greenish: #1B9653;
 }

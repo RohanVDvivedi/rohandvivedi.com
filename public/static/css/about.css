@@ -1,0 +1,19 @@
+.about-paragraph {
+	font-size: 20px;
+	font-family: lato, sans-serif;
+	font-style: italic;
+	font-weight: 500;
+	color: var(--font_color_lighter);
+}
+
+.owner-name {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.skills-bolden-coloren {
+	font-size: inherit;
+    font-family: inherit;
+    color: var(--font_color_greenish);
+    font-weight: bold;
+}

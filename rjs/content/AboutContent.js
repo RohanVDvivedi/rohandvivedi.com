@@ -4,43 +4,6 @@ import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
 import CopyToClipboard from "../utility/Clipboard";
 
-class AboutParagraph extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    render() {
-        return(
-            <div style={{
-                fontSize: this.props.size + "px",
-                fontFamily: "lato,sans-serif",
-				fontStyle: "italic",
-                fontWeight: "500",
-                color: "#323232"
-            }}>
-                    {this.props.children}
-            </div>
-        );
-    }
-}
-
-class ColoredBoldWord extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    render() {
-        return(
-            <span style={{
-                fontSize: "inherit",
-                fontFamily: "inherit",
-                color: this.props.color,
-                fontWeight: "bold",
-            }}>
-                    {this.props.children}
-            </span>
-        );
-    }
-}
-
 class ContactSubContent extends React.Component {
 	render() {
 		return (
@@ -102,10 +65,10 @@ export default class AboutContent extends ApiComponent {
 	                            <img src={"/img/me_500h.jpg"} style={{width: "25%"}}/>
 	                            
 	                        	<div class="flex-col-container" style={{justifyContent: "space-between", marginLeft: "30px"}}>
-	                            	<AboutParagraph size={20}>Hi, I am <span style={{ fontSize: "22px", fontWeight: "bold"}}>{owner.Fname + " " + owner.Lname}</span>.</AboutParagraph>
-	                            	<AboutParagraph size={20}>I am a Software and Hardware Developer.</AboutParagraph>
-	                            	<AboutParagraph size={20}>Predominantly a <ColoredBoldWord color="var(--color6)">Backend Developer</ColoredBoldWord>, who also indulges in building crappy <ColoredBoldWord color="var(--color6)">Frontend</ColoredBoldWord>s like this one.</AboutParagraph>
-	                            	<AboutParagraph size={20}>My interests also include <ColoredBoldWord color="var(--color6)">Systems Programming, Databases, Computer Vision, Embedded Systems, Robotics, </ColoredBoldWord> and <ColoredBoldWord color="var(--color6)">FPGAs</ColoredBoldWord>.</AboutParagraph>
+	                            	<div class="about-paragraph">Hi, I am <span class="owner-name">{owner.Fname + " " + owner.Lname}</span>.</div>
+	                            	<div class="about-paragraph">I am a Software and Hardware Developer.</div>
+	                            	<div class="about-paragraph">Predominantly a <span class="skills-bolden-coloren">Backend Developer</span>, who also indulges in building crappy <span class="skills-bolden-coloren">Frontend</span>s like this one.</div>
+	                            	<div class="about-paragraph">My interests also include <span class="skills-bolden-coloren">Systems Programming, Databases, Computer Vision, Embedded Systems, Robotics, </span> and <span class="skills-bolden-coloren">FPGAs</span>.</div>
 	                            </div>
 	                        </div>
 
