@@ -24,6 +24,7 @@ class Project extends ApiComponent {
             		fontFamily: "Capriola, Helvetica, sans-serif",
             		margin: "4%",
     				padding: "4%",
+    				color: "rgb(50, 50, 50)",
             	}}
             	>
                 <div id="project-name" style={{
@@ -39,7 +40,7 @@ class Project extends ApiComponent {
 	                
 	            <div id="project-description" style={{
 	                textAlign: "center",
-	            	fontFamily: "Arial, Helvetica, sans-serif",
+	            	fontFamily: "lato, sans-serif",
 	            	padding: "4%",
 	            }}>
 	                {project.Descr}
