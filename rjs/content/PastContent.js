@@ -17,44 +17,64 @@ export default class PastContent extends React.Component {
 							color: "rgb(50,50,50)",
 							fontWeight: "600",
 							fontStyle: "italic",
+							paddingBottom: "10px"
                         }}>
                             Past
                         </div>
-                        <div>
-                            <div>Work Experience</div>
-                            <a href={"https://www.oyorooms.com/"} target="_blank">OYO</a>
-
-                            <div>
-                            	<div>Job Description: Fullstack Developer contributing in php, java and Progress to Belvilla (now OYO Vacation Homes).</div>
-                            	<div>OYO Vacation Homes Team, Amsterdam, Netherlands</div>
-                            	<div>Jul’19-Feb’20</div>
-                            </div>
-
-                            <div>
-                            	<div>Job Description: Backend Developer contributing in java and ruby tachstack to Finance Technology teams in generating reconciliation summary (accounting for commission, payments and taxations).</div>
-                            	<div>Team : Finance Tech. Team, Gurgaon, India</div>
-                            	<div>Jan’19-Jun’19</div>
-                            </div>
-                            <div>
-                            	<div>Job Description: Backend Developer contributing in java and ruby tachstack to Supply Technology teams.</div>
-                            	<div>Team : Supply Tech. Team, Gurgaon, India</div>
-                            	<div>Aug’18-Dec’18</div>
-                            </div>
-                        </div>
 
                         <div>
-                            <div>Research Experience</div>
-                            <a href="https://ieeexplore.ieee.org/document/9008052" target="_blank">Flexible Processor Architecture Design</a>
-                            <div>Abstract: Designing a processor that can execute any instruction set. Allowing the programmers to come up with their own custom instruction sets targetting the needs of their application.</div>
-                            <div>Jul’17-Dec’17</div>
-                        </div>
+	                        <div>
+	                            <div>Work Experience</div>
+	                            <a href={"https://www.oyorooms.com/"} target="_blank">OYO</a>
+	                            <div>Position: SDE1 (Software Development Engineer I)</div>
 
-                        <div>
-                            <div>Undergraduate Education</div>
-                            <a href="https://www.bits-pilani.ac.in/hyderabad/" target="_blank">BITS Pilani</a>
-                            <div>B.E. (Hons.) in Mechanical Engineering</div>
-                            <div>Jul’14-Jul’18</div>
-                        </div>
+	                            <div class="flex-row-container" style={{justifyContent: "space-between"}}>
+	                           		<div>OYO Vacation Homes, Amsterdam, Netherlands</div>
+	                           		<div style={{fontStyle:"italic"}}>Jul’19-Feb’20</div>
+	                           	</div>
+	                           	<div class="flex-row-container" style={{justifyContent: "space-between"}}>
+	                           		<div>Finance Tech. Team, Gurgaon, India</div>
+	                           		<div style={{fontStyle:"italic"}}>Dec’18-Jun’19</div>
+	                           	</div>
+	                           	<div class="flex-row-container" style={{justifyContent: "space-between"}}>
+	                           		<div>Supply Tech. Team, Gurgaon, India</div>
+	                           		<div style={{fontStyle:"italic"}}>Aug’18-Dec’18</div>
+	                           	</div>
+	                            <div>
+	                            Job Description: 
+	                            SDE1, Backend Developer contributing in java (spring boot) and ruby on rails techstack to Finance and Supply Technology teams at OYO.
+	                            I also contributed in website revamp and feature development for <a href="https://oyovacationhomes.com/" target="_blank">OYO Vacation Homes'</a> subsidiary entity <a href="https://www.belvilla.com/" target="_blank">Belvilla B.V.</a>.
+	                            </div>
+	                        </div>
+
+	                        <div style={{marginTop: "5px"}}>
+	                            <div>Research Experience</div>
+	                            <div class="flex-row-container" style={{justifyContent: "space-between"}}>
+	                            	<div>Flexible Processor Architecture Design</div>
+	                            	<div style={{fontStyle:"italic"}}>Jul’17-Dec’17</div>
+	                            </div>
+	                            <div>DOI: <a href="https://ieeexplore.ieee.org/document/9008052" target="_blank">10.1109/DISCOVER47552.2019.9008052</a></div>
+	                            <div>Authors : D. R. Vipulkumar, P. V. Bhanu and J. Soumya</div>
+	                            <div>Abstract problem statement: To Design a processor that can execute any instruction set (custom designed or commercial).
+	                            To try and encourage programmers to come up with their own custom instructions to target higher efficiencies for their applications.</div>
+	                        </div>
+
+	                        <div style={{marginTop: "5px"}}>
+	                            <div>Undergraduate Education</div>
+
+	                            <a href="https://www.bits-pilani.ac.in/hyderabad/" target="_blank">BITS Pilani</a>
+
+	                            <div class="flex-row-container" style={{justifyContent: "space-between"}}>
+	                            	<div>B.E. (Hons.) in Mechanical Engineering</div>
+	                            	<div style={{fontStyle:"italic"}}>Jul’14-Jul’18</div>
+	                            </div>
+
+	                            <div>
+	                            Description: I graduated from BITS Pilani, Hyderabad Campus, majoring in Mechanical Engineering.
+	                            My exposure to Computer Science, during my undergraduate education, gave me confidence to explore the field further which led me to learn to analyze problems and code their way out.
+	                            </div>
+	                        </div>
+	                    </div>
 
                     </div>
 
