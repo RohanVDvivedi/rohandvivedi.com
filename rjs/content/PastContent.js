@@ -73,6 +73,7 @@ export default class PastContent extends React.Component {
             </div>
         );
     }
+}
 
     /*
     Past
