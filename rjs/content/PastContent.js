@@ -73,4 +73,28 @@ export default class PastContent extends React.Component {
             </div>
         );
     }
-}
+
+    /*
+    Past
+Work Experience
+OYO
+Position: SDE1 (Software Development Engineer I)
+OYO Vacation Homes, Amsterdam, Netherlands
+Jul’19-Feb’20
+Finance Tech. Team, Gurgaon, India
+Dec’18-Jun’19
+Supply Tech. Team, Gurgaon, India
+Aug’18-Dec’18
+Job Description: SDE1, Backend Developer contributing in java (spring boot) and ruby on rails techstack to Finance and Supply Technology teams at OYO. I also contributed in website revamp and feature development for OYO Vacation Homes' subsidiary entity Belvilla B.V..
+Research Experience
+Flexible Processor Architecture Design
+Jul’17-Dec’17
+DOI: 10.1109/DISCOVER47552.2019.9008052
+Authors : D. R. Vipulkumar, P. V. Bhanu and J. Soumya
+Abstract problem statement: To Design a processor that can execute any instruction set (custom designed or commercial). To try and encourage programmers to come up with their own custom instructions to target higher efficiencies for their applications.
+Undergraduate Education
+BITS Pilani
+B.E. (Hons.) in Mechanical Engineering
+Jul’14-Jul’18
+Description: I graduated from BITS Pilani, Hyderabad Campus, majoring in Mechanical Engineering. My exposure to Computer Science, during my undergraduate education, gave me confidence to explore the field further which led me to learn to analyze problems and code their way out.
+*/
