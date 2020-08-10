@@ -44,7 +44,10 @@ export default class ProjectsContent extends React.Component {
         return (
             <div class="content-container content-root-background">
                 <div class="behind-nav"></div>
-                <div class="grid-container">
+                <div class="grid-container" style{{
+                	marginLeft: "10%",
+                	marginRight: "10%"
+                }}>
                         {projectNames.map(function(projectName, i){
                             return <ProjectListerComponent projectName={projectName} />;
                         })}

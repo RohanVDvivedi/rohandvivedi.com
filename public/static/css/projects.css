@@ -1,6 +1,7 @@
 .project-lister-element{
-	margin: 4%;
-    padding: 4%;/*padding and margin from almost the 100% screen widthed parent*/
+	margin: 8%;
+    padding: 4%;/*padding and margin from almost the 80% screen widthed parent
+    			i.e. of the grid container showing the lister*/
     color: var(--font_color_lighter);
 }
 
