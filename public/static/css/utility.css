@@ -40,21 +40,23 @@ body {
 
 /* Tool tip that pops up as soon as you hover over the tooltip-wrap*/
 
-.tooltip-wrap {
+.tooltip-container {
   position: relative;
 }
 
-.tooltip-wrap .tooltip-content {
+.tooltip-container .tooltip-content {
   display: none;
+  border: 1px solid #777777;
+  width: max-content;
   position: absolute;
-  bottom: 5%;
+  top: 100%;
   left: 5%;
-  right: 5%;
+  color: black;
   background-color: #fff;
   padding: .5em;
 }
 
-.tooltip-wrap:hover .tooltip-content {
+.tooltip-container:hover .tooltip-content {
   display: block;
 }
 

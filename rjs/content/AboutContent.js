@@ -83,10 +83,14 @@ export default class AboutContent extends ApiComponent {
 							</ContactSubContent>
 
 							<ContactSubContent title="Email" width="40%">
-								<a class="generic-content-box-hovering-emboss-border" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",padding:"10px"}}>
+								<a class="generic-content-box-hovering-emboss-border tooltip-container" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",padding:"10px"}}>
 						        	<div style={{display:"inline-block", fontSize: "17px"}}>{owner.Email}</div>
+						        	<div class="tooltip-content">Click to copy</div>
 						        </a>
-						        <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" height="35px" width="35px" padding="5px" />
+						        <div class="tooltip-container">
+							        <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" height="35px" width="35px" padding="5px" />
+							        <div class="tooltip-content">Use mail client</div>
+							    </div>
 							</ContactSubContent>
 						        
 			                <ContactSubContent title="Online presence" width="35%">
