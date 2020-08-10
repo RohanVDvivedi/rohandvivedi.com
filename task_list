@@ -1,7 +1,7 @@
 Backend
 today:
  * add projects data to sqlite database
- * expose apis to search, projects by name, by type, and by using their description
+ * expose apis to search, by type, and all projects by using their description
  * add a table for past work experience aswell, and serve it with apis
 
 
