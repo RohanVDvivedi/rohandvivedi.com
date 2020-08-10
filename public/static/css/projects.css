@@ -1,3 +1,9 @@
+.project-lister-contaier{
+	grid-template-columns: repeat(3, 1fr);
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
 .project-lister-element{
 	margin: 8%;
     padding: 4%;/*padding and margin from almost the 80% screen widthed parent
