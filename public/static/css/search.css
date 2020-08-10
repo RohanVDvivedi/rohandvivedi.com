@@ -1,0 +1,49 @@
+.search-container {
+	font-family: Capriola, Helvetica, sans-serif;
+
+	justify-content: center;
+    align-items: center;
+    font-size: 18px;
+
+    display: inline-flex;
+    width:50%;
+}
+
+/*search container below consists of the following things below*/
+
+.search-container .search-text-selector {
+	padding: 15px;
+	border-radius: 5px 0 0 5px;
+	width: 50%;
+
+
+	font: inherit;
+	outline: none;
+	border: 0px;
+}
+
+.search-container .search-categories-selector {
+	padding: 15px;
+	cursor: pointer;
+	width: 30%;
+	text-align: center;
+}
+
+.search-container .search-button {
+	padding: 15px;
+	cursor: pointer;
+	border-radius: 0 5px 5px 0;
+	width: 20%;
+	text-align: center;
+	
+
+	color: var(--nav_selected_font_color);
+
+    background: var(--nav_selected_background_color);
+	background: -moz-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, var(--nav_selected_background_color_light)), color-stop(100%, var(--nav_selected_background_color)));
+	background: -webkit-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -o-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -ms-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: linear-gradient(to bottom, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+}
