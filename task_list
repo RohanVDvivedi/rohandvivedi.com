@@ -1,13 +1,12 @@
 Backend
+today:
  * add projects data to sqlite database
  * expose apis to search, projects by name, by type, and by using their description
-
  * add a table for past work experience aswell, and serve it with apis
-
- * use github apis for updating your opensource project states atleast every 3 days
 
 
 Front end
+today:
  * show tool tip for icons
  * provide search box and project type box for user to search your projects
  
@@ -15,5 +14,6 @@ Front end
  * complete About this app page
 
 Future features
+ * use github apis for updating your opensource project states atleast every 3 days (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf
  * build live-chat page
