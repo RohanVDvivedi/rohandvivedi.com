@@ -41,9 +41,28 @@ export default class ProjectsContent extends React.Component {
             "project-name","project-name","project-name","project-name","project-name","project-name",
             "project-name","project-name","project-name","project-name","project-name","project-name",
         ];
+        var project_category = ["Systems programming (in linux)", "Embedded systems",
+        "Robotics", "Databases", "Computer architecture"];
         return (
             <div class="content-container content-root-background">
                 <div class="behind-nav"></div>
+                
+                <div class="flex-row-container" style={{
+                	justifyContent: "center",
+    				alignItems: "center",
+    				fontSize: "20px",
+    				padding: "8px",
+                }}>
+                	<input type="text" id="myText" placeholder="keywords to search projects" style={{font:"inherit"}} />
+                	<div>
+                		Select Category
+                	</div>
+                	<div>
+                		Search
+                	</div>
+                </div>
+
+
                 <div class="grid-container project-lister-contaier">
                         {projectNames.map(function(projectName, i){
                             return <ProjectListerComponent projectName={projectName} />;
