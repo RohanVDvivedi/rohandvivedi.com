@@ -1,5 +1,6 @@
 .search-container {
 	font-family: Capriola, Helvetica, sans-serif;
+	border-radius: 5px;
 
 	justify-content: center;
     align-items: center;
@@ -27,6 +28,17 @@
 	cursor: pointer;
 	width: 30%;
 	text-align: center;
+}
+
+.search-categories-selector .search-category {
+	padding: 15px;
+	cursor: pointer;
+	text-align: left;
+}
+
+.search-categories-selector .search-category:hover,
+.search-categories-selector .search-category.active{
+
 }
 
 .search-container .search-button {

@@ -36,18 +36,17 @@ class ProjectListerComponent extends ApiComponent {
 
 class ProjectSearchBar extends React.Component {
 	render() {
-		var projectCategories = ["Systems programming (in linux)", "Embedded systems",
-        "Robotics", "Databases", "Computer architecture"];
+		var projectCategories = ["Systems programming (in linux)", "Embedded systems","Robotics", "Databases", "Computer architecture"];
 
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
 	                	<input class="search-text-selector" type="text" placeholder="technical keywords"/>
-						<div class="search-categories-selector generic-content-box-hovering-emboss-border"
-							style={{display:"relative"}}>
+						<div class="search-categories-selector dropdown-container generic-content-box-hovering-emboss-border">
 							<div> Categories </div>
-							<div style={{display: "none"}}>
+							<div class="dropdown-content set_sub_content_background_color">
+								<div class="search-category active">All</div>
 								{projectCategories.map((projectCategory) => {
-									return (<div>{projectCategory}</div>);
+									return (<div class={"search-category"}>{projectCategory}</div>);
 								})}
 							</div>
 						</div>
