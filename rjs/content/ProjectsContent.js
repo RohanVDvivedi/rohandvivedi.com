@@ -35,24 +35,62 @@ class ProjectListerComponent extends ApiComponent {
 }
 
 class ProjectSearchBar extends React.Component {
-	getSearchText() {
-		return this.refs.searchTextBox.value;
+	constructor(props) {
+		super(props)
+		this.projectCategories = ["Systems programming (in linux)", "Embedded systems","Robotics", "Databases", "Computer architecture"];
+		this.state = {
+			searchTextBox: "",
+			showDropdownContent: false,
+			selectedProjectCategories: [],
+		}
 	}
-	getCategoriesSelected() {
-		return "abc";
+	categoryClicked(category) {
+		if(category == "") {
+			this.setState({
+				searchTextBox: this.state.searchTextBox,
+				showDropdownContent: false,
+				selectedProjectCategories: [],
+			});
+		} else {
+			var selects = Array.from(this.state.selectedProjectCategories);
+			if(selects.includes(category)) {
+				selects = selects.filter((cate) => {return cate != category});
+			} else {
+				selects.push(category);
+			}
+			this.setState({
+				searchTextBox: this.state.searchTextBox,
+				showDropdownContent: true,
+				selectedProjectCategories: selects,
+			});
+		}
+	}
+	onSearchBoxTyping(e) {
+		this.setState({
+				searchTextBox: e.target.value,
+				showDropdownContent: this.state.showDropdownContent,
+				selectedProjectCategories: this.state.selectedProjectCategories,
+			});
 	}
 	generateSearchQueryString() {
 		var searchQuery = new Array();
 
-		var searchText = this.getSearchText();
+		var searchText = this.state.searchTextBox;
 		if(searchText != null && searchText != ""){
 			searchQuery[0] = "query=" + searchText;
 		}
 
-		var categories = this.getCategoriesSelected();
+		var categories = ((this.state.selectedProjectCategories.length == 0) ? this.projectCategories : this.state.selectedProjectCategories);
 		if(categories != null && categories != ""){
-			searchQuery[1] = "categories=" + categories;
+			searchQuery[1] = "categories=" + categories.join(",");
 		}
+
+		// if search is pressed close the drop down
+		this.setState({
+				searchTextBox: this.state.searchTextBox,
+				showDropdownContent: false,
+				selectedProjectCategories: this.state.selectedProjectCategories,
+			});
 
 		return searchQuery.filter((q) => {return q != null && q != ""}).join("&");
 	}
@@ -61,17 +99,17 @@ class ProjectSearchBar extends React.Component {
 		console.log(queryString);
 	}
 	render() {
-		var projectCategories = ["Systems programming (in linux)", "Embedded systems","Robotics", "Databases", "Computer architecture"];
-
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
-	                	<input class="search-text-selector" type="text" placeholder="technical keywords" ref="searchTextBox"/>
-						<div class="search-categories-selector dropdown-container generic-content-box-hovering-emboss-border">
+	                	<input class="search-text-selector" type="text" placeholder="technical keywords" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
+						<div class={"search-categories-selector dropdown-container generic-content-box-hovering-emboss-border " + (this.state.showDropdownContent ? "show-dropdown-content" : "") }>
 							<div> Categories </div>
-							<div class="dropdown-content set_sub_content_background_color" ref="parentOfCategories">
-								<div id="select-all-categories" class="search-category active">All</div>
-								{projectCategories.map((projectCategory) => {
-									return (<div class="search-category">{projectCategory}</div>);
+							<div class="dropdown-content set_sub_content_background_color">
+								<div id="select-all-categories" class={"search-category " + ((this.state.selectedProjectCategories.length==0) ? "active" : "")}
+								 onClick={this.categoryClicked.bind(this, "")}>All</div>
+								{this.projectCategories.map((projectCategory) => {
+									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory)) ? "active" : "")}
+										onClick={this.categoryClicked.bind(this, projectCategory)}>{projectCategory}</div>);
 								})}
 							</div>
 						</div>
