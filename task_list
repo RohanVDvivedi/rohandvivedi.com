@@ -1,14 +1,13 @@
 Backend
 today:
  * add projects data to sqlite database
- * expose apis to search, by type, and all projects by using their description
+ * expose apis to search, by type/tags, and all projects by using their description
  * add a table for past work experience aswell, and serve it with apis
 
 
 Front end
 today:
- * show tool tip for icons
- * provide search box and project type box for user to search your projects
+ * integrate tool tip in all icons, using the icons components, controller by the props.infoBoxText
  
  * complete Admin page
  * complete About this app page
