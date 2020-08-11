@@ -26,7 +26,7 @@ class ProjectListerComponent extends ApiComponent {
 
                 <div class="flex-row-container" style={{justifyContent: "space-around",
                 										alignItems: "center",}}>
-                    <Icon path={project.GithubLink} iconPath="/icon/github.png" height="35px" width="35px" padding="5px" />
+                    <Icon path={project.GithubLink} iconPath="/icon/github.png" infoBoxText={(<div>Open Github<br/>repository</div>)} height="35px" width="35px" padding="5px" />
                     <Icon path={project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
                 </div>
             </div>

@@ -87,15 +87,12 @@ export default class AboutContent extends ApiComponent {
 						        	<div style={{display:"inline-block", fontSize: "17px"}}>{owner.Email}</div>
 						        	<div class="tooltip-content">Click to copy</div>
 						        </a>
-						        <div class="tooltip-container">
-							        <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" height="35px" width="35px" padding="5px" />
-							        <div class="tooltip-content">Use mail client</div>
-							    </div>
+							    <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" infoBoxText="Use mail client" height="35px" width="35px" padding="5px" />
 							</ContactSubContent>
 						        
 			                <ContactSubContent title="Online presence" width="35%">
 			                	{owner.Socials.filter(function(social){return !checkIfSocialIsA_CV(social);}).map(function(social){
-					            	return <Icon path={social.ProfileLink} iconPath={"/icon/" + social.LinkType + ".png"} height="35px" width="35px" padding="5px" />
+					            	return <Icon path={social.ProfileLink} iconPath={"/icon/" + social.LinkType + ".png"} infoBoxText={"my " + social.LinkType + " profile"} height="35px" width="35px" padding="5px" />
 					        	})}
 					        </ContactSubContent>
 

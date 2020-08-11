@@ -6,8 +6,12 @@ export default class Icon extends React.Component {
     }
 
     render() {
+    	var showToolTipInfo = false;
+    	if(this.props.infoBoxText != null) {
+    		showToolTipInfo = true
+    	}
         return (
-        	<a class="generic-content-box-hovering-emboss-border" 
+        	<a class={"generic-content-box-hovering-emboss-border" + (showToolTipInfo ? " tooltip-container" : "") }
         		href={this.props.path} target="_blank" 
         		style={{display: "block",padding:this.props.padding}}>
 		            <div className={"no-padding-and-no-margin"} style={{
@@ -19,6 +23,11 @@ export default class Icon extends React.Component {
 			        height: this.props.height,
 			        width: this.props.width,
 		        	}}></div>
+		        	{
+		        		showToolTipInfo ? (<div class="tooltip-content">
+		        				{this.props.infoBoxText}
+		        			</div>) : ""
+		        	}
 	        </a>
         );
     }
