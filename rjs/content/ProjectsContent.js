@@ -35,22 +35,47 @@ class ProjectListerComponent extends ApiComponent {
 }
 
 class ProjectSearchBar extends React.Component {
+	getSearchText() {
+		return this.refs.searchTextBox.value;
+	}
+	getCategoriesSelected() {
+		return "abc";
+	}
+	generateSearchQueryString() {
+		var searchQuery = new Array();
+
+		var searchText = this.getSearchText();
+		if(searchText != null && searchText != ""){
+			searchQuery[0] = "query=" + searchText;
+		}
+
+		var categories = this.getCategoriesSelected();
+		if(categories != null && categories != ""){
+			searchQuery[1] = "categories=" + categories;
+		}
+
+		return searchQuery.filter((q) => {return q != null && q != ""}).join("&");
+	}
+	searchButtonClicked() {
+		var queryString = this.generateSearchQueryString();
+		console.log(queryString);
+	}
 	render() {
 		var projectCategories = ["Systems programming (in linux)", "Embedded systems","Robotics", "Databases", "Computer architecture"];
 
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
-	                	<input class="search-text-selector" type="text" placeholder="technical keywords"/>
+	                	<input class="search-text-selector" type="text" placeholder="technical keywords" ref="searchTextBox"/>
 						<div class="search-categories-selector dropdown-container generic-content-box-hovering-emboss-border">
 							<div> Categories </div>
-							<div class="dropdown-content set_sub_content_background_color">
-								<div class="search-category active">All</div>
+							<div class="dropdown-content set_sub_content_background_color" ref="parentOfCategories">
+								<div id="select-all-categories" class="search-category active">All</div>
 								{projectCategories.map((projectCategory) => {
-									return (<div class={"search-category"}>{projectCategory}</div>);
+									return (<div class="search-category">{projectCategory}</div>);
 								})}
 							</div>
 						</div>
-	                	<div class="search-button generic-content-box-hovering-emboss-border">Search</div>
+	                	<div class="search-button generic-content-box-hovering-emboss-border" onClick={this.searchButtonClicked.bind(this)}>Search</div>
 	                </div>
                 </div>);
 	}

@@ -38,7 +38,7 @@
 
 .search-categories-selector .search-category:hover,
 .search-categories-selector .search-category.active{
-
+	background-color: pink;
 }
 
 .search-container .search-button {
