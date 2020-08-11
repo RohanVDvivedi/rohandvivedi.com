@@ -7,12 +7,12 @@ today:
 
 Front end
 today:
- * integrate tool tip in all icons, using the icons components, controller by the props.infoBoxText
- 
- * complete Admin page
+ * complete search bar, rolling in floating and sliding into the page
+ * wire it with the ProjectsContent page 
  * complete About this app page
 
-Future features
- * use github apis for updating your opensource project states atleast every 3 days (* future)
- * provide users with a portal to give them a very simple CV in google docs and in pdf
+Future feature
  * build live-chat page
+ * complete Admin page
+ * use github apis for updating your opensource project states atleast every 3 days (* future)
+ * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
