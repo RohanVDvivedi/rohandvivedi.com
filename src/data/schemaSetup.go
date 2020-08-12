@@ -33,6 +33,8 @@ func InitializeSchema() {
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									organization VARCHAR(512) NOT NULL,
 									organization_link VARCHAR(512),
+									past_type VARCHAR(128),
+									position VARCHAR(128),
 									team_or_research_title VARCHAR(128),
 									descr VARCHAR(512),
 									research_paper_link  VARCHAR(512),

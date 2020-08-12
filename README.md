@@ -44,8 +44,11 @@ Schema :
    * id
    * organization
    * organization_link
-   * team
+   * past_type
+   * position
+   * team_or_research_title
    * descr
+   * research_paper
    * from_date
    * to_date
    * person_id
