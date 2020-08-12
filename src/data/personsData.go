@@ -1,5 +1,6 @@
 package data
 
+// Person model
 type Person struct {
 	Id int
 	Fname string

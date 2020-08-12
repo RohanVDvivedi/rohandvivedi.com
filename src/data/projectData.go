@@ -1,5 +1,6 @@
 package data
 
+// Project model
 type Project struct {
 	Id int
 	Name string
@@ -40,3 +41,9 @@ func InsertProject(p *Project) {
 	Db.Exec("insert into projects (name, descr, github_link, youtube_link, image_link, project_owner) values (?,?,?,?)",
 		p.Name, p.Descr, p.GithubLink, p.YoutubeLink, p.ImageLink, p.ProjectOwner);
 }
+
+// Project's hyperlinks
+
+// Categories
+
+/*select pr.name, cat.category_name from projects as pr join project_category_project as pc on (pc.project_id = pr.id) join project_categories as cat on (cat.id = pc.project_category_id) where cat.id = 2;*/
