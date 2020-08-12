@@ -42,6 +42,7 @@ func InsertPerson(p *Person) {
 	Db.Exec("insert into persons (fname, lname, email, type) values (?,?,?,?)", p.Fname, p.Lname, p.Email, p.UserType);
 }
 
+// Person's Social-s
 type Social struct {
 	Id int
 	Descr string
@@ -74,4 +75,45 @@ func (p *Person) FindSocials() []Social {
 		}
 	}
 	return s;
+}
+
+// Person's Past-s
+type Past struct {
+	Id int
+	Organization string
+	OrganizationLink string
+	PastType string
+	Position string
+	Team_or_ResearchTitle string
+	Descr string
+	ResearchPaperLink string
+	FromDate string
+	ToDate string
+	PersonId int
+}
+
+func pastSelectBaseQuery() string {
+	return "select id, organization, organization_link, past_type, position, team_or_research_title, descr, research_paper_link, from_date, to_date, person_id from pasts ";
+}
+
+func baseScanPast(r Row) *Past {
+	pst := Past{};
+	err := r.Scan(&pst.Id, &pst.Organization, &pst.OrganizationLink, &pst.PastType, &pst.Position, &pst.Team_or_ResearchTitle, &pst.Descr, &pst.ResearchPaperLink, &pst.FromDate, &pst.ToDate, &pst.PersonId);
+	if err != nil {
+		return nil
+	}
+	return &pst;
+}
+
+func (p *Person) FindPasts() []Past {
+	pst := []Past{}
+	rows, _ := Db.Query(pastSelectBaseQuery() + "where person_id = ?", p.Id)
+	defer rows.Close()
+	for rows.Next() {
+		past_p := baseScanPast(rows)
+		if past_p != nil {
+			pst = append(pst, *past_p)
+		}
+	}
+	return pst;
 }
