@@ -29,6 +29,6 @@ export default class ApiComponent extends React.Component {
         return null
     }
     bodyDataBeforeApiFirstResponds() {
-    	throw new Error('Implementing apiPath method is mandatory for sub class of ApiComponent');
+    	throw new Error('Implementing bodyDataBeforeApiFirstResponds method is mandatory for sub class of ApiComponent');
     }
 }

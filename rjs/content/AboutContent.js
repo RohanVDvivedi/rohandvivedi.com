@@ -38,7 +38,7 @@ export default class AboutContent extends ApiComponent {
 	apiPath() {
         return "/api/owner?get_socials=true";
     }
-    dataWhileApiResponds() {
+    bodyDataBeforeApiFirstResponds() {
     	return {Fname:"Firstname",Lname:"Lastname",Email:"loading email id","Socials":[]};
     }
     render() {
