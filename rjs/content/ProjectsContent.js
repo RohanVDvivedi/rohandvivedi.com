@@ -3,31 +3,18 @@ import React from "react";
 import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
 
-class ProjectListerComponent extends ApiComponent {
-    apiPath() {
-        return "/api/project?name=" + this.props.projectName;
-    }
-    dataWhileApiResponds() {
-    	return {
-    		Name: "Loading",
-    		Descr: "Loading Description",
-    		GithubLink: "",
-    		YoutubeLink: "",
-    		ImageLink: "/img/pcb.jpeg",
-    	};
-    }
+class ProjectListerComponent extends React.Component {
     render() {
-        var project = this.state.api_response_body;
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border">
-                <div class="project-lister-element-name">{project.Name}</div>
-                <img class="project-lister-element-image" src={project.ImageLink}/>
-	            <div class="project-lister-element-description">{project.Descr}</div>
+                <div class="project-lister-element-name">{this.props.project.Name}</div>
+                <img class="project-lister-element-image" src={this.props.project.ImageLink}/>
+	            <div class="project-lister-element-description">{this.props.project.Descr}</div>
 
                 <div class="flex-row-container" style={{justifyContent: "space-around",
                 										alignItems: "center",}}>
-                    <Icon path={project.GithubLink} iconPath="/icon/github.png" infoBoxText={(<div>Open Github<br/>repository</div>)} height="35px" width="35px" padding="5px" />
-                    <Icon path={project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
+                    <Icon path={this.props.project.GithubLink} iconPath="/icon/github.png" infoBoxText={(<div>Open Github<br/>repository</div>)} height="35px" width="35px" padding="5px" />
+                    <Icon path={this.props.project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
                 </div>
             </div>
         );
@@ -96,7 +83,7 @@ class ProjectSearchBar extends React.Component {
 	}
 	searchButtonClicked() {
 		var queryString = this.generateSearchQueryString();
-		console.log(queryString);
+		this.props.searchQueryStringBuiltCallback(queryString);
 	}
 	render() {
 		return (<div style={{display:"flex",justifyContent:"center"}}>
@@ -119,22 +106,39 @@ class ProjectSearchBar extends React.Component {
 	}
 }
 
-export default class ProjectsContent extends React.Component {
+export default class ProjectsContent extends ApiComponent {
+	constructor(props) {
+		super(props)
+		this.state = Object.assign({},this.state,{
+			queryString: ((this.props.queryString==null)?"":this.props.queryString),
+		})
+	}
+	searchQueryStringBuiltCallback(queryString) {
+		this.setState(Object.assign({},this.state,{queryString: queryString}));
+		console.log(this.state)
+	}
+	apiPath() {
+		const basePath = "/api/project";
+        return this.state.queryString.length > 0 ? [basePath, this.state.queryString].join("?") : basePath;
+    }
+    bodyDataBeforeApiFirstResponds() {
+    	return [{Name: "Loading",
+				Descr: "Loading Description",
+				GithubLink: "",
+				YoutubeLink: "",
+				ImageLink: "/img/pcb.jpeg",}];
+    }
     render() {
-        var projectNames = [
-            "project-name","project-name","project-name","project-name","project-name","project-name",
-            "project-name","project-name","project-name","project-name","project-name","project-name",
-            "project-name","project-name","project-name","project-name","project-name","project-name",
-        ];
+    	var projects = this.state.api_response_body;
         return (
             <div class="content-container content-root-background">
                 <div class="behind-nav"></div>
                 
-                <ProjectSearchBar />
+                <ProjectSearchBar searchQueryStringBuiltCallback={this.searchQueryStringBuiltCallback.bind(this)}/>
 
                 <div class="grid-container project-lister-contaier">
-                        {projectNames.map(function(projectName, i){
-                            return <ProjectListerComponent projectName={projectName} />;
+                        {projects.map(function(project, i){
+                            return <ProjectListerComponent project={project} />;
                         })}
                 </div>
             </div>

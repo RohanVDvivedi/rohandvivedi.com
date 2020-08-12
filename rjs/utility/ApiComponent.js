@@ -3,10 +3,9 @@ import React from "react";
 export default class ApiComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            api_response_received: false,
-            api_response_body: this.dataWhileApiResponds(),
-        }
+        this.state = Object.assign({} ,this.state, {
+            api_response_body: this.bodyDataBeforeApiFirstResponds(),
+        })
     }
     componentDidMount() {
         fetch(window.location.origin.toString() + this.apiPath(), {
@@ -14,10 +13,7 @@ export default class ApiComponent extends React.Component {
             headers: this.apiHeaders(),
             body: this.apiBody()
         }).then(res => res.json()).then(json => {
-            this.setState({
-                api_response_received: true,
-                api_response_body: json,
-            });
+            this.setState(Object.assign({},this.state,{api_response_body: json,}));
         })
     }
     apiPath() {
@@ -32,7 +28,7 @@ export default class ApiComponent extends React.Component {
     apiBody() {
         return null
     }
-    dataWhileApiResponds() {
+    bodyDataBeforeApiFirstResponds() {
     	throw new Error('Implementing apiPath method is mandatory for sub class of ApiComponent');
     }
 }
