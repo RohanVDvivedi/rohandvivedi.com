@@ -4,6 +4,7 @@ import (
     "io/ioutil"
     "database/sql"
     "encoding/json"
+    "fmt"
 )
 
 func InitializeSchema() {
@@ -109,6 +110,8 @@ func InitializeSchema() {
     		p_new_owner.Lname != p.Lname ||
     		p_new_owner.Email != p.Email ||
 			p_new_owner.PhNo != p.PhNo) {	// update only if the fields change
+			fmt.Println(p_new_owner);
+			fmt.Println(*p);
 	    	UpdatePerson(&p_new_owner)
 	    }
     } else {	// insert an owner from the owner.json file

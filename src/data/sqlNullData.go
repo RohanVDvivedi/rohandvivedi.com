@@ -3,6 +3,7 @@ package data
 import (
     "database/sql"
     "encoding/json"
+    "bytes"
 )
 
 // NullInt64 is an alias for sql.NullInt64 data type
@@ -20,6 +21,10 @@ func (ni *NullInt64) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON for NullInt64
 func (ni *NullInt64) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		ni.Valid = false
+		return nil
+	}
 	err := json.Unmarshal(b, &ni.Int64)
 	ni.Valid = (err == nil)
 	return err
@@ -40,6 +45,10 @@ func (nb *NullBool) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON for NullBool
 func (nb *NullBool) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		nb.Valid = false
+		return nil
+	}
 	err := json.Unmarshal(b, &nb.Bool)
 	nb.Valid = (err == nil)
 	return err
@@ -60,8 +69,12 @@ func (nf *NullFloat64) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON for NullFloat64
 func (nf *NullFloat64) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		nf.Valid = false
+		return nil
+	}
 	err := json.Unmarshal(b, &nf.Float64)
-	nf.Valid = (err == nil)
+	nf.Valid = true
 	return err
 }
 
@@ -80,7 +93,11 @@ func (ns *NullString) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON for NullString
 func (ns *NullString) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		ns.Valid = false
+		return nil
+	}
 	err := json.Unmarshal(b, &ns.String)
-	ns.Valid = (err == nil)
+	ns.Valid = true
 	return err
 }
