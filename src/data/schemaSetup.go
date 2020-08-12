@@ -33,10 +33,11 @@ func InitializeSchema() {
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									organization VARCHAR(512) NOT NULL,
 									organization_link VARCHAR(512),
-									team VARCHAR(512),
-									descr VARCHAR(512), 
-									from_date VARCHAR(512) NOT NULL, 
-									to_date VARCHAR(128) NOT NULL, 
+									team_or_research_title VARCHAR(128),
+									descr VARCHAR(512),
+									research_paper_link  VARCHAR(512),
+									from_date DATE, 
+									to_date DATE, 
 									person_id INTEGER,
 									FOREIGN KEY(person_id) REFERENCES persons(id)
 								)`);
@@ -68,7 +69,7 @@ func InitializeSchema() {
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_categories (
     								id INTEGER PRIMARY KEY AUTOINCREMENT,
     								category_name VARCHAR(128) NOT NULL,
-    								descr VARCHAR(512) NOT NULL,
+    								descr VARCHAR(512),
     								CONSTRAINT unique_category_name UNIQUE (category_name)
     							)`);
     statement.Exec()
