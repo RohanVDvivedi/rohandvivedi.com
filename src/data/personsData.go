@@ -51,7 +51,7 @@ type Social struct {
 }
 
 func socialSelectBaseQuery() string {
-	return "select id, descr, profile_link, link_type, person_id from social ";
+	return "select id, descr, profile_link, link_type, person_id from socials ";
 }
 
 func baseScanSocial(r Row) *Social {
