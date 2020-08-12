@@ -70,7 +70,12 @@ func InitializeSchema() {
 	p := GetOwner();
     if(p != nil) {	// there exists an owner, just update everything except name
     	p_new_owner.Id = p.Id
-    	UpdatePerson(&p_new_owner)
+    	if(p_new_owner.Fname != p.Fname || 
+    		p_new_owner.Lname != p.Lname ||
+    		p_new_owner.Email != p.Email ||
+			p_new_owner.PhNo != p.PhNo) {	// update only if the fields change
+	    	UpdatePerson(&p_new_owner)
+	    }
     } else {	// insert an owner from the owner.json file
     	InsertPerson(&p_new_owner)
     }
