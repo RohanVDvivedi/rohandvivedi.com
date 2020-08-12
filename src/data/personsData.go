@@ -2,12 +2,12 @@ package data
 
 // Person model
 type Person struct {
-	Id int
-	Fname string
-	Lname string
-	Email string
-	PhNo string
-	UserType string
+	Id NullInt64
+	Fname NullString
+	Lname NullString
+	Email NullString
+	PhNo NullString
+	UserType NullString
 }
 
 func personSelectBaseQuery() string {
@@ -45,11 +45,11 @@ func InsertPerson(p *Person) {
 
 // Person's Social-s
 type Social struct {
-	Id int
-	Descr string
-	ProfileLink string
-	LinkType string
-	PersonId int
+	Id NullInt64
+	Descr NullString
+	ProfileLink NullString
+	LinkType NullString
+	PersonId NullInt64
 }
 
 func socialSelectBaseQuery() string {
@@ -80,17 +80,17 @@ func (p *Person) FindSocials() []Social {
 
 // Person's Past-s
 type Past struct {
-	Id int
-	Organization string
-	OrganizationLink string
-	PastType string
-	Position string
-	Team_or_ResearchTitle string
-	Descr string
-	ResearchPaperLink string
-	FromDate string
-	ToDate string
-	PersonId int
+	Id NullInt64
+	Organization NullString
+	OrganizationLink NullString
+	PastType NullString
+	Position NullString
+	Team_or_ResearchTitle NullString
+	Descr NullString
+	ResearchPaperLink NullString
+	FromDate NullString
+	ToDate NullString
+	PersonId NullInt64
 }
 
 func pastSelectBaseQuery() string {

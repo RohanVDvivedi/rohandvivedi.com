@@ -11,6 +11,7 @@ import (
 type Person struct {
 	data.Person
 	Socials []data.Social
+	Pasts []data.Past
 }
  
 func GetOwner(w http.ResponseWriter, r *http.Request) {
@@ -21,11 +22,17 @@ func GetOwner(w http.ResponseWriter, r *http.Request) {
 	if(p_db != nil) {
 		p = &Person{};
 		p.Person = *p_db
+
+		// check if you need to send them socials
 		requested_socials, exists_get_socials := r.URL.Query()["get_socials"];
-		if exists_get_socials {
-			if(requested_socials[0] == "true") {
-				p.Socials = p_db.FindSocials();
-			}
+		if exists_get_socials && (requested_socials[0] == "true") {
+			p.Socials = p_db.FindSocials();
+		}
+
+		// check if you need to send them pasts
+		requested_pasts, exists_get_pasts := r.URL.Query()["get_pasts"];
+		if exists_get_pasts && (requested_pasts[0] == "true") {
+			p.Pasts = p_db.FindPasts();
 		}
 	}
 
@@ -57,11 +64,19 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 	if(p_db != nil) {
 		p = &Person{};
 		p.Person = *p_db
+
+		// check if you need to send them socials
 		requested_socials, exists_get_socials := parameters["get_socials"];
 		if exists_get_socials {
 			if(requested_socials[0] == "true") {
 				p.Socials = p_db.FindSocials();
 			}
+		}
+
+		// check if you need to send them pasts
+		requested_pasts, exists_get_pasts := r.URL.Query()["get_pasts"];
+		if exists_get_pasts && (requested_pasts[0] == "true") {
+			p.Pasts = p_db.FindPasts();
 		}
 	}
 

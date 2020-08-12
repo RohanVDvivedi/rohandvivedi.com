@@ -2,13 +2,13 @@ package data
 
 // Project model
 type Project struct {
-	Id int
-	Name string
-	Descr string
-	GithubLink string
-	YoutubeLink string
-	ImageLink string
-	ProjectOwner int
+	Id NullInt64
+	Name NullString
+	Descr NullString
+	GithubLink NullString
+	YoutubeLink NullString
+	ImageLink NullString
+	ProjectOwner NullInt64
 }
 
 func projectSelectBaseQuery() string {
@@ -44,10 +44,10 @@ func InsertProject(p *Project) {
 
 // Project's hyperlinks
 type ProjectHyperlink struct {
-	Id int
-	Href string
-	Descr string
-	ProjectId int
+	Id NullInt64
+	Href NullString
+	Descr NullString
+	ProjectId NullInt64
 }
 
 func projectHyperlinkSelectBaseQuery() string {
@@ -78,9 +78,9 @@ func (p *Project) GetHyperlinks() []ProjectHyperlink {
 
 // Categories
 type ProjectCategory struct {
-	Id int
-	Category string
-	Descr string
+	Id NullInt64
+	Category NullString
+	Descr NullString
 }
 
 func projectCategorySelectBaseQuery() string {
