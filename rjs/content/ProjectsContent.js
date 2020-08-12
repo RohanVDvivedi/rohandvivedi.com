@@ -88,7 +88,7 @@ class ProjectSearchBar extends React.Component {
 	render() {
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
-	                	<input class="search-text-selector" type="text" placeholder="technical keywords" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
+	                	<input class="search-text-selector" type="text" placeholder="Search projects" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
 						<div class={"search-categories-selector dropdown-container generic-content-box-hovering-emboss-border " + (this.state.showDropdownContent ? "show-dropdown-content" : "") }>
 							<div> Categories </div>
 							<div class="dropdown-content set_sub_content_background_color">
@@ -115,7 +115,6 @@ export default class ProjectsContent extends ApiComponent {
 	}
 	searchQueryStringBuiltCallback(queryString) {
 		this.setState(Object.assign({},this.state,{queryString: queryString}));
-		console.log(this.state)
 	}
 	apiPath() {
 		const basePath = "/api/project";
