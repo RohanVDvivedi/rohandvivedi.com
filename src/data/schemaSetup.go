@@ -6,6 +6,8 @@ import (
 )
 
 func InitializeSchema() {
+
+	// PARENT table persons
     statement, _ := Db.Prepare(`CREATE TABLE IF NOT EXISTS persons (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									fname VARCHAR(255) NOT NULL, 
@@ -17,7 +19,7 @@ func InitializeSchema() {
 								)`);
     statement.Exec()
 
-    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS social (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS socials (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									descr VARCHAR(512), 
 									profile_link VARCHAR(512) NOT NULL, 
@@ -27,11 +29,24 @@ func InitializeSchema() {
 								)`);
     statement.Exec()
 
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS pasts (
+									id INTEGER PRIMARY KEY AUTOINCREMENT, 
+									organization VARCHAR(512) NOT NULL,
+									organization_link VARCHAR(512),
+									team VARCHAR(512),
+									descr VARCHAR(512), 
+									from_date VARCHAR(512) NOT NULL, 
+									to_date VARCHAR(128) NOT NULL, 
+									person_id INTEGER,
+									FOREIGN KEY(person_id) REFERENCES persons(id)
+								)`);
+    statement.Exec()
+
+    // PARENT table projects
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									name VARCHAR(128) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
-									project_type VARCHAR(512) NOT NULL,
 									github_link VARCHAR(512),
 									youtube_link VARCHAR(512),
 									image_link VARCHAR(512),
@@ -46,15 +61,31 @@ func InitializeSchema() {
 									href VARCHAR(512) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
 									project_id,
-									FOREIGN KEY(project_id) REFERENCES project(id)
+									FOREIGN KEY(project_id) REFERENCES projects(id)
+								)`);
+    statement.Exec()
+
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_categories (
+    								id INTEGER PRIMARY KEY AUTOINCREMENT,
+    								category_name VARCHAR(128) NOT NULL,
+    								descr VARCHAR(512) NOT NULL,
+    								CONSTRAINT unique_category_name UNIQUE (category_name)
+    							)`);
+    statement.Exec()
+
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_category_project (
+									project_category_id INTEGER,
+									project_id INTEGER,
+									FOREIGN KEY(project_category_id) REFERENCES project_categories(id),
+									FOREIGN KEY(project_id) REFERENCES projects(id)
 								)`);
     statement.Exec()
 
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS person_project (
 									person_id INTEGER,
 									project_id INTEGER,
-									FOREIGN KEY(person_id) REFERENCES person(id),
-									FOREIGN KEY(project_id) REFERENCES project(id)
+									FOREIGN KEY(person_id) REFERENCES persons(id),
+									FOREIGN KEY(project_id) REFERENCES projects(id)
 								)`);
     statement.Exec()
 

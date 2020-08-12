@@ -34,17 +34,25 @@ Schema :
    * email
    * ph_no
    * type ("owner" = Rohan, there can be only 1 owner)
- * table: social
+ * table: socials
    * id
    * descr
    * profile_link
    * link_type (must be youtube, pdf, github, linkedin, facebook, this helps how to interpret the link)
    * person_id
+ * table: pasts
+   * id
+   * organization
+   * organization_link
+   * team
+   * descr
+   * from_date
+   * to_date
+   * person_id
  * table: projects
    * id
    * name
    * descr
-   * project_type (embedded system, systems programming, robotics, etc)
    * github_link
    * youtube_link
    * image_link (additional github, youtube and images may be added in the project_hyperlinks table)
@@ -54,6 +62,13 @@ Schema :
    * href
    * descr
    * link_type (must be youtube, pdf, github, technopedia, this helps how to interpret it)
+   * project_id
+ * project_categories
+   * id
+   * category_name
+   * descr
+ * project_category_project
+   * project_category_id
    * project_id
  * table: person_project
    * person_id
