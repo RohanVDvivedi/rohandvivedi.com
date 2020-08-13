@@ -96,6 +96,10 @@ func baseScanProjectCategory(r Row) *ProjectCategory {
 	return &pc;
 }
 
+func GetProjectCategoryByName(name string) *ProjectCategory {
+	return baseScanProjectCategory(Db.QueryRow(projectCategorySelectBaseQuery() + "where project_categories.category_name = ?", name));
+}
+
 func (p *Project) GetProjectCategories() []ProjectCategory {
 	pc := []ProjectCategory{}
 	rows, _ := Db.Query(projectCategorySelectBaseQuery() + 
