@@ -36,7 +36,7 @@ func GetOwner(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json, _ := json.Marshal(*p);
+	json, _ := json.Marshal(p);
 	w.Write(json);
 }
 
@@ -80,6 +80,6 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json, _ := json.Marshal(*p);
+	json, _ := json.Marshal(p);
 	w.Write(json);
 }
