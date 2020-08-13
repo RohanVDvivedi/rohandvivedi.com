@@ -1,13 +1,14 @@
 Backend
-today:
- * add projects data to sqlite database
  * expose apis to search, by type/tags, and all projects by using their description
- * add a table for past work experience aswell, and serve it with apis
-
 
 Front end
-today:
  * complete About this app page
+
+Integrate
+ * integrate apis of past and projects page to them in the front end
+
+Data injestion
+ * add projects data to sqlite database
 
 Future feature
  * build live-chat page
