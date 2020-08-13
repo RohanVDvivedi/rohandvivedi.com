@@ -39,7 +39,7 @@ export default class AboutContent extends ApiComponent {
         return "/api/owner?get_socials=true";
     }
     bodyDataBeforeApiFirstResponds() {
-    	return {Fname:"Firstname",Lname:"Lastname",Email:"loading email id","Socials":[]};
+    	return {Fname:"Firstname",Lname:"Lastname",Email:"loading email id","Socials":[],"Pasts":null};
     }
     render() {
     	var owner = this.state.api_response_body;

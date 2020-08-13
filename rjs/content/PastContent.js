@@ -1,5 +1,7 @@
 import React from "react";
 
+import ApiComponent from "../utility/ApiComponent";
+
 class TimedEvent extends React.Component {
 	render() {
 		return (<div class="flex-row-container" style={{justifyContent: "space-between"}}>
@@ -9,8 +11,15 @@ class TimedEvent extends React.Component {
 	}
 }
 
-export default class PastContent extends React.Component {
+export default class PastContent extends ApiComponent {
+	apiPath() {
+        return "/api/owner?get_pasts=true";
+    }
+    bodyDataBeforeApiFirstResponds() {
+    	return {Fname:"Firstname",Lname:"Lastname",Email:"loading email id","Socials":null,"Pasts":[]};
+    }
     render() {
+    	var owner = this.state.api_response_body;
         return (
             <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
                 style={{justifyContent: "center",

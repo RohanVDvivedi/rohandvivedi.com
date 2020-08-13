@@ -24,7 +24,7 @@ class ProjectListerComponent extends React.Component {
 class ProjectSearchBar extends React.Component {
 	constructor(props) {
 		super(props)
-		this.projectCategories = ["Systems programming (in linux)", "Embedded systems","Robotics", "Databases", "Computer architecture"];
+		this.projectCategories = ["Systems Programming (in Linux)", "Embedded Systems","Robotics", "Databases", "Computer architecture"];
 		this.state = {
 			searchTextBox: "",
 			showDropdownContent: false,
@@ -109,16 +109,15 @@ class ProjectSearchBar extends React.Component {
 export default class ProjectsContent extends ApiComponent {
 	constructor(props) {
 		super(props)
-		this.state = Object.assign({},this.state,{
-			queryString: ((this.props.queryString==null)?"":this.props.queryString),
-		})
+		this.queryString = ((this.props.queryString==null)?"":this.props.queryString);
 	}
 	searchQueryStringBuiltCallback(queryString) {
-		this.setState(Object.assign({},this.state,{queryString: queryString}));
+		this.queryString = queryString;
+		this.makeApiCallAndReRender()
 	}
 	apiPath() {
 		const basePath = "/api/project";
-        return this.state.queryString.length > 0 ? [basePath, this.state.queryString].join("?") : basePath;
+        return [basePath, this.queryString].join("?");
     }
     bodyDataBeforeApiFirstResponds() {
     	return [{Name: "Loading",
@@ -128,6 +127,7 @@ export default class ProjectsContent extends ApiComponent {
 				ImageLink: "/img/pcb.jpeg",}];
     }
     render() {
+    	console.log("rendering porjects")
     	var projects = this.state.api_response_body;
         return (
             <div class="content-container content-root-background">

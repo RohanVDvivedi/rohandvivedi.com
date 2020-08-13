@@ -14,10 +14,17 @@ type Project struct {
 }
 
 func FindProject(w http.ResponseWriter, r *http.Request) {
-	var projects []Project;
+	var projects []Project = []Project{};
 
 	name, exists_name := r.URL.Query()["name"];
+
 	categories, exists_categories := r.URL.Query()["categories"];
+	var categories_list []string = nil;
+	if(exists_categories) {
+		categories_list = strings.Split(categories[0], ",")
+	}
+
+	query, exists_query := r.URL.Query()["query"];
 
 	if (exists_name) {
 		requested_hyperlinks, exists_get_hyperlinks := r.URL.Query()["get_hyperlinks"];
@@ -28,8 +35,10 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 		if(project_p != nil) {
 			projects = append(projects, *project_p)
 		}
+	} else if (exists_query) {
+		projects = FindProjectsForSearchStringInCategories(query[0], categories_list);
 	} else if (exists_categories) {
-		projects = FindProjectsByCategories(strings.Split(categories[0], ","))
+		projects = FindProjectsByCategories(categories_list)
 	}
 
 	json, _ := json.Marshal(projects);
@@ -58,6 +67,7 @@ func FindProjectByName(name string, withHyperlinks bool, withCategories bool) *P
 }
 
 func FindProjectsForSearchStringInCategories(queryString string, categories []string) []Project {
+	// if categories is nil, search in all projects
 	return []Project{};
 }
 
