@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"rohandvivedi.com/src/data"
+	"strings"
 )
 
 type Project struct {
@@ -28,7 +29,7 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 			projects = append(projects, *project_p)
 		}
 	} else if (exists_categories) {
-		projects = FindProjectsByCategories(categories.split(","))
+		projects = FindProjectsByCategories(strings.Split(categories[0], ","))
 	}
 
 	json, _ := json.Marshal(projects);
@@ -63,7 +64,7 @@ func FindProjectsForSearchStringInCategories(queryString string, categories []st
 func FindProjectsByCategories(categories []string) []Project {
 	projects := []Project{};
 	pcs := []data.ProjectCategory{};
-	for i, category := range categories {
+	for _, category := range categories {
 		pc := data.GetProjectCategoryByName(category);
 		if(pc != nil) {
 			pcs = append(pcs, *pc);
