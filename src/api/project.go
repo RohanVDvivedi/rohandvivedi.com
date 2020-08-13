@@ -21,7 +21,9 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 	if (exists_name) {
 		requested_hyperlinks, exists_get_hyperlinks := r.URL.Query()["get_hyperlinks"];
 		var withHyperlinks bool = exists_get_hyperlinks && (requested_hyperlinks[0] == "true")
-		project_p = FindProjectByName(name[0], withHyperlinks)
+		requested_categories, exists_get_categories := r.URL.Query()["get_categories"];
+		var withCategories bool = exists_get_categories && (requested_categories[0] == "true")
+		project_p = FindProjectByName(name[0], withHyperlinks, withCategories)
 	}
 
 	if(project_p != nil) {
@@ -32,7 +34,7 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func FindProjectByName(name string, withHyperlinks bool) *Project {
+func FindProjectByName(name string, withHyperlinks bool, withCategories bool) *Project {
 	proj_db := data.GetProjectByName(name)
 	if(proj_db != nil) {
 		p := &Project{};
@@ -40,7 +42,12 @@ func FindProjectByName(name string, withHyperlinks bool) *Project {
 
 		// if hyperlinks are requested, add hyperlinks to the project dto
 		if withHyperlinks {
-			p.Hyperlinks = proj_db.GetHyperlinks();
+			p.Hyperlinks = proj_db.GetProjectHyperlinks();
+		}
+
+		// if hyperlinks are requested, add hyperlinks to the project dto
+		if withCategories {
+			p.Categories = proj_db.GetProjectCategories();
 		}
 
 		return p;

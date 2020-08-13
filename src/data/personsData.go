@@ -11,7 +11,7 @@ type Person struct {
 }
 
 func personSelectBaseQuery() string {
-	return "select id, fname, lname, email, type from persons ";
+	return "select persons.id, persons.fname, persons.lname, persons.email, persons.type from persons ";
 }
 
 func baseScanPerson(r Row) *Person {
@@ -24,15 +24,15 @@ func baseScanPerson(r Row) *Person {
 }
 
 func GetOwner() *Person {
-	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where type = ?", "owner"));
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where persons.type = ?", "owner"));
 }
 
 func GetPersonById(id int) *Person {
-	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where id = ?", id));
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where persons.id = ?", id));
 }
 
 func GetPersonByName(fname string, lname string) *Person {
-	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where fname = ? and lname = ?", fname, lname));
+	return baseScanPerson(Db.QueryRow(personSelectBaseQuery() + "where persons.fname = ? and persons.lname = ?", fname, lname));
 }
 
 func UpdatePerson(p *Person) {
@@ -53,7 +53,7 @@ type Social struct {
 }
 
 func socialSelectBaseQuery() string {
-	return "select id, descr, profile_link, link_type, person_id from socials ";
+	return "select socials.id, socials.descr, socials.profile_link, socials.link_type, socials.person_id from socials ";
 }
 
 func baseScanSocial(r Row) *Social {
@@ -67,7 +67,7 @@ func baseScanSocial(r Row) *Social {
 
 func (p *Person) FindSocials() []Social {
 	s := []Social{}
-	rows, _ := Db.Query(socialSelectBaseQuery() + "where person_id = ?", p.Id)
+	rows, _ := Db.Query(socialSelectBaseQuery() + "where socials.person_id = ?", p.Id)
 	defer rows.Close()
 	for rows.Next() {
 		social_p := baseScanSocial(rows)
@@ -94,7 +94,7 @@ type Past struct {
 }
 
 func pastSelectBaseQuery() string {
-	return "select id, organization, organization_link, past_type, position, team_or_research_title, descr, research_paper_link, from_date, to_date, person_id from pasts ";
+	return "select pasts.id, pasts.organization, pasts.organization_link, pasts.past_type, pasts.position, pasts.team_or_research_title, pasts.descr, pasts.research_paper_link, pasts.from_date, pasts.to_date, pasts.person_id from pasts ";
 }
 
 func baseScanPast(r Row) *Past {
@@ -108,7 +108,7 @@ func baseScanPast(r Row) *Past {
 
 func (p *Person) FindPasts() []Past {
 	pst := []Past{}
-	rows, _ := Db.Query(pastSelectBaseQuery() + "where person_id = ?", p.Id)
+	rows, _ := Db.Query(pastSelectBaseQuery() + "where pasts.person_id = ?", p.Id)
 	defer rows.Close()
 	for rows.Next() {
 		past_p := baseScanPast(rows)

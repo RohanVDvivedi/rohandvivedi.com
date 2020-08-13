@@ -12,7 +12,7 @@ type Project struct {
 }
 
 func projectSelectBaseQuery() string {
-	return "select id, name, descr, github_link, youtube_link, image_link, project_owner from projects ";
+	return "select projects.id, projects.name, projects.descr, projects.github_link, projects.youtube_link, projects.image_link, projects.project_owner from projects ";
 }
 
 func baseScanProject(r Row) *Project {
@@ -25,11 +25,11 @@ func baseScanProject(r Row) *Project {
 }
 
 func GetProjectById(id int) *Project {
-	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where id = ?", id));
+	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where projects.id = ?", id));
 }
 
 func GetProjectByName(name string) *Project {
-	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where name = ?", name));
+	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where projects.name = ?", name));
 }
 
 func UpdateProject(p *Project) {
@@ -51,7 +51,7 @@ type ProjectHyperlink struct {
 }
 
 func projectHyperlinkSelectBaseQuery() string {
-	return "select id, href, descr, project_id from project_hyperlinks ";
+	return "select project_hyperlinks.id, project_hyperlinks.href, project_hyperlinks.descr, project_hyperlinks.project_id from project_hyperlinks ";
 }
 
 func baseScanProjectHyperlink(r Row) *ProjectHyperlink {
@@ -63,9 +63,9 @@ func baseScanProjectHyperlink(r Row) *ProjectHyperlink {
 	return &ph;
 }
 
-func (p *Project) GetHyperlinks() []ProjectHyperlink {
+func (p *Project) GetProjectHyperlinks() []ProjectHyperlink {
 	ph := []ProjectHyperlink{}
-	rows, _ := Db.Query(projectHyperlinkSelectBaseQuery() + "where project_id = ?", p.Id)
+	rows, _ := Db.Query(projectHyperlinkSelectBaseQuery() + "where project_hyperlinks.project_id = ?", p.Id)
 	defer rows.Close()
 	for rows.Next() {
 		projecthyperlink_p := baseScanProjectHyperlink(rows)
@@ -84,7 +84,7 @@ type ProjectCategory struct {
 }
 
 func projectCategorySelectBaseQuery() string {
-	return "select id, category_name, descr from project_categories ";
+	return "select project_categories.id, project_categories.category_name, project_categories.descr from project_categories ";
 }
 
 func baseScanProjectCategory(r Row) *ProjectCategory {
@@ -99,8 +99,8 @@ func baseScanProjectCategory(r Row) *ProjectCategory {
 func (p *Project) GetProjectCategories() []ProjectCategory {
 	pc := []ProjectCategory{}
 	rows, _ := Db.Query(projectCategorySelectBaseQuery() + 
-	` join project_category_project on project_category_project.project_category_id = project_category.id
-	 join projects on projects.id = project_category_project.project_id where project.id = ?`, p.Id)
+	` join project_category_project on project_category_project.project_category_id = project_categories.id
+	 join projects on projects.id = project_category_project.project_id where projects.id = ?`, p.Id)
 	defer rows.Close()
 	for rows.Next() {
 		projectcategory_p := baseScanProjectCategory(rows)
@@ -117,7 +117,7 @@ func (pc *ProjectCategory) GetProjects() []Project {
 	p := []Project{}
 	rows, _ := Db.Query(projectSelectBaseQuery() + 
 	` join project_category_project on project_category_project.project_id = projects.id
-	 join project_categories on project_categories.id = project_category_project.project_category_id where project_category.id = ?`, pc.Id)
+	 join project_categories on project_categories.id = project_category_project.project_category_id where project_categories.id = ?`, pc.Id)
 	defer rows.Close()
 	for rows.Next() {
 		project_p := baseScanProject(rows)
