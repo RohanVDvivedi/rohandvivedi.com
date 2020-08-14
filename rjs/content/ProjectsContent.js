@@ -21,23 +21,28 @@ class ProjectListerComponent extends React.Component {
     }
 }
 
-class ProjectSearchBar extends React.Component {
+class ProjectSearchBar extends ApiComponent {
 	constructor(props) {
 		super(props)
-		this.projectCategories = ["Systems Programming (in Linux)", "Embedded Systems","Robotics", "Databases", "Computer architecture"];
-		this.state = {
+		this.state =  Object.assign({} ,this.state, {
 			searchTextBox: "",
 			showDropdownContent: false,
 			selectedProjectCategories: [],
-		}
+		})
 	}
+	apiPath() {
+        return "/api/all_categories";
+    }
+    bodyDataBeforeApiFirstResponds() {
+    	return [];
+    }
 	categoryClicked(category) {
 		if(category == "") {
-			this.setState({
+			this.setState(Object.assign({},this.state,{
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: false,
 				selectedProjectCategories: [],
-			});
+			}));
 		} else {
 			var selects = Array.from(this.state.selectedProjectCategories);
 			if(selects.includes(category)) {
@@ -45,19 +50,19 @@ class ProjectSearchBar extends React.Component {
 			} else {
 				selects.push(category);
 			}
-			this.setState({
+			this.setState(Object.assign({},this.state,{
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: true,
 				selectedProjectCategories: selects,
-			});
+			}));
 		}
 	}
 	onSearchBoxTyping(e) {
-		this.setState({
+		this.setState(Object.assign({},this.state,{
 				searchTextBox: e.target.value,
 				showDropdownContent: this.state.showDropdownContent,
 				selectedProjectCategories: this.state.selectedProjectCategories,
-			});
+			}));
 	}
 	generateSearchQueryString() {
 		var searchQuery = new Array();
@@ -73,11 +78,11 @@ class ProjectSearchBar extends React.Component {
 		}
 
 		// if search is pressed close the drop down
-		this.setState({
+		this.setState(Object.assign({},this.state,{
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: false,
 				selectedProjectCategories: this.state.selectedProjectCategories,
-			});
+			}));
 
 		return searchQuery.filter((q) => {return q != null && q != ""}).join("&");
 	}
@@ -86,6 +91,8 @@ class ProjectSearchBar extends React.Component {
 		this.props.searchQueryStringBuiltCallback(queryString);
 	}
 	render() {
+		// convert list of objects to list of strings
+		var categories = this.state.api_response_body.map(function(category){return category.Category});
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
 	                	<input class="search-text-selector" type="text" placeholder="Search projects" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
@@ -94,8 +101,8 @@ class ProjectSearchBar extends React.Component {
 							<div class="dropdown-content set_sub_content_background_color">
 								<div id="select-all-categories" class={"search-category " + ((this.state.selectedProjectCategories.length==0) ? "active" : "")}
 								 onClick={this.categoryClicked.bind(this, "")}>All</div>
-								{this.projectCategories.map((projectCategory) => {
-									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory)) ? "active" : "")}
+								{categories.map((projectCategory) => {
+									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory.Category)) ? "active" : "")}
 										onClick={this.categoryClicked.bind(this, projectCategory)}>{projectCategory}</div>);
 								})}
 							</div>
@@ -127,7 +134,6 @@ export default class ProjectsContent extends ApiComponent {
 				ImageLink: "/img/pcb.jpeg",}];
     }
     render() {
-    	console.log("rendering porjects")
     	var projects = this.state.api_response_body;
         return (
             <div class="content-container content-root-background">

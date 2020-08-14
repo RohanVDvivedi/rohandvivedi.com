@@ -52,9 +52,9 @@ func main() {
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
-	http.HandleFunc("/api", api.Handler);
 	http.HandleFunc("/api/person",api.GetPerson);
 	http.HandleFunc("/api/project", api.FindProject);
+	http.HandleFunc("/api/all_categories", api.GetAllCategories);
 	http.HandleFunc("/api/owner", api.GetOwner);
 
 	// initialize mail client
