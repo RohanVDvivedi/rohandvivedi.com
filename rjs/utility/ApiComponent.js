@@ -13,6 +13,11 @@ export default class ApiComponent extends React.Component {
     componentDidMount() {
         this.makeApiCallAndReRender()
     }
+    // this allows the user to call set state without, modifying the state of the parent component
+    // this is necessary because the ApiComponent essentially stores the response body in the state
+    updateState(newState) {
+    	super.setState(Object.assign({}, this.state, newState))
+    }
 
     // the below four methods are to be used/overridden in your component if you want to change the api
     // you make have certain class variable in your component class, 
@@ -46,7 +51,7 @@ export default class ApiComponent extends React.Component {
             headers: this.apiHeaders(),
             body: this.apiBody()
         }).then(res => res.json()).then(json => {
-            this.setState(Object.assign({},this.state,{api_response_body: json,}));
+            this.updateState({api_response_body: json,});
         })
     }
 }

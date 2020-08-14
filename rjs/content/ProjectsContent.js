@@ -38,11 +38,11 @@ class ProjectSearchBar extends ApiComponent {
     }
 	categoryClicked(category) {
 		if(category == "") {
-			this.setState(Object.assign({},this.state,{
+			this.updateState({
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: false,
 				selectedProjectCategories: [],
-			}));
+			});
 		} else {
 			var selects = Array.from(this.state.selectedProjectCategories);
 			if(selects.includes(category)) {
@@ -50,19 +50,19 @@ class ProjectSearchBar extends ApiComponent {
 			} else {
 				selects.push(category);
 			}
-			this.setState(Object.assign({},this.state,{
+			this.updateState({
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: true,
 				selectedProjectCategories: selects,
-			}));
+			});
 		}
 	}
 	onSearchBoxTyping(e) {
-		this.setState(Object.assign({},this.state,{
+		this.updateState({
 				searchTextBox: e.target.value,
 				showDropdownContent: this.state.showDropdownContent,
 				selectedProjectCategories: this.state.selectedProjectCategories,
-			}));
+			});
 	}
 	generateSearchQueryString() {
 		var searchQuery = new Array();
@@ -78,11 +78,11 @@ class ProjectSearchBar extends ApiComponent {
 		}
 
 		// if search is pressed close the drop down
-		this.setState(Object.assign({},this.state,{
+		this.updateState({
 				searchTextBox: this.state.searchTextBox,
 				showDropdownContent: false,
 				selectedProjectCategories: this.state.selectedProjectCategories,
-			}));
+			});
 
 		return searchQuery.filter((q) => {return q != null && q != ""}).join("&");
 	}
@@ -102,7 +102,7 @@ class ProjectSearchBar extends ApiComponent {
 								<div id="select-all-categories" class={"search-category " + ((this.state.selectedProjectCategories.length==0) ? "active" : "")}
 								 onClick={this.categoryClicked.bind(this, "")}>All</div>
 								{categories.map((projectCategory) => {
-									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory.Category)) ? "active" : "")}
+									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory)) ? "active" : "")}
 										onClick={this.categoryClicked.bind(this, projectCategory)}>{projectCategory}</div>);
 								})}
 							</div>
