@@ -72,19 +72,10 @@ func FindProjectsForSearchStringInCategories(queryString string, categories []st
 }
 
 func FindProjectsByCategories(categories []string) []Project {
-	projects := []Project{};
-	pcs := []data.ProjectCategory{};
-	for _, category := range categories {
-		pc := data.GetProjectCategoryByName(category);
-		if(pc != nil) {
-			pcs = append(pcs, *pc);
-		}
-	}
-	for _, pc := range pcs {
-		projects_db := pc.GetProjects();
-		for _, project_db := range projects_db {
-			projects = append(projects, Project{project_db,nil,nil})
-		} 
+	projects := []Project{}
+	projects_db := data.GetProjectsForCategoryNames(categories)
+	for _, project_db := range projects_db {
+		projects = append(projects, Project{project_db,nil,nil}) 
 	}
 	return projects;
 }

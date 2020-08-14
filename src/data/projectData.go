@@ -144,3 +144,22 @@ func (pc *ProjectCategory) GetProjects() []Project {
 	}
 	return p;
 }
+
+func GetProjectsForCategoryNames(categories_str []string) []Project {
+	p := []Project{}
+
+	categories := convertToInterfaceSlice(categories_str)
+
+	rows, _ := Db.Query(projectSelectBaseQuery() + 
+	` join project_category_project on project_category_project.project_id = projects.id
+	 join project_categories on project_categories.id = project_category_project.project_category_id 
+	 where project_categories.category_name in (` + getRepeatedQueryParamHolders(len(categories)) + ") group by projects.id", categories...)
+	defer rows.Close()
+	for rows.Next() {
+		project_p := baseScanProject(rows)
+		if project_p != nil {
+			p = append(p, *project_p)
+		}
+	}
+	return p;
+}
