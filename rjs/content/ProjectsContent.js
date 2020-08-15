@@ -57,6 +57,13 @@ class ProjectSearchBar extends ApiComponent {
 				selectedProjectCategories: selects,
 			});
 	}
+	onCategoryDrawerClicked() {
+		this.updateState({
+				searchTextBox: this.state.searchTextBox,
+				showDropdownContent: !this.state.showDropdownContent,
+				selectedProjectCategories: this.state.selectedProjectCategories,
+			});
+	}
 	onSearchBoxTyping(e) {
 		this.updateState({
 				searchTextBox: e.target.value,
@@ -97,7 +104,10 @@ class ProjectSearchBar extends ApiComponent {
 					<div class="search-container flex-row-container set_sub_content_background_color">
 	                	<input class="search-text-selector" type="text" placeholder="Search projects" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
 						<div class={"search-categories-selector dropdown-container generic-content-box-hovering-emboss-border " + (this.state.showDropdownContent ? "show-dropdown-content" : "") }>
-							<div> Categories </div>
+							<div class="flex-row-container" style={{justifyContent: "space-evenly", alignItems: "center"}} onClick={this.onCategoryDrawerClicked.bind(this)}>
+								<div>Categories</div>
+								<Icon path="#" iconPath="/icon/up-chevron.png" height="15px" width="15px" padding="2px" />
+							</div>
 							<div class="dropdown-content set_sub_content_background_color">
 								<div id="select-all-categories" class={"search-category " + ((this.state.selectedProjectCategories.length==0) ? "active" : "")}
 								 onClick={this.categoryClicked.bind(this, "")}>All</div>
