@@ -6,15 +6,13 @@ import AdminContent from "./content/AdminContent";
 
 
 var ContentHash = {
-	/*
-	just as an example, this is you you would add iconned page
 	"app": {
 		"text": "{;}",
 		"nav_pos": "left",
 		"component": AboutThisAppContent,
 		"route_path": "/pages/about_this_app",
+		"pop_up_info": "About this app"
 	},
-	*/
 	"about": {
 		"text": "About",
 		"nav_pos": "right",
