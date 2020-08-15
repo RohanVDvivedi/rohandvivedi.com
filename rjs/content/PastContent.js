@@ -25,7 +25,7 @@ class Experience extends React.Component {
 									{expOrg.Teams.map(function(work){
 										return (<div>
 													<TimedEvent revent={work.Team_or_ResearchTitle} rtime={work.FromDate.toLocaleDateString("en-US", dateFormat) + " - " + work.ToDate.toLocaleDateString("en-US", dateFormat)} />
-													{work.PastType == "RESEARCH" ? (<div>Research paper: <a href={work.ResearchPaperLink} target="_blank">DOI link here</a></div>) : ""}
+													{work.PastType == "RESEARCH" ? (<div style={{fontWeight: "600"}}>Research paper: <a href={work.ResearchPaperLink} target="_blank">DOI link here</a></div>) : ""}
 													<div>{work.Descr == null ? "" : work.Descr}</div>
 												</div>);
 									})}
