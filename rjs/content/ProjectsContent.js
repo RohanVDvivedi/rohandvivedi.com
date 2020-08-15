@@ -37,25 +37,25 @@ class ProjectSearchBar extends ApiComponent {
     	return [];
     }
 	categoryClicked(category) {
+		var selects = [];
 		if(category == "") {
-			this.updateState({
-				searchTextBox: this.state.searchTextBox,
-				showDropdownContent: false,
-				selectedProjectCategories: [],
-			});
+			selects = [];
 		} else {
-			var selects = Array.from(this.state.selectedProjectCategories);
+			selects = Array.from(this.state.selectedProjectCategories);
 			if(selects.includes(category)) {
 				selects = selects.filter((cate) => {return cate != category});
 			} else {
 				selects.push(category);
+				if(selects.length == this.categories.length){
+					selects = []
+				}
 			}
-			this.updateState({
+		}
+		this.updateState({
 				searchTextBox: this.state.searchTextBox,
-				showDropdownContent: true,
+				showDropdownContent: selects.length > 0,
 				selectedProjectCategories: selects,
 			});
-		}
 	}
 	onSearchBoxTyping(e) {
 		this.updateState({
@@ -72,7 +72,7 @@ class ProjectSearchBar extends ApiComponent {
 			searchQuery[0] = "query=" + searchText;
 		}
 
-		var categories = ((this.state.selectedProjectCategories.length == 0) ? this.projectCategories : this.state.selectedProjectCategories);
+		var categories = ((this.state.selectedProjectCategories.length == 0) ? this.categories : this.state.selectedProjectCategories);
 		if(categories != null && categories != ""){
 			searchQuery[1] = "categories=" + categories.join(",");
 		}
@@ -92,7 +92,7 @@ class ProjectSearchBar extends ApiComponent {
 	}
 	render() {
 		// convert list of objects to list of strings
-		var categories = this.state.api_response_body.map(function(category){return category.Category});
+		this.categories = this.state.api_response_body.map(function(category){return category.Category});
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
 	                	<input class="search-text-selector" type="text" placeholder="Search projects" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
@@ -101,7 +101,7 @@ class ProjectSearchBar extends ApiComponent {
 							<div class="dropdown-content set_sub_content_background_color">
 								<div id="select-all-categories" class={"search-category " + ((this.state.selectedProjectCategories.length==0) ? "active" : "")}
 								 onClick={this.categoryClicked.bind(this, "")}>All</div>
-								{categories.map((projectCategory) => {
+								{this.categories.map((projectCategory) => {
 									return (<div class={"search-category " + ((this.state.selectedProjectCategories.includes(projectCategory)) ? "active" : "")}
 										onClick={this.categoryClicked.bind(this, projectCategory)}>{projectCategory}</div>);
 								})}
