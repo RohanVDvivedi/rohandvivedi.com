@@ -11,6 +11,24 @@ class TimedEvent extends React.Component {
 	}
 }
 
+class Experience extends React.Component {
+	render() {
+		return (<div style={{marginTop: "15px"}}>
+					<div style={{fontSize:"20px",fontWeight: "600"}}>exp.Position</div>
+						<div  style={{marginLeft:"10px"}}>
+							<a href={exp.OrganizationLink} target="_blank" style={{fontSize:"18px"}}>exp.Organization</a>
+								<div>
+									{exp.TimedEventLists.map(function(timedEvent){
+										return (<TimedEvent revent={timedEvent.eventName} rtime={timedEvent.eventTime} />);
+									})}
+								</div>
+								<div>{exp.LinkId}: <a href={exp.Link} target="_blank">exp.LinkName</a></div>
+								<div>{exp.Description}</div>
+						</div>
+				</div>);
+	}
+}
+
 export default class PastContent extends ApiComponent {
 	apiPath() {
         return "/api/owner?get_pasts=true";
@@ -20,6 +38,8 @@ export default class PastContent extends ApiComponent {
     }
     render() {
     	var owner = this.state.api_response_body;
+    	var pasts = owner["Pasts"];
+    	console.log(pasts);
         return (
             <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
                 style={{justifyContent: "center",
@@ -35,14 +55,13 @@ export default class PastContent extends ApiComponent {
 							fontFamily: "lato, sans-serif",
 							fontSize: "25px",
 							fontWeight: "700",
-							fontStyle: "italic",
-							paddingBottom: "10px"
+							fontStyle: "italic"
                         }}>
                             Past
                         </div>
 
                         <div>
-	                        <div style={{marginTop: "0px"}}>
+	                        <div style={{marginTop: "15px"}}>
 	                            <div style={{fontSize:"20px",fontWeight: "600"}}>SDE1 (Software Development Engineer I)</div>
 	                            <div  style={{marginLeft:"10px"}}>
 		                        	<a href="https://www.oyorooms.com/" target="_blank" style={{fontSize:"18px"}}>OYO</a>
