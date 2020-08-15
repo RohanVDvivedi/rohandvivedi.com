@@ -54,6 +54,7 @@ body {
   background-color: #fff;
   padding: .5em;
   z-index: 100;
+  font: initial;
 }
 
 .tooltip-container:hover .tooltip-content {

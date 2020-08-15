@@ -4,13 +4,19 @@ import { NavLink } from 'react-router-dom';
 
 export default class GenericNavButton extends React.Component {
     render() {
+    	var defaultClass = "nav-button";
+    	var hasToolTip = false
+    	if(this.props.description["pop_up_info"] != null && this.props.description["pop_up_info"].length > 0){
+    		defaultClass += " tooltip-container"
+    		hasToolTip = true
+    	}
         return (
-            <NavLink to={this.props.description["route_path"]} activeClassName="nav-button active"
-                className="nav-button"
-                class="nav-button"
+            <NavLink to={this.props.description["route_path"]} activeClassName={defaultClass + " active"}
+                className={defaultClass}
+                class={defaultClass}
                 style={(this.props.description["text"] != null && this.props.description["text"].length >= 4) ? {width: "100px"} : {}}>
 
-                {this.props.description["text"]}
+                <div>{this.props.description["text"]}</div>
 
                 <div style={this.props.description["icon"] == null ? {display: "none"} : {
                 			height: "100%",
@@ -20,6 +26,8 @@ export default class GenericNavButton extends React.Component {
 					        backgroundRepeat: "no-repeat",
 					        backgroundSize: "cover"}
 				}></div>
+
+				{hasToolTip ? (<div class="tooltip-content">{this.props.description["pop_up_info"]}</div>) : ""}
             </NavLink>
         );
     }
