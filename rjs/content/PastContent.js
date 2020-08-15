@@ -13,18 +13,25 @@ class TimedEvent extends React.Component {
 
 class Experience extends React.Component {
 	render() {
+		var exp = this.props.exp;
+		var dateFormat = {month:"short", year:"2-digit"}
 		return (<div style={{marginTop: "15px"}}>
-					<div style={{fontSize:"20px",fontWeight: "600"}}>exp.Position</div>
-						<div  style={{marginLeft:"10px"}}>
-							<a href={exp.OrganizationLink} target="_blank" style={{fontSize:"18px"}}>exp.Organization</a>
-								<div>
-									{exp.TimedEventLists.map(function(timedEvent){
-										return (<TimedEvent revent={timedEvent.eventName} rtime={timedEvent.eventTime} />);
+					<div style={{fontSize:"22px",fontWeight: "600"}}>{exp.Position}</div>
+						{exp.Organizations.map(function(expOrg){
+							return (
+							<div style={{marginLeft:"10px", marginBottom:"3px"}}>
+								<a href={expOrg.OrganizationLink} target="_blank" style={{fontSize:"18px"}}>{expOrg.Organization}</a>
+								<div style={{marginLeft:"5px"}}>
+									{expOrg.Teams.map(function(work){
+										return (<div>
+													<TimedEvent revent={work.Team_or_ResearchTitle} rtime={work.FromDate.toLocaleDateString("en-US", dateFormat) + " - " + work.ToDate.toLocaleDateString("en-US", dateFormat)} />
+													{work.PastType == "RESEARCH" ? (<div>Research paper: <a href={work.ResearchPaperLink} target="_blank">DOI link here</a></div>) : ""}
+													<div>{work.Descr == null ? "" : work.Descr}</div>
+												</div>);
 									})}
 								</div>
-								<div>{exp.LinkId}: <a href={exp.Link} target="_blank">exp.LinkName</a></div>
-								<div>{exp.Description}</div>
-						</div>
+							</div>)
+						})}
 				</div>);
 	}
 }
@@ -38,8 +45,47 @@ export default class PastContent extends ApiComponent {
     }
     render() {
     	var owner = this.state.api_response_body;
-    	var pasts = owner["Pasts"];
-    	console.log(pasts);
+    	var pasts = owner["Pasts"]	.map((pasti) => {
+    									pasti.FromDate = new Date(pasti.FromDate)
+    									pasti.ToDate = new Date(pasti.ToDate)
+    									return pasti
+    								}).sort((past1, past2) => {
+    									var compare = compareDates(past1.FromDate, past2.FromDate)
+    									if(compare == 0){
+    										compare = compareDates(past1.ToDate, past2.ToDate)
+    									}
+    									return -compare;
+    								});
+    	var pastsCombine = []
+    	pasts.forEach((past) => {
+    		if(pastsCombine.length > 0 && past.Position == pastsCombine[pastsCombine.length-1].Position) {
+    			var Organizations = pastsCombine[pastsCombine.length-1].Organizations
+				if(past.Organization == Organizations[Organizations.length-1].Organization){
+					var Teams = Organizations[Organizations.length-1].Teams
+    				Teams.push(past)
+    			} else {
+    				Organizations.push({
+    										Organization: past.Organization,
+    										OrganizationLink: past.OrganizationLink,
+    										Teams: [past]
+    									})
+    			}
+    		} else {
+    			pastsCombine.push({
+    									Position: past.Position,
+    									Organizations: [
+    														{
+    															Organization: past.Organization,
+    															OrganizationLink: past.OrganizationLink,
+    															Teams: [past]
+    														}
+    													]
+    								})
+    		}
+    	})
+
+    	pasts = pastsCombine
+
         return (
             <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
                 style={{justifyContent: "center",
@@ -61,39 +107,9 @@ export default class PastContent extends ApiComponent {
                         </div>
 
                         <div>
-	                        <div style={{marginTop: "15px"}}>
-	                            <div style={{fontSize:"20px",fontWeight: "600"}}>SDE1 (Software Development Engineer I)</div>
-	                            <div  style={{marginLeft:"10px"}}>
-		                        	<a href="https://www.oyorooms.com/" target="_blank" style={{fontSize:"18px"}}>OYO</a>
-		                            <div>
-			                            <TimedEvent revent="OYO Vacation Homes, Amsterdam, Netherlands"
-			                            			rtime="Jul’19-Feb’20" />
-			                            <TimedEvent revent="Finance Tech. Team, Gurgaon, India"
-			                            			rtime="Dec’18-Jun’19" />
-			                            <TimedEvent revent="Supply Tech. Team, Gurgaon, India"
-			                            			rtime="Aug’18-Dec’18" />
-			                        </div>
-		                        </div>
-	                        </div>
-
-	                        <div style={{marginTop: "15px"}}>
-	                            <div style={{fontSize:"20px",fontWeight: "600"}}>Thesis</div>
-	                            <div  style={{marginLeft:"10px"}}>
-	                            	<TimedEvent revent="Flexible Processor Architecture Design"
-			                            			rtime="Jul’17-Dec’17" />
-		                            <div>DOI: <a href="https://ieeexplore.ieee.org/document/9008052" target="_blank">10.1109/DISCOVER47552.2019.9008052</a></div>
-		                            <div>Authors: D. R. Vipulkumar, P. V. Bhanu and J. Soumya</div>
-		                        </div>
-	                        </div>
-
-	                        <div style={{marginTop: "15px"}}>
-	                            <div style={{fontSize:"20px",fontWeight: "600"}}>Education</div>
-		                        <div  style={{marginLeft:"5px"}}>
-		                            <a href="https://www.bits-pilani.ac.in/hyderabad/" target="_blank">BITS Pilani</a>
-		                            <TimedEvent revent="B.E. (Hons.) in Mechanical Engineering"
-			                            			rtime="Jul’14-Jul’18" />
-		                        </div>
-	                        </div>
+	                        {pasts.map(function(past){
+	                        	return <Experience exp={past}/>
+	                        })}
 	                    </div>
 
                     </div>
@@ -101,6 +117,10 @@ export default class PastContent extends ApiComponent {
             </div>
         );
     }
+}
+
+function compareDates(a, b) {
+	return (a < b) ? -1 : ((a > b) ? 1 : 0)
 }
 
     /*
