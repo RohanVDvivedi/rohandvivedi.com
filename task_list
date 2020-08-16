@@ -5,7 +5,6 @@ Backend
 Front end
  ** call query to get all projects, initially
  * complete About this app page
- ** use sessionStorage for storing some or few apis
 
 Data injestion
  * add projects data to sqlite database
