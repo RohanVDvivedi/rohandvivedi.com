@@ -18,6 +18,8 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 
 	name, exists_name := r.URL.Query()["name"];
 
+	get_all, exists_get_all := r.URL.Query()["get_all"];
+
 	categories, exists_categories := r.URL.Query()["categories"];
 	var categories_list []string = nil;
 	if(exists_categories) {
@@ -34,6 +36,10 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 		project_p := FindProjectByName(name[0], withHyperlinks, withCategories)
 		if(project_p != nil) {
 			projects = append(projects, *project_p)
+		}
+	} else if (exists_get_all) {
+		if(get_all[0] == "true"){
+			projects = GetAllProjects()
 		}
 	} else if (exists_query) {
 		projects = FindProjectsForSearchStringInCategories(query[0], categories_list);
@@ -64,6 +70,15 @@ func FindProjectByName(name string, withHyperlinks bool, withCategories bool) *P
 		return p;
 	}
 	return nil
+}
+
+func GetAllProjects() []Project {
+	projects := []Project{}
+	projects_db := data.GetAllProjects();
+	for _, project_db := range projects_db {
+		projects = append(projects, Project{project_db,nil,nil}) 
+	}
+	return projects;
 }
 
 func FindProjectsForSearchStringInCategories(queryString string, categories []string) []Project {

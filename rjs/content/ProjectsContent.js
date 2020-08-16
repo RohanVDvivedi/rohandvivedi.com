@@ -126,7 +126,7 @@ class ProjectSearchBar extends ApiComponent {
 export default class ProjectsContent extends ApiComponent {
 	constructor(props) {
 		super(props)
-		this.queryString = ((this.props.queryString==null)?"":this.props.queryString);
+		this.queryString = "get_all=true";
 	}
 	searchQueryStringBuiltCallback(queryString) {
 		this.queryString = queryString;

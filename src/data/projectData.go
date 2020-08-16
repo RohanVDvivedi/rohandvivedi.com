@@ -32,6 +32,19 @@ func GetProjectByName(name string) *Project {
 	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where projects.name = ?", name));
 }
 
+func GetAllProjects() []Project {
+	p := []Project{}
+	rows, _ := Db.Query(projectSelectBaseQuery())
+	defer rows.Close()
+	for rows.Next() {
+		project_p := baseScanProject(rows)
+		if project_p != nil {
+			p = append(p, *project_p)
+		}
+	}
+	return p;
+}
+
 func UpdateProject(p *Project) {
 	Db.Exec("update projects set name = ?, descr = ?, github_link = ?, youtube_link = ?, image_link = ?, project_owner = ? where id = ?",
 		p.Name, p.Descr, p.GithubLink, p.YoutubeLink, p.ImageLink, p.ProjectOwner, p.Id);
