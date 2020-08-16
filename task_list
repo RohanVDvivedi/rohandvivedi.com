@@ -1,18 +1,19 @@
 Backend
- ** expose apis to search all projects by using their description
- * start storing readme files of your projects in data_assets and setup an inverted index engine
+ *1 expose apis to search all projects by using their description
+ *4 start storing readme files of your projects in data_assets and setup an inverted index engine
+ *9 index all projects on the readme files and their youtube descriptions
 
 Front end
- * complete About this app page
+ *2 complete About this app page
 
 Data injestion
- * add projects data to sqlite database
+ *3 add projects data to sqlite database
 
 Maintenance
- ** get ssl certificate for your server
- * setup session store, generate unique session ids, set and get them as cookies
- * use sessions to count new unique clients everyday
- * mail yourself about new users, and empty sesison store at night
+ *5 setup session store, generate unique session ids, set and get them as cookies
+ *6 use sessions to count new unique clients everyday
+ *7 mail yourself about new users, and empty sesison store at night
+ *8 mail yourself about deployments and server health
 
 Future feature
  * build live-chat page (* future)
