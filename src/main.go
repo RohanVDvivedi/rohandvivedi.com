@@ -72,7 +72,7 @@ func main() {
 	if(!ssl_enabled){
 		log.Fatal(http.ListenAndServe(":80", nil));
 	} else {
-		log.Fatal(http.ListenAndServeTLS(":443", "./rohandvivedi.crt", "./rohandvivedi.key", nil))
+		log.Fatal(http.ListenAndServeTLS(":443", "./ssl_cert_keys/rohandvivedi.crt", "./ssl_cert_keys/rohandvivedi.key", nil))
 	}
 	fmt.Println("Application shutdown");
 }
