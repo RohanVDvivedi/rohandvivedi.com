@@ -33,4 +33,7 @@ import "../css_raw/projects.css"
 import "../css_raw/search.css"
 import "../css_raw/utility.css"
 
+import EffiCache from "./utility/EffiCache"
+EffiCache.Init()
+
 ReactDOM.render(<Root />, document.getElementById("root"));

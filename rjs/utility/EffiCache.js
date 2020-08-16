@@ -49,10 +49,10 @@ function Set(key, value, expiryMinutes) {
 	Storage.setItem(key, JSON.stringify(object));
 }
 
-Efficache = {
+var EffiCache = {
 	Init: Init,
 	Get: Get,
 	Set: Set,
 }
 
-export default Efficache;
+export default EffiCache;
