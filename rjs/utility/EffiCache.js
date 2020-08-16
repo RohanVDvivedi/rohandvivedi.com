@@ -8,17 +8,21 @@ function Init() {
 }
 
 function CleanUp() {
-	for (var i = 0; i < Storage.length; i++){
-		var key = Storage.key(i)
+	var StorageKeys = [];
+	for (var i=0; i< localStorage.length; i++){StorageKeys.push(localStorage.key(i))}
+
+	StorageKeys.forEach((key) => {
     	var object = JSON.parse(Storage.getItem(key));
-		if(
-			object.key == null || 
-			(!(object.key == key)) ||
-			(new Date()) > (new Date((new Date(object.insertedAt)).getTime() + MaxLife * 60000))
+		if(object != null && 
+			(
+				object.key == null || 
+				(!(object.key == key)) ||
+				(new Date()) > (new Date((new Date(object.insertedAt)).getTime() + MaxLife * 60000))
+			)
 		){
 			Storage.removeItem(key);
 		}
-	}
+	})
 }
 
 function Get(key) {
