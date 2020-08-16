@@ -34,7 +34,7 @@ import (
 	"rohandvivedi.com/src/data"
 )
 
-var ssl_enabled bool = false;
+var ssl_enabled bool = true;
 
 func main() {
 	// this will ask the template manager to initialize the templates variable
