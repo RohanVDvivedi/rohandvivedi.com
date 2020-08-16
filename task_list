@@ -8,6 +8,7 @@ Backend
 Front end
  * complete About this app page
  * use sessionStorage for storing apis
+ * get ssl certificate for your server
 
 Integrate
  * integrate apis projects page (only search left) to them in the front end
