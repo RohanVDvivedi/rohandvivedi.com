@@ -1,20 +1,21 @@
 Backend
  * expose apis to search all projects by using their description
- * setup session store, generate unique session ids, set and get them as cookies
- * use sessions to count new unique clients everyday
- * mail yourself about new users, empty sesison store at night
-
 
 Front end
  * complete About this app page
  * use sessionStorage for storing apis
- * get ssl certificate for your server
 
 Integrate
  * integrate apis projects page (only search left) to them in the front end
 
 Data injestion
  * add projects data to sqlite database
+
+Maintenance
+ * get ssl certificate for your server
+ * setup session store, generate unique session ids, set and get them as cookies
+ * use sessions to count new unique clients everyday
+ * mail yourself about new users, empty sesison store at night
 
 Future feature
  * build live-chat page
