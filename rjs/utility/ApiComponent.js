@@ -1,5 +1,7 @@
 import React from "react";
 
+import EffiCache from "./EffiCache"
+
 // the reponse body is maintained in the state.api_response_body of your component
 export default class ApiComponent extends React.Component {
     constructor(props) {
