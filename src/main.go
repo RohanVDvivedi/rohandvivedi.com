@@ -68,7 +68,7 @@ func main() {
 	data.InitializeSchema()
 
 	
-	fmt.Println("Application starting");
+	fmt.Println("Application starting (config: ssl enabled ", ssl_enabled, ")");
 	if(!ssl_enabled){
 		log.Fatal(http.ListenAndServe(":80", nil));
 	} else {
