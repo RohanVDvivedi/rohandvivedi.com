@@ -1,0 +1,7 @@
+Follow the instructions given here for using the cert bot to automagically take away your tensions
+https://certbot.eff.org/lets-encrypt/ubuntuxenial-other
+
+place the certificate in this folder
+under the name rohandvivedi.crt
+and private key by the name
+under the name rohandvivedi.key
