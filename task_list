@@ -3,7 +3,6 @@ Backend
  * start storing readme files of your projects in data_assets and setup an inverted index engine
 
 Front end
- ** call query to get all projects, initially
  * complete About this app page
 
 Data injestion
@@ -13,11 +12,11 @@ Maintenance
  ** get ssl certificate for your server
  * setup session store, generate unique session ids, set and get them as cookies
  * use sessions to count new unique clients everyday
- * mail yourself about new users, empty sesison store at night
+ * mail yourself about new users, and empty sesison store at night
 
 Future feature
- * build live-chat page
+ * build live-chat page (* future)
  * use github apis for updating your opensource project states atleast every 3 days (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
  * use linkedin APIs for capturing data (* future)
- * complete Admin page
+ * complete Admin page (* future)

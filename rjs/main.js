@@ -33,6 +33,7 @@ import "../css_raw/projects.css"
 import "../css_raw/search.css"
 import "../css_raw/utility.css"
 
+// initialize the cache that you will be using to cache apis
 import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
 
