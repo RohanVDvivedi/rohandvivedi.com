@@ -34,6 +34,8 @@ import (
 	"rohandvivedi.com/src/data"
 )
 
+var ssl_enabled bool = false;
+
 func main() {
 	// this will ask the template manager to initialize the templates variable
 	templateManager.InitializeTemplateEngine()
@@ -67,7 +69,11 @@ func main() {
 
 	
 	fmt.Println("Application starting");
-	log.Fatal(http.ListenAndServe(":80", nil));
+	if(!ssl_enabled){
+		log.Fatal(http.ListenAndServe(":80", nil));
+	} else {
+		log.Fatal(http.ListenAndServeTLS(":443", "./rohandvivedi.crt", "./rohandvivedi.key", nil))
+	}
 	fmt.Println("Application shutdown");
 }
 
