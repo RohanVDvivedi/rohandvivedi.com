@@ -1,17 +1,17 @@
 Backend
- * expose apis to search all projects by using their description
+ ** expose apis to search all projects by using their description
  * start storing readme files of your projects in data_assets and setup an inverted index engine
 
 Front end
- * call query to get all projects, initially
+ ** call query to get all projects, initially
  * complete About this app page
- * use sessionStorage for storing some or few apis
+ ** use sessionStorage for storing some or few apis
 
 Data injestion
  * add projects data to sqlite database
 
 Maintenance
- * get ssl certificate for your server
+ ** get ssl certificate for your server
  * setup session store, generate unique session ids, set and get them as cookies
  * use sessions to count new unique clients everyday
  * mail yourself about new users, empty sesison store at night
