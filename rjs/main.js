@@ -26,4 +26,11 @@ class Root extends React.Component {
 
 // ================================= >>>>
 
+import "../css_raw/about.css"
+import "../css_raw/content.css"
+import "../css_raw/nav.css"
+import "../css_raw/projects.css"
+import "../css_raw/search.css"
+import "../css_raw/utility.css"
+
 ReactDOM.render(<Root />, document.getElementById("root"));
