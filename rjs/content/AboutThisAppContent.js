@@ -11,52 +11,75 @@ export default class AboutThisAppContent extends React.Component {
 					display: "none"
 				}}>
 	            	<p>
-	            		This app with a mediocre looking front end, has a quite well organized backend.
-	            	Equivalent to something, that could be expected from a skilled Backend Developer.
+	            		This app with a mediocre looking front end, has backend which is quite complex (and over engineered in some sense).
+	            	It is equivalent to something, that I would be expected from a portfolio of a backend developer.
 	            	</p>
 
 	            	The tech stack of this application includes
 	            	<ul>
-		            	<li>ReactJS<i>(with react router for client side routing)</i></li>
-						<li>golang<i>(without any framework, builtin go modules are well designed to cater all my needs)</i></li>
-						<li>sqlite3<i>(plain single file managed embedded database, Everything you see on this website is served dynamically through api's even my work experinece has a well designed table devoated to itsef)</i></li>
+		            	<li>
+		            		<a href="https://reactjs.org/" target="_blank">Reactjs</a>
+		            		<ul>
+		            			<li>
+		            				With React router for client side routing
+		            			</li>
+		            		</ul>
+		            	</li>
+						<li>
+							<a href="https://golang.org/" target="_blank">golang</a>
+							<ul>
+								<li>
+									I discovered go to be a very friendly to my needs for building this application
+								</li>
+								<li>
+									It appealed to me as it is one of the few systems programming languages with built-in web-dev modules.
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="https://www.sqlite.org/index.html" target="_blank">SQLite3</a>
+							<ul>
+								<li>
+									I wanted a plain and simple to use, single file storage embedded database. SQLite is one of its kind.
+								</li>
+							</ul>
+						</li>
 					</ul>
 
 					<p>
-					I know right, database for a portfolio application? And, No I do not even have 100 projects under my belt to really need a well designed database to showcase them. 
-					And yes as you see here it is not as tough to go through all of my projects, you surely won't need the search bar provided.
+						You might be thinking, "Database for portfolio application? What is he even storing in there? His bank details or nuclear codes??".
+						Well being honest I am not storing anything of much sense except for details about me and my projects,
+						and neither do I have such a number of projects and accomplishments to really need 
+						a well designed database to showcase them on a website such as this with a tiny minuscule search engine.
 					</p>
 					
 					<p>
-					So the question is why over engineer something and so seriously. One of the very reason is that it is just who I am.
-					I like building stuff, whether it is software or a hardware. I like intericately designing and solving echnical projects.
-					But let's not get into this. I do not really want to make this page about myself (I have one for that here).
+						I have extremely over engineered my portfolio, I wanted it simulate conditions for me to allow me
+						to learn about single handedly managing a small website.
+
+						At the other end of this extreme, I could build static portfolio website, 
+						which can be easily hosted on an apache/nginx server, or use wordpress or any other 
+						webhosting services. But where is the fun in that, where is the problem solving involved.
+						If you are not maintaining the application, not managing all the resources it requires,
+						then you are not learning enough from working on that project and If you are learning, then this application is not serving you any purpose.
 					</p>
 
 					<p>
-					I built this application not just to fulfill my interest in building a self spotlighting portfolio.
-	            	When I started, I did not build/design it to be just for my self, I wanted to make an application that any one can use,
-	            	by just changing his/her information details in the database, anyone could turn this application in to their database.
+						I built this application not just as my portfolio. Atleast when I started, 
+						I wanted to build/design it to fit needs for just about any one.
+						And that is one of the few reason why this application does not have a trivial or a non-existent backend.
+						The Backend (built in go) serves to cater apis fo the front end from the database (SQLite3).
+						Even my name on the about page and my past experiences on the pasts page, needs to be queried in from the persons and pasts table in the database.
+						The frontend caches every api for atleast for 15 minutes, which reduces the load on the server.
+	            		The whole point of this is that, someone(/anyone) can come up, and by just changing his/her information details in the database, this server could serve as anyone's portfolio.
 	            	</p>
 
 	            	<p>
-	            	I wanted to make an application that would grab the owners details about his/her github repositories using the github public apis,
-	            	index the readme files, and build a search engine for only his/her projects.
-	            	but I can see, that every developer (be is software developer, game dev, UI/UX etc all have their own needs)
+	            		Moreover, the backend of this application is essentialy complex enough for what I wanted to do.
+	            		I wanted to make an application that would grab the details about my github repositories using the github public apis,
+	            		and index the readme files, and build a search engine for my projects, without needing me to update details to my portfolio everytime I push.
+	            		I don't want to document my projects again and again.
 	            	</p>
-
-	            	<p>
-	            	I started this project to fit everyone's needs, it does not fit all their needs. Even if linkedin/github could not target professional life of 
-	            	individuals how could I. but what I could really do is to automate my life, I do not really like, updating about myself or my projects
-	            	I literally hate documenting my projects.
-	            	</p>
-
-	            	<p>
-	            	So built this app to do something similar for me. It uses all of my github repos, and stores it all in a databse
-	            	it even updates my information from linkedin. and my resume from my own google drive.
-	            	</p>
-
-
 	            	
 	            	
 	            	<p>
