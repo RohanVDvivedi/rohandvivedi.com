@@ -1,10 +1,10 @@
 Backend
- *1 expose apis to search all projects by using their description or name
  *4 start storing readme files of your projects in data_assets and setup an inverted index engine
  *9 index all projects on the readme files and their youtube descriptions
 
 Front end
- *2 complete About this app page
+ *2 complete About this app page and make it live
+ *9 provide a mail box to write a bug report to me, providing me staeps to reproduce for me, this should be in the about this app page only
 
 Data injestion
  *3 add projects data to sqlite database
