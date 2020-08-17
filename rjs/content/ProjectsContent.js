@@ -97,12 +97,19 @@ class ProjectSearchBar extends ApiComponent {
 		var queryString = this.generateSearchQueryString();
 		this.props.searchQueryStringBuiltCallback(queryString);
 	}
+	enterKeyClicked(event) {
+		if (event.keyCode === 13) {event.preventDefault();
+			this.searchButtonClicked();}
+	}
 	render() {
 		// convert list of objects to list of strings
 		this.categories = this.state.api_response_body.map(function(category){return category.Category});
 		return (<div style={{display:"flex",justifyContent:"center"}}>
 					<div class="search-container flex-row-container set_sub_content_background_color">
-	                	<input class="search-text-selector" type="text" placeholder="Search projects" onChange={this.onSearchBoxTyping.bind(this)} value={this.state.searchTextBox}/>
+	                	<input class="search-text-selector" type="text" 
+	                		placeholder="Search projects" value={this.state.searchTextBox}
+	                		onChange={this.onSearchBoxTyping.bind(this)} 
+	                		onKeyUp={this.enterKeyClicked.bind(this)}/>
 						<div class={"search-categories-selector dropdown-container generic-content-box-hovering-emboss-border " + (this.state.showDropdownContent ? "show-dropdown-content" : "") }>
 							<div class="flex-row-container" style={{justifyContent: "space-evenly", alignItems: "center"}} onClick={this.onCategoryDrawerClicked.bind(this)}>
 								<div>Categories</div>
@@ -117,7 +124,8 @@ class ProjectSearchBar extends ApiComponent {
 								})}
 							</div>
 						</div>
-	                	<div class="search-button generic-content-box-hovering-emboss-border" onClick={this.searchButtonClicked.bind(this)}>Search</div>
+	                	<div class="search-button generic-content-box-hovering-emboss-border" 
+	                		onClick={this.searchButtonClicked.bind(this)}>Search</div>
 	                </div>
                 </div>);
 	}
