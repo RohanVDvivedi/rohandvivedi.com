@@ -1,5 +1,5 @@
 Backend
- *1 expose apis to search all projects by using their description
+ *1 expose apis to search all projects by using their description or name
  *4 start storing readme files of your projects in data_assets and setup an inverted index engine
  *9 index all projects on the readme files and their youtube descriptions
 
