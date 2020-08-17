@@ -42,7 +42,7 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 			projects = GetAllProjects()
 		}
 	} else if (exists_query) {
-		projects = FindProjectsForSearchStringInCategories(query[0], categories_list);
+		projects = FindProjectsForSearchStringInCategories(query[0]);
 	} else if (exists_categories) {
 		projects = FindProjectsByCategories(categories_list)
 	}
@@ -81,9 +81,13 @@ func GetAllProjects() []Project {
 	return projects;
 }
 
-func FindProjectsForSearchStringInCategories(queryString string, categories []string) []Project {
-	// if categories is nil, search in all projects
-	return []Project{};
+func FindProjectsForSearchStringInCategories(queryString string) []Project {
+	projects := []Project{}
+	projects_db := data.SearchProjectsByQueryString(queryString);
+	for _, project_db := range projects_db {
+		projects = append(projects, Project{project_db,nil,nil}) 
+	}
+	return projects;
 }
 
 func FindProjectsByCategories(categories []string) []Project {

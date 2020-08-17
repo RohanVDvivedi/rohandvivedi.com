@@ -13,10 +13,14 @@ type Row interface {
 }
 
 func getRepeatedQueryParamHolders(n int) string {
-	if(n == 0) {
-		return "";
-	}
-	return "?" + strings.Repeat(",?", n-1);
+	return getRepeatedwithDelimeter("?", ",", n);
+}
+
+func getRepeatedwithDelimeter(repeatString string, delimeterString string, n int) string {
+    if(n == 0) {
+        return "";
+    }
+    return repeatString + strings.Repeat(delimeterString + repeatString, n-1);
 }
 
 func convertToInterfaceSlice(slice interface{}) []interface{} {
