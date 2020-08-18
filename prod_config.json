@@ -1,0 +1,6 @@
+{
+	"ssl_enabled": true,
+	"create_user_sessions": true,
+	"send_deployment_mail_to_owner": true,
+	"send_server_monitor_status_mail_to_owner": true
+}
