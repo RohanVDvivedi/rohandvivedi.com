@@ -18,4 +18,4 @@ git clone https://github.com/RohanVDvivedi/rohandvivedi.com.git
 cd ~/go/src/rohandvivedi.com
 
 # run the application
-bash ./deploy.sh
+bash ./deploy.sh "$@"
