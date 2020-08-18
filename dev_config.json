@@ -1,0 +1,6 @@
+{
+	"SSL_enabled": false,
+	"Create_user_sessions": false,
+	"Send_deployment_mail": false,
+	"Send_server_status_mail": false
+}
