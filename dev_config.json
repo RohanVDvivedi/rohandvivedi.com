@@ -1,6 +1,12 @@
 {
 	"SSL_enabled": false,
 	"Create_user_sessions": true,
+
+	"Auth_mail_client": false,
+
 	"Send_deployment_mail": false,
-	"Send_server_status_mail": false
+	"Send_server_status_mail": false,
+
+	"From_mailid": "",
+	"From_password": ""
 }

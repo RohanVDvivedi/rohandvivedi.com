@@ -1,6 +1,12 @@
 {
 	"SSL_enabled": true,
 	"Create_user_sessions": true,
-	"Send_deployment_mail": true,
-	"Send_server_status_mail": true
+
+	"Auth_mail_client": true,
+
+	"Send_deployment_mail": false,
+	"Send_server_status_mail": false,
+
+	"From_mailid": "rohandvivedi@gmail.com",
+	"From_password": ""
 }

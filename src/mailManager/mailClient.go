@@ -9,9 +9,10 @@ import(
 
 var auth smtp.Auth = nil;
 
-var from string = "rohandvivedi@gmail.com";
+var from string = nil;
 
-func InitMailClient(password string) {
+func InitMailClient(emailid string, password string) {
+	from = emailid
 	auth = smtp.PlainAuth("", from, password, "smtp.gmail.com")
 }
 

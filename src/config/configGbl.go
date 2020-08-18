@@ -9,8 +9,14 @@ import (
 type Config struct {
 	SSL_enabled				bool
 	Create_user_sessions	bool
+
+	Auth_mail_client 		bool
+
 	Send_deployment_mail	bool
 	Send_server_status_mail	bool
+
+	From_mailid 			string
+	From_password 			string
 }
 
 var configGlobal *Config = nil;

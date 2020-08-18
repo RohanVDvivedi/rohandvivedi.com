@@ -53,7 +53,7 @@ func main() {
 		environment = os.Args[1]
 	}
 
-	// initialize the global configuration form the appropriate config file
+	// initialize the global configuration form the appropriate config file, and initialize it
 	config.InitGlobalConfig(environment)
 	fmt.Printf("%+v\n", config.GetGlobalConfig());
 
@@ -79,13 +79,18 @@ func main() {
 	http.HandleFunc("/api/all_categories", api.GetAllCategories);
 	http.HandleFunc("/api/owner", api.GetOwner);
 
-	// initialize mail client
-	mailManager.InitMailClient(os.Getenv("EMAIL_PASS"))
-
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
 	defer data.Db.Close()
 	data.InitializeSchema()
+
+	// initialize mail smtp client, and authenticate
+	if(config.GetGlobalConfig().Auth_mail_client) {
+		fmt.Println("Initializing SMTP mail client (config: Auth_mail_client ", config.GetGlobalConfig().Auth_mail_client, ")");
+		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
+	} else {
+		fmt.Println("Configuration declines setting up of SMTP mail client");
+	}
 
 	// set up session store
 	if(config.GetGlobalConfig().Create_user_sessions) {
@@ -94,9 +99,9 @@ func main() {
 	} else {
 		fmt.Println("Configuration declines setting up of SessionStore");
 	}
-
 	
 	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
+	sendDeploymentMail()
 	if(!config.GetGlobalConfig().SSL_enabled){
 		log.Fatal(http.ListenAndServe(":80", nil));
 	} else {
@@ -117,4 +122,13 @@ func handlerForFolder404(next http.Handler) http.Handler {
         }
         next.ServeHTTP(w, r)
     })
+}
+
+func sendDeploymentMail() {
+	if(config.GetGlobalConfig().Auth_mail_client) {
+		msg := mailManager.WritePlainEmail(config.GetGlobalConfig().From_mailid, 
+									"Deployment Mail", "Deplyment Successfull");
+		mailManager.SendMail(config.GetGlobalConfig().From_mailid, 
+									"Deployment Mail", msg)
+	}
 }
