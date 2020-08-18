@@ -92,7 +92,7 @@ func main() {
 		fmt.Println("Initializing SessionStore (config: Create_user_sessions ", config.GetGlobalConfig().Create_user_sessions, ")");
 		session.InitGlobalSessionStore("r_sess_id", 96 * time.Hour)
 	} else {
-		fmt.Println("Configuration declines setup of SessionStore");
+		fmt.Println("Configuration declines setting up of SessionStore");
 	}
 
 	
