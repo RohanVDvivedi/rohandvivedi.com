@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+import "fmt"
+
 /******************************/
 import "math/rand"
 func InitRand() {
@@ -49,6 +51,10 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 		Sessions: make(map[string]*Session),
 	};
 	InitRand()
+}
+
+func PrintSessionStore() {
+	fmt.Printf("%+v", *GlobalSessionStore)
 }
 
 func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {

@@ -1,6 +1,6 @@
 {
 	"SSL_enabled": false,
-	"Create_user_sessions": false,
+	"Create_user_sessions": true,
 	"Send_deployment_mail": false,
 	"Send_server_status_mail": false
 }

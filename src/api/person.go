@@ -8,13 +8,37 @@ import (
 	"strings"
 )
 
+import (
+	"rohandvivedi.com/src/session"
+)
+
 type Person struct {
 	data.Person
 	Socials []data.Social
 	Pasts []data.Past
 }
+
+func CountApiHitsInSessionValues(SessionVals map[string]interface{}, add_par interface{}) interface{} {
+	count, exists := SessionVals["GetOwner_count"]
+	if(exists) {
+		if int_count, ok := count.(int); ok {
+			SessionVals["GetOwner_count"] = ((int)(int_count)) + 1
+			return nil
+		}
+	}
+	SessionVals["GetOwner_count"] = 1
+	return nil
+}
  
 func GetOwner(w http.ResponseWriter, r *http.Request) {
+
+	s := session.GetOrCreateSession(w, r);
+	if(s!=nil) {
+		_ = s.ExecuteOnValues(CountApiHitsInSessionValues, nil);
+	}
+	session.PrintSessionStore()
+
+
 	var p *Person = nil;
 
 	p_db := data.GetOwner()
