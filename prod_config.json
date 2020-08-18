@@ -4,8 +4,8 @@
 
 	"Auth_mail_client": true,
 
-	"Send_deployment_mail": false,
-	"Send_server_status_mail": false,
+	"Send_deployment_mail": true,
+	"Send_server_status_mail": true,
 
 	"From_mailid": "rohandvivedi@gmail.com",
 	"From_password": ""

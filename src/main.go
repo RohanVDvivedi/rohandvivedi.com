@@ -88,6 +88,7 @@ func main() {
 	if(config.GetGlobalConfig().Auth_mail_client) {
 		fmt.Println("Initializing SMTP mail client (config: Auth_mail_client ", config.GetGlobalConfig().Auth_mail_client, ")");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
+		sendDeploymentMail()
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
@@ -101,7 +102,6 @@ func main() {
 	}
 	
 	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
-	sendDeploymentMail()
 	if(!config.GetGlobalConfig().SSL_enabled){
 		log.Fatal(http.ListenAndServe(":80", nil));
 	} else {
@@ -125,10 +125,9 @@ func handlerForFolder404(next http.Handler) http.Handler {
 }
 
 func sendDeploymentMail() {
-	if(config.GetGlobalConfig().Auth_mail_client) {
-		msg := mailManager.WritePlainEmail(config.GetGlobalConfig().From_mailid, 
+	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
+		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, 
 									"Deployment Mail", "Deplyment Successfull");
-		mailManager.SendMail(config.GetGlobalConfig().From_mailid, 
-									"Deployment Mail", msg)
+		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 	}
 }

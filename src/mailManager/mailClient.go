@@ -9,7 +9,7 @@ import(
 
 var auth smtp.Auth = nil;
 
-var from string = nil;
+var from string = "";
 
 func InitMailClient(emailid string, password string) {
 	from = emailid
@@ -19,15 +19,9 @@ func InitMailClient(emailid string, password string) {
 func WriteEmail(dest []string, contentType string, subject string, bodyMessage string) string {
 
 	header := make(map[string]string)
+
 	header["From"] = from
-
-	receipient := ""
-
-	for _, user := range dest {
-		receipient = receipient + user
-	}
-
-	header["To"] = receipient
+	header["To"] = strings.Join(dest, ",")
 	header["Subject"] = subject
 	header["MIME-Version"] = "1.0"
 	header["Content-Type"] = contentType + "; charset=\"utf-8\""
@@ -59,12 +53,6 @@ func WritePlainEmail(dest []string, subject, bodyMessage string) string {
 	return WriteEmail(dest, "text/plain", subject, bodyMessage)
 }
 
-func SendMail(Dest []string, Subject, bodyMessage string) (error) {
-
-	msg := "From: " + from + "\n" +
-		"To: " + strings.Join(Dest, ",") + "\n" +
-		"Subject: " + Subject + "\n" + bodyMessage
-
-	return smtp.SendMail("smtp.gmail.com:587", auth,
-		from, Dest, []byte(msg))
+func SendMail(Dest []string, mail string) (error) {
+	return smtp.SendMail("smtp.gmail.com:587", auth, from, Dest, []byte(mail))
 }
