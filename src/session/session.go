@@ -6,6 +6,21 @@ import (
 	"net/http"
 )
 
+/******************************/
+import "math/rand"
+func InitRand() {
+    rand.Seed(time.Now().UnixNano())
+}
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+func RandStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
+}
+/******************************/
+
 // this is a per user per session struct
 // the Values map will store a map to key values that we will use to store certain data corresponding to the user
 type Session struct {
@@ -33,6 +48,7 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 		MaxLifeDuration: MaxLifeDuration,
 		Sessions: make(map[string]*Session),
 	};
+	InitRand()
 }
 
 func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
@@ -59,7 +75,7 @@ func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
 	}
 
 	// create a new session id
-	session_id := "abba"
+	session_id := RandStringBytes(12)
 
 	// create a new session
 	session := &Session{
