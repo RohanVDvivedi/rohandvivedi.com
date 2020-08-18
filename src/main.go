@@ -15,6 +15,11 @@ import (
 	"rohandvivedi.com/src/config"
 )
 
+// maintains session, (in memory)
+import (
+	"rohandvivedi.com/src/session"
+)
+
 // data
 import (
     "database/sql"
