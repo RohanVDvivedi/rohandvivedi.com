@@ -3,6 +3,7 @@ package session
 import (
 	"time"
 	"sync"
+	"net/http"
 )
 
 // this is a per user per session struct
@@ -17,7 +18,7 @@ type Session struct {
 
 type SessionStore struct {
 	CookieName		string 					// name of the cookie, against which session_id will be stored on client side
-	MaxLifeTime		time.Time 				// this is the maximum time a cookie session can and will survive	
+	MaxLifeDuration	time.Duration 				// this is the maximum time a cookie session can and will survive	
 											// it will be set on cookie's expiry, aswell as any cookie unused for MaxLifeTime will expire on server side
 	Lock			sync.Mutex				// lock to make Sessions map thread safe
 	Sessions		map[string]*Session		// the map -> it stores Session.SessionId vs Session
@@ -26,68 +27,73 @@ type SessionStore struct {
 
 var GlobalSessionStore *SessionStore = nil;
 
-func InitGlobalSessionStore(CookieName string, MaxLifeTime time.Time) {
+func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 	GlobalSessionStore = &SessionStore{
 		CookieName: CookieName, 
-		MaxLifeTime: MaxLifeTime,
-		Sessions: make(map[string]*Session)
+		MaxLifeDuration: MaxLifeDuration,
+		Sessions: make(map[string]*Session),
 	};
 }
 
 func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
+	// if the application SessionStore is not setup, before getting the first request
+	// of if the owner does not want the user sessions to be maintained
+	if(GlobalSessionStore == nil) {
+		return nil
+	}
 
 	sessionCookie, errUserCookie := r.Cookie(GlobalSessionStore.CookieName)
 
-	SessionStore.Lock.Lock()
+	GlobalSessionStore.Lock.Lock()
 
 	if(errUserCookie == nil) {	// no error means client remembers the session_id as cookie
 		session_id := sessionCookie.Value
 
 		// use the session id to find corresponding session
-		session, errServerSession := SessionStore.Sessions[session_id]
+		session, errServerSession := GlobalSessionStore.Sessions[session_id]
 
-		if(errServerSession == nil) { // if a session is found, return it
-			SessionStore.Lock.Unlock()
+		if(errServerSession) { // if a session is found, return it
+			GlobalSessionStore.Lock.Unlock()
 			return session;
 		}
 	}
 
 	// create a new session id
-	session_id := ""
+	session_id := "abba"
 
 	// create a new session
 	session := &Session{
 		SessionId: session_id,
 		FirstAccessed: time.Now(),
 		LastAccessed: time.Now(),
-		Values: make(map[string]interface{})
+		Values: make(map[string]interface{}),
 	}
 
 	// create a new cookie
 	cookie := http.Cookie{
 		Name: GlobalSessionStore.CookieName,
 		Value: session.SessionId,
-		Expires: session.FirstAccessed.Add(GlobalSessionStore.MaxLifeTime),
-		HttpOnly: true
+		Expires: session.FirstAccessed.Add(GlobalSessionStore.MaxLifeDuration),
+		HttpOnly: true,
 	}
 
 	// set a ccookie on the http response
-	http.SetCookie(w, cookie)
+	http.SetCookie(w, &cookie)
 
 	// store the corresponding session
-	SessionStore.Sessions[session.SessionId] = session
+	GlobalSessionStore.Sessions[session.SessionId] = session
 
-	SessionStore.Lock.Unlock()
+	GlobalSessionStore.Lock.Unlock()
 	
 	return session
 }
 
-func (s *Session) GetValue(key string) interface{}, Error {
+func (s *Session) GetValue(key string) (interface{}, bool) {
 	s.Lock.Lock()
 	s.LastAccessed =time.Now()
 	val, err := s.Values[key]
 	s.Lock.Unlock()
-	return val
+	return val, err
 }
 
 func (s *Session) SetValue(key string, value interface{}) {
@@ -97,20 +103,10 @@ func (s *Session) SetValue(key string, value interface{}) {
 	s.Lock.Unlock()
 }
 
-func (s *Session) ExecuteOnValues(
-		// a function to operate  on values of this session
-		operation func (values map[string]interface{}, additional_params interface{}) interface{}, 
-
-		// may be some additional values to the operation
-		additional_params interface{}
-	) 
-	// this function will return what ever is returned from the operator
-	interface{} {
-
+func (s *Session) ExecuteOnValues(operation_function func (values map[string]interface{}, additional_params interface{}) interface{}, additional_params interface{}) interface{} {
 	s.Lock.Lock()
 	s.LastAccessed = time.Now()
-	result := operation(s.Values, additional_params)
+	result := operation_function(s.Values, additional_params)
 	s.Lock.Unlock()
-	
 	return result
 } 

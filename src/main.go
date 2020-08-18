@@ -2,6 +2,7 @@ package main
 
 // go utilities
 import (
+	"time"
 	"os"
 	"fmt"
 	"log"
@@ -85,6 +86,14 @@ func main() {
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
 	defer data.Db.Close()
 	data.InitializeSchema()
+
+	// set up session store
+	if(config.GetGlobalConfig().Create_user_sessions) {
+		fmt.Println("Initializing SessionStore (config: Create_user_sessions ", config.GetGlobalConfig().Create_user_sessions, ")");
+		session.InitGlobalSessionStore("r_sess_id", 96 * time.Hour)
+	} else {
+		fmt.Println("Configuration declines setup of SessionStore");
+	}
 
 	
 	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
