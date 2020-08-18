@@ -33,7 +33,7 @@ type Session struct {
 
 type SessionStore struct {
 	CookieName		string 					// name of the cookie, against which session_id will be stored on client side
-	MaxLifeDuration	time.Duration 				// this is the maximum time a cookie session can and will survive	
+	MaxLifeDuration	time.Duration 			// this is the maximum time a cookie session can and will survive	
 											// it will be set on cookie's expiry, aswell as any cookie unused for MaxLifeTime will expire on server side
 	Lock			sync.Mutex				// lock to make Sessions map thread safe
 	Sessions		map[string]*Session		// the map -> it stores Session.SessionId vs Session
