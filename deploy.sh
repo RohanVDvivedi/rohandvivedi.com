@@ -36,4 +36,4 @@ else
 fi
 
 # run the application again
-sh ./run.sh "$@"
+bash ./run.sh "$@"
