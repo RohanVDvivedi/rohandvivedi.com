@@ -10,6 +10,11 @@ import (
 	"strings"
 )
 
+// maintains global configuration for the application
+import (
+	"rohandvivedi.com/src/config"
+)
+
 // data
 import (
     "database/sql"
@@ -34,9 +39,13 @@ import (
 	"rohandvivedi.com/src/data"
 )
 
-var ssl_enabled bool = true;
-
+// the fitst command line argument has to be "prod" for production
+// no arguments or "dev", results in starting the go backend in development mode
 func main() {
+	// initialize the global configuration form the appropriate config file
+	config.InitGlobalConfig(os.Args[1])
+	fmt.Printf("%+v\n", config.GetGlobalConfig());
+
 	// this will ask the template manager to initialize the templates variable
 	templateManager.InitializeTemplateEngine()
 
@@ -68,8 +77,8 @@ func main() {
 	data.InitializeSchema()
 
 	
-	fmt.Println("Application starting (config: ssl enabled ", ssl_enabled, ")");
-	if(!ssl_enabled){
+	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
+	if(!config.GetGlobalConfig().SSL_enabled){
 		log.Fatal(http.ListenAndServe(":80", nil));
 	} else {
 		log.Fatal(http.ListenAndServeTLS(":443",

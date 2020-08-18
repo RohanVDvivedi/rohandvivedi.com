@@ -5,11 +5,13 @@ I plan to destribute this app in future, and so I am designing it with a good ba
 
 to setup :
  * ``sudo -E bash ./setup.sh &``
+ * for production use  ``sudo -E bash ./deploy.sh prod &``
 
 to deploy :
  * ``sudo -E bash ./deploy.sh &``
+ * for production use  ``sudo -E bash ./deploy.sh prod &``
 
-*Note: you may replace **bash** with **sh***
+*Note: you may replace **bash** with **sh**, if it works on your machine*
 
 to access DB in console:
  * you need sqlite3 shell ``sudo apt-get install sqlite3``
@@ -18,6 +20,9 @@ to access DB in console:
 
 to delete the database
  * ``rm ./db/data.db``
+
+to change application configurations
+ * use `dev_config.json` and `prod_config.json` according to the requirement, for your environment
 
 to setup new owner
  * delete the database file
