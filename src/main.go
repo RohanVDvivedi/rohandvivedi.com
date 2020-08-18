@@ -42,8 +42,13 @@ import (
 // the fitst command line argument has to be "prod" for production
 // no arguments or "dev", results in starting the go backend in development mode
 func main() {
+	environment := "dev"
+	if(len(os.Args) >= 2){
+		environment = os.Args[1]
+	}
+
 	// initialize the global configuration form the appropriate config file
-	config.InitGlobalConfig(os.Args[1])
+	config.InitGlobalConfig(environment)
 	fmt.Printf("%+v\n", config.GetGlobalConfig());
 
 	// this will ask the template manager to initialize the templates variable
