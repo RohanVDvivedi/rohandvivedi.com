@@ -13,6 +13,6 @@ func InitGlobalConfig(configFile string) {
 	configGlobal = &Config{};
 }
 
-func getGlobalConfig() *Config {
+func GetGlobalConfig() *Config {
 	return configGlobal;
 }
