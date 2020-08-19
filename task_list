@@ -1,21 +1,21 @@
 Backend
- *4 start storing readme files of your projects in data_assets and setup an inverted index engine
- *9 index all projects on the readme files
+ *2 start storing readme files of your projects in data_assets and setup an inverted index engine,
+ setup cron for this, to index all projects on the readme files, use bleve pakage
+ *3 use projects search query for this
+ *2 use github apis for updating your opensource project states atleast every 3 days
 
 Front end
- *(* today) complete About this app page and make it live
- *(* today) provide a mail box to write a bug report to me, providing me staeps to reproduce for me, this should be in the about this app page only
+ *4 complete About this app page and make it live
 
 Data injestion
- *(* today) add projects data to sqlite database
+ *5 add projects data to sqlite database
 
 Maintenance
- *7 mail yourself about new users, and empty sesison store at night
- *8 mail yourself crom mails about server health and user count
+ *1 generate owner session and send session id to yourself in deployment mail
+ *2 mail yourself cron mails about server health and user count, from sessions, and setup cron for this, provide api to send report for this
+ *1 sessions garbage collection
 
 Future feature
  * build live-chat page (* future)
- * use github apis for updating your opensource project states atleast every 3 days (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
  * use linkedin APIs for capturing data (* future)
- * complete Admin page (* future)
