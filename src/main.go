@@ -60,24 +60,27 @@ func main() {
 	// this will ask the template manager to initialize the templates variable
 	templateManager.InitializeTemplateEngine()
 
+	// create a server mux
+	mux := http.NewServeMux();
+
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	http.Handle("/", handlerForFolder404(fs))
+	mux.Handle("/", handlerForFolder404(fs))
 
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
-	http.HandleFunc("/pages/", page.Handler);
+	mux.HandleFunc("/pages/", page.Handler);
 
 	// attach all the handlers for websockets here
 	// we have only one page handler, because this is a react app, but will have many apis
-	http.Handle("/soc", websocket.Handler(socket.Handler));
+	mux.Handle("/soc", websocket.Handler(socket.Handler));
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
-	http.HandleFunc("/api/person",api.GetPerson);
-	http.HandleFunc("/api/project", api.FindProject);
-	http.HandleFunc("/api/all_categories", api.GetAllCategories);
-	http.HandleFunc("/api/owner", api.GetOwner);
+	mux.HandleFunc("/api/person",api.GetPerson);
+	mux.HandleFunc("/api/project", api.FindProject);
+	mux.HandleFunc("/api/all_categories", api.GetAllCategories);
+	mux.HandleFunc("/api/owner", api.GetOwner);
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
@@ -103,11 +106,11 @@ func main() {
 	
 	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
 	if(!config.GetGlobalConfig().SSL_enabled){
-		log.Fatal(http.ListenAndServe(":80", nil));
+		log.Fatal(http.ListenAndServe(":80", mux));
 	} else {
 		log.Fatal(http.ListenAndServeTLS(":443",
 			"/etc/letsencrypt/live/rohandvivedi.com/fullchain.pem",
-			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", nil))
+			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", mux))
 	}
 	fmt.Println("Application shutdown");
 }

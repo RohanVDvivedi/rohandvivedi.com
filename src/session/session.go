@@ -54,6 +54,12 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 }
 
 func PrintAllSessionValues() {
+	// if the application SessionStore is not setup, before getting the first request
+	// of if the owner does not want the user sessions to be maintained
+	if(GlobalSessionStore == nil) {
+		return
+	}
+
 	GlobalSessionStore.Lock.Lock()
 		for _, session := range GlobalSessionStore.Sessions {
 			session.Lock.Lock()
