@@ -21,16 +21,22 @@ import (
 	"rohandvivedi.com/src/session"
 )
 
-// data
+// data / databse
 import (
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
+    "rohandvivedi.com/src/data"
 )
 
-// utilities
+// template manager to write templated html files as strings
 import (
 	"rohandvivedi.com/src/templateManager"
+)
+
+// mail client support for the application
+import (
 	"rohandvivedi.com/src/mailManager"
+	"rohandvivedi.com/src/mails"
 )
 
 // handlers for the pages and apis
@@ -38,11 +44,6 @@ import (
 	"rohandvivedi.com/src/page"
 	"rohandvivedi.com/src/api"
 	"rohandvivedi.com/src/socket"
-)
-
-// data
-import (
-	"rohandvivedi.com/src/data"
 )
 
 // the fitst command line argument has to be "prod" for production
@@ -65,7 +66,7 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", handlerForFolder404(fs))
+	mux.Handle("/", Send404OnFolderRequest(fs))
 
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
@@ -77,10 +78,10 @@ func main() {
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
-	mux.Handle("/api/person", 			(api.GetPerson));
-	mux.Handle("/api/project", 			(api.FindProject));
-	mux.Handle("/api/all_categories", 	(api.GetAllCategories));
-	mux.Handle("/api/owner", 			(api.GetOwner));
+	mux.Handle("/api/person", 			CountApiHitsInSessionValues(api.GetPerson));
+	mux.Handle("/api/project", 			CountApiHitsInSessionValues(api.FindProject));
+	mux.Handle("/api/all_categories", 	CountApiHitsInSessionValues(api.GetAllCategories));
+	mux.Handle("/api/owner", 			CountApiHitsInSessionValues(api.GetOwner));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
@@ -91,7 +92,7 @@ func main() {
 	if(config.GetGlobalConfig().Auth_mail_client) {
 		fmt.Println("Initializing SMTP mail client (config: Auth_mail_client ", config.GetGlobalConfig().Auth_mail_client, ")");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
-		sendDeploymentMail()
+		mails.SendDeploymentMail()
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
@@ -115,9 +116,11 @@ func main() {
 	fmt.Println("Application shutdown");
 }
 
-// this function is a handler to send 404 response, if the requested path is a folder
-// i.e. ending in /
-func handlerForFolder404(next http.Handler) http.Handler {
+// Below are the middlewares for the http api handlers
+
+// this function is a middleware to send 404 response, if the requested path is a folder
+// i.e. request path ending in "/"
+func Send404OnFolderRequest(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         if strings.HasSuffix(r.URL.Path, "/") && len(r.URL.Path) != 1 {
             http.NotFound(w, r)
@@ -127,29 +130,28 @@ func handlerForFolder404(next http.Handler) http.Handler {
     })
 }
 
-func CountApiHitsInSessionValues(SessionVals map[string]interface{}, add_par interface{}) interface{} {
-	count, exists := SessionVals["GetOwner_count"]
-	if(exists) {
-		if int_count, ok := count.(int); ok {
-			SessionVals["GetOwner_count"] = ((int)(int_count)) + 1
-			return nil
+// this middleware lets you maintain data regarding api hit that each sessioned user has caused
+func CountApiHitsInSessionValues(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        
+        // you must need a session to allow me to maintain the count
+        s := session.GetOrCreateSession(w, r);
+		if(s!=nil) {
+			_ = s.ExecuteOnValues(func (SessionVals map[string]interface{}, add_par interface{}) interface{} {
+					reqPathCountKey := "<" + r.URL.Path + ">_count"		// this is the key we will use to store count of hits in session values
+					count, exists := SessionVals[reqPathCountKey]
+					if(exists) {
+						intCount, isInt := count.(int)
+						if isInt {
+							SessionVals[reqPathCountKey] = intCount + 1
+							return nil
+						}
+					}
+					SessionVals[reqPathCountKey] = 1
+					return nil
+				}, nil);
 		}
-	}
-	SessionVals["GetOwner_count"] = 1
-	return nil
+        next.ServeHTTP(w, r)
+    })
 }
-/*
-s := session.GetOrCreateSession(w, r);
-	if(s!=nil) {
-		_ = s.ExecuteOnValues(CountApiHitsInSessionValues, nil);
-	}
-	session.PrintAllSessionValues()
-*/
 
-func sendDeploymentMail() {
-	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
-		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, 
-									"Deployment Mail", "Deplyment Successfull");
-		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
-	}
-}
