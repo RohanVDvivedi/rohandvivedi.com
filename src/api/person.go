@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-import (
-	"rohandvivedi.com/src/session"
-)
+// api handlers in this file
+var GetOwner = http.HandlerFunc(getOwner)
+var GetPerson = http.HandlerFunc(getPerson)
 
 type Person struct {
 	data.Person
@@ -18,27 +18,7 @@ type Person struct {
 	Pasts []data.Past
 }
 
-func CountApiHitsInSessionValues(SessionVals map[string]interface{}, add_par interface{}) interface{} {
-	count, exists := SessionVals["GetOwner_count"]
-	if(exists) {
-		if int_count, ok := count.(int); ok {
-			SessionVals["GetOwner_count"] = ((int)(int_count)) + 1
-			return nil
-		}
-	}
-	SessionVals["GetOwner_count"] = 1
-	return nil
-}
- 
-func GetOwner(w http.ResponseWriter, r *http.Request) {
-
-	s := session.GetOrCreateSession(w, r);
-	if(s!=nil) {
-		_ = s.ExecuteOnValues(CountApiHitsInSessionValues, nil);
-	}
-	session.PrintAllSessionValues()
-
-
+func getOwner(w http.ResponseWriter, r *http.Request) {
 	var p *Person = nil;
 
 	p_db := data.GetOwner()
@@ -64,7 +44,7 @@ func GetOwner(w http.ResponseWriter, r *http.Request) {
 	w.Write(json);
 }
 
-func GetPerson(w http.ResponseWriter, r *http.Request) {
+func getPerson(w http.ResponseWriter, r *http.Request) {
 	var p *Person = nil;
 	parameters := r.URL.Query();
 

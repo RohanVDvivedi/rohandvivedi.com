@@ -7,13 +7,16 @@ import (
 	"strings"
 )
 
+// api handlers in this file
+var FindProject = http.HandlerFunc(findProject)
+
 type Project struct {
 	data.Project
 	Hyperlinks []data.ProjectHyperlink
 	Categories []data.ProjectCategory
 }
 
-func FindProject(w http.ResponseWriter, r *http.Request) {
+func findProject(w http.ResponseWriter, r *http.Request) {
 	var projects []Project = []Project{};
 
 	name, exists_name := r.URL.Query()["name"];
@@ -33,25 +36,25 @@ func FindProject(w http.ResponseWriter, r *http.Request) {
 		var withHyperlinks bool = exists_get_hyperlinks && (requested_hyperlinks[0] == "true")
 		requested_categories, exists_get_categories := r.URL.Query()["get_categories"];
 		var withCategories bool = exists_get_categories && (requested_categories[0] == "true")
-		project_p := FindProjectByName(name[0], withHyperlinks, withCategories)
+		project_p := findProjectByName(name[0], withHyperlinks, withCategories)
 		if(project_p != nil) {
 			projects = append(projects, *project_p)
 		}
 	} else if (exists_get_all) {
 		if(get_all[0] == "true"){
-			projects = GetAllProjects()
+			projects = getAllProjects()
 		}
 	} else if (exists_query) {
-		projects = FindProjectsForSearchStringInCategories(query[0]);
+		projects = findProjectsForSearchStringInCategories(query[0]);
 	} else if (exists_categories) {
-		projects = FindProjectsByCategories(categories_list)
+		projects = findProjectsByCategories(categories_list)
 	}
 
 	json, _ := json.Marshal(projects);
 	w.Write(json);
 }
 
-func FindProjectByName(name string, withHyperlinks bool, withCategories bool) *Project {
+func findProjectByName(name string, withHyperlinks bool, withCategories bool) *Project {
 	proj_db := data.GetProjectByName(name)
 	if(proj_db != nil) {
 		p := &Project{};
@@ -72,7 +75,7 @@ func FindProjectByName(name string, withHyperlinks bool, withCategories bool) *P
 	return nil
 }
 
-func GetAllProjects() []Project {
+func getAllProjects() []Project {
 	projects := []Project{}
 	projects_db := data.GetAllProjects();
 	for _, project_db := range projects_db {
@@ -81,7 +84,7 @@ func GetAllProjects() []Project {
 	return projects;
 }
 
-func FindProjectsForSearchStringInCategories(queryString string) []Project {
+func findProjectsForSearchStringInCategories(queryString string) []Project {
 	projects := []Project{}
 	projects_db := data.SearchProjectsByQueryString(queryString);
 	for _, project_db := range projects_db {
@@ -90,7 +93,7 @@ func FindProjectsForSearchStringInCategories(queryString string) []Project {
 	return projects;
 }
 
-func FindProjectsByCategories(categories []string) []Project {
+func findProjectsByCategories(categories []string) []Project {
 	projects := []Project{}
 	projects_db := data.GetProjectsForCategoryNames(categories)
 	for _, project_db := range projects_db {
@@ -98,5 +101,3 @@ func FindProjectsByCategories(categories []string) []Project {
 	}
 	return projects;
 }
-
-//

@@ -77,10 +77,10 @@ func main() {
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
-	mux.HandleFunc("/api/person",api.GetPerson);
-	mux.HandleFunc("/api/project", api.FindProject);
-	mux.HandleFunc("/api/all_categories", api.GetAllCategories);
-	mux.HandleFunc("/api/owner", api.GetOwner);
+	mux.Handle("/api/person", 			(api.GetPerson));
+	mux.Handle("/api/project", 			(api.FindProject));
+	mux.Handle("/api/all_categories", 	(api.GetAllCategories));
+	mux.Handle("/api/owner", 			(api.GetOwner));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
@@ -126,6 +126,25 @@ func handlerForFolder404(next http.Handler) http.Handler {
         next.ServeHTTP(w, r)
     })
 }
+
+func CountApiHitsInSessionValues(SessionVals map[string]interface{}, add_par interface{}) interface{} {
+	count, exists := SessionVals["GetOwner_count"]
+	if(exists) {
+		if int_count, ok := count.(int); ok {
+			SessionVals["GetOwner_count"] = ((int)(int_count)) + 1
+			return nil
+		}
+	}
+	SessionVals["GetOwner_count"] = 1
+	return nil
+}
+/*
+s := session.GetOrCreateSession(w, r);
+	if(s!=nil) {
+		_ = s.ExecuteOnValues(CountApiHitsInSessionValues, nil);
+	}
+	session.PrintAllSessionValues()
+*/
 
 func sendDeploymentMail() {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
