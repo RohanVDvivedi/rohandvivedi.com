@@ -3,11 +3,11 @@ Backend
  *9 index all projects on the readme files
 
 Front end
- *(* on hold) complete About this app page and make it live
- *9 provide a mail box to write a bug report to me, providing me staeps to reproduce for me, this should be in the about this app page only
+ *(* today) complete About this app page and make it live
+ *(* today) provide a mail box to write a bug report to me, providing me staeps to reproduce for me, this should be in the about this app page only
 
 Data injestion
- *3 add projects data to sqlite database
+ *(* today) add projects data to sqlite database
 
 Maintenance
  *7 mail yourself about new users, and empty sesison store at night
