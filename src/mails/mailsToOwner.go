@@ -12,7 +12,8 @@ import (
 func SendDeploymentMail() {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
 
-		mailBody := "Deplyment Successfull\nconfig:\n" + json.MarshalIndent(config.GetGlobalConfig(), "", "    ") 
+		jsonConfig, _ := json.MarshalIndent(config.GetGlobalConfig(), "", "    ")
+		mailBody := "Deployment Successfull\nconfig:\n" + string(jsonConfig)
 		
 		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Deployment Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
