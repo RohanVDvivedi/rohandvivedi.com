@@ -1,6 +1,6 @@
 Backend
  *4 start storing readme files of your projects in data_assets and setup an inverted index engine
- *9 index all projects on the readme files and their youtube descriptions
+ *9 index all projects on the readme files
 
 Front end
  *(* on hold) complete About this app page and make it live
@@ -10,10 +10,8 @@ Data injestion
  *3 add projects data to sqlite database
 
 Maintenance
- *5 setup session store, generate unique session ids, set and get them as cookies
- *6 use sessions to count new unique clients everyday
  *7 mail yourself about new users, and empty sesison store at night
- *8 mail yourself about deployments and server health
+ *8 mail yourself crom mails about server health and user count
 
 Future feature
  * build live-chat page (* future)
