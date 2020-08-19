@@ -36,7 +36,7 @@ func GetOwner(w http.ResponseWriter, r *http.Request) {
 	if(s!=nil) {
 		_ = s.ExecuteOnValues(CountApiHitsInSessionValues, nil);
 	}
-	session.PrintSessionStore()
+	session.PrintAllSessionValues()
 
 
 	var p *Person = nil;

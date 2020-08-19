@@ -13,7 +13,7 @@ import "math/rand"
 func InitRand() {
     rand.Seed(time.Now().UnixNano())
 }
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const letterBytes = "*+-/<[abcdefghijklmnopqrstuvwxyz](ABCDEFGHIJKLMNOPQRSTUVWXYZ){0123456789}>"
 func RandStringBytes(n int) string {
 	b := make([]byte, n)
 	for i := range b {
@@ -53,8 +53,14 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 	InitRand()
 }
 
-func PrintSessionStore() {
-	fmt.Printf("%+v", *GlobalSessionStore)
+func PrintAllSessionValues() {
+	GlobalSessionStore.Lock.Lock()
+		for _, session := range GlobalSessionStore.Sessions {
+			session.Lock.Lock()
+			fmt.Printf("%+v\n", *session);
+			session.Lock.Unlock()
+		}
+	GlobalSessionStore.Lock.Unlock()
 }
 
 func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
@@ -72,20 +78,26 @@ func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
 		session_id := sessionCookie.Value
 
 		// use the session id to find corresponding session
-		session, errServerSession := GlobalSessionStore.Sessions[session_id]
+		session, serverSessionExists := GlobalSessionStore.Sessions[session_id]
 
-		if(errServerSession) { // if a session is found, return it
+		if(serverSessionExists) { // if a session is found, return it
 			GlobalSessionStore.Lock.Unlock()
 			return session;
 		}
 	}
 
-	// create a new session id
-	session_id := RandStringBytes(12)
+	// create a new session id, which does not exist in SessionStore before
+	sessionId := RandStringBytes(12)
+	_, sessionIdExists := GlobalSessionStore.Sessions[sessionId]
+	for(sessionIdExists) {
+		sessionId = RandStringBytes(12)
+		_, sessionIdExists = GlobalSessionStore.Sessions[sessionId]
+	}
+
 
 	// create a new session
 	session := &Session{
-		SessionId: session_id,
+		SessionId: sessionId,
 		FirstAccessed: time.Now(),
 		LastAccessed: time.Now(),
 		Values: make(map[string]interface{}),
