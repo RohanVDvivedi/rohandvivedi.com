@@ -82,6 +82,7 @@ func main() {
 	mux.Handle("/api/project", 			CountApiHitsInSessionValues(api.FindProject));
 	mux.Handle("/api/all_categories", 	CountApiHitsInSessionValues(api.GetAllCategories));
 	mux.Handle("/api/owner", 			CountApiHitsInSessionValues(api.GetOwner));
+	mux.Handle("/api/sessions", 		(api.PrintAllUserSessions));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
