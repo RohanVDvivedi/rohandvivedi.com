@@ -7,6 +7,8 @@ import (
 )
 
 type Config struct {
+	Environment				string
+
 	SSL_enabled				bool
 	Create_user_sessions	bool
 
@@ -26,10 +28,13 @@ func InitGlobalConfig(configFileToUse string) {
 	data := []byte{}
 	if(strings.Contains(configFileToUse, "prod")) {
 		data, _ = ioutil.ReadFile("./prod_config.json")
+		_ = json.Unmarshal(data, &configGlobal);
+		configGlobal.Environment = "prod"
 	} else {
 		data, _ = ioutil.ReadFile("./dev_config.json")
+		_ = json.Unmarshal(data, &configGlobal);
+		configGlobal.Environment = "dev"
 	}
-	_ = json.Unmarshal(data, &configGlobal);
 }
 
 func GetGlobalConfig() Config {

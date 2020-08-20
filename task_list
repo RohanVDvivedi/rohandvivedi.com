@@ -11,9 +11,8 @@ Data injestion
  *5 add projects data to sqlite database
 
 Maintenance
- *1 generate owner session and send session id to yourself in deployment mail
- *2 mail yourself cron mails about server health and user count, from sessions, and setup cron for this, provide api to send report for this
- *1 sessions garbage collection
+ * (*partial) mail yourself cron mails about server health and user count, from sessions, and setup cron for this, provide api to send report for this
+ * (* future, not required as of now) sessions garbage collection
 
 Future feature
  * build live-chat page (* future)

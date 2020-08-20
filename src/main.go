@@ -77,11 +77,12 @@ func main() {
 
 	// attach all the handlers of all the apis here
 	// we have only one page handler, because this is a react app, but will have many apis
-	mux.Handle("/api/person", 			CountApiHitsInSessionValues(api.GetPerson));
-	mux.Handle("/api/project", 			CountApiHitsInSessionValues(api.FindProject));
-	mux.Handle("/api/all_categories", 	CountApiHitsInSessionValues(api.GetAllCategories));
-	mux.Handle("/api/owner", 			CountApiHitsInSessionValues(api.GetOwner));
-	mux.Handle("/api/sessions", 		AuthorizeIfOwner(api.PrintAllUserSessions));
+	mux.Handle("/api/person", 				CountApiHitsInSessionValues(api.GetPerson));
+	mux.Handle("/api/project", 				CountApiHitsInSessionValues(api.FindProject));
+	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(api.GetAllCategories));
+	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(api.GetOwner));
+	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
+	mux.Handle("/api/build/search_index", 	AuthorizeIfOwner(api.BuildSearchIndex));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
@@ -162,6 +163,12 @@ func CountApiHitsInSessionValues(next http.Handler) http.Handler {
 
 func AuthorizeIfOwner(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		// in the dev env, autorization for owner is bypassed
+		if(config.GetGlobalConfig().Environment == "dev") {
+			next.ServeHTTP(w, r)
+			return
+		}
         
         if(config.GetGlobalConfig().Create_user_sessions) {
 	        // you must need a session to allow me to maintain the count

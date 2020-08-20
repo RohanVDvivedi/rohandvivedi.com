@@ -3,4 +3,5 @@ v8-compile-cache-0
 public/static/*/bundle*
 src/proto/*.pb.go
 db/data.db
+db/index_data_assets
 .DS_Store
