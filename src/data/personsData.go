@@ -47,18 +47,19 @@ func InsertPerson(p *Person) {
 type Social struct {
 	Id NullInt64
 	Descr NullString
+	Username NullString
 	ProfileLink NullString
 	LinkType NullString
 	PersonId NullInt64
 }
 
 func socialSelectBaseQuery() string {
-	return "select socials.id, socials.descr, socials.profile_link, socials.link_type, socials.person_id from socials ";
+	return "select socials.id, socials.descr, socials.username, socials.profile_link, socials.link_type, socials.person_id from socials ";
 }
 
 func baseScanSocial(r Row) *Social {
 	s := Social{};
-	err := r.Scan(&s.Id, &s.Descr, &s.ProfileLink, &s.LinkType, &s.PersonId);
+	err := r.Scan(&s.Id, &s.Descr, &s.Username, &s.ProfileLink, &s.LinkType, &s.PersonId);
 	if err != nil {
 		return nil
 	}

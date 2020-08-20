@@ -24,6 +24,7 @@ func InitializeSchema() {
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS socials (
 									id INTEGER PRIMARY KEY AUTOINCREMENT, 
 									descr VARCHAR(512), 
+									username VARCHAR(128),
 									profile_link VARCHAR(512) NOT NULL, 
 									link_type VARCHAR(128) NOT NULL, 
 									person_id INTEGER,

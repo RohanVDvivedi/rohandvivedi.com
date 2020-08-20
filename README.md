@@ -42,6 +42,7 @@ Schema :
  * table: socials
    * id
    * descr
+   * username  (username corresponding to each profile listed)
    * profile_link
    * link_type (must be youtube, pdf, github, linkedin, facebook, this helps how to interpret the link)
    * person_id
