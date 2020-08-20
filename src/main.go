@@ -56,7 +56,6 @@ func main() {
 
 	// initialize the global configuration form the appropriate config file, and initialize it
 	config.InitGlobalConfig(environment)
-	fmt.Printf("%+v\n", config.GetGlobalConfig());
 
 	// this will ask the template manager to initialize the templates variable
 	templateManager.InitializeTemplateEngine()
@@ -82,7 +81,7 @@ func main() {
 	mux.Handle("/api/project", 			CountApiHitsInSessionValues(api.FindProject));
 	mux.Handle("/api/all_categories", 	CountApiHitsInSessionValues(api.GetAllCategories));
 	mux.Handle("/api/owner", 			CountApiHitsInSessionValues(api.GetOwner));
-	mux.Handle("/api/sessions", 		(api.PrintAllUserSessions));
+	mux.Handle("/api/sessions", 		AuthorizeIfOwner(api.PrintAllUserSessions));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
@@ -90,18 +89,21 @@ func main() {
 	data.InitializeSchema()
 
 	// set up session store
+	ownerSessionId := ""
 	if(config.GetGlobalConfig().Create_user_sessions) {
 		fmt.Println("Initializing SessionStore");
 		session.InitGlobalSessionStore("r_sess_id", 96 * time.Hour)
+		ownerSessionId = session.GlobalSessionStore.InitializeOwnerSession().SessionId
 	} else {
 		fmt.Println("Configuration declines setting up of SessionStore");
+		ownerSessionId = "****No SessionStore, hence no OwnerSessionId****"
 	}
 
 	// initialize mail smtp client, and authenticate
 	if(config.GetGlobalConfig().Auth_mail_client) {
 		fmt.Println("Initializing and Authenticating SMTP mail client");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
-		mails.SendDeploymentMail()
+		mails.SendDeploymentMail(ownerSessionId)
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
@@ -132,28 +134,51 @@ func Send404OnFolderRequest(next http.Handler) http.Handler {
     })
 }
 
-// this middleware lets you maintain data regarding api hit that each sessioned user has caused
+// this middleware lets you maintain data regarding api access that each sessioned user has made
 func CountApiHitsInSessionValues(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         
-        // you must need a session to allow me to maintain the count
-        s := session.GetOrCreateSession(w, r);
-		if(s!=nil) {
+        if(config.GetGlobalConfig().Create_user_sessions) {
+	        // you must need a session to allow me to maintain the count
+	        s := session.GlobalSessionStore.GetOrCreateSession(w, r);
 			_ = s.ExecuteOnValues(func (SessionVals map[string]interface{}, add_par interface{}) interface{} {
-					reqPathCountKey := "<" + r.URL.Path + ">_count"		// this is the key we will use to store count of hits in session values
-					count, exists := SessionVals[reqPathCountKey]
-					if(exists) {
-						intCount, isInt := count.(int)
-						if isInt {
-							SessionVals[reqPathCountKey] = intCount + 1
-							return nil
-						}
+				reqPathCountKey := "<" + r.URL.Path + ">_count"		// this is the key we will use to store count of hits in session values
+				count, exists := SessionVals[reqPathCountKey]
+				if(exists) {
+					intCount, isInt := count.(int)
+					if isInt {
+						SessionVals[reqPathCountKey] = intCount + 1
+						return nil
 					}
-					SessionVals[reqPathCountKey] = 1
-					return nil
-				}, nil);
+				}
+				SessionVals[reqPathCountKey] = 1
+				return nil
+			}, nil);
 		}
+
         next.ServeHTTP(w, r)
     })
 }
 
+func AuthorizeIfOwner(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        
+        if(config.GetGlobalConfig().Create_user_sessions) {
+	        // you must need a session to allow me to maintain the count
+	        s := session.GlobalSessionStore.GetOrCreateSession(w, r);
+			isOwner, ownerKeyExists := s.GetValue("owner");
+			if(ownerKeyExists) {
+				valIsOwner, ok := isOwner.(bool)
+				if(ok && valIsOwner){
+					next.ServeHTTP(w, r)
+					return
+				}
+			}
+		}
+
+		// if any thing fails, just unautorize
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("You are not owner of rohandvivedi.com"))
+
+    })
+}

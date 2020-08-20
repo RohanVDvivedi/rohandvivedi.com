@@ -6,8 +6,6 @@ import (
 	"net/http"
 )
 
-import "fmt"
-
 /******************************/
 import "math/rand"
 func InitRand() {
@@ -53,77 +51,91 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 	InitRand()
 }
 
-func PrintAllSessionValues() {
-	// if the application SessionStore is not setup, before getting the first request
-	// of if the owner does not want the user sessions to be maintained
-	if(GlobalSessionStore == nil) {
-		return
-	}
-
-	GlobalSessionStore.Lock.Lock()
-		for _, session := range GlobalSessionStore.Sessions {
-			session.Lock.Lock()
-			fmt.Printf("%+v\n", *session);
-			session.Lock.Unlock()
-		}
-	GlobalSessionStore.Lock.Unlock()
-}
-
-func GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
-	// if the application SessionStore is not setup, before getting the first request
-	// of if the owner does not want the user sessions to be maintained
-	if(GlobalSessionStore == nil) {
-		return nil
-	}
-
-	sessionCookie, errUserCookie := r.Cookie(GlobalSessionStore.CookieName)
-
-	GlobalSessionStore.Lock.Lock()
-
-	if(errUserCookie == nil) {	// no error means client remembers the session_id as cookie
-		session_id := sessionCookie.Value
-
-		// use the session id to find corresponding session
-		session, serverSessionExists := GlobalSessionStore.Sessions[session_id]
-
-		if(serverSessionExists) { // if a session is found, return it
-			GlobalSessionStore.Lock.Unlock()
-			return session;
-		}
-	}
-
-	// create a new session id, which does not exist in SessionStore before
+// unsafe
+func (ss *SessionStore) createNewUniquelyRandomSessionId() string {
+	// create a new session id composed of 12 character random string, 
+	// which does not exist in SessionStore before
 	sessionId := RandStringBytes(12)
-	_, sessionIdExists := GlobalSessionStore.Sessions[sessionId]
+	_, sessionIdExists := ss.Sessions[sessionId]
 	for(sessionIdExists) {
 		sessionId = RandStringBytes(12)
-		_, sessionIdExists = GlobalSessionStore.Sessions[sessionId]
+		_, sessionIdExists = ss.Sessions[sessionId]
 	}
 
+	return sessionId;
+}
 
+// unsafe
+func (ss *SessionStore) createNewSession() *Session {
 	// create a new session
 	session := &Session{
-		SessionId: sessionId,
+		SessionId: ss.createNewUniquelyRandomSessionId(),
 		FirstAccessed: time.Now(),
 		LastAccessed: time.Now(),
 		Values: make(map[string]interface{}),
 	}
+	return session
+}
 
+// unsafe
+func (ss *SessionStore) createNewSessionCookie(session *Session) *http.Cookie {
 	// create a new cookie
-	cookie := http.Cookie{
-		Name: GlobalSessionStore.CookieName,
+	cookie := &http.Cookie{
+		Name: ss.CookieName,
 		Value: session.SessionId,
-		Expires: session.FirstAccessed.Add(GlobalSessionStore.MaxLifeDuration),
+		Expires: session.FirstAccessed.Add(ss.MaxLifeDuration),
 		HttpOnly: true,
 	}
+	return cookie
+}
+
+func (ss *SessionStore) InitializeOwnerSession() *Session {
+	ss.Lock.Lock()
+
+	// create a new session
+	session := ss.createNewSession();
+
+	// store the corresponding session, in the session store
+	ss.Sessions[session.SessionId] = session
+
+	session.SetValue("owner", true)
+
+	ss.Lock.Unlock()
+
+	return session;
+}
+
+func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
+
+	sessionCookie, errUserCookie := r.Cookie(ss.CookieName)
+
+	ss.Lock.Lock()
+
+	if(errUserCookie == nil) {	// no error means client remembers the session_id as cookie
+		sessionId := sessionCookie.Value
+
+		// use the session id to find corresponding session
+		session, serverSessionExists := ss.Sessions[sessionId]
+
+		if(serverSessionExists) { // if a session is found, return it
+			ss.Lock.Unlock()
+			return session;
+		}
+	}
+
+	// create a new session
+	session := ss.createNewSession();
+
+	// store the corresponding session, in the session store
+	ss.Sessions[session.SessionId] = session
+
+	// create a new cookie
+	cookie := ss.createNewSessionCookie(session)
 
 	// set a ccookie on the http response
-	http.SetCookie(w, &cookie)
+	http.SetCookie(w, cookie)
 
-	// store the corresponding session
-	GlobalSessionStore.Sessions[session.SessionId] = session
-
-	GlobalSessionStore.Lock.Unlock()
+	ss.Lock.Unlock()
 	
 	return session
 }
