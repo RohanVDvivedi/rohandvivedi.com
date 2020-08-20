@@ -89,27 +89,28 @@ func main() {
 	defer data.Db.Close()
 	data.InitializeSchema()
 
+	// set up session store
+	if(config.GetGlobalConfig().Create_user_sessions) {
+		fmt.Println("Initializing SessionStore");
+		session.InitGlobalSessionStore("r_sess_id", 96 * time.Hour)
+	} else {
+		fmt.Println("Configuration declines setting up of SessionStore");
+	}
+
 	// initialize mail smtp client, and authenticate
 	if(config.GetGlobalConfig().Auth_mail_client) {
-		fmt.Println("Initializing SMTP mail client (config: Auth_mail_client ", config.GetGlobalConfig().Auth_mail_client, ")");
+		fmt.Println("Initializing and Authenticating SMTP mail client");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
 		mails.SendDeploymentMail()
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
-
-	// set up session store
-	if(config.GetGlobalConfig().Create_user_sessions) {
-		fmt.Println("Initializing SessionStore (config: Create_user_sessions ", config.GetGlobalConfig().Create_user_sessions, ")");
-		session.InitGlobalSessionStore("r_sess_id", 96 * time.Hour)
-	} else {
-		fmt.Println("Configuration declines setting up of SessionStore");
-	}
 	
-	fmt.Println("Application starting (config: ssl enabled ", config.GetGlobalConfig().SSL_enabled, ")");
 	if(!config.GetGlobalConfig().SSL_enabled){
+		fmt.Println("Application starting with ssl disabled on port 80");
 		log.Fatal(http.ListenAndServe(":80", mux));
 	} else {
+		fmt.Println("Application starting with SSL enabled on port 443");
 		log.Fatal(http.ListenAndServeTLS(":443",
 			"/etc/letsencrypt/live/rohandvivedi.com/fullchain.pem",
 			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", mux))
