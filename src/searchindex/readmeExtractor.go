@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"io"
 	"os"
-	"fmt"
+	"strconv"
+	"errors"
 )
 
 const filestoreDirectory = "./db/index_data_assets"
@@ -44,7 +45,7 @@ func GetAndStoreGithubFile(userName string, projectName string, fileName string)
         	}
     	}
 	} else {
-		return errors.New("Github API failed with response code " + resp.StatusCode.String())
+		return errors.New("Github API failed with response code " + strconv.Itoa(resp.StatusCode))
 	}
 	return nil
 }
