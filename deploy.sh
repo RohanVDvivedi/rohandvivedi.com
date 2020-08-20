@@ -2,10 +2,7 @@
 cd ~/go/src/rohandvivedi.com
 
 # checkout master branch
-git checkout master
-
-# pull new changes on master
-git pull
+git pull master
 
 # install for newly added go packages 
 go get github.com/mattn/go-sqlite3
