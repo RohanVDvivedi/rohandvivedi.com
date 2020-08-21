@@ -62,14 +62,14 @@ func InitializeSchema() {
 								)`);
     statement.Exec()
 
-    statement, _ = Db.Prepare(`CREATE TABLE project_hyperlinks (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
     								id INTEGER PRIMARY KEY AUTOINCREMENT, 
     								name VARCHAR(128) NOT NULL, 
     								href VARCHAR(512) NOT NULL, 
     								link_type VARCHAR(128) NOT NULL, 
     								descr VARCHAR(512) NOT NULL, 
     								project_id INTEGER, 
-    								FOREIGN KEY(project_id) REFERENCES projects(id));`);
+    								FOREIGN KEY(project_id) REFERENCES projects(id))`);
     statement.Exec()
 
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_categories (
