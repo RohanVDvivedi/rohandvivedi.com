@@ -1,6 +1,5 @@
 Backend
- *2 start storing readme files of your projects in data_assets and setup an inverted index engine,
- setup cron for this, to index all projects on the readme files, use bleve pakage
+ *2 setup an inverted index engine, to index all projects on the readme files, use bleve pakage
  *3 use projects search query for this
  *2 use github apis for updating your opensource project states atleast every 3 days
 

@@ -56,19 +56,20 @@ func InitializeSchema() {
 									github_link VARCHAR(512),
 									youtube_link VARCHAR(512),
 									image_link VARCHAR(512),
-									project_owner,
+									project_owner INTEGER,
 									FOREIGN KEY(project_owner) REFERENCES persons(id),
 									CONSTRAINT unique_project_name UNIQUE (name)
 								)`);
     statement.Exec()
 
-    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_hyperlinks (
-									id INTEGER PRIMARY KEY AUTOINCREMENT,
-									href VARCHAR(512) NOT NULL,
-									descr VARCHAR(512) NOT NULL,
-									project_id,
-									FOREIGN KEY(project_id) REFERENCES projects(id)
-								)`);
+    statement, _ = Db.Prepare(`CREATE TABLE project_hyperlinks (
+    								id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    								name VARCHAR(128) NOT NULL, 
+    								href VARCHAR(512) NOT NULL, 
+    								link_type VARCHAR(128) NOT NULL, 
+    								descr VARCHAR(512) NOT NULL, 
+    								project_id INTEGER, 
+    								FOREIGN KEY(project_id) REFERENCES projects(id));`);
     statement.Exec()
 
     statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS project_categories (

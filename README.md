@@ -68,9 +68,10 @@ Schema :
    * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id
+   * name
    * href
-   * descr
    * link_type (must be youtube, pdf, github, technopedia, this helps how to interpret it)
+   * descr
    * project_id
  * project_categories
    * id

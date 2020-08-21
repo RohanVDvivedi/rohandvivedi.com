@@ -58,18 +58,20 @@ func InsertProject(p *Project) {
 // Project's hyperlinks
 type ProjectHyperlink struct {
 	Id NullInt64
+	Name NullString
 	Href NullString
+	LinkType NullString
 	Descr NullString
 	ProjectId NullInt64
 }
 
 func projectHyperlinkSelectBaseQuery() string {
-	return "select project_hyperlinks.id, project_hyperlinks.href, project_hyperlinks.descr, project_hyperlinks.project_id from project_hyperlinks ";
+	return "select project_hyperlinks.id, project_hyperlinks.name, project_hyperlinks.href, project_hyperlinks.link_type, project_hyperlinks.descr, project_hyperlinks.project_id from project_hyperlinks ";
 }
 
 func baseScanProjectHyperlink(r Row) *ProjectHyperlink {
 	ph := ProjectHyperlink{};
-	err := r.Scan(&ph.Id, &ph.Href, &ph.Descr, &ph.ProjectId);
+	err := r.Scan(&ph.Id, &ph.Name, &ph.Href, &ph.LinkType, &ph.Descr, &ph.ProjectId);
 	if err != nil {
 		return nil
 	}
