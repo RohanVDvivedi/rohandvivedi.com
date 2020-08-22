@@ -32,6 +32,20 @@ func GetProjectByName(name string) *Project {
 	return baseScanProject(Db.QueryRow(projectSelectBaseQuery() + "where projects.name = ?", name));
 }
 
+func GetProjectsByNames(names_str []string) []Project {
+	p := []Project{}
+	names := convertToInterfaceSlice(names_str)
+	rows, _ := Db.Query(projectSelectBaseQuery() + "where projects.name in (" + getRepeatedQueryParamHolders(len(names)) + ")", names...)
+	defer rows.Close()
+	for rows.Next() {
+		project_p := baseScanProject(rows)
+		if project_p != nil {
+			p = append(p, *project_p)
+		}
+	}
+	return p;
+}
+
 func GetAllProjects() []Project {
 	p := []Project{}
 	rows, _ := Db.Query(projectSelectBaseQuery())
