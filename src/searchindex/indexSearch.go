@@ -3,7 +3,6 @@ package searchindex
 import (
 	"os"
 	"github.com/blevesearch/bleve"
-	"fmt"
 )
 
 var searchIndexesRoot = "./db/"
@@ -21,10 +20,13 @@ func deleteSearchIndex(indexFilename string) error {
 	return os.RemoveAll(searchIndexesRoot + indexFilename)
 }
 
-func getSimpleSearchQueryResults(searchIndex bleve.Index, searchPhrase string) {
+func getSimpleSearchQueryResults(searchIndex bleve.Index, searchPhrase string) []string {
 	query := bleve.NewMatchQuery(searchPhrase)
 	search := bleve.NewSearchRequest(query)
 	searchResults, _ := searchIndex.Search(search)
-
-	fmt.Println(searchResults);
+	resultKeys := []string{}
+	for _, resultDocument := range searchResults.Hits {
+		resultKeys = append(resultKeys, resultDocument.ID)
+	}
+	return resultKeys
 }

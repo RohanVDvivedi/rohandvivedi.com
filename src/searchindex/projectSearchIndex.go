@@ -74,6 +74,5 @@ func InsertProjectInSearchIndex(proj_db *data.Project) {
 }
 
 func GetProjectSearchQueryResults(queryString string) []string {
-	getSimpleSearchQueryResults(projectSearchIndex, queryString)
-	return []string{}
+	return getSimpleSearchQueryResults(projectSearchIndex, queryString)
 }
