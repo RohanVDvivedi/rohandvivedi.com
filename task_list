@@ -1,17 +1,15 @@
-Backend
- *2 setup an inverted index engine, to index all projects on the readme files, use bleve pakage
- *3 use projects search query for this
- *2 use github apis for updating your opensource project states atleast every 3 days
-
 Front end
- *4 complete About this app page and make it live
+ *4 complete About this app page and make it live, with anon mail box, and add your venture 
 
 Data injestion
  *5 add projects data to sqlite database
 
-Maintenance
- * (*partial) mail yourself cron mails about server health and user count, from sessions, and setup cron for this, provide api to send report for this
- * (* future, not required as of now) sessions garbage collection
+Maintenance features
+ * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
+ * (* future) setup cron to re build index if project readme have changed
+ * (* future) integrate your project with github read me apis
+ * (* future) build github projects dump table and build this table every 4-5 days
+ * (* future) sessions garbage collection
 
 Future feature
  * build live-chat page (* future)
