@@ -26,6 +26,7 @@ import (
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
     "rohandvivedi.com/src/data"
+    "rohandvivedi.com/src/searchindex"
 )
 
 // template manager to write templated html files as strings
@@ -82,12 +83,16 @@ func main() {
 	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(api.GetAllCategories));
 	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(api.GetOwner));
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
-	mux.Handle("/api/build/search_index", 	AuthorizeIfOwner(api.BuildSearchIndex));
+	mux.Handle("/api/search", 				(api.ProjectsSearch));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
 	defer data.Db.Close()
 	data.InitializeSchema()
+
+	// setup and initialize search index, and insert all projects
+	searchindex.InitProjectSearchIndex();
+	searchindex.InsertAllProjectsInSearchIndex();
 
 	// set up session store
 	ownerSessionId := ""

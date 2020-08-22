@@ -2,7 +2,6 @@ package searchindex
 
 import (
 	"github.com/blevesearch/bleve"
-	"fmt"
 	"rohandvivedi.com/src/data"
 )
 
@@ -27,12 +26,23 @@ func InitProjectSearchIndex() {
 	}
 }
 
-func InsertProjectInSearchIndex(projectName string) {
+func InsertProjectInSearchIndex_ByName(projectName string) {
 	proj_db := data.GetProjectByName(projectName)
 	if(proj_db == nil) {
 		return
 	}
 
+	InsertProjectInSearchIndex(proj_db)
+}
+
+func InsertAllProjectsInSearchIndex() {
+	proj_dbs := data.GetAllProjects()
+	for _, proj_db := range proj_dbs {
+		InsertProjectInSearchIndex(&proj_db)
+	}
+}
+
+func InsertProjectInSearchIndex(proj_db *data.Project) {
 	p := projectSearchIndexObject{};
 
 	p.Name = proj_db.Name.String
@@ -59,9 +69,7 @@ func InsertProjectInSearchIndex(projectName string) {
 		}
 	}
 
-	fmt.Println(p)
-
-	//projectSearchIndex.Delete(p.name)
+	projectSearchIndex.Delete(p.Name)
 	projectSearchIndex.Index(p.Name, p)
 }
 

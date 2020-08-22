@@ -7,15 +7,16 @@ import (
 )
 
 // api handlers in this file
-var BuildSearchIndex = http.HandlerFunc(buildSearchIndex)
+var ProjectsSearch = http.HandlerFunc(projectsSearch)
 
-func buildSearchIndex(w http.ResponseWriter, r *http.Request) {
+func projectsSearch(w http.ResponseWriter, r *http.Request) {
 
-	searchindex.InitProjectSearchIndex()
-	
-	searchindex.InsertProjectInSearchIndex("DummyProject")
+	query, exists_query := r.URL.Query()["query"];
+	searchResult := []string{}
 
-	searchResult := searchindex.GetProjectSearchQueryResults("source")
+	if(exists_query) {
+		searchResult = searchindex.GetProjectSearchQueryResults(query[0])
+	}
 
 	json, _ := json.Marshal(searchResult)
 	w.Write(json)
