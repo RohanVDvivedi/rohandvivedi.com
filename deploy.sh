@@ -5,7 +5,7 @@ cd ~/go/src/rohandvivedi.com
 git pull origin master
 
 # install for newly added go packages 
-go get github.com/mattn/go-sqlite3
+go mod tidy
 
 # install for newly added node packages 
 npm install --no-optional
