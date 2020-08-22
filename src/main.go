@@ -92,7 +92,7 @@ func main() {
 
 	// setup and initialize search index, and insert all projects
 	searchindex.InitProjectSearchIndex();
-	searchindex.InsertAllProjectsInSearchIndex();
+	go searchindex.InsertAllProjectsInSearchIndex();
 
 	// set up session store
 	ownerSessionId := ""
