@@ -43,8 +43,11 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 			projects_db = data.GetAllProjects()
 		}
 	} else if(exists_query) {
+		// logic built using the bleve search index, on read me file
 		projectNamesResult := searchindex.GetProjectSearchQueryResults(query[0])
 		projects_db = data.GetProjectsByNames(projectNamesResult)
+		// logic only using database
+		// projects_db = SearchProjectsByQueryString(queryString string)
 	} else if(exists_categories) {
 		projects_db = data.GetProjectsForCategoryNames(categories_list)
 	}
