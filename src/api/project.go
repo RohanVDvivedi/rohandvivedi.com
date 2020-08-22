@@ -47,7 +47,7 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 		projectNamesResult := searchindex.GetProjectSearchQueryResults(query[0])
 		projects_db = data.GetProjectsByNames(projectNamesResult)
 		// logic only using database
-		// projects_db = SearchProjectsByQueryString(queryString string)
+		//projects_db = data.SearchProjectsByQueryString(query[0])
 	} else if(exists_categories) {
 		projects_db = data.GetProjectsForCategoryNames(categories_list)
 	}
