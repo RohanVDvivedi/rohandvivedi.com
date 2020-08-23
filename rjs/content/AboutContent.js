@@ -56,7 +56,7 @@ export default class AboutContent extends ApiComponent {
 
                     <div class="set_sub_content_background_color generic-content-box-border"
                     	style={{
-                    		width: "60%",
+                    		width: "65%",
 	                    	padding: "1.5%",
                     	}}>
 

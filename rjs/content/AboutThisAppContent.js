@@ -6,10 +6,14 @@ export default class AboutThisAppContent extends React.Component {
 	render() {
 		return (
 			<div class="content-container content-root-background"
-				style={{padding: "5% 15% 2% 15%"}}>
+				style={{
+					paddingLeft: "5%",
+					paddingRight: "5%"
+				}}>
+				<div class="behind-nav"></div>
 				<div class="set_sub_content_background_color generic-content-box-border"
 				style={{
-					padding: "5%",
+					padding: "3%",
 				}}>
 					<p>
 						Github: <a href="https://github.com/RohanVDvivedi/rohandvivedi.com" target="_blank">rohandvivedi.com</a>
