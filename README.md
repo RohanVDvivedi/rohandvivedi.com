@@ -13,7 +13,7 @@ I plan to destribute this app in future, and so I am designing it with a good ba
 
 *Note: you may replace **bash** with **sh**, if it works on your machine*
 
-to access DB in console:
+#### to access DB in console:
  * you need sqlite3 shell ``sudo apt-get install sqlite3``
  * ***you do not need to install sqlite3 library for deploying, go will get its own binaries, while setup.***
  * ``sqlite3 ./db/data.db``
