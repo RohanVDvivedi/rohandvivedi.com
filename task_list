@@ -12,6 +12,6 @@ Maintenance features
  * (* future) sessions garbage collection
 
 Future feature
- * build live-chat page (* future)
+ * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
  * use linkedin APIs for capturing data (* future)
