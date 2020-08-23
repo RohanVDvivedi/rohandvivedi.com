@@ -3,11 +3,11 @@ This is a web application hosted on rohandvivedi.com,
 sole purpose : showcase projects and act as internet hosted resume
 I plan to destribute this app in future, and so I am designing it with a good backend.
 
-to setup :
+#### to setup :
  * ``sudo -E bash ./setup.sh &``
  * for production use  ``sudo -E bash ./deploy.sh prod &``
 
-to deploy :
+#### to deploy :
  * ``sudo -E bash ./deploy.sh &``
  * for production use  ``sudo -E bash ./deploy.sh prod &``
 
@@ -18,20 +18,19 @@ to access DB in console:
  * ***you do not need to install sqlite3 library for deploying, go will get its own binaries, while setup.***
  * ``sqlite3 ./db/data.db``
 
-to delete the database
+#### to delete the database
  * ``rm ./db/data.db``
 
-to change application configurations
+#### to change application configurations
  * use `dev_config.json` and `prod_config.json` according to the requirement, for your environment
 
-to setup new owner
+#### to setup new owner
  * delete the database file
  * update the owner.json file
  * deploy
  * then use sqlite3 shell, to insert rest of the data (I know, this will become easier after the admin panel is developed)
 
-The Schema is public
-Schema :
+#### Schema is public and defined as follows :
  * table: persons (this mostly would carry only 1 entry of the owner of this project)
    * id
    * fname
