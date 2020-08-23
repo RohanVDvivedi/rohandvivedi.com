@@ -8,11 +8,10 @@ export default class AboutThisAppContent extends React.Component {
 				<div class="set_sub_content_background_color generic-content-box-border"
 				style={{
 					padding: "5%",
-					display: "none"
 				}}>
 	            	<p>
-	            		This app with a mediocre looking front end, has backend which is quite complex (and over engineered in some sense).
-	            	It is equivalent to something, that I would be expected from a portfolio of a backend developer.
+	            		This app with a mediocre looking front end, has backend which is quite over engineered in some sense.
+	            	Yet, I would consider it equivalent in quality to something, that I would expect in a portfolio of a backend developer.
 	            	</p>
 
 	            	The tech stack of this application includes
@@ -29,7 +28,7 @@ export default class AboutThisAppContent extends React.Component {
 							<a href="https://golang.org/" target="_blank">golang</a>
 							<ul>
 								<li>
-									I discovered go to be a very friendly to my needs for building this application
+									go (short for golang) is well equipped with built-in packages to fit my requirements for building this application
 								</li>
 								<li>
 									It appealed to me as it is one of the few systems programming languages with built-in web-dev modules.
@@ -44,48 +43,66 @@ export default class AboutThisAppContent extends React.Component {
 								</li>
 							</ul>
 						</li>
+						<li>
+							<a href="https://blevesearch.com/" target="_blank">Bleve</a>
+							<ul>
+								<li>
+									Again I wanted an embedded search index; and Bleve ended up as the first result on my google search. <i>(ha.. ha. saw what I did there)</i>
+								</li>
+							</ul>
+						</li>
 					</ul>
 
 					<p>
-						You might be thinking, "Database for portfolio application? What is he even storing in there? His bank details or nuclear codes??".
-						Well being honest I am not storing anything of much sense except for details about me and my projects,
-						and neither do I have such a number of projects and accomplishments to really need 
-						a well designed database to showcase them on a website such as this with a tiny minuscule search engine.
+						You might be thinking, "Database and search index for portfolio application !!!".
+						Well being honest, I am not storing anything of much sense except for details about me and my projects,
+						and I do not have numerous projects or accomplishments that I would really require 
+						a well designed database (and a search index on top of that), to showcase them on a website such as this.
 					</p>
 					
 					<p>
-						I have extremely over engineered my portfolio, I wanted it simulate conditions for me to allow me
+						I an well aware, that I have extremely over engineered my portfolio, 
+						I wanted it simulate conditions for me to allow me
 						to learn about single handedly managing a small website.
+					</p>
 
+					<p>
 						At the other end of this extreme, I could build static portfolio website, 
 						which can be easily hosted on an apache/nginx server, or use wordpress or any other 
-						webhosting services. But where is the fun in that, where is the problem solving involved.
+						templated webhosting services. But where is the fun in that, where is the problem solving involved.
 						If you are not maintaining the application, not managing all the resources it requires,
-						then you are not learning enough from working on that project and If you are learning, then this application is not serving you any purpose.
+						then you are not learning enough from working on that project and if you are not learning, 
+						then this application is not serving you (in this case me) any purpose.
 					</p>
 
 					<p>
 						I built this application not just as my portfolio. Atleast when I started, 
 						I wanted to build/design it to fit needs for just about any one.
+
 						And that is one of the few reason why this application does not have a trivial or a non-existent backend.
-						The Backend (built in go) serves to cater apis fo the front end from the database (SQLite3).
+
+						The backend (built in go) serves to cater apis for the frontend from the database (SQLite3).
 						Even my name on the about page and my past experiences on the pasts page, needs to be queried in from the persons and pasts table in the database.
-						The frontend caches every api for atleast for 15 minutes, which reduces the load on the server.
-	            		The whole point of this is that, someone(/anyone) can come up, and by just changing his/her information details in the database, this server could serve as anyone's portfolio.
+						The frontend caches every api in the local storage, for atleast 15 minutes to reduce the load on the server.
+						The backend is devised to provide a meaning full search (using Bleve), to any one who wants to surf through projects of the owner.
+						There are cron jobs and HTTP APIs (authorizing only the owner) built to fetch readme files of various projects of the owner from corresponding Github repositories and to rebuild this search index.
+						The backend provides authentication support to owner, providing owner (and only the owner) with powerfull API's, to access sessions of users.
+						(yes, I know exactly when you clicked to open this page, LOL)
+						This might sound creepy, but such data collection helps the owner, to reconsider the design and routing of the website and optimize it for user friendliness at every point.
+
+						In the end, the whole point of this ridiculous portfolio is not to showcase my projects, but to showcase this application.
+	            		Which is meant for anyone who wants, to come up, and host their awesome low maintenance automatically updatable protfolio within minutes. (I made that up, I am short of words to describe this application.)
 	            	</p>
 
 	            	<p>
-	            		Moreover, the backend of this application is essentialy complex enough for what I wanted to do.
-	            		I wanted to make an application that would grab the details about my github repositories using the github public apis,
-	            		and index the readme files, and build a search engine for my projects, without needing me to update details to my portfolio everytime I push.
-	            		I don't want to document my projects again and again.
+	            		Moreover, the backend of this application is essential enough (and not over engineered) for what I wanted to do in my portfolio.
 	            	</p>
 	            	
 	            	
 	            	<p>
-	            	Thank you.<br/>
-	            	Rohan Dvivedi,<br/>
-	            	Creator of rohandvivedi.com.<br/>
+		            	Thank you.<br/>
+		            	Rohan Dvivedi,<br/>
+		            	Creator of rohandvivedi.com.<br/>
 	            	</p>
             	</div>
             </div>

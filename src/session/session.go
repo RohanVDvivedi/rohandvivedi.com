@@ -11,7 +11,7 @@ import "math/rand"
 func InitRand() {
     rand.Seed(time.Now().UnixNano())
 }
-const letterBytes = "*+-/<[abcdefghijklmnopqrstuvwxyz](ABCDEFGHIJKLMNOPQRSTUVWXYZ){0123456789}>"
+const letterBytes = "+-/<[abcdefghijklmnopqrstuvwxyz](ABCDEFGHIJKLMNOPQRSTUVWXYZ){0123456789}>-_^#"
 func RandStringBytes(n int) string {
 	b := make([]byte, n)
 	for i := range b {
@@ -53,12 +53,13 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 
 // unsafe
 func (ss *SessionStore) createNewUniquelyRandomSessionId() string {
-	// create a new session id composed of 12 character random string, 
+	// create a new session id composed of 32 character random string, 
 	// which does not exist in SessionStore before
-	sessionId := RandStringBytes(12)
+	sessionIdLength := 32
+	sessionId := RandStringBytes(sessionIdLength)
 	_, sessionIdExists := ss.Sessions[sessionId]
 	for(sessionIdExists) {
-		sessionId = RandStringBytes(12)
+		sessionId = RandStringBytes(sessionIdLength)
 		_, sessionIdExists = ss.Sessions[sessionId]
 	}
 

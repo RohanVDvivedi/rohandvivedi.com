@@ -17,6 +17,8 @@ type Config struct {
 	Send_deployment_mail	bool
 	Send_server_status_mail	bool
 
+	Recreate_search_index	bool
+
 	From_mailid 			string
 	From_password 			string
 }
