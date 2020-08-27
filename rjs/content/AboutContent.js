@@ -54,11 +54,7 @@ export default class AboutContent extends ApiComponent {
                 style={{justifyContent: "center",
                         alignItems: "center",}}>
 
-                    <div class="set_sub_content_background_color generic-content-box-border"
-                    	style={{
-                    		width: "calc(47% + 200px)",
-	                    	padding: "1.5%",
-                    	}}>
+                    <div class="about-container set_sub_content_background_color generic-content-box-border">
 
 	                        <div class="flex-row-container" style={{width: "100%"}}>
 

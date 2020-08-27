@@ -1,4 +1,6 @@
 .project-lister-contaier{
+	display: grid;
+
 	/* This line below funcking works out of the box
 	   honestly I do not really understand how this works, neither do I care to
 	   Please check out the video at : 
