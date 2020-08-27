@@ -153,6 +153,12 @@ export default class ProjectsContent extends ApiComponent {
     }
     render() {
     	var projects = this.state.api_response_body;
+    	projects.push(projects[0])
+    	projects.push(projects[0])
+    	projects.push(projects[0])
+    	projects.push(projects[0])
+    	projects.push(projects[0])
+    	projects.push(projects[0])
         return (
             <div class="content-container content-root-background">
                 <div class="behind-nav"></div>

@@ -4,11 +4,27 @@
 	   Please check out the video at : 
 	   https://www.youtube.com/watch?v=bam83Xv4VMA
 	   for more information */
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	/*grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));*/
+
+	/* using media queries to counter smaller result sizes in search */
+	grid-template-columns: repeat(3, 1fr);
 
 	margin-left: 10%;
 	margin-right: 10%;
 }
+/* tablet */
+@media (max-width: 768px) {
+	.project-lister-contaier {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+/* mobile */
+@media (max-width: 450px) {
+	.project-lister-contaier {
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
 
 .project-lister-element{
 	margin: 8%;
@@ -23,7 +39,7 @@ which is decided by the grid that is formed*/
 .project-lister-element-name{
 	text-align: center;
 	font-family: Capriola, Helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     padding: 2%;
 }
@@ -36,6 +52,6 @@ which is decided by the grid that is formed*/
 .project-lister-element-description{
 	text-align: center;
 	font-family: lato, sans-serif;
-	font-size: 17px;
+	font-size: 15px;
 	padding: 2%;
 }

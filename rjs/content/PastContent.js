@@ -16,11 +16,11 @@ class Experience extends React.Component {
 		var exp = this.props.exp;
 		var dateFormat = {month:"short", year:"2-digit"}
 		return (<div style={{marginTop: "15px"}}>
-					<div style={{fontSize:"22px",fontWeight: "600"}}>{exp.Position}</div>
+					<div style={{fontSize:"18px",fontWeight: "600"}}>{exp.Position}</div>
 						{exp.Organizations.map(function(expOrg){
 							return (
 							<div style={{marginLeft:"10px", marginBottom:"3px"}}>
-								<a href={expOrg.OrganizationLink} target="_blank" style={{fontSize:"18px"}}>{expOrg.Organization}</a>
+								<a href={expOrg.OrganizationLink} target="_blank" style={{fontSize:"15px"}}>{expOrg.Organization}</a>
 								<div style={{marginLeft:"5px"}}>
 									{expOrg.Teams.map(function(work){
 										return (<div>
@@ -92,7 +92,7 @@ export default class PastContent extends ApiComponent {
                         alignItems: "center",}}>
 
                     <div class="set_sub_content_background_color generic-content-box-border"
-                    	style={{ width: "60%", padding: "1.5%",
+                    	style={{ padding: "1.5%",
                     		color: "var(--font_color_lighter)",
                     		}}>
 

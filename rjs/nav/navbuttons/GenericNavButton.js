@@ -14,7 +14,7 @@ export default class GenericNavButton extends React.Component {
             <NavLink to={this.props.description["route_path"]} activeClassName={defaultClass + " active"}
                 className={defaultClass}
                 class={defaultClass}
-                style={(this.props.description["text"] != null && this.props.description["text"].length >= 4) ? {minWidth: "100px"} : {}}>
+                style={(this.props.description["text"] != null && this.props.description["text"].length >= 4) ? {minWidth: "55px"} : {}}>
 
                 <div>{this.props.description["text"]}</div>
 
