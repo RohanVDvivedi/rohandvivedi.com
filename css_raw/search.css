@@ -7,13 +7,15 @@
     font-size: 18px;
 
     display: inline-flex;
-    width:50%;
+    max-width: 650px;
+
+    margin: 5px;
 }
 
 /*search container below consists of the following things below*/
 
 .search-container .search-text-selector {
-	padding: 15px;
+	padding: 13px;
 	border-radius: 5px 0 0 5px;
 	width: 50%;
 
@@ -22,16 +24,27 @@
 	outline: none;
 	border: 0px;
 }
+@media (max-width: 768px) {
+	.search-container .search-text-selector {
+		width: 80%;
+	}
+}
 
+/* for smaller screens, search categories are not to be shown, i.e. tablets and phones */
 .search-container .search-categories-selector {
-	padding: 15px;
+	padding: 13px;
 	cursor: pointer;
 	width: 30%;
 	text-align: center;
 }
+@media (max-width: 768px) {
+	.search-container .search-categories-selector {
+		display: none;
+	}
+}
 
 .search-categories-selector .search-category {
-	padding: 15px;
+	padding: 13px;
 	cursor: pointer;
 	text-align: left;
 }
@@ -42,7 +55,7 @@
 }
 
 .search-container .search-button {
-	padding: 15px;
+	padding: 13px;
 	cursor: pointer;
 	border-radius: 0 5px 5px 0;
 	width: 20%;
