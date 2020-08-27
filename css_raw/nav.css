@@ -81,7 +81,7 @@
     color: var(--nav_button_font_color);
     text-align: center;
     padding: 14px 16px;
-    font-size: 18px;
+    font-size: calc(40px - 1.5vw);
     display: inline-block;
 
     /* given you shaded pretty button background */

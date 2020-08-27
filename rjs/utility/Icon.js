@@ -12,7 +12,7 @@ export default class Icon extends React.Component {
     	}
         return (
         	<a class={"generic-content-box-hovering-emboss-border" + (showToolTipInfo ? " tooltip-container" : "") }
-        		href={this.props.path} target="_blank" 
+        		href={this.props.path} target={this.props.path.includes("#") ? "_self" : "_blank"} 
         		style={{display: "block",padding:this.props.padding}}>
 		            <div className={"no-padding-and-no-margin"} style={{
 		            display: "inherit",
