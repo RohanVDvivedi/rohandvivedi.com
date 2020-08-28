@@ -4,14 +4,12 @@ sole purpose : showcase projects and act as internet hosted resume
 I plan to destribute this app in future, and so I am designing it with a good backend.
 
 #### to setup :
- * ``sudo -E bash ./setup.sh &``
- * for production use  ``sudo -E bash ./deploy.sh prod &``
+ * ``sudo -E ./setup.sh &``
+ * for production use  ``sudo -E ./deploy.sh prod &``
 
 #### to deploy :
- * ``sudo -E bash ./deploy.sh &``
- * for production use  ``sudo -E bash ./deploy.sh prod &``
-
-*Note: you may replace **bash** with **sh**, if it works on your machine*
+ * ``sudo -E ./deploy.sh &``
+ * for production use  ``sudo -E ./deploy.sh prod &``
 
 #### to access DB in console:
  * you need sqlite3 shell ``sudo apt-get install sqlite3``

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # go the application directory
 cd ~/go/src/rohandvivedi.com
 

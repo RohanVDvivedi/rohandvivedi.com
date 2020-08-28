@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # update and upgrade system
 apt-get update
 apt-get upgrade
@@ -18,4 +20,4 @@ git clone https://github.com/RohanVDvivedi/rohandvivedi.com.git
 cd ~/go/src/rohandvivedi.com
 
 # run the application
-bash ./deploy.sh "$@"
+./deploy.sh "$@"

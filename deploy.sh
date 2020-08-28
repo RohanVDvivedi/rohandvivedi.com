@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # go the application directory
 cd ~/go/src/rohandvivedi.com
 
@@ -33,4 +35,4 @@ else
 fi
 
 # run the application again
-bash ./run.sh "$@"
+./run.sh "$@"
