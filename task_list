@@ -1,6 +1,7 @@
 Front end
- * with anon mail box
- * make design mobile responsive, (about and pasts page)
+ * with anon mail box, for about this app page
+ * make design mobile responsive, (pasts page)
+ * seo
 
 Data injestion
  * add projects data to sqlite database
