@@ -1,14 +1,42 @@
 .about-container {
 	width: 60%;
-	padding: 1.5%;
+	padding: 20px;
 }
 /* width increased in tablet and mobile */
 @media (max-width: 768px) {
 	.about-container {
 		width: 80%;
-		padding: 1%;
 	}
 }
+
+/*
+	2 major components of about container are 
+	owner's image and the descriptive content about the owner
+ */
+
+.owner-image-descr-container {
+	width: 100%;
+}
+.owner-image {
+	width: 25%;
+}
+.owner-descr {
+	justify-content: space-between;
+	margin-left: 30px;
+}
+
+/* width increased in tablet and mobile */
+@media (max-width: 500px) {
+	.owner-image {
+		width: 50%;
+	}
+	.owner-descr {
+		justify-content: space-between;
+		margin: 0px;
+	}
+}
+
+
 
 
 .about-paragraph {
@@ -29,4 +57,32 @@
     font-family: inherit;
     color: var(--font_color_greenish);
     font-weight: bold;
+}
+
+
+
+.contacts-container {
+	padding-top: 2%;
+	justify-content: space-between;
+}
+@media (max-width: 600px) {
+	.contacts-container {
+		justify-content: flex-start;
+	}
+}
+
+
+
+.generic-contact-container {
+	padding: 5px;
+}
+.contact-title {
+	font-family: Capriola, Helvetica, sans-serif;
+	text-align: center;
+}
+.contact-icon-list-container {
+	justify-content: space-evenly;
+	align-items: center;
+	padding: 3px;
+	flex-wrap: wrap;
 }

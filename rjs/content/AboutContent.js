@@ -7,22 +7,11 @@ import CopyToClipboard from "../utility/Clipboard";
 class ContactSubContent extends React.Component {
 	render() {
 		return (
-			<div class="generic-content-box-border" style={{
-				padding: "5px",
-				width: this.props.width,
-			}}>
-				<div style={{
-					fontFamily: "Capriola, Helvetica, sans-serif",
-					textAlign: "center",
-				}}>
+			<div class={this.props.className}>
+				<div class="contact-title">
 					{this.props.title}
 				</div>
-				<div class="flex-row-container"
-					style={{
-						justifyContent: "space-evenly",
-						alignItems: "center",
-						padding: "3px",
-					}}>
+				<div class="flex-row-container contact-icon-list-container">
 			    	{this.props.children}
 				</div>
 			</div>);
@@ -56,11 +45,11 @@ export default class AboutContent extends ApiComponent {
 
                     <div class="about-container set_sub_content_background_color generic-content-box-border">
 
-	                        <div class="flex-row-container" style={{width: "100%"}}>
+	                        <div class="flex-row-container flex-col-container-only-mobile">
 
-	                            <img src={"/img/me_500h.jpg"} style={{width: "25%"}}/>
+	                            <img class="owner-image" src={"/img/me_500h.jpg"}/>
 	                            
-	                        	<div class="flex-col-container" style={{justifyContent: "space-between", marginLeft: "30px"}}>
+	                        	<div class="owner-descr flex-col-container">
 	                            	<div class="about-paragraph">Hi, I am <span class="owner-name">{owner.Fname + " " + owner.Lname}</span>.</div>
 	                            	<div class="about-paragraph">I am a Software and Hardware Developer.</div>
 	                            	<div class="about-paragraph">Predominantly a <span class="skills-bolden-coloren">Backend Developer</span>, who also indulges in building crappy <span class="skills-bolden-coloren">Frontend</span>s like this one.</div>
@@ -68,25 +57,21 @@ export default class AboutContent extends ApiComponent {
 	                            </div>
 	                        </div>
 
-	                    <div class="flex-row-container"
-		                    style={{
-		                    	paddingTop: "2%",
-		                    	justifyContent: "space-between",
-		                    }}>
+	                    <div class="flex-row-container contacts-container">
 
-		                    <ContactSubContent title="CV" width="8%">
+		                    <ContactSubContent title="CV" className="generic-contact-container">
 						        {cv}
 							</ContactSubContent>
 
-							<ContactSubContent title="Email" width="40%">
-								<a class="generic-content-box-hovering-emboss-border tooltip-container" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{display: "block",padding:"10px"}}>
+							<ContactSubContent title="Email" className="generic-contact-container">
+								<a class="hidden-only-tablet-mobile generic-content-box-hovering-emboss-border tooltip-container" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{padding:"10px"}}>
 						        	<div style={{display:"inline-block", fontSize: "17px"}}>{owner.Email}</div>
 						        	<div class="tooltip-content">Click to copy</div>
 						        </a>
 							    <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" infoBoxText="Use mail client" height="35px" width="35px" padding="5px" />
 							</ContactSubContent>
 						        
-			                <ContactSubContent title="Online presence" width="35%">
+			                <ContactSubContent title="Online presence" className="generic-contact-container">
 			                	{owner.Socials.filter(function(social){return !checkIfSocialIsA_CV(social);}).map(function(social){
 					            	return <Icon path={social.ProfileLink} iconPath={"/icon/" + social.LinkType + ".png"} infoBoxText={"my " + social.LinkType + " profile"} height="35px" width="35px" padding="5px" />
 					        	})}

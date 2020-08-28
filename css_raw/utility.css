@@ -109,3 +109,34 @@ body {
     --font_color_lighter: #323232;
     --font_color_greenish: #1B9653;
 }
+
+/* screen size specific utilities */
+/*.hidden-only-tablet-mobile {}.flex-row-container-only-tablet-mobile {}.flex-col-container-only-tablet-mobile {}*/
+@media (max-width: 768px) {
+  .hidden-only-tablet-mobile {
+    display: none;
+  }
+  .flex-row-container-only-tablet-mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  .flex-col-container-only-tablet-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/*.hidden-only-mobile {}.flex-row-container-only-mobile {}.flex-col-container-only-mobile {}*/
+@media (max-width: 450px) {
+  .hidden-only-mobile {
+    display: none;
+  }
+  .flex-row-container-only-mobile {
+    display: flex;
+    flex-direction: row;
+  }
+  .flex-col-container-only-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+}
