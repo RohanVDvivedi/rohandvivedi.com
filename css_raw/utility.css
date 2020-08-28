@@ -127,7 +127,7 @@ body {
 }
 
 /*.hidden-only-mobile {}.flex-row-container-only-mobile {}.flex-col-container-only-mobile {}*/
-@media (max-width: 450px) {
+@media (max-width: 500px) {
   .hidden-only-mobile {
     display: none;
   }

@@ -3,7 +3,7 @@
 	padding: 20px;
 }
 /* width increased in tablet and mobile */
-@media (max-width: 768px) {
+@media (max-width: 850px) {
 	.about-container {
 		width: 80%;
 	}
@@ -24,8 +24,6 @@
 	justify-content: space-between;
 	margin-left: 30px;
 }
-
-/* width increased in tablet and mobile */
 @media (max-width: 500px) {
 	.owner-image {
 		width: 50%;
@@ -33,6 +31,7 @@
 	.owner-descr {
 		justify-content: space-between;
 		margin: 0px;
+		margin-top: 10px;
 	}
 }
 
@@ -67,7 +66,8 @@
 }
 @media (max-width: 600px) {
 	.contacts-container {
-		justify-content: flex-start;
+		justify-content: space-around;
+		flex-wrap: wrap;
 	}
 }
 
