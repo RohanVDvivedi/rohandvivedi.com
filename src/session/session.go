@@ -106,6 +106,28 @@ func (ss *SessionStore) InitializeOwnerSession() *Session {
 	return session;
 }
 
+func (ss *SessionStore) GetExistingSession(w http.ResponseWriter, r *http.Request) *Session {
+	sessionCookie, errUserCookie := r.Cookie(ss.CookieName)
+
+	ss.Lock.Lock()
+
+	if(errUserCookie == nil) {	// no error means client remembers the session_id as cookie
+		sessionId := sessionCookie.Value
+
+		// use the session id to find corresponding session
+		session, serverSessionExists := ss.Sessions[sessionId]
+
+		if(serverSessionExists) { // if a session is found, return it
+			ss.Lock.Unlock()
+			return session;
+		}
+	}
+
+	ss.Lock.Unlock()
+
+	return nil
+}
+
 func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Request) *Session {
 
 	sessionCookie, errUserCookie := r.Cookie(ss.CookieName)
