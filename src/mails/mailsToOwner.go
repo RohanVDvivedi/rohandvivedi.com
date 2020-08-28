@@ -33,6 +33,11 @@ func SendDeploymentMail(ownerSessionId string) {
 
 func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 
+	if(!config.GetGlobalConfig().Auth_mail_client || !config.GetGlobalConfig().Create_user_sessions) {
+		w.Write([]byte("{'status':'failure','reason':'missing mail auth client or session store'}"))
+		return;
+	}
+
 	s := session.GlobalSessionStore.GetOrCreateSession(w, r);
 
 	userSessionId := ""
@@ -45,8 +50,8 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 		if(anonMailCountExists) {
 			valanonMailCount, ok := anonMailCount.(int)
 			if(ok){
-				if(valanonMailCount > 3) {
-					w.Write([]byte("{'status':'anonymous mail request declined'}"))
+				if(valanonMailCount >= 3) {
+					w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached'}"))
 					return;
 				}
 				userAnonMailCount = valanonMailCount + 1
