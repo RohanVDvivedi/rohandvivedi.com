@@ -1,5 +1,5 @@
 Front end
- * complete About this app page and make it live, with anon mail box, and add your venture 
+ * with anon mail box
  * make design mobile responsive, (about and pasts page)
 
 Data injestion
@@ -7,7 +7,8 @@ Data injestion
 
 Backend
  * setup chat server
- * anon mail box api
+ * make authorize box only if the user has a cookie
+ * anon mail box api, only if the user has a valid cookie and allow only 3 emails
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
