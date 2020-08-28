@@ -4,7 +4,7 @@
 cd ~/go/src/rohandvivedi.com
 
 # checkout master branch
-git pull origin master
+git pull --no-edit origin master
 
 # install for newly added go packages 
 go mod tidy
