@@ -11,12 +11,26 @@ class TimedEvent extends React.Component {
 	}
 }
 
+function removeAbbreviationInBrackets(str) {
+    console.log(str)
+    return (str.includes("(") && str.includes(")")) ? 
+    (str.replace(str.slice(str.search("\\("), str.search("\\)") + 1), "").trim()) : str;
+}
+
+function shortenByFirstComma(str) {
+    return str.includes(",") ? (str.slice(0, str.search(",")).trim()) : str;
+}
+
 class Experience extends React.Component {
 	render() {
 		var exp = this.props.exp;
+        console.log(exp)
 		var dateFormat = {month:"short", year:"2-digit"}
 		return (<div style={{marginTop: "15px"}}>
-					<div style={{fontSize:"18px",fontWeight: "600"}}>{exp.Position}</div>
+					<div style={{fontSize:"18px",fontWeight: "600"}}>
+                        <span>{removeAbbreviationInBrackets(exp.Position)}</span>
+                        <span class="hidden-only-mobile">{exp.Position.replace(removeAbbreviationInBrackets(exp.Position), "")}</span>
+                    </div>
 						{exp.Organizations.map(function(expOrg){
 							return (
 							<div style={{marginLeft:"10px", marginBottom:"3px"}}>
@@ -24,9 +38,11 @@ class Experience extends React.Component {
 								<div style={{marginLeft:"5px"}}>
 									{expOrg.Teams.map(function(work){
 										return (<div>
-													<TimedEvent revent={work.Team_or_ResearchTitle} rtime={work.FromDate.toLocaleDateString("en-US", dateFormat) + " - " + work.ToDate.toLocaleDateString("en-US", dateFormat)} />
+                                                    <TimedEvent revent={(<span><span>{shortenByFirstComma(work.Team_or_ResearchTitle)}</span>
+                                                        <span class="hidden-only-mobile">{work.Team_or_ResearchTitle.replace(shortenByFirstComma(work.Team_or_ResearchTitle), "")}</span></span>)} 
+                                                    rtime={work.FromDate.toLocaleDateString("en-US", dateFormat) + " - " + work.ToDate.toLocaleDateString("en-US", dateFormat)} />
 													{work.PastType == "RESEARCH" ? (<div style={{fontWeight: "600"}}>Research paper: <a href={work.ResearchPaperLink} target="_blank">DOI link here</a></div>) : ""}
-													<div>{work.Descr == null ? "" : work.Descr}</div>
+													<div class="hidden-only-mobile">{work.Descr == null ? "" : work.Descr}</div>
 												</div>);
 									})}
 								</div>
