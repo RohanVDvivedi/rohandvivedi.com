@@ -84,6 +84,8 @@ func main() {
 	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(api.GetOwner));
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/search", 				(api.ProjectsSearch));
+	mux.Handle("/api/anon_mails", 			(mails.SendAnonymousMail));
+
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
