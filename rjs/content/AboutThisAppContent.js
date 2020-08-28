@@ -5,12 +5,12 @@ import { NavLink } from 'react-router-dom';
 export default class AboutThisAppContent extends React.Component {
 	render() {
 		return (
-			<div class="content-container content-root-background"
+			<div class="content-root-container content-root-background"
 				style={{
 					paddingLeft: "5%",
 					paddingRight: "5%"
 				}}>
-				<div class="behind-nav"></div>
+				
 				<div class="set_sub_content_background_color generic-content-box-border"
 				style={{
 					padding: "3%",

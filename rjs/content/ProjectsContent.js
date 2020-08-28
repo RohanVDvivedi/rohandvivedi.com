@@ -154,8 +154,7 @@ export default class ProjectsContent extends ApiComponent {
     render() {
     	var projects = this.state.api_response_body;
         return (
-            <div class="content-container content-root-background">
-                <div class="behind-nav"></div>
+            <div class="content-root-container content-root-background">
                 
                 <ProjectSearchBar searchQueryStringBuiltCallback={this.searchQueryStringBuiltCallback.bind(this)}/>
 

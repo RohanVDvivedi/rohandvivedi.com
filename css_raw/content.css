@@ -1,18 +1,13 @@
 .content-root-background {
     background-color: var(--content_background_color);
 }
-.content-screen-widthed {
-    width: 100vw;
-}
-.content-screen-heighted {
-    height: 100vh;
-}
-.behind-nav{
-    display: block;
-    height: 80px;
-}
 
-.content-container {
+.content-root-container {
+    /* we want the padding to be included in the specified min height */
+    box-sizing: border-box;
+    /* this padding allows us to get away with mav box height */
+    padding-top: 80px;
+    width: 100vw;
     min-height: 100vh;
 }
 

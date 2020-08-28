@@ -87,7 +87,7 @@ export default class PastContent extends ApiComponent {
     	pasts = pastsCombine
 
         return (
-            <div class="content-root-background content-screen-widthed content-screen-heighted flex-col-container"
+            <div class="content-root-container content-root-background flex-col-container"
                 style={{justifyContent: "center",
                         alignItems: "center",}}>
 
