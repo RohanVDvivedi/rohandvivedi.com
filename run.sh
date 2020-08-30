@@ -7,4 +7,4 @@ cd ~/go/src/rohandvivedi.com
 npm run build_bundles
 
 # compile and run go backend
-go run src/main.go "$@"
+go run src/*.go "$@"
