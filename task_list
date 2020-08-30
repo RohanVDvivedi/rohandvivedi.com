@@ -1,15 +1,12 @@
 Front end
  * with anon mail box, for about this app page
- * make design mobile responsive, (pasts page)
  * seo
 
 Data injestion
  * add projects data to sqlite database
 
 Backend
- * setup chat server
- * make authorize box only if the user has a cookie
- * anon mail box api, only if the user has a valid cookie and allow only 3 emails
+ * setup chat server backend socket controller
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
