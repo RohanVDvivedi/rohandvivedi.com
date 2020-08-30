@@ -39,29 +39,34 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s := session.GlobalSessionStore.GetOrCreateSession(w, r);
+	userSessionId := s.SessionId
 
-	userSessionId := ""
-	userAnonMailCount := 1
-
-	if(s != nil) {
-		userSessionId = s.SessionId
+	userAnonMailCountIntr := s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{}{
+		userAnonMailCount := 0
 		anonMailCountKey := "anon_mail_count"
-		anonMailCount, anonMailCountExists := s.GetValue(anonMailCountKey);
+
+		anonMailCount, anonMailCountExists := values[anonMailCountKey];
 		if(anonMailCountExists) {
-			valanonMailCount, ok := anonMailCount.(int)
+			valAnonMailCount, ok := anonMailCount.(int)
 			if(ok){
-				if(valanonMailCount >= 3) {
-					w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached'}"))
-					return;
+				if(valAnonMailCount >= 3) {
+					return nil;
 				}
-				userAnonMailCount = valanonMailCount + 1
-				s.SetValue(anonMailCountKey, userAnonMailCount);
-			} else {
-				s.SetValue(anonMailCountKey, 1);
+				userAnonMailCount = valAnonMailCount
 			}
-		} else {
-			s.SetValue(anonMailCountKey, 1);
 		}
+
+		userAnonMailCount = userAnonMailCount + 1
+
+		values[anonMailCountKey] = userAnonMailCount
+		return userAnonMailCount
+	}, nil);
+
+	userAnonMailCount, ok := userAnonMailCountIntr.(int)
+
+	if(userAnonMailCountIntr == nil || !ok){
+		w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached'}"))
+		return
 	}
 
 	subjects, exists_subjects := r.URL.Query()["anon_mail_subject"];

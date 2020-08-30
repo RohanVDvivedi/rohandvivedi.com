@@ -7,7 +7,9 @@ import (
 import (
 	"rohandvivedi.com/src/templateManager"
 )
+
+var PageHandler = http.HandlerFunc(pageHandler)
  
-func Handler(w http.ResponseWriter, r *http.Request) {
+func pageHandler(w http.ResponseWriter, r *http.Request) {
 	templateManager.RenderHtmlWithParameters(w, "index.html", nil);
 }

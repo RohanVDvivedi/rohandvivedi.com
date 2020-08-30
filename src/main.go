@@ -69,7 +69,7 @@ func main() {
 
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
-	mux.HandleFunc("/pages/", CountApiHitsInSessionValues(page.Handler));
+	mux.Handle("/pages/", CountApiHitsInSessionValues(page.PageHandler));
 
 	// attach all the handlers for websockets here
 	// we have only one page handler, because this is a react app, but will have many apis
