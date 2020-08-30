@@ -86,7 +86,7 @@ func (ss *SessionStore) createNewSessionCookie(session *Session) *http.Cookie {
 		Value: session.SessionId,
 		Expires: session.FirstAccessed.Add(ss.MaxLifeDuration),
 		HttpOnly: true,
-		Path: "/"
+		Path: "/",
 	}
 	return cookie
 }
