@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"strconv"
+	"time"
 )
 
 import (
@@ -44,20 +45,28 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	userAnonMailCountIntr := s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{}{
 		userAnonMailCount := 0
 		anonMailCountKey := "anon_mail_count"
+		anonMailLastTimeKey := "anon_mail_last_sent"
 
 		anonMailCount, anonMailCountExists := values[anonMailCountKey];
 		if(anonMailCountExists) {
 			valAnonMailCount, ok := anonMailCount.(int)
 			if(ok){
 				if(valAnonMailCount >= 3) {
-					return nil;
+					anonMailLastTimeIntr, lastTimeExists := values[anonMailLastTimeKey]
+					if(!lastTimeExists){
+						return nil
+					}
+					anonMailLastTime, isTime := anonMailLastTimeIntr.(time.Time)
+					if(!isTime || time.Now().Sub(anonMailLastTime) < time.Hour * 12){
+						return nil;
+					}
 				}
 				userAnonMailCount = valAnonMailCount
 			}
 		}
 
 		userAnonMailCount = userAnonMailCount + 1
-
+		values[anonMailLastTimeKey] = time.Now()
 		values[anonMailCountKey] = userAnonMailCount
 		return userAnonMailCount
 	}, nil);
@@ -65,7 +74,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	userAnonMailCount, ok := userAnonMailCountIntr.(int)
 
 	if(userAnonMailCountIntr == nil || !ok){
-		w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached'}"))
+		w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached, please wait 48 hours'}"))
 		return
 	}
 
