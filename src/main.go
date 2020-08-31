@@ -65,11 +65,11 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", CountApiHitsInSessionValues(Send404OnFolderRequest(fs)))
+	mux.Handle("/", CountApiHitsInSessionValues(GzipCompressor(Send404OnFolderRequest(fs))))
 
 	// attach all the handlers of all the pages here
 	// we have only one page handler, because this is a react app, but will have many apis
-	mux.Handle("/pages/", CountApiHitsInSessionValues(page.PageHandler));
+	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
 
 	// attach all the handlers for websockets here
 	// we have only one page handler, because this is a react app, but will have many apis
