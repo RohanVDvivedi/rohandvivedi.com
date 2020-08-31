@@ -51,7 +51,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 		if(anonMailCountExists) {
 			valAnonMailCount, ok := anonMailCount.(int)
 			if(ok){
-				if(valAnonMailCount >= 3) {
+				if(valAnonMailCount>0 && (valAnonMailCount%3)==0) {
 					anonMailLastTimeIntr, lastTimeExists := values[anonMailLastTimeKey]
 					if(!lastTimeExists){
 						return nil
