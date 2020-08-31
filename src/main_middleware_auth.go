@@ -24,11 +24,11 @@ func AuthorizeIfOwner(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-        
-        if(config.GetGlobalConfig().Create_user_sessions) {
-	        // you must need a session to allow me to check if you are the owner of the website
-	        s := session.GlobalSessionStore.GetExistingSession(w, r);
-	        if(s != nil) {
+
+		if(config.GetGlobalConfig().Create_user_sessions) {
+			// you must need a session to allow me to check if you are the owner of the website
+			s := session.GlobalSessionStore.GetExistingSession(r);
+			if(s != nil) {
 				isOwner, ownerKeyExists := s.GetValue("owner");
 				if(ownerKeyExists) {
 					valIsOwner, ok := isOwner.(bool)
@@ -44,7 +44,7 @@ func AuthorizeIfOwner(next http.Handler) http.Handler {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("You are not an authorized owner of rohandvivedi.com"))
 
-    })
+	})
 }
 
 func AuthorizeIfHasSession(next http.Handler) http.Handler {
@@ -55,11 +55,11 @@ func AuthorizeIfHasSession(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-        
-        if(config.GetGlobalConfig().Create_user_sessions) {
-	        // you must need a session to allow me to allow you to reach the handler function
-	        s := session.GlobalSessionStore.GetExistingSession(w, r);
-	        if(s != nil) {
+		
+		if(config.GetGlobalConfig().Create_user_sessions) {
+			// you must need a session to allow me to allow you to reach the handler function
+			s := session.GlobalSessionStore.GetExistingSession(r);
+			if(s != nil) {
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -69,5 +69,5 @@ func AuthorizeIfHasSession(next http.Handler) http.Handler {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("You are not authorized to access this api of rohandvivedi.com"))
 
-    })
+	})
 }

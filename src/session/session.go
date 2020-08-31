@@ -107,7 +107,7 @@ func (ss *SessionStore) InitializeOwnerSession() *Session {
 	return session;
 }
 
-func (ss *SessionStore) GetExistingSession(w http.ResponseWriter, r *http.Request) *Session {
+func (ss *SessionStore) GetExistingSession(r *http.Request) *Session {
 	sessionCookie, errUserCookie := r.Cookie(ss.CookieName)
 
 	ss.Lock.Lock()
