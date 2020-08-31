@@ -1,14 +1,7 @@
 package chatter
 
 import (
-	"encoding/json"
-	"golang.org/x/net/websocket"
 	"time"
-	"fmt"
-)
-
-import (
-	"rohandvivedi.com/src/session"
 )
 
 // a ping message : shoudl be sent by the client at regular interval to keep the socket connection alive
@@ -16,12 +9,12 @@ import (
 {"From":"","To":"","SentAt":time.Now,"Message":""}
 */
 // this is the message that goes to and from a user to another
-type chatMessage struct {
-	from string
+type ChatMessage struct {
+	From string
 
-	to string
+	To string
 
-	sentAt time.Time
+	SentAt time.Time
 
-	message string
+	Message string
 }

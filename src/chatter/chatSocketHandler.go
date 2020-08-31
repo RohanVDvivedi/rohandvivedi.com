@@ -1,52 +1,51 @@
 package chatter
 
 import (
-	"encoding/json"
 	"golang.org/x/net/websocket"
-	"time"
-	"fmt"
 )
 
 import (
-	"rohandvivedi.com/src/session"
+	//"rohandvivedi.com/src/session"
 )
 
 // map of all the chat users 
 // from their name to the chatUser struct pointer
-var map[string]*chatUser = {}
+var Chatters = map[string]*ChatUser{}
  
 func ChatHandler(conn *websocket.Conn) {
 
+	defer conn.Close();
+
 	r := conn.Request()
-	// the user must share his Name and a PublicKey
-	
-	r.
+	// the user must share his Name
 
-	fmt.Println(*s)
-	
-	go readFromConn(conn);
+	name := ""
+	nameList, existsName := r.URL.Query()["name"];
+	if(!existsName) {
+		return
+	}
+	name = nameList[0]
 
-	for i := 0; i < 5; i++ {
-		websocket.JSON.Send(conn, struct {Time time.Time; Iterator int}{Time: time.Now(), Iterator: i});
-
-		// loop every 2 seconds
-		time.Sleep(1 * time.Second);
+	_, chatUserSameNameExists := Chatters[name]
+	if(chatUserSameNameExists) {
+		return
 	}
 
-	conn.Close();
-}
-type resp struct {
-	Message string
-}
-func readFromConn(conn *websocket.Conn) {
-	res := resp{Message: ""};
-	for {
-		err := websocket.JSON.Receive(conn, &res);
-		if(err == nil) {
-			fmt.Printf("%s\n", res.Message);
-		} else {
-			fmt.Println("Error reading response on socket");
-			break;
+	chatUser := NewChatUser(name, conn)
+	defer chatUser.DestroyChatUser()
+
+	Chatters[name] = chatUser
+
+	for (true) {
+		msg := chatUser.ReceiveMessage()
+		if(msg.From == chatUser.Name) {
+			receiverUser, found := Chatters[msg.To]
+			if(found) {
+				receiverUser.SendMessage(msg)
+			}
 		}
 	}
+
+	delete(Chatters, name);
+
 }

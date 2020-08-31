@@ -75,7 +75,7 @@ func main() {
 	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(websocket.Handler(chatter.ChatHandler))));
+	mux.Handle("/chat", AuthorizeIfHasSession(chatter.AuthorizeChat(CountApiHitsInSessionValues(websocket.Handler(chatter.ChatHandler)))));
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				CountApiHitsInSessionValues(api.GetPerson));
