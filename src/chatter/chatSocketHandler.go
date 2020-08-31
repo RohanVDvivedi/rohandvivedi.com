@@ -38,11 +38,9 @@ func ChatHandler(conn *websocket.Conn) {
 
 	for (true) {
 		msg := chatUser.ReceiveMessage()
-		if(msg.From == chatUser.Name) {
-			receiverUser, found := Chatters[msg.To]
-			if(found) {
-				receiverUser.SendMessage(msg)
-			}
+		receiverUser, found := Chatters[msg.To]
+		if(found) {
+			receiverUser.SendMessage(msg)
 		}
 	}
 

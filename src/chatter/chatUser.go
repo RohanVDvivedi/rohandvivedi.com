@@ -40,18 +40,14 @@ func (user *ChatUser) DestroyChatUser() {
 	user.Connection.Close()
 }
 
-func (user *ChatUser) SendMessage(msg ChatMessage) bool {
-	if(msg.To == user.Name) {
-		user.InputMessage <- msg
-		user.LastMessage = time.Now()
-		return true
-	}
-	return false
+func (user *ChatUser) SendMessage(msg ChatMessage) {
+	user.InputMessage <- msg
 }
 
 func (user *ChatUser) ReceiveMessage() ChatMessage {
 	msg := ChatMessage{}
 	websocket.JSON.Receive(user.Connection, &msg)
+	user.LastMessage = time.Now()
 	if(msg.From == user.Name) {
 		return msg
 	}
@@ -62,6 +58,7 @@ func (user *ChatUser) LoopOverChannelToPassMessagesToThisUser() {
 	for msg := range user.InputMessage {
 		if(msg.To == user.Name) {
 			websocket.JSON.Send(user.Connection, msg)
+			user.LastMessage = time.Now()
 		}
 	}
 }

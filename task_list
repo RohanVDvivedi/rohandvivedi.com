@@ -1,11 +1,17 @@
-Front end
- * with anon mail box, for about this app page
-
 Data injestion
  * add projects data to sqlite database
 
-Backend
- * setup chat server backend socket controller
+Front end
+ * with anon mail box, for about this app page
+
+Backend (* future)
+ * sophisticated handling for chat server
+   * connection close abruptly
+   * locking global chat user name pool
+   * better authurization and authentication
+   * storage of public keys of client, and share public key
+   * update names in session
+   * check for open connection on all, and also drop messages if thay are being processed out of time, like 30 mins old not allowed else allowed etc
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
