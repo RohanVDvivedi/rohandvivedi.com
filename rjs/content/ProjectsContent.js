@@ -7,9 +7,9 @@ class ProjectListerComponent extends React.Component {
     render() {
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border">
-                <div class="project-lister-element-name">{this.props.project.Name}</div>
+                <h1 class="project-lister-element-name">{this.props.project.Name}</h1>
                 <img class="project-lister-element-image" src={this.props.project.ImageLink}/>
-	            <div class="project-lister-element-description">{this.props.project.Descr}</div>
+	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
                 <div class="flex-row-container" style={{justifyContent: "space-around",
                 										alignItems: "center",}}>
