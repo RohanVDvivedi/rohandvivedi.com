@@ -1,8 +1,4 @@
-/* for nav bar conatiner */
-@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
-
 /* all #nav-container* must be flex-row-container */
-
 #nav-container
 {
     position: fixed;

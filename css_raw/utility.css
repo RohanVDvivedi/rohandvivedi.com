@@ -1,11 +1,13 @@
 /* Things break and you cry if you remove this, learnt this the hard way */
-
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
+/* for font */
+@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
 
 /* classes for easy setup for flex and grid containers */
 
