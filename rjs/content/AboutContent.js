@@ -50,7 +50,7 @@ export default class AboutContent extends ApiComponent {
 	                            <img class="owner-image" src={"/img/me_500h.jpg"}/>
 	                            
 	                        	<div class="owner-descr flex-col-container">
-	                            	<div class="about-paragraph">Hi, I am <span class="owner-name">{owner.Fname + " " + owner.Lname}</span>.</div>
+	                            	<div class="about-paragraph">Hi, I am <h1 class="owner-name" style={{display:"inline"}}>{owner.Fname + " " + owner.Lname}</h1>.</div>
 	                            	<div class="about-paragraph">I am a Software and Hardware Developer.</div>
 	                            	<div class="about-paragraph">Predominantly a <span class="skills-bolden-coloren">Backend Developer</span>, who also indulges in building crappy <span class="skills-bolden-coloren">Frontend</span>s like this one.</div>
 	                            	<div class="about-paragraph">My interests also include <span class="skills-bolden-coloren">Systems Programming, Databases, Computer Vision, Embedded Systems, Robotics, </span> and <span class="skills-bolden-coloren">FPGAs</span>.</div>
