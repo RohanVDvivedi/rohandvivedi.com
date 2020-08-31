@@ -57,7 +57,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 						return nil
 					}
 					anonMailLastTime, isTime := anonMailLastTimeIntr.(time.Time)
-					if(!isTime || time.Now().Sub(anonMailLastTime) < time.Hour * 12){
+					if(!isTime || time.Now().Sub(anonMailLastTime) < time.Hour * 48){
 						return nil;
 					}
 				}
