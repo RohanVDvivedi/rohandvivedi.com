@@ -11,5 +11,6 @@ import (
 var PageHandler = http.HandlerFunc(pageHandler)
  
 func pageHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
 	templateManager.RenderHtmlWithParameters(w, "index.html", nil);
 }
