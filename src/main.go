@@ -43,7 +43,11 @@ import (
 import (
 	"rohandvivedi.com/src/page"
 	"rohandvivedi.com/src/api"
-	"rohandvivedi.com/src/socket"
+)
+
+// web socket handler for chatting 
+import (
+	"rohandvivedi.com/src/chatter"
 )
 
 // the fitst command line argument has to be "prod" for production
@@ -71,7 +75,7 @@ func main() {
 	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(websocket.Handler(socket.ChatHandler))));
+	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(websocket.Handler(chatter.ChatHandler))));
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				CountApiHitsInSessionValues(api.GetPerson));
