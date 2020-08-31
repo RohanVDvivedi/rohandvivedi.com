@@ -68,15 +68,12 @@ func main() {
 	mux.Handle("/", CountApiHitsInSessionValues(GzipCompressor(Send404OnFolderRequest(fs))))
 
 	// attach all the handlers of all the pages here
-	// we have only one page handler, because this is a react app, but will have many apis
 	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
 
 	// attach all the handlers for websockets here
-	// we have only one page handler, because this is a react app, but will have many apis
-	mux.Handle("/soc", CountApiHitsInSessionValues(websocket.Handler(socket.Handler)));
+	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(websocket.Handler(socket.ChatHandler))));
 
 	// attach all the handlers of all the apis here
-	// we have only one page handler, because this is a react app, but will have many apis
 	mux.Handle("/api/person", 				CountApiHitsInSessionValues(api.GetPerson));
 	mux.Handle("/api/project", 				CountApiHitsInSessionValues(api.FindProject));
 	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(api.GetAllCategories));
