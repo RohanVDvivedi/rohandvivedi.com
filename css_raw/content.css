@@ -8,7 +8,9 @@
     /* this padding allows us to get away with mav box height */
     padding-top: 70px;
     padding-bottom: 20px;
-    width: 100vw;
+
+    /* this calc allows me to remove the miniscule horizontal scroll on pages that need the vertical scroll bar */
+    width: calc(100vw - (100vw - 100%));
     min-height: 100vh;
 }
 
