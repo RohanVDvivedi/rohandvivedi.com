@@ -59,15 +59,12 @@ I plan to destribute this app in future, and so I am designing it with a good ba
    * id
    * name
    * descr
-   * github_link
-   * youtube_link
-   * image_link (additional github, youtube and images may be added in the project_hyperlinks table)
    * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id
    * name
    * href
-   * link_type (must be youtube, pdf, github, technopedia, this helps how to interpret it)
+   * link_type (must be caps for youtube, pdf, github, technopedia, this helps how to interpret it)
    * descr
    * project_id
  * project_categories
