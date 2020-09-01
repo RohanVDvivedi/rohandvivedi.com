@@ -9,34 +9,30 @@ import (
 )
 
 import (
-	//"rohandvivedi.com/src/session"
+	"rohandvivedi.com/src/session"
 	"rohandvivedi.com/src/config"
 )
 
 func AuthorizeChat(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		// in the dev env, auth is to be bypassed
-		if(config.GetGlobalConfig().Environment == "dev") {
-			next.ServeHTTP(w, r)
-			return
-		}
-
-		/*nameList, existsName := r.URL.Query()["name"];
+		nameList, existsName := r.URL.Query()["name"];
 
 		if(config.GetGlobalConfig().Create_user_sessions) {
 			s := session.GlobalSessionStore.GetExistingSession(r);
 			if(s != nil) {
-				name, nameExists := s.GetValue("name");
-				if(nameExists) {
-					valName, ok := name.(bool)
-					if(ok && valIsOwner){
-						next.ServeHTTP(w, r)
-						return
-					}
+				// if a name is present in the request, store it in the session values
+				if(existsName) {
+					s.SetValue("name", nameList[0]);
+				}
+				// allow the request to be served only if the name exists in the session values
+				_, nameSessionExists := s.GetValue("name");
+				if(nameSessionExists) {
+					next.ServeHTTP(w, r)
+					return
 				}
 			}
-		}*/
+		}
 
 		// if any thing fails, just unautorize
 		w.WriteHeader(http.StatusUnauthorized)

@@ -5,7 +5,7 @@ import (
 )
 
 import (
-	//"rohandvivedi.com/src/session"
+	"rohandvivedi.com/src/session"
 )
 
 // map of all the chat users 
@@ -13,18 +13,12 @@ import (
 var Chatters = map[string]*ChatUser{}
  
 func ChatHandler(conn *websocket.Conn) {
-
 	defer conn.Close();
 
-	r := conn.Request()
-	// the user must share his Name
+	// the user must have a Name
 
-	name := ""
-	nameList, existsName := r.URL.Query()["name"];
-	if(!existsName) {
-		return
-	}
-	name = nameList[0]
+	nameIntr, _ := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("name")
+	name, _ := nameIntr.(string)
 
 	_, chatUserSameNameExists := Chatters[name]
 	if(chatUserSameNameExists) {
