@@ -142,14 +142,11 @@ export default class ProjectsContent extends ApiComponent {
 	}
 	apiPath() {
 		const basePath = "/api/project";
-        return [basePath, this.queryString].join("?");
+		const queryParam = "get_hyperlinks=true";
+        return [basePath, [this.queryString, queryParam].join("&")].join("?");
     }
     bodyDataBeforeApiFirstResponds() {
-    	return [{Name: "Loading",
-				Descr: "Loading Description",
-				GithubLink: "",
-				YoutubeLink: "",
-				ImageLink: "/img/pcb.jpeg",}];
+    	return [{Name: "Loading",Descr: "Loading Description",}];
     }
     render() {
     	var projects = this.state.api_response_body;
