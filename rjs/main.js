@@ -38,3 +38,17 @@ import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
 
 ReactDOM.render(<Root />, document.getElementById("root"));
+
+window.ChatterStart = function(name) {
+    window.ChatterName = name
+    window.ChatterSocket = new WebSocket("ws://localhost/chat?name=" + name);
+    window.ChatterSocket.onmessage = function(event){
+        var payload = JSON.parse(event.data)
+        console.log(payload.From + " : " + payload.Message)
+    }
+}
+
+window.ChatterSend = function(to, message) {
+    var payload = {From:window.ChatterName,To:to,Message:message,SentAt:new Date()}
+    window.ChatterSocket.send(JSON.stringify(payload))
+}
