@@ -5,20 +5,21 @@ import Icon from "../utility/Icon";
 
 class ProjectListerComponent extends React.Component {
     render() {
-    	thumbnailImage = this.props.project.Hyperlinks.find((link) => {return link.Name.toLowercase() == "thumbnail" && link.LinkType == "IMAGE"})
+    	var hyperlinks = (this.props.project.Hyperlinks == null) ? [] : this.props.project.Hyperlinks
+    	var thumbImage = hyperlinks.find((link) => {return link.Name.toLowerCase() == "thumbnail" && link.LinkType == "IMAGE"})
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border">
                 <h1 class="project-lister-element-name">{this.props.project.Name}</h1>
 
-                {(thumbnailImage != null) ? (<img class="project-lister-element-image" src={thumbnailImage.Href}/>) : ""}
+                {(thumbImage != null) ? (<img class="project-lister-element-image" src={thumbImage.Href}/>) : ""}
 
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
                 <div class="flex-row-container" style={{justifyContent: "space-around",
                 										alignItems: "center",}}>
-                	{this.props.project.Hyperlinks.map((link) => {
+                	{hyperlinks.filter((link) => {return link.LinkType != "IMAGE"}).map((link) => {
                 		return (
-                			<Icon path={link.Href} iconPath={"/icon/" + link.LinkType.toLowercase() + ".png"} 
+                			<Icon path={link.Href} iconPath={"/icon/" + link.LinkType.toLowerCase() + ".png"} 
                 				infoBoxText={link.Name + " - " + link.Descr} height="35px" width="35px" padding="5px" />
                 			)
                 	})}
