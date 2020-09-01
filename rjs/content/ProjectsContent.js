@@ -5,16 +5,23 @@ import Icon from "../utility/Icon";
 
 class ProjectListerComponent extends React.Component {
     render() {
+    	thumbnailImage = this.props.project.Hyperlinks.find((link) => {return link.Name.toLowercase() == "thumbnail" && link.LinkType == "IMAGE"})
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border">
                 <h1 class="project-lister-element-name">{this.props.project.Name}</h1>
-                <img class="project-lister-element-image" src={this.props.project.ImageLink}/>
+
+                {(thumbnailImage != null) ? (<img class="project-lister-element-image" src={thumbnailImage.Href}/>) : ""}
+
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
                 <div class="flex-row-container" style={{justifyContent: "space-around",
                 										alignItems: "center",}}>
-                    <Icon path={this.props.project.GithubLink} iconPath="/icon/github.png" infoBoxText={(<div>Open Github<br/>repository</div>)} height="35px" width="35px" padding="5px" />
-                    <Icon path={this.props.project.YoutubeLink} iconPath="/icon/youtube.png" height="35px" width="35px" padding="5px" />
+                	{this.props.project.Hyperlinks.map((link) => {
+                		return (
+                			<Icon path={link.Href} iconPath={"/icon/" + link.LinkType.toLowercase() + ".png"} 
+                				infoBoxText={link.Name + " - " + link.Descr} height="35px" width="35px" padding="5px" />
+                			)
+                	})}
                 </div>
             </div>
         );
