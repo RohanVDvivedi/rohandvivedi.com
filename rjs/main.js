@@ -42,7 +42,7 @@ ReactDOM.render(<Root />, document.getElementById("root"));
 window.ChatterStart = function(name) {
     window.ChatterName = name
     window.ChatterSocket = new WebSocket(
-        "ws" + window.location.protocol.includes("https") + "://" + window.location.host + "/chat?name=" + name);
+        (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/chat?name=" + name);
     window.ChatterSocket.onmessage = function(event){
         var payload = JSON.parse(event.data)
         console.log(payload.From + " : " + payload.Message)
