@@ -3,6 +3,7 @@ package searchindex
 import (
 	"github.com/blevesearch/bleve"
 	"rohandvivedi.com/src/data"
+	"rohandvivedi.com/src/githubsync"
 )
 
 var projectSearchIndexPath = "project_search.bleve"
@@ -62,7 +63,7 @@ func InsertProjectInSearchIndex(proj_db *data.Project) {
 	proj_db_hyperlinks := proj_db.GetProjectHyperlinks();
 	for _, proj_db_hyperlink := range proj_db_hyperlinks {
 		if(proj_db_hyperlink.Name.Valid && proj_db_hyperlink.LinkType.Valid && proj_db_hyperlink.LinkType.String == "GITHUB"){
-			readmeContent, err := getGithubFile("RohanVDvivedi", proj_db_hyperlink.Name.String, "README.md")
+			readmeContent, err := githubsync.GetGithubFile("RohanVDvivedi", proj_db_hyperlink.Name.String, "README.md")
 			if(err == nil) {
 				p.ReadmeFiles[proj_db_hyperlink.Name.String] = readmeContent
 			}

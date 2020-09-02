@@ -1,4 +1,4 @@
-package searchindex
+package githubsync
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ func getGithubRawFileDownloadLink(userName string, projectName string, fileName 
 	return "https://raw.githubusercontent.com/" + userName + "/" + projectName + "/master/" + fileName
 }
 
-func getGithubFile(userName string, projectName string, fileName string) (string, error) {
+func GetGithubFile(userName string, projectName string, fileName string) (string, error) {
 	GetApiRequestPath := getGithubRawFileDownloadLink(userName, projectName, fileName)
 
 	resp, err := http.Get(GetApiRequestPath)

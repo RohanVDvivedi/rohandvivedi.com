@@ -6,6 +6,7 @@ import (
 	"errors"
 	"encoding/json"
 	"strconv"
+	"io/ioutil"
 )
 
 type GithubProject struct {
@@ -110,7 +111,7 @@ func getGithubRepositoryApiUrl(userName string, projectName string) string {
 	return "https://api.github.com/repos/" + userName + "/" + projectName
 }
 
-func GetGithubProject(userName string, projectName string) *GithubProject, err {
+func GetGithubProject(userName string, projectName string) (*GithubProject, error) {
 	GetApiRequestPath := getGithubRepositoryApiUrl(userName, projectName)
 
 	resp, err := http.Get(GetApiRequestPath)
@@ -123,11 +124,12 @@ func GetGithubProject(userName string, projectName string) *GithubProject, err {
 		if(errRead != nil) {
 			return nil, errRead
 		}
+		p := &GithubProject{}
 		errUnmarshal := json.Unmarshal(data, p);
 		if(errUnmarshal != nil) {
 			return nil, errUnmarshal
 		}
-		return *p, nil
+		return p, nil
 	}
 	return nil, errors.New("Github API failed with response code " + strconv.Itoa(resp.StatusCode))
 }
