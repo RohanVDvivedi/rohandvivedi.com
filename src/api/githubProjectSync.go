@@ -29,6 +29,8 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(projdb);
 				fmt.Println("using");
 				fmt.Println(projGithub);
+				fmt.Println("repo link = ")
+				fmt.Println(projdb.GetProjectGithubRepositoryLink())
 			}
 		}
 	}

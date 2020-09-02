@@ -100,6 +100,26 @@ func (p *Project) GetProjectHyperlinks() []ProjectHyperlink {
 	return ph;
 }
 
+func (p *Project) GetProjectGithubRepositoryLink() *ProjectHyperlink {
+	return baseScanProjectHyperlink(Db.QueryRow(projectHyperlinkSelectBaseQuery() + 
+	`where project_hyperlinks.project_id = ? and project_hyperlinks.name = ? and project_hyperlinks.link_type = ?`,
+	 p.Id, p.Name, "GITHUB"))
+}
+
+func (p *Project) GetProjectGithubRepositoryLinks() []ProjectHyperlink {
+	ph := []ProjectHyperlink{}
+	rows, _ := Db.Query(projectHyperlinkSelectBaseQuery() + 
+	"where project_hyperlinks.project_id = ? and project_hyperlinks.link_type = ?", p.Id, "GITHUB")
+	defer rows.Close()
+	for rows.Next() {
+		projecthyperlink_p := baseScanProjectHyperlink(rows)
+		if projecthyperlink_p != nil {
+			ph = append(ph, *projecthyperlink_p)
+		}
+	}
+	return ph;
+}
+
 // Categories
 type ProjectCategory struct {
 	Id NullInt64
