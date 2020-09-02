@@ -14,7 +14,7 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 	projectName, exists_name := r.URL.Query()["name"];
 	if exists_name {
 		projGithub, err := githubsync.GetGithubProject("RohanVDvivedi", projectName[0]);
-		if(err) {
+		if(err != nil) {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("No such Github repository exists for the owner on Github"))
 		} else {
