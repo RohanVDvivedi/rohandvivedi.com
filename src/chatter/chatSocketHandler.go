@@ -31,7 +31,11 @@ func ChatHandler(conn *websocket.Conn) {
 	Chatters[name] = chatUser
 
 	for (true) {
-		msg := chatUser.ReceiveMessage()
+		msg, err := chatUser.ReceiveMessage()
+		// if there happens to be any error in receiving a message, user created or not, we close the connection up
+		if(err != nil) {
+			break;
+		}
 		receiverUser, found := Chatters[msg.To]
 		if(found) {
 			receiverUser.SendMessage(msg)
@@ -39,5 +43,4 @@ func ChatHandler(conn *websocket.Conn) {
 	}
 
 	delete(Chatters, name);
-
 }
