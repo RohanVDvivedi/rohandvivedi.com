@@ -46,7 +46,7 @@ func (user *ChatUser) SendMessage(msg ChatMessage) {
 
 func (user *ChatUser) ReceiveMessage() ChatMessage {
 	msg := ChatMessage{}
-	websocket.JSON.Receive(user.Connection, &msg)
+	ChatMessageCodec.Receive(user.Connection, &msg)
 	user.LastMessage = time.Now()
 	if(msg.From == user.Name) {
 		return msg
@@ -57,7 +57,7 @@ func (user *ChatUser) ReceiveMessage() ChatMessage {
 func (user *ChatUser) LoopOverChannelToPassMessagesToThisUser() {
 	for msg := range user.InputMessage {
 		if(msg.To == user.Name) {
-			websocket.JSON.Send(user.Connection, msg)
+			ChatMessageCodec.Send(user.Connection, msg)
 			user.LastMessage = time.Now()
 		}
 	}

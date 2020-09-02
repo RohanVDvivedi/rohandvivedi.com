@@ -2,6 +2,7 @@ package chatter
 
 import (
 	"time"
+	"golang.org/x/net/websocket"
 )
 
 // a ping message : shoudl be sent by the client at regular interval to keep the socket connection alive
@@ -18,3 +19,5 @@ type ChatMessage struct {
 
 	Message string
 }
+
+var ChatMessageCodec = websocket.JSON;
