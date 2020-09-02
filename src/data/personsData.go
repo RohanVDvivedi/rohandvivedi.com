@@ -40,7 +40,10 @@ func UpdatePerson(p *Person) {
 }
 
 func InsertPerson(p *Person) {
-	Db.Exec("insert into persons (fname, lname, email, type) values (?,?,?,?)", p.Fname, p.Lname, p.Email, p.UserType);
+	_, err := Db.Exec("insert into persons (fname, lname, email, type) values (?,?,?,?)", p.Fname, p.Lname, p.Email, p.UserType);
+	if(err == nil) {
+		*p = *GetPersonByName(p.Name)
+	}
 }
 
 // Person's Social-s

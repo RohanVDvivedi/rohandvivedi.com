@@ -61,7 +61,10 @@ func UpdateProject(p *Project) {
 }
 
 func InsertProject(p *Project) {
-	Db.Exec("insert into projects (name, descr, project_owner) values (?,?,?)", p.Name, p.Descr, p.ProjectOwner);
+	_, err := Db.Exec("insert into projects (name, descr, project_owner) values (?,?,?)", p.Name, p.Descr, p.ProjectOwner);
+	if(err == nil) {
+		*p = *GetProjectByName(p.Name)
+	}
 }
 
 // Project's hyperlinks
