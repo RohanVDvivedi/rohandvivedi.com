@@ -2,7 +2,6 @@ package data
 
 import (
     "io/ioutil"
-    "database/sql"
     "encoding/json"
     "fmt"
 )
@@ -100,7 +99,7 @@ func InitializeSchema() {
     p_new_owner := Person{}
     data, _ := ioutil.ReadFile("./owner.json")
 	_ = json.Unmarshal(data, &p_new_owner);
-	p_new_owner.UserType = NullString{sql.NullString{String:"owner", Valid:true}}
+	p_new_owner.UserType = NewNullString("owner")
 
 	p := GetOwner();
     if(p != nil) {	// there exists an owner, just update everything except name

@@ -11,6 +11,10 @@ type NullInt64 struct {
 	sql.NullInt64
 }
 
+func NewNullInt64(val int64) (NullInt64) {
+	return NullInt64{sql.NullInt64{Int64: val, Valid: true}}
+}
+
 // MarshalJSON for NullInt64
 func (ni *NullInt64) MarshalJSON() ([]byte, error) {
 	if !ni.Valid {
@@ -33,6 +37,10 @@ func (ni *NullInt64) UnmarshalJSON(b []byte) error {
 // NullBool is an alias for sql.NullBool data type
 type NullBool struct {
 	sql.NullBool
+}
+
+func NewNullBool(val bool) (NullBool) {
+	return NullBool{sql.NullBool{Bool: val, Valid: true}}
 }
 
 // MarshalJSON for NullBool
@@ -59,6 +67,10 @@ type NullFloat64 struct {
 	sql.NullFloat64
 }
 
+func NewNullFloat64(val float64) (NullFloat64) {
+	return NullFloat64{sql.NullFloat64{Float64: val, Valid: true}}
+}
+
 // MarshalJSON for NullFloat64
 func (nf *NullFloat64) MarshalJSON() ([]byte, error) {
 	if !nf.Valid {
@@ -81,6 +93,10 @@ func (nf *NullFloat64) UnmarshalJSON(b []byte) error {
 // NullString is an alias for sql.NullString data type
 type NullString struct {
 	sql.NullString
+}
+
+func NewNullString(val string) (NullString) {
+	return NullString{sql.NullString{String: val, Valid: true}}
 }
 
 // MarshalJSON for NullString
