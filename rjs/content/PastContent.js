@@ -12,7 +12,6 @@ class TimedEvent extends React.Component {
 }
 
 function removeAbbreviationInBrackets(str) {
-    console.log(str)
     return (str.includes("(") && str.includes(")")) ? 
     (str.replace(str.slice(str.search("\\("), str.search("\\)") + 1), "").trim()) : str;
 }
@@ -24,7 +23,6 @@ function shortenByFirstComma(str) {
 class Experience extends React.Component {
 	render() {
 		var exp = this.props.exp;
-        console.log(exp)
 		var dateFormat = {month:"short", year:"2-digit"}
 		return (<div style={{marginTop: "15px"}}>
 					<div style={{fontSize:"18px",fontWeight: "600"}}>
