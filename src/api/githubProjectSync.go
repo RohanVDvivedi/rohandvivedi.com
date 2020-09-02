@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"rohandvivedi.com/src/githubsync"
 	"rohandvivedi.com/src/data"
@@ -26,7 +25,7 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// update or insert project details of owner, from the github api call
+	// update or insert project details, from the github api call
 	projdb := data.GetProjectByName(projectName[0])
 	if(projdb == nil) {
 		projdb = &data.Project{
@@ -36,19 +35,30 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 		}
 		data.InsertProject(projdb)
 	} else {
-		// update project
 		projdb.Name = data.NewNullString(projGithub.Name);
 		projdb.Descr = data.NewNullString(projGithub.Description);
 		projdb.ProjectOwner = data.NewNullInt64(1);
 		data.UpdateProject(projdb)
-		/*proj_hyperlinkdb := projdb.GetProjectGithubRepositoryLink())
-		if(proj_hyperlinkdb == nil) {
-			// insert github link
-		} else {
-			// update github link
-		}*/
 	}
 
-	fmt.Println(projdb)
+	// update or insert project github repository link, from the github api call
+	proj_hyperlinkdb := projdb.GetProjectGithubRepositoryLink()
+	if(proj_hyperlinkdb == nil) {
+		proj_hyperlinkdb = &data.ProjectHyperlink{
+			Name: data.NewNullString(projGithub.Name),
+			Href: data.NewNullString(projGithub.HTMLURL),
+			Descr: data.NewNullString("Github repository of the project"),
+			LinkType: data.NewNullString("GITHUB"),
+			ProjectId: projdb.Id,
+		}
+		data.InsertProjectHyperlink(proj_hyperlinkdb)
+	} else {
+		proj_hyperlinkdb.Name = data.NewNullString(projGithub.Name);
+		proj_hyperlinkdb.Href = data.NewNullString(projGithub.HTMLURL);
+		proj_hyperlinkdb.Descr = data.NewNullString("Github repository of the project");
+		proj_hyperlinkdb.LinkType = data.NewNullString("GITHUB");
+		proj_hyperlinkdb.ProjectId = projdb.Id;
+		data.UpdateProjectHyperlink(proj_hyperlinkdb)
+	}
 }
 
