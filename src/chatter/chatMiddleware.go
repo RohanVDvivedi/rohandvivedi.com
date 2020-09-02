@@ -15,6 +15,10 @@ import (
 
 func AuthorizeChat(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// if any thing fails, just unautorize
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("You are not authorized to chat on rohandvivedi.com"))
+		return
 
 		nameList, existsName := r.URL.Query()["name"];
 
