@@ -85,7 +85,7 @@ func main() {
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/search", 				(api.ProjectsSearch));
 	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(CountApiHitsInSessionValues(mails.SendAnonymousMail)));
-	mux.Handle("/api/project_github_syncup",(api.SyncProjectFromGithubRepository));
+	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", "./db/data.db")
