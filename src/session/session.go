@@ -55,7 +55,7 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 func (ss *SessionStore) createNewUniquelyRandomSessionId() string {
 	// create a new session id composed of 32 character random string, 
 	// which does not exist in SessionStore before
-	sessionIdLength := 32
+	sessionIdLength := 40
 	sessionId := RandStringBytes(sessionIdLength)
 	_, sessionIdExists := ss.Sessions[sessionId]
 	for(sessionIdExists) {
