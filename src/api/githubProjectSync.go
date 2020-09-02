@@ -29,15 +29,26 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 	// update or insert project details of owner, from the github api call
 	projdb := data.GetProjectByName(projectName[0])
 	if(projdb == nil) {
-		// insert project and project_hyperlink of the github repository
+		projdb = &data.Project{
+			Name: data.NewNullString(projGithub.Name),
+			Descr: data.NewNullString(projGithub.Description),
+			ProjectOwner: data.NewNullInt64(1),
+		}
+		data.InsertProject(projdb)
 	} else {
 		// update project
-		proj_hyperlinkdb := projdb.GetProjectGithubRepositoryLink())
+		projdb.Name = data.NewNullString(projGithub.Name);
+		projdb.Descr = data.NewNullString(projGithub.Description);
+		projdb.ProjectOwner = data.NewNullInt64(1);
+		data.UpdateProject(projdb)
+		/*proj_hyperlinkdb := projdb.GetProjectGithubRepositoryLink())
 		if(proj_hyperlinkdb == nil) {
 			// insert github link
 		} else {
 			// update github link
-		}
+		}*/
 	}
+
+	fmt.Println(projdb)
 }
 
