@@ -90,6 +90,18 @@ func baseScanProjectHyperlink(r Row) *ProjectHyperlink {
 	return &ph;
 }
 
+func UpdateProjectHyperlink(p *ProjectHyperlink) {
+	Db.Exec("update project_hyperlinks set name = ?, href = ?, link_type = ?, descr = ?, project_id = ? where id = ?", p.Name, p.Href, p.LinkType, p.Descr, p.ProjectId, p.Id);
+}
+
+func InsertProjectHyperlink(p *ProjectHyperlink) {
+	_, err := Db.Exec("insert into project_hyperlinks (name, href, link_type, descr, project_id) values (?,?,?,?,?)", p.Name, p.Href, p.LinkType, p.Descr, p.ProjectId);
+	if(err == nil) {
+		*p = *baseScanProjectHyperlink(Db.QueryRow(projectHyperlinkSelectBaseQuery() + 
+		"where project_hyperlinks.project_id = ? and project_hyperlinks.name = ? and project_hyperlinks.link_type = ?", p.ProjectId, p.Name, p.LinkType))
+	}
+}
+
 func (p *Project) GetProjectHyperlinks() []ProjectHyperlink {
 	ph := []ProjectHyperlink{}
 	rows, _ := Db.Query(projectHyperlinkSelectBaseQuery() + "where project_hyperlinks.project_id = ?", p.Id)
