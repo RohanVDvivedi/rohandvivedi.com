@@ -142,3 +142,39 @@ body {
     flex-direction: column;
   }
 }
+
+/* modal utilities */
+/* use below classes to build modals */
+/* modal back ground is a dummy div that cover and blurs the background */
+.modal-background {
+  /* position it relative to screen, and covering the screen */
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+
+  /* modl background should be on top of everything, except the modal0 */
+  z-index:10000;
+
+  /* blur-out/hide the content of the body */
+  background-color: #7F7F7F;
+  opacity: 0.5;
+
+  /* display flex only for centering the internal modal */
+  display: flex;
+
+  /* center the modal div */
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-title {
+  z-index:10001;
+}
+/* at the same time modal is shown at the center of the screen */
+.modal-background .modal {
+  /* zindex must be higer than the modal back ground */
+  z-index:10001;
+
+  opacity: 1;
+}

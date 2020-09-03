@@ -2,6 +2,8 @@ import React from "react";
 
 import { NavLink } from 'react-router-dom';
 
+import Modal from "../utility/Modal";
+
 export default class AboutThisAppContent extends React.Component {
 	render() {
 		return (
@@ -93,7 +95,8 @@ export default class AboutThisAppContent extends React.Component {
 					<p>
 						Moreover, the backend of this application is essential enough (and not over-engineered) for what I wanted to do in my portfolio.
 					</p>
-	            	
+
+					<Modal title="Hello Modal"> <div>Hello World, inside the modal</div>{/*<ContactForm />*/} </Modal>
 	            	
 	            	<p>
 		            	Thank you,<br/>
