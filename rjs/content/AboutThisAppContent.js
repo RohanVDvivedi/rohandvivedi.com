@@ -96,7 +96,7 @@ export default class AboutThisAppContent extends React.Component {
 						Moreover, the backend of this application is essential enough (and not over-engineered) for what I wanted to do in my portfolio.
 					</p>
 
-					<Modal title="Hello Modal"> <div>Hello World, inside the modal</div>{/*<ContactForm />*/} </Modal>
+					<Modal title="Hello Modal"> <div style={{height: "250px", width: "250px"}}>Hello World, inside the modal</div>{/*<ContactForm />*/} </Modal>
 	            	
 	            	<p>
 		            	Thank you,<br/>

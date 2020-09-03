@@ -64,10 +64,10 @@ export default class AboutContent extends ApiComponent {
 							</ContactSubContent>
 
 							<ContactSubContent title="Email" className="generic-contact-container">
-								<a class="hidden-only-tablet-mobile generic-content-box-hovering-emboss-border tooltip-container" href="#" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{padding:"10px"}}>
+								<div id="owner-email-copy" class="hidden-only-tablet-mobile generic-content-box-hovering-emboss-border tooltip-container" onClick={()=>{CopyToClipboard("rohandvivedi@gmail.com")}} style={{padding:"10px"}}>
 						        	<div style={{display:"inline-block", fontSize: "17px"}}>{owner.Email}</div>
 						        	<div class="tooltip-content">Click to copy</div>
-						        </a>
+						        </div>
 							    <Icon path={"mailto:" + owner.Email} iconPath="/icon/mail.png" infoBoxText="Use mail client" height="35px" width="35px" padding="5px" />
 							</ContactSubContent>
 						        

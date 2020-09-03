@@ -86,3 +86,7 @@
 	padding: 3px;
 	flex-wrap: wrap;
 }
+
+#owner-email-copy:hover {
+	cursor: pointer
+}

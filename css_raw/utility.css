@@ -157,9 +157,8 @@ body {
   /* modl background should be on top of everything, except the modal0 */
   z-index:10000;
 
-  /* blur-out/hide the content of the body */
-  background-color: #7F7F7F;
-  opacity: 0.5;
+  /* blur-out/hide the content of the body, using this background div */
+  background-color: rgba(0,0,0,.4);
 
   /* display flex only for centering the internal modal */
   display: flex;
@@ -168,13 +167,24 @@ body {
   justify-content: center;
   align-items: center;
 }
-.modal .modal-title {
-  z-index:10001;
-}
 /* at the same time modal is shown at the center of the screen */
 .modal-background .modal {
   /* zindex must be higer than the modal back ground */
   z-index:10001;
 
   opacity: 1;
+
+  padding: 1%;
+}
+.modal .modal-header {
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header .modal-title {
+}
+
+
+/* on hoveing the dom element, cursor become pointer */
+.hover-pointer:hover {
+  cursor: pointer;
 }
