@@ -43,7 +43,7 @@ func GetGlobalConfig() Config {
 	return *configGlobal;
 }
 
-func (c Config) GetSqlite3DatabaseFile() {
+func (c Config) GetSqlite3DatabaseFile() string {
 	if(c.Environment == "prod") {
 		return "./db/data.db"
 	} else  {
@@ -51,7 +51,7 @@ func (c Config) GetSqlite3DatabaseFile() {
 	}
 }
 
-func (c Config) GetBleveIndexFile() {
+func (c Config) GetBleveIndexFile() string {
 	if(c.Environment == "prod") {
 		return "./db/project_search.bleve"
 	} else  {
