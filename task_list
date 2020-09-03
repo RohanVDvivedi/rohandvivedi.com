@@ -1,8 +1,9 @@
 Data injestion
- * add projects data to sqlite database
+ * final database injestion
 
 Front end
  * with anon mail box, for about this app page
+ * show loading icon when search is loading
 
 Backend (* future)
  * sophisticated handling for chat server
