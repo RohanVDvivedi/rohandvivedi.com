@@ -2,6 +2,7 @@ import React from "react";
 
 import { NavLink } from 'react-router-dom';
 
+import ContactForm from "./ContactForm.js"
 import Modal from "../utility/Modal";
 
 export default class AboutThisAppContent extends React.Component {
@@ -96,8 +97,10 @@ export default class AboutThisAppContent extends React.Component {
 						Moreover, the backend of this application is essential enough (and not over-engineered) for what I wanted to do in my portfolio.
 					</p>
 
-					<Modal title="Hello Modal"> <div style={{height: "250px", width: "250px"}}>Hello World, inside the modal</div>{/*<ContactForm />*/} </Modal>
-	            	
+					<p> For more information, please use the <Modal link="contact form" title="Contact form"><ContactForm />
+					</Modal> or browse the <a href="https://github.com/RohanVDvivedi/rohandvivedi.com" target="_blank">github repository</a>.
+	            	</p>
+
 	            	<p>
 		            	Thank you,<br/>
 		            	Rohan Dvivedi,<br/>

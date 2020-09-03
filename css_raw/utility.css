@@ -181,6 +181,9 @@ body {
   align-items: center;
 }
 .modal-header .modal-title {
+  font-family: Capriola, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 18px;
 }
 
 
