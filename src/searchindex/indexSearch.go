@@ -5,19 +5,17 @@ import (
 	"github.com/blevesearch/bleve"
 )
 
-var searchIndexesRoot = "./db/"
-
 func createOrOpenSearchIndex(indexFilename string) (bleve.Index, error) {
-	searchProjectIndex, err := bleve.Open(searchIndexesRoot + indexFilename)
+	searchProjectIndex, err := bleve.Open(indexFilename)
 	if(err == bleve.ErrorIndexPathDoesNotExist) {
 		mapping := bleve.NewIndexMapping()
-		searchProjectIndex, err = bleve.New(searchIndexesRoot + indexFilename, mapping)
+		searchProjectIndex, err = bleve.New(indexFilename, mapping)
 	}
 	return searchProjectIndex, err
 }
 
 func deleteSearchIndex(indexFilename string) error {
-	return os.RemoveAll(searchIndexesRoot + indexFilename)
+	return os.RemoveAll(indexFilename)
 }
 
 func getSimpleSearchQueryResults(searchIndex bleve.Index, searchPhrase string) []string {

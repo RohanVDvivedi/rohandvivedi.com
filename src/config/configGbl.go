@@ -42,3 +42,19 @@ func InitGlobalConfig(configFileToUse string) {
 func GetGlobalConfig() Config {
 	return *configGlobal;
 }
+
+func (c Config) GetSqlite3DatabaseFile() {
+	if(c.Environment == "prod") {
+		return "./db/data.db"
+	} else  {
+		return "./db/dev-data.db"
+	}
+}
+
+func (c Config) GetBleveIndexFile() {
+	if(c.Environment == "prod") {
+		return "./db/project_search.bleve"
+	} else  {
+		return "./db/dev-project_search.bleve"
+	}
+}

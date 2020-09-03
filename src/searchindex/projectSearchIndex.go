@@ -6,7 +6,6 @@ import (
 	"rohandvivedi.com/src/githubsync"
 )
 
-var projectSearchIndexPath = "project_search.bleve"
 var projectSearchIndex bleve.Index;
 var indexOpen = false;
 
@@ -17,7 +16,7 @@ type projectSearchIndexObject struct {
 	ReadmeFiles map[string]string
 }
 
-func InitProjectSearchIndex() {
+func InitProjectSearchIndex(projectSearchIndexPath string) {
 	if(!indexOpen) {
 		idx, err := createOrOpenSearchIndex(projectSearchIndexPath);
 		if(err == nil) {
