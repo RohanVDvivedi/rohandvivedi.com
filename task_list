@@ -1,16 +1,18 @@
 Data injestion
- * final database injestion
+ * match categories for projects
+ * add appropriate description for all projects on github
 
 Front end
- * with anon mail box, for about this app page
+ * Complete contact form, integrate with the api, and add it also on the about page
  * show loading icon when search is loading
+ * when no search query specified get all projects
 
 Backend (* future)
  * sophisticated handling for chat server
    * locking global chat user name pool
    * storage of public keys of client, and share public key
    * allow server commands
-   * allow array to be passed for to block
+   * add chat group
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
