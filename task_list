@@ -1,6 +1,8 @@
 Data injestion
  * match categories for projects
  * add appropriate description for all projects on github
+ * add university projects to database
+ * show gallery of project image on clicking
 
 Front end
  * Complete contact form, integrate with the api, and add it also on the about page
@@ -13,6 +15,7 @@ Backend (* future)
    * storage of public keys of client, and share public key
    * allow server commands
    * add chat group
+ * need updated at in the projects database
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
