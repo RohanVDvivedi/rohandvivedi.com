@@ -88,12 +88,12 @@ func main() {
 	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
 
 	// setup database connection
-	data.Db, _ = sql.Open("sqlite3", config.GetGlobalConfig().GetSqlite3DatabaseFile())
+	data.Db, _ = sql.Open("sqlite3", config.GetGlobalConfig().SQLite3_database_file)
 	defer data.Db.Close()
 	data.InitializeSchema()
 
 	// setup and initialize search index, and insert all projects
-	searchindex.InitProjectSearchIndex(config.GetGlobalConfig().GetBleveIndexFile());
+	searchindex.InitProjectSearchIndex(config.GetGlobalConfig().Bleve_search_index_file);
 	if(config.GetGlobalConfig().Recreate_search_index) {
 		go func() {
 			fmt.Println("Recreating Search index started\n")

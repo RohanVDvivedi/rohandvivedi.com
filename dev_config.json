@@ -10,5 +10,8 @@
 	"Recreate_search_index": true,
 
 	"From_mailid": "",
-	"From_password": ""
+	"From_password": "",
+
+	"SQLite3_database_file": "./db/dev-data.db",
+	"Bleve_search_index_file" : "./db/dev-project_search.bleve"
 }

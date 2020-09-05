@@ -10,5 +10,8 @@
 	"Recreate_search_index": true,
 
 	"From_mailid": "rohandvivedi@gmail.com",
-	"From_password": ""
+	"From_password": "",
+
+	"SQLite3_database_file": "./db/data.db",
+	"Bleve_search_index_file" : "./db/project_search.bleve"
 }

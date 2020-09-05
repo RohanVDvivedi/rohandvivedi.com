@@ -21,6 +21,9 @@ type Config struct {
 
 	From_mailid 			string
 	From_password 			string
+
+	SQLite3_database_file	string
+	Bleve_search_index_file	string
 }
 
 var configGlobal *Config = nil;
@@ -41,20 +44,4 @@ func InitGlobalConfig(configFileToUse string) {
 
 func GetGlobalConfig() Config {
 	return *configGlobal;
-}
-
-func (c Config) GetSqlite3DatabaseFile() string {
-	if(c.Environment == "prod") {
-		return "./db/data.db"
-	} else  {
-		return "./db/dev-data.db"
-	}
-}
-
-func (c Config) GetBleveIndexFile() string {
-	if(c.Environment == "prod") {
-		return "./db/project_search.bleve"
-	} else  {
-		return "./db/dev-project_search.bleve"
-	}
 }
