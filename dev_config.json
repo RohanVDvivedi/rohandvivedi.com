@@ -7,7 +7,7 @@
 	"Send_deployment_mail": false,
 	"Send_server_status_mail": false,
 
-	"Recreate_search_index": false,
+	"Recreate_search_index": true,
 
 	"From_mailid": "",
 	"From_password": ""

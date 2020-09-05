@@ -95,7 +95,11 @@ func main() {
 	// setup and initialize search index, and insert all projects
 	searchindex.InitProjectSearchIndex(config.GetGlobalConfig().GetBleveIndexFile());
 	if(config.GetGlobalConfig().Recreate_search_index) {
-		go searchindex.InsertAllProjectsInSearchIndex();
+		go func() {
+			fmt.Println("Recreating Search index started\n")
+			searchindex.InsertAllProjectsInSearchIndex();
+			fmt.Println("Recreating Search index completed\n")
+		}();
 	}
 
 	// set up session store
