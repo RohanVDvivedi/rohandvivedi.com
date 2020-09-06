@@ -17,7 +17,7 @@ export default class ContactForm extends React.Component {
 	}
 	sendButtonClicked() {
 		this.setState(Object.assign({}, this.state, {api_resp: null}));
-		fetch("http://localhost/api/anon_mails", {
+		fetch(window.location.origin.toString() + "/anon_mails", {
 			method: "post",
 			body: JSON.stringify({Subject:this.state.subject,Body:this.state.body})
 		}).then(res => res.json()).then(json => {
