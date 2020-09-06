@@ -4,6 +4,9 @@ import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
 import CopyToClipboard from "../utility/Clipboard";
 
+import ContactForm from "./ContactForm.js"
+import Modal from "../utility/Modal";
+
 class ContactSubContent extends React.Component {
 	render() {
 		return (
@@ -78,6 +81,10 @@ export default class AboutContent extends ApiComponent {
 					        </ContactSubContent>
 
 				    	</div>
+
+				    	<p style={{marginBlockEnd: 0;}}>
+				    		Or you may use the anonymous <Modal link="contact form" title="Contact form"><ContactForm /></Modal>
+				    	</p>
 
                 	</div>
 

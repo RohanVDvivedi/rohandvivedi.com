@@ -4,7 +4,6 @@ Data injestion
  * add university projects to database
 
 Front end
- * contact form integrate with the api, and add it also on the about page
  * show loading icon when search is loading
  * when no search query specified get all projects
  * show gallery of project image on clicking
