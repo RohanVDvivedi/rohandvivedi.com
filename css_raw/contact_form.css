@@ -1,0 +1,72 @@
+
+.contact-form-root {
+	max-width: 540px;
+	width: 40vw;
+}
+/* tablet */
+@media (max-width: 768px) {
+	.contact-form-root {
+		width: 60vw;
+	}
+}
+/* mobile */
+@media (max-width: 500px) {
+	.contact-form-root {
+		width: 80vw;
+	}
+}
+
+.contact-form-root .input-text-group {
+	margin: 10px 0px 0px 0px;
+}
+
+.input-text-group .text-label {
+	padding: 10px;
+}
+
+.input-text-group .text-box {
+	padding: 10px;
+	border-radius: 5px;
+
+	resize: none;
+
+	font: inherit;
+	outline: none;
+	border: 0px;
+}
+
+.input-text-group .remaining-chars {
+	font: inherit;
+	font-size: 12px;
+	padding: 5px;
+	text-align: end;
+}
+
+.contact-form-root .send-button {
+	padding: 13px;
+	margin: 10px 0px;
+	cursor: pointer;
+	border-radius: 5px;
+	text-align: center;
+	width: 70px;
+	margin: auto;
+	
+
+	color: var(--nav_selected_font_color);
+
+    background: var(--nav_selected_background_color);
+	background: -moz-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, var(--nav_selected_background_color_light)), color-stop(100%, var(--nav_selected_background_color)));
+	background: -webkit-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -o-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -ms-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: linear-gradient(to bottom, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+}
+
+.contact-form-root .error-msg {
+	color : red;
+}
+
+.contact-form-root .success-msg {
+	color : green;
+}
