@@ -82,7 +82,7 @@ export default class AboutContent extends ApiComponent {
 
 				    	</div>
 
-				    	<p style={{marginBlockEnd: 0;}}>
+				    	<p style={{marginBlockEnd: 0}}>
 				    		Or you may use the anonymous <Modal link="contact form" title="Contact form"><ContactForm /></Modal>
 				    	</p>
 
