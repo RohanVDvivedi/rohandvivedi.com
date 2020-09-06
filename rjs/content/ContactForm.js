@@ -44,6 +44,14 @@ export default class ContactForm extends React.Component {
 						<div class="remaining-chars">{maxLengthBody - this.state.body.length}</div>
 					</div>
 
+					<div class="input-text-group">
+						<div class="text-label">Note:</div>
+						<ul>
+							<li>This contact form will generate an anonymous mail and send it to me on my gmail account.</li>
+							<li class="removable-screen-375-lesser">The service is throttled to allow just 3 anonymous mails per user per device per 48 hours, for security reasons.</li>
+						</ul>
+					</div>
+
 					<div>
 						<div class="send-button generic-content-box-hovering-emboss-border" 
 							onClick={this.sendButtonClicked.bind(this)}>

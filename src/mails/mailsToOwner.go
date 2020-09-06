@@ -42,7 +42,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	s := session.GlobalSessionStore.GetOrCreateSession(w, r);
 	userSessionId := s.SessionId
 
-	userAnonMailCountIntr := s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{}{
+	userAnonMailCountIntr := s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{} {
 		userAnonMailCount := 0
 		anonMailCountKey := "anon_mail_count"
 		anonMailLastTimeKey := "anon_mail_last_sent"
@@ -74,7 +74,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	userAnonMailCount, ok := userAnonMailCountIntr.(int)
 
 	if(userAnonMailCountIntr == nil || !ok){
-		w.Write([]byte("{'status':'failure','reason':'anonymous mail request limit reached, please wait 48 hours'}"))
+		w.Write([]byte("{'success':false,'message':'anonymous mail request limit reached, please wait 48 hours and try again'}"))
 		return
 	}
 
@@ -94,5 +94,5 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	"Anonymous User \"" + userSessionId + "\" : " + subject + " -> " + strconv.Itoa(userAnonMailCount), body);
 	mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 
-	w.Write([]byte("{'status':'anonymous mail sent'}"))
+	w.Write([]byte("{'success':'true','message':'Thank you, for contacting me.'}"))
 }
