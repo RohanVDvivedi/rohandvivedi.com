@@ -22,7 +22,8 @@ export default class Modal extends React.Component {
     render() {
         return (
         	<div style={{display: "contents"}}>
-        		<a class="hover-pointer" href="#" onClick={this.show.bind(this)}>
+        		<a id={this.props.link.replace(/\s/g,'')} href={"#" + this.props.link.replace(/\s/g,'')} 
+        		class="hover-pointer" onClick={this.show.bind(this)}>
         			{this.props.link}
         		</a>
 

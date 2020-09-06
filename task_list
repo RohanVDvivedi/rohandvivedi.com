@@ -2,12 +2,14 @@ Data injestion
  * match categories for projects
  * add appropriate description for all projects on github
  * add university projects to database
- * show gallery of project image on clicking
 
 Front end
- * Complete contact form, integrate with the api, and add it also on the about page
+ * contact form integrate with the api, and add it also on the about page
  * show loading icon when search is loading
  * when no search query specified get all projects
+ * show gallery of project image on clicking
+ * enlarge images in clicking in a modal
+ * start youtube embed video
 
 Backend (* future)
  * sophisticated handling for chat server
