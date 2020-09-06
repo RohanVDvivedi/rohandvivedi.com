@@ -4,11 +4,10 @@ Data injestion
  * add university projects to database
 
 Front end
- * show loading icon when search is loading
- * when no search query specified get all projects
- * show gallery of project image on clicking
- * enlarge images in clicking in a modal
- * start youtube embed video
+ * show loading icon when search is loading (* future after injestion)
+ * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
+ * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
+ * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
 Backend (* future)
  * sophisticated handling for chat server
@@ -17,15 +16,10 @@ Backend (* future)
    * allow server commands
    * add chat group
  * need updated at in the projects database
+ * log user activity in separate log file instead of storing them in sessions (* future)
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
  * (* future) setup cron to re build index if project readme have changed
- * (* future) integrate your project with github read me apis
  * (* future) build github projects dump table and build this table every 4-5 days
  * (* future) sessions garbage collection
-
-Future feature
- * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
- * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
- * use linkedin APIs for capturing data (* future)
