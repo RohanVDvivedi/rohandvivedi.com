@@ -6,6 +6,7 @@ export default class ContactForm extends React.Component {
 		this.state = {
 			subject: "",
 			body: "",
+			api_resp: null
 		}
 	}
 	onSubjectChange(e) {
@@ -15,11 +16,14 @@ export default class ContactForm extends React.Component {
 		this.setState(Object.assign({}, this.state, {body: e.target.value}));
 	}
 	sendButtonClicked() {
-		if(this.state.api_success == null || this.state.api_success == false){
-			this.setState(Object.assign({}, this.state, {api_success: true, api_mesage: "success sending message"}));
-		} else {
-			this.setState(Object.assign({}, this.state, {api_success: false, api_mesage: "error sending message"}));
-		}
+		this.setState(Object.assign({}, this.state, {api_resp: null}));
+		fetch("http://localhost/api/anon_mails", {
+			method: "post",
+			body: JSON.stringify({Subject:this.state.subject,Body:this.state.body})
+		}).then(res => res.json()).then(json => {
+			console.log(json)
+			this.setState(Object.assign({}, this.state, {api_resp: json}));
+		})
 	}
 	render() {
 		var maxLengthSubject = 128;
@@ -59,9 +63,9 @@ export default class ContactForm extends React.Component {
 						</div>
 					</div>
 
-					{this.state.api_success != null ?
-					(<div class={this.state.api_success ? "success-msg" : "error-msg"}>
-						{this.state.api_mesage}
+					{this.state.api_resp != null ?
+					(<div class={this.state.api_resp.Success ? "success-msg" : "error-msg"}>
+						{this.state.api_resp.Message}
 					</div>) : "" }
 
 				</div>

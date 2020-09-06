@@ -34,9 +34,28 @@ func SendDeploymentMail(ownerSessionId string) {
 
 func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 
+	type RequestPayload struct {
+		Subject 	string
+		Body 		string
+	}
+	type ResponsePayload struct {
+		Success 	bool
+		Message 	string
+	}
+
 	if(!config.GetGlobalConfig().Auth_mail_client || !config.GetGlobalConfig().Create_user_sessions) {
-		w.Write([]byte("{'status':'failure','reason':'missing mail auth client or session store'}"))
+		json, _ := json.Marshal(ResponsePayload{false,"services offline"});
+		w.Write(json)
 		return;
+	}
+
+	pld := RequestPayload{};
+
+	err := json.NewDecoder(r.Body).Decode(&pld);
+	if( err!=nil || len(pld.Subject) == 0 || len(pld.Body) == 0) {
+		json, _ := json.Marshal(ResponsePayload{false,"Subject or Body contains inappropriate fields or are empty, please try again"});
+		w.Write(json)
+		return
 	}
 
 	s := session.GlobalSessionStore.GetOrCreateSession(w, r);
@@ -74,25 +93,15 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	userAnonMailCount, ok := userAnonMailCountIntr.(int)
 
 	if(userAnonMailCountIntr == nil || !ok){
-		w.Write([]byte("{'success':false,'message':'anonymous mail request limit reached, please wait 48 hours and try again'}"))
+		json, _ := json.Marshal(ResponsePayload{false,"anonymous mail request limit reached, please wait 48 hours and try again"});
+		w.Write(json)
 		return
 	}
 
-	subjects, exists_subjects := r.URL.Query()["anon_mail_subject"];
-	subject := ""
-	if(exists_subjects) {
-		subject = subjects[0]
-	}
-
-	bodies, exists_bodies := r.URL.Query()["anon_mail_body"];
-	body := ""
-	if(exists_bodies) {
-		body = bodies[0]
-	}
-
 	msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, 
-	"Anonymous User \"" + userSessionId + "\" : " + subject + " -> " + strconv.Itoa(userAnonMailCount), body);
+	"Anonymous User \"" + userSessionId + "\" : " + pld.Subject + " -> " + strconv.Itoa(userAnonMailCount), pld.Body);
 	mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 
-	w.Write([]byte("{'success':'true','message':'Thank you, for contacting me.'}"))
+	json, _ := json.Marshal(ResponsePayload{true,"Thank you, for contacting me."});
+	w.Write(json)
 }
