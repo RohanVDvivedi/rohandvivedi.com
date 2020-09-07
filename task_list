@@ -1,8 +1,7 @@
 Data injestion
- * match categories for projects
- * add appropriate description for all projects on github
- * add used tools to database as acomma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
- * correctly match projects and repositories, remove duplicates, re check mapping to categories
+ * add appropriate description for all projects on github, complete github documentation with readmes
+ * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
+ * add youtube video links, technopedia links and images where every you find necessary.
 
 Front end
  * show loading icon when search is loading (* future after injestion)
@@ -18,6 +17,7 @@ Backend (* future)
    * add chat group
  * need updated at in the projects database
  * log user activity in separate log file instead of storing them in sessions (* future)
+ * allow your self to build structured database backed blogging logic for your application
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
