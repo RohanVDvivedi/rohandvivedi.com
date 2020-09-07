@@ -7,11 +7,11 @@
 	"Send_deployment_mail": false,
 	"Send_server_status_mail": false,
 
-	"Recreate_search_index": false,
+	"Recreate_search_index": true,
 
 	"From_mailid": "",
 	"From_password": "",
 
-	"SQLite3_database_file": "./db/dev-data.db",
+	"SQLite3_database_file": "./db/data-mod.db",
 	"Bleve_search_index_file" : "./db/dev-project_search.bleve"
 }
