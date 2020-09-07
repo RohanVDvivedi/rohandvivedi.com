@@ -1,4 +1,5 @@
 Data injestion
+ * match categories for projects
  * add appropriate description for all projects on github
  * add used tools to database as acomma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
  * correctly match projects and repositories, remove duplicates, re check mapping to categories
