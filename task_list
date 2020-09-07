@@ -1,6 +1,7 @@
 Data injestion
  * add appropriate description for all projects on github
- * add SimpleTupleStorageModel, to data base, add used tools to database as acomma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
+ * add used tools to database as acomma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
+ * correctly match projects and repositories, remove duplicates, re check mapping to categories
 
 Front end
  * show loading icon when search is loading (* future after injestion)
