@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"rohandvivedi.com/src/githubsync"
 	"rohandvivedi.com/src/data"
+	"strings"
 )
 
 // api handlers in this file
@@ -11,9 +12,9 @@ var SyncProjectFromGithubRepository = http.HandlerFunc(githubRepositorySyncUp)
 
 func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 	projectName, exists_name := r.URL.Query()["name"];
-	if !exists_name {
+	if !exists_name || strings.Contains(projectName[0], " ") {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("You must provide name of the project"))
+		w.Write([]byte("You must provide name of the project as in the github repository"))
 		return
 	}
 
@@ -25,17 +26,20 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// this is the name that goes in the name of the project in project table
+	projectNameDb := strings.Replace(projectName[0], "-", " ", -1)
+
 	// update or insert project details, from the github api call
-	projdb := data.GetProjectByName(projectName[0])
+	projdb := data.GetProjectByName(projectNameDb)
 	if(projdb == nil) {
 		projdb = &data.Project{
-			Name: data.NewNullString(projGithub.Name),
+			Name: data.NewNullString(projectNameDb),
 			Descr: data.NewNullString(projGithub.Description),
 			ProjectOwner: data.NewNullInt64(1),
 		}
 		data.InsertProject(projdb)
 	} else {
-		projdb.Name = data.NewNullString(projGithub.Name);
+		projdb.Name = data.NewNullString(projectNameDb);
 		projdb.Descr = data.NewNullString(projGithub.Description);
 		projdb.ProjectOwner = data.NewNullInt64(1);
 		data.UpdateProject(projdb)
