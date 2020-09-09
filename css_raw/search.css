@@ -44,7 +44,8 @@
 }
 
 .search-categories-selector .search-category {
-	padding: 13px;
+	padding: 10px;
+	font-size: 16px;
 	cursor: pointer;
 	text-align: left;
 }
