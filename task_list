@@ -8,8 +8,9 @@ Database schema changes
  * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index 
 
 Front end
- * modify search bar
- * show loading icon when search is loading (* future after injestion)
+ * modify search bar, all categories in a row, no pop down shitty stuff
+ * show loading icon when search is loading
+ * update and use separate pasts page css file as added
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
  * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
