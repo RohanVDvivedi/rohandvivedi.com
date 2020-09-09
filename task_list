@@ -3,6 +3,9 @@ Data injestion
  * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
  * add youtube video links, technopedia links and images where every you find necessary.
  * pasts include BDL defense sector internship, with link to report
+ * add order for project_hyperlinks
+ * add Tricopter and Tcopter to database
+ * upload codes for projects on github from google drive
 
 Front end
  * show loading icon when search is loading (* future after injestion)
