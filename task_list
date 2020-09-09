@@ -1,19 +1,21 @@
 Data injestion
  * add appropriate description for all projects on github, complete github documentation with readmes
- * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
- * add technopedia links and images to projects.
- * add order for project_hyperlinks
- * add order for projects this will be used when query is empty or the get_all = true, or if query string is empty
- * modify search bar
+ * add images to projects
  * upload codes for projects on github from google drive
 
+Database schema changes
+ * add order for project_hyperlinks and order for projects
+ * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index 
+
 Front end
+ * modify search bar
  * show loading icon when search is loading (* future after injestion)
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
  * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
 Backend (* future)
+ * order will be used when query is empty or the get_all = true, or if query string is empty
  * sophisticated handling for chat server
    * locking global chat user name pool
    * storage of public keys of client, and share public key
