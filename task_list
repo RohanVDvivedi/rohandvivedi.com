@@ -10,7 +10,7 @@ Database schema changes
 Front end
  * modify search bar, all categories in a row, no pop down shitty stuff
  * show loading icon when search is loading
- * update and use separate pasts page css file as added
+ * build appropriate projects and pasts css file
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
  * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
