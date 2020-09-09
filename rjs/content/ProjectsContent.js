@@ -61,17 +61,18 @@ class ProjectListerComponent extends React.Component {
 export default class ProjectsContent extends ApiComponent {
 	constructor(props) {
 		super(props)
-		this.queryString = "get_all=true";
+		this.queryStringInit = "/api/project?get_hyperlinks=true&get_categories=true&get_all=true";
 	}
 	searchQueryStringBuiltCallback(queryString) {
 		this.queryString = queryString;
 		this.makeApiCallAndReRender()
 	}
 	apiPath() {
-		const basePath = "/api/project";
-		const queryParam = "get_hyperlinks=true";
-        return [basePath, [this.queryString, queryParam].join("&")].join("?");
-    }
+		if(this.queryString == null) {
+			return this.queryStringInit;
+		}
+		return ["/api/search?get_hyperlinks=true&get_categories=true", this.queryString].join("&");
+	}
     bodyDataBeforeApiFirstResponds() {
     	return [{Name: "Loading",Descr: "Loading Description",}];
     }

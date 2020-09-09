@@ -61,22 +61,23 @@ export default class ProjectSearchBar extends ApiComponent {
 			searchQuery[0] = "query=" + searchText;
 		}
 
-		var categories = ((this.state.selectedProjectCategories.length == 0) ? this.categories : this.state.selectedProjectCategories);
-		if(categories != null && categories != ""){
+		var categories = this.state.selectedProjectCategories;
+		if(categories != null && categories.length > 0){
 			searchQuery[1] = "categories=" + categories.join(",");
 		}
 
-		// if search is pressed close the drop down
-		this.updateState({
-				searchTextBox: this.state.searchTextBox,
-				showDropdownContent: false,
-				selectedProjectCategories: this.state.selectedProjectCategories,
-			});
-
-		return searchQuery.filter((q) => {return q != null && q != ""}).join("&");
+		return searchQuery.join("&");
 	}
 	searchButtonClicked() {
 		var queryString = this.generateSearchQueryString();
+
+		// if search is pressed close the drop down, and remove all selection categories
+		this.updateState({
+				searchTextBox: this.state.searchTextBox,
+				showDropdownContent: false,
+				selectedProjectCategories: [],
+			});
+		
 		this.props.searchQueryStringBuiltCallback(queryString);
 	}
 	enterKeyClicked(event) {

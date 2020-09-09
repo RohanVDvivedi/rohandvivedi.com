@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"rohandvivedi.com/src/data"
-	"rohandvivedi.com/src/searchindex"
 	"strings"
 )
 
@@ -32,8 +31,6 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 		categories_list = strings.Split(categories[0], ",")
 	}
 
-	query, exists_query := r.URL.Query()["query"];
-
 	projects_db := []data.Project{};
 
 	if(exists_names) {
@@ -42,12 +39,6 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 		if(get_all[0] == "true"){
 			projects_db = data.GetAllProjects()
 		}
-	} else if(exists_query) {
-		// logic built using the bleve search index, on read me file
-		projectNamesResult := searchindex.GetProjectSearchQueryResults(query[0])
-		projects_db = data.GetProjectsByNames(projectNamesResult)
-		// logic only using database
-		//projects_db = data.SearchProjectsByQueryString(query[0])
 	} else if(exists_categories) {
 		projects_db = data.GetProjectsForCategoryNames(categories_list)
 	}
