@@ -2,9 +2,9 @@ Data injestion
  * add appropriate description for all projects on github, complete github documentation with readmes
  * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index
  * add technopedia links and images to projects.
- * pasts include BDL defense sector internship, with link to report/certificate
  * add order for project_hyperlinks
  * add order for projects this will be used when query is empty or the get_all = true, or if query string is empty
+ * modify search bar
  * upload codes for projects on github from google drive
 
 Front end
