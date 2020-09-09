@@ -11,6 +11,7 @@ class ProjectListerComponent extends React.Component {
 
     	var GithubRepositories = hyperlinks.filter((link) => {return link.LinkType == "GITHUB"});
     	var YoutubeVideos = hyperlinks.filter((link) => {return link.LinkType == "YOUTUBE"});
+    	var ExternalLinks = hyperlinks.filter((link) => {return link.LinkType == "EXTERNAL_LINK"});
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border"
             		style={{
@@ -23,23 +24,32 @@ class ProjectListerComponent extends React.Component {
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
 				{GithubRepositories != null && GithubRepositories.length > 0 ?
-                	(<div class="flex-row-container" style={{justifyContent: "space-around",
-                											alignItems: "center",}}>
-                		{GithubRepositories.map((link) => {
-                			return (<Icon path={link.Href} iconPath={"/icon/github.png"} 
-                					infoBoxText={link.Name} height="35px" width="35px" padding="5px" />)
-                		})}
-                	</div>) : ""
-            	}
+					(<div class="flex-row-container" style={{justifyContent: "space-around",
+															alignItems: "center",}}>
+						{GithubRepositories.map((link) => {
+							return (<Icon path={link.Href} iconPath={"/icon/github.png"} 
+									infoBoxText={link.Name} height="35px" width="35px" padding="5px" />)
+						})}
+					</div>) : ""
+				}
 
 				{YoutubeVideos != null && YoutubeVideos.length > 0 ?
 					(<div class="flex-row-container" style={{justifyContent: "space-around",
-                											alignItems: "center",}}>
-                		{YoutubeVideos.map((link) => {
-                			return (<Icon path={link.Href} iconPath={"/icon/youtube.png"} 
-                					infoBoxText={link.Descr} height="35px" width="35px" padding="5px" />)
-                		})}
-                	</div>) : ""
+															alignItems: "center",}}>
+						{YoutubeVideos.map((link) => {
+							return (<Icon path={link.Href} iconPath={"/icon/youtube.png"} 
+									infoBoxText={link.Descr} height="35px" width="35px" padding="5px" />)
+						})}
+					</div>) : ""
+				}
+
+				{ExternalLinks != null && ExternalLinks.length > 0 ?
+					(<div class="flex-col-container" style={{justifyContent: "space-around",
+															alignItems: "center",}}>
+						{ExternalLinks.map((link) => {
+							return (<a href={link.Href} target="_blank"> {link.Name} </a>)
+						})}
+					</div>) : ""
 				}
             </div>
         );
