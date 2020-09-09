@@ -5,6 +5,11 @@ import ProjectSearchBar from "./ProjectSearchBar";
 import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
 
+function removeAbbreviationInBrackets(str) {
+    return (str.includes("(") && str.includes(")")) ? 
+    (str.replace(str.slice(str.search("\\("), str.search("\\)") + 1), "").trim()) : str;
+}
+
 class ProjectListerComponent extends React.Component {
     render() {
     	var hyperlinks = (this.props.project.Hyperlinks == null) ? [] : this.props.project.Hyperlinks
@@ -14,16 +19,35 @@ class ProjectListerComponent extends React.Component {
     	var GithubRepositories = hyperlinks.filter((link) => {return link.LinkType == "GITHUB"});
     	var YoutubeVideos = hyperlinks.filter((link) => {return link.LinkType == "YOUTUBE"});
     	var ExternalLinks = hyperlinks.filter((link) => {return link.LinkType == "EXTERNAL_LINK"});
+
+    	var categories = (this.props.project.Categories == null) ? [] : 
+    	this.props.project.Categories.map(function(categ){return removeAbbreviationInBrackets(categ.Category)}).sort(function(a, b){return a.length - b.length;});
+
         return (
             <div class="project-lister-element flex-col-container set_sub_content_background_color generic-content-box-border"
-            		style={{
-            			justifyContent: "space-between"
-            		}}>
+            	style={{justifyContent: "space-between"}}>
+
                 <h1 class="project-lister-element-name">{this.props.project.Name}</h1>
 
                 {(thumbImage != null) ? (<img class="project-lister-element-image" src={thumbImage.Href}/>) : ""}
 
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
+
+	            {this.props.project.Categories != null && this.props.project.Categories.length > 0 ? 
+		            (<div>
+		            	<span>Category:</span> {
+		            		categories.map(function(categ){
+		            			return (<span style={{
+		            				display: "inline-block",
+		            				padding: "2px 8px",
+		            				fontSize: "16px",
+		            				backgroundColor: "aquamarine",
+		            				borderRadius: "999px",
+		            			}}> {categ} </span>)
+		            		})
+		            	}
+	    	        </div>) : ""
+	    	    }
 
 				{GithubRepositories != null && GithubRepositories.length > 0 ?
 					(<div class="flex-row-container" style={{justifyContent: "space-around",
