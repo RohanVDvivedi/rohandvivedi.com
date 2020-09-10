@@ -69,7 +69,7 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", CountApiHitsInSessionValues(GzipCompressor(Send404OnFolderRequest(fs))))
+	mux.Handle("/", CountApiHitsInSessionValues(GzipCompressor(Send404OnFolderRequest(SetRequestCacheControl(24 * time.Hour, fs)))))
 
 	// attach all the handlers of all the pages here
 	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
