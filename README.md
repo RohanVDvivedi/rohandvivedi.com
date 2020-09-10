@@ -59,9 +59,9 @@ I plan to destribute this app in future, and so I am designing it with a good ba
    * id
    * name
    * descr
-   * progr_lang
+   * progr_langs
    * libs_used
-   * skill_set
+   * skill_sets
    * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id

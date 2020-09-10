@@ -12,7 +12,7 @@ type Project struct {
 }
 
 func projectSelectBaseQuery() string {
-	return "select projects.id, projects.name, projects.descr, projects.progr_lang, projects.libs_used, projects.skill_set, projects.project_owner from projects ";
+	return "select projects.id, projects.name, projects.descr, projects.progr_langs, projects.libs_used, projects.skill_sets, projects.project_owner from projects ";
 }
 
 func baseScanProject(r Row) *Project {
@@ -60,11 +60,11 @@ func GetAllProjects() []Project {
 }
 
 func UpdateProject(p *Project) {
-	Db.Exec("update projects set name = ?, descr = ?, progr_lang = ?, libs_used = ?, skill_set = ?, project_owner = ? where id = ?", p.Name, p.Descr, p.ProgrLangs, p.LibsUsed, p.SkillSets, p.ProjectOwner, p.Id);
+	Db.Exec("update projects set name = ?, descr = ?, progr_langs = ?, libs_used = ?, skill_sets = ?, project_owner = ? where id = ?", p.Name, p.Descr, p.ProgrLangs, p.LibsUsed, p.SkillSets, p.ProjectOwner, p.Id);
 }
 
 func InsertProject(p *Project) {
-	_, err := Db.Exec("insert into projects (name, descr, progr_lang, libs_used, skill_set, project_owner) values (?,?,?,?,?,?)", p.Name, p.Descr, p.ProgrLangs, p.LibsUsed, p.SkillSets, p.ProjectOwner);
+	_, err := Db.Exec("insert into projects (name, descr, progr_langs, libs_used, skill_sets, project_owner) values (?,?,?,?,?,?)", p.Name, p.Descr, p.ProgrLangs, p.LibsUsed, p.SkillSets, p.ProjectOwner);
 	if(err == nil) {
 		*p = *GetProjectByName(p.Name.NullString.String)
 	}

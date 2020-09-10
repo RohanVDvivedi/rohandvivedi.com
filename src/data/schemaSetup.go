@@ -52,9 +52,9 @@ func InitializeSchema() {
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									name VARCHAR(128) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
-									progr_lang VARCHAR(1024),
+									progr_langs VARCHAR(1024),
 									libs_used VARCHAR(1024),
-									skill_set VARCHAR(1024),
+									skill_sets VARCHAR(1024),
 									project_owner INTEGER,
 									FOREIGN KEY(project_owner) REFERENCES persons(id),
 									CONSTRAINT unique_project_name UNIQUE (name)
