@@ -31,6 +31,8 @@ func projectsSearch(w http.ResponseWriter, r *http.Request) {
 		projects_db = data.GetProjectsByNames(projectNamesResult)
 	} else if (!use_search_index && exists_categories) {
 		projects_db = data.GetProjectsForCategoryNames(categories_list)
+	} else {
+		projects_db = data.GetAllProjects();
 	}
 
 	requested_github_link, exists_get_github_repo_link := r.URL.Query()["get_github_repo_link"];

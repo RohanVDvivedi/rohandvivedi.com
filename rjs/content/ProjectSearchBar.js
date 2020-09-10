@@ -58,15 +58,15 @@ export default class ProjectSearchBar extends ApiComponent {
 
 		var searchText = this.state.searchTextBox;
 		if(searchText != null && searchText != ""){
-			searchQuery[0] = "query=" + searchText;
+			searchQuery.push("query=" + searchText);
 		}
 
 		var categories = this.state.selectedProjectCategories;
 		if(categories != null && categories.length > 0){
-			searchQuery[1] = "categories=" + categories.join(",");
+			searchQuery.push("categories=" + categories.join(","));
 		}
 
-		return searchQuery.join("&");
+		return (searchQuery.length == 0) ? null : searchQuery.join("&");
 	}
 	searchButtonClicked() {
 		var queryString = this.generateSearchQueryString();
