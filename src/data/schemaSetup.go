@@ -48,7 +48,7 @@ func InitializeSchema() {
     statement.Exec()
 
     // PARENT table projects
-    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS projects_ (
+    statement, _ = Db.Prepare(`CREATE TABLE IF NOT EXISTS projects (
 									id INTEGER PRIMARY KEY AUTOINCREMENT,
 									name VARCHAR(128) NOT NULL,
 									descr VARCHAR(512) NOT NULL,
