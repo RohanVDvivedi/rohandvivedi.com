@@ -1,0 +1,46 @@
+.past-container {
+	width: 55%;
+	padding: 20px;
+	color: var(--font_color_lighter);
+}
+/* width increased in tablet and mobile */
+@media (max-width: 910px) {
+	.past-container {
+		width: 85%;
+	}
+}
+
+.past-container .past-PAST-title {
+	text-align: center;
+	font-family: lato, sans-serif;
+	font-size: 25px;
+	font-weight: 700;
+	font-style: italic;
+}
+
+.past-container .past-position {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.past-container .organization {
+	font-size: 16px;
+}
+
+
+/* the events css go below */
+.past-container .event-container {
+	justify-content: space-between;
+	align-items: baseline;
+}
+
+.event-container .event-name {
+	font-size: 16px;
+	font-weight: 550;
+}
+
+.event-container .event-date {
+	font-size: 14px;
+	font-style: italic;
+	white-space: nowrap;
+}

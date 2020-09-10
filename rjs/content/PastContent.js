@@ -4,9 +4,9 @@ import ApiComponent from "../utility/ApiComponent";
 
 class TimedEvent extends React.Component {
 	render() {
-		return (<div class="flex-row-container" style={{justifyContent: "space-between", alignItems: "baseline"}}>
-					<div style={{fontSize:"16px", fontWeight: "550"}}>{this.props.revent}</div>
-					<div style={{fontSize:"14px", fontStyle:"italic"}}>{this.props.rtime}</div>
+		return (<div class="event-container flex-row-container">
+					<div class="event-name">{this.props.revent}</div>
+					<div class="event-date">{this.props.rtime}</div>
 				</div>);
 	}
 }
@@ -25,19 +25,25 @@ class Experience extends React.Component {
 		var exp = this.props.exp;
 		var dateFormat = {month:"short", year:"2-digit"}
 		return (<div style={{marginTop: "15px"}}>
-					<div style={{fontSize:"18px",fontWeight: "600"}}>
+					<div class="past-position">
                         <span>{removeAbbreviationInBrackets(exp.Position)}</span>
                         <span class="hidden-only-mobile">{exp.Position.replace(removeAbbreviationInBrackets(exp.Position), "")}</span>
                     </div>
 						{exp.Organizations.map(function(expOrg){
 							return (
 							<div style={{marginLeft:"10px", marginBottom:"3px"}}>
-								<a href={expOrg.OrganizationLink} target="_blank" style={{fontSize:"15px"}}>{expOrg.Organization}</a>
+								<a href={expOrg.OrganizationLink} target="_blank" class="organization">
+                                    <span>{removeAbbreviationInBrackets(expOrg.Organization)}</span>
+                                    <span class="hidden-only-mobile">{expOrg.Organization.replace(removeAbbreviationInBrackets(expOrg.Organization), "")}</span>
+                                </a>
 								<div style={{marginLeft:"5px"}}>
 									{expOrg.Teams.map(function(work){
 										return (<div>
-                                                    <TimedEvent revent={(<span><span>{shortenByFirstComma(work.Team_or_ResearchTitle)}</span>
-                                                        <span class="hidden-only-mobile">{work.Team_or_ResearchTitle.replace(shortenByFirstComma(work.Team_or_ResearchTitle), "")}</span></span>)} 
+                                                    <TimedEvent revent={
+                                                        (<span>
+                                                            <span>{shortenByFirstComma(work.Team_or_ResearchTitle)}</span>
+                                                            <span class="hidden-only-mobile">{work.Team_or_ResearchTitle.replace(shortenByFirstComma(work.Team_or_ResearchTitle), "")}</span>
+                                                        </span>)} 
                                                     rtime={work.FromDate.toLocaleDateString("en-US", dateFormat) + " - " + work.ToDate.toLocaleDateString("en-US", dateFormat)} />
 													{work.PastType == "RESEARCH" ? (<div style={{fontWeight: "600"}}>Research paper: <a href={work.ResearchPaperLink} target="_blank">DOI link here</a></div>) : ""}
 													<div class="hidden-only-mobile">{work.Descr == null ? "" : work.Descr}</div>
@@ -105,18 +111,9 @@ export default class PastContent extends ApiComponent {
                 style={{justifyContent: "center",
                         alignItems: "center",}}>
 
-                    <div class="set_sub_content_background_color generic-content-box-border"
-                    	style={{ padding: "1.5%",
-                    		color: "var(--font_color_lighter)",
-                    		}}>
+                    <div class="past-container set_sub_content_background_color generic-content-box-border">
 
-                        <div style={{
-                        	textAlign: "center",
-							fontFamily: "lato, sans-serif",
-							fontSize: "25px",
-							fontWeight: "700",
-							fontStyle: "italic"
-                        }}>
+                        <div class="past-PAST-title">
                             Past
                         </div>
 
