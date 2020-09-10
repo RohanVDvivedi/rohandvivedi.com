@@ -12,6 +12,7 @@ var FindProject = http.HandlerFunc(findProject)
 
 type Project struct {
 	data.Project
+	GithubRepositoryLink *data.ProjectHyperlink
 	Hyperlinks []data.ProjectHyperlink
 	Categories []data.ProjectCategory
 }
@@ -43,13 +44,16 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 		projects_db = data.GetProjectsForCategoryNames(categories_list)
 	}
 
+	requested_github_link, exists_get_github_repo_link := r.URL.Query()["get_github_repo_link"];
+	var withGithubRepoLink bool = exists_get_github_repo_link && (requested_github_link[0] == "true")
+
 	requested_hyperlinks, exists_get_hyperlinks := r.URL.Query()["get_hyperlinks"];
 	var withHyperlinks bool = exists_get_hyperlinks && (requested_hyperlinks[0] == "true")
 	
 	requested_categories, exists_get_categories := r.URL.Query()["get_categories"];
 	var withCategories bool = exists_get_categories && (requested_categories[0] == "true")
 
-	if(!withHyperlinks && !withCategories) {
+	if(!withHyperlinks && !withCategories && !withGithubRepoLink) {
 		json, _ := json.Marshal(projects_db);
 		w.Write(json);
 		return
@@ -59,6 +63,9 @@ func findProject(w http.ResponseWriter, r *http.Request) {
 	for _, proj_db := range projects_db {
 		p := Project{};
 		p.Project = proj_db
+		if withGithubRepoLink {
+			p.GithubRepositoryLink = proj_db.GetProjectGithubRepositoryLink();
+		}
 		if withHyperlinks {
 			p.Hyperlinks = proj_db.GetProjectHyperlinks();
 		}

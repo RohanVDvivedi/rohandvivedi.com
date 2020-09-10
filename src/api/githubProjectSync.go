@@ -35,12 +35,14 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 		projdb = &data.Project{
 			Name: data.NewNullString(projectNameDb),
 			Descr: data.NewNullString(projGithub.Description),
+			ProgrLangs: data.NewNullString(projGithub.Language),
 			ProjectOwner: data.NewNullInt64(1),
 		}
 		data.InsertProject(projdb)
 	} else {
 		projdb.Name = data.NewNullString(projectNameDb);
 		projdb.Descr = data.NewNullString(projGithub.Description);
+		projdb.ProgrLangs = data.NewNullString(projGithub.Language);
 		projdb.ProjectOwner = data.NewNullInt64(1);
 		data.UpdateProject(projdb)
 	}

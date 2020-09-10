@@ -1,5 +1,9 @@
 package data
 
+import (
+	"strings"
+)
+
 // Project model
 type Project struct {
 	Id NullInt64
@@ -121,7 +125,7 @@ func (p *Project) GetProjectHyperlinks() []ProjectHyperlink {
 func (p *Project) GetProjectGithubRepositoryLink() *ProjectHyperlink {
 	githubRepoName := p.Name
 	if(githubRepoName.Valid) {
-		strings.Replace(githubRepoName, " ", "-", -1)
+		githubRepoName.String = strings.Replace(githubRepoName.String, " ", "-", -1)
 	}
 	return baseScanProjectHyperlink(Db.QueryRow(projectHyperlinkSelectBaseQuery() + 
 	`where project_hyperlinks.project_id = ? and project_hyperlinks.name = ? and project_hyperlinks.link_type = ?`,
