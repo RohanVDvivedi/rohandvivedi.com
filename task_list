@@ -1,30 +1,29 @@
 Data injestion
  * add appropriate description for all projects on github, complete github documentation with readmes
- * add images to projects
- * upload codes for projects on github from google drive
+ * (* today) add images to projects
+ * (* today) upload codes for projects on github from google drive
 
 Database schema changes
- * add order for project_hyperlinks and order for projects
- * add used tools to database as a comma separated list, add last updated/insert as time stamp, you need to index the used tools also for your search index 
+ * need updated at in the projects table (* future)
+ * add order for project_hyperlinks and order for projects (* future)
+ * (* today) add used tools to database as a new table, also you need to index the used tools also for your search index
 
 Front end
- * modify search bar, all categories in a row, no pop down shitty stuff
- * show loading icon when search is loading
- * build appropriate projects and pasts css file
+ * (* today) show loading icon when search is loading
+ * (* today) build appropriate projects and pasts css file
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
  * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
 Backend (* future)
- * order will be used when query is empty or the get_all = true, or if query string is empty
  * sophisticated handling for chat server
    * locking global chat user name pool
    * storage of public keys of client, and share public key
    * allow server commands
-   * add chat group
- * need updated at in the projects database
+   * add chat groups
  * log user activity in separate log file instead of storing them in sessions (* future)
- * allow your self to build structured database backed blogging logic for your application
+ * use separate database for sessions and separate database for other users (except the owner) in future
+ * allow your self to build structured database backed blogging logic for your application (* far future)
 
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
