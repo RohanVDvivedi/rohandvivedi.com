@@ -119,9 +119,13 @@ func (p *Project) GetProjectHyperlinks() []ProjectHyperlink {
 }
 
 func (p *Project) GetProjectGithubRepositoryLink() *ProjectHyperlink {
+	githubRepoName := p.Name
+	if(githubRepoName.Valid) {
+		strings.Replace(githubRepoName, " ", "-", -1)
+	}
 	return baseScanProjectHyperlink(Db.QueryRow(projectHyperlinkSelectBaseQuery() + 
 	`where project_hyperlinks.project_id = ? and project_hyperlinks.name = ? and project_hyperlinks.link_type = ?`,
-	 p.Id, p.Name, "GITHUB"))
+	 p.Id, githubRepoName, "GITHUB"))
 }
 
 func (p *Project) GetProjectGithubRepositoryLinks() []ProjectHyperlink {
