@@ -2,7 +2,7 @@ package searchindex
 
 import (
 	"strings"
-	"fmt"
+	//"fmt"
 )
 
 import (
@@ -94,7 +94,7 @@ func InsertProjectInSearchIndex(proj_db *data.Project) {
 		}
 	}
 
-	fmt.Println(p)
+	//fmt.Println(p)
 
 	projectSearchIndex.Delete(p.ProjectName)
 	projectSearchIndex.Index(p.ProjectName, p)
