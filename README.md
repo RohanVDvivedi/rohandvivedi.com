@@ -74,6 +74,7 @@ I plan to destribute this app in future, and so I am designing it with a good ba
  * project_category_project
    * project_category_id
    * project_id
- * table: person_project
+ * person_project
    * person_id
    * project_id
+
