@@ -54,6 +54,18 @@ which is decided by the grid that is formed*/
 	width: 96%;
 }
 
+.project-lister-element-categories {
+
+}
+
+.project-lister-element-categories .project-lister-element-category{
+	display: inline-block;
+	padding: 2px 8px;
+	font-size: 16px;
+	background-color: aquamarine;
+	border-radius: 999px;
+}
+
 .project-lister-element-description{
 	text-align: center;
 	font-family: lato, sans-serif;

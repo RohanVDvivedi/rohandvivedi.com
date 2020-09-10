@@ -34,16 +34,10 @@ class ProjectListerComponent extends React.Component {
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
 	            {this.props.project.Categories != null && this.props.project.Categories.length > 0 ? 
-		            (<div>
+		            (<div class="project-lister-element-categories">
 		            	<span>Category:</span> {
 		            		categories.map(function(categ){
-		            			return (<span style={{
-		            				display: "inline-block",
-		            				padding: "2px 8px",
-		            				fontSize: "16px",
-		            				backgroundColor: "aquamarine",
-		            				borderRadius: "999px",
-		            			}}> {categ} </span>)
+		            			return (<span class="project-lister-element-category"> {categ} </span>)
 		            		})
 		            	}
 	    	        </div>) : ""
