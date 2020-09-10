@@ -29,7 +29,7 @@ I plan to destribute this app in future, and so I am designing it with a good ba
  * then use sqlite3 shell, to insert rest of the data (I know, this will become easier after the admin panel is developed)
 
 #### Schema is public and defined as follows :
- * table: persons (this mostly would carry only 1 entry of the owner of this project)
+ * table: persons
    * id
    * fname
    * lname
@@ -59,6 +59,9 @@ I plan to destribute this app in future, and so I am designing it with a good ba
    * id
    * name
    * descr
+   * progr_lang
+   * libs_used
+   * skill_set
    * project_owner (refers to person_id)
  * table: project_hyperlinks
    * id
@@ -67,14 +70,14 @@ I plan to destribute this app in future, and so I am designing it with a good ba
    * link_type (must be caps for youtube, pdf, github, technopedia, this helps how to interpret it)
    * descr
    * project_id
- * project_categories
+ * table: project_categories
    * id
    * category_name
    * descr
- * project_category_project
+ * table: project_category_project
    * project_category_id
    * project_id
- * person_project
+ * table: person_project
    * person_id
    * project_id
 
