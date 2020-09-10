@@ -6,7 +6,6 @@ Data injestion
 Database schema changes
  * need updated at in the projects table (* future)
  * add order for project_hyperlinks and order for projects (* future)
- * (* today) add used tools to database as a new table, also you need to index the used tools also for your search index
 
 Front end
  * (* today) show loading icon when search is loading
@@ -21,7 +20,7 @@ Backend (* future)
    * allow server commands
    * add chat groups
  * log user activity in separate log file instead of storing them in sessions (* future)
- * use separate database for sessions and separate database for other users (except the owner) in future
+ * use separate database for sessions and separate database for other users (except the owner) in future (*in far future)
  * allow your self to build structured database backed blogging logic for your application (* far future)
 
 Maintenance features
