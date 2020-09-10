@@ -1,7 +1,5 @@
 import React from "react";
 
-import EffiCache from "./EffiCache"
-
 // the reponse body is maintained in the state.api_response_body of your component
 export default class ApiComponent extends React.Component {
     constructor(props) {
@@ -48,29 +46,12 @@ export default class ApiComponent extends React.Component {
     // call this function in your event handlers to make api call
     // please please do not call this function inside the render function
     makeApiCallAndReRender() {
-
-    	var cached_api_key = this.apiPath()+this.apiMethod();
-
-    	// check if the response is stored in cache
-    	var cached = EffiCache.Get(cached_api_key)
-    	if(cached != null) {
-    		this.updateState({api_response_body: cached,});
-    		return;
-    	}
-
     	// else make get call to server
         fetch(window.location.origin.toString() + this.apiPath(), {
             method: this.apiMethod(),
             headers: this.apiHeaders(),
             body: this.apiBody()
-        }).then(res => {
-        	var json = res.json()
-        	if(res.status == 200){
-        		// cache response if it was successfull
-        		json.then(json_data => EffiCache.Set(cached_api_key, json_data, 15));
-        	}
-        	return json;
-        }).then(json => {
+        }).then(res => res.json()).then(json => {
             this.updateState({api_response_body: json,});
         })
     }

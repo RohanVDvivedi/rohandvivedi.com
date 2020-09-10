@@ -78,10 +78,10 @@ func main() {
 	mux.Handle("/chat", AuthorizeIfHasSession(chatter.AuthorizeChat(CountApiHitsInSessionValues(websocket.Handler(chatter.ChatHandler)))));
 
 	// attach all the handlers of all the apis here
-	mux.Handle("/api/person", 				CountApiHitsInSessionValues(api.GetPerson));
-	mux.Handle("/api/project", 				CountApiHitsInSessionValues(api.FindProject));
-	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(api.GetAllCategories));
-	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(api.GetOwner));
+	mux.Handle("/api/person", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetPerson)));
+	mux.Handle("/api/project", 				CountApiHitsInSessionValues(SetRequestCacheControl(15 * time.Minute, api.FindProject)));
+	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetAllCategories)));
+	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetOwner)));
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/search", 				CountApiHitsInSessionValues(api.ProjectsSearch));
 	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(CountApiHitsInSessionValues(mails.SendAnonymousMail)));
