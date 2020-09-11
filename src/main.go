@@ -83,6 +83,7 @@ func main() {
 	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetAllCategories)));
 	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetOwner)));
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
+	mux.Handle("/api/sys_stats", 			AuthorizeIfOwner(api.GetServerSystemStats));
 	mux.Handle("/api/search", 				CountApiHitsInSessionValues(api.ProjectsSearch));
 	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(CountApiHitsInSessionValues(mails.SendAnonymousMail)));
 	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
