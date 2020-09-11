@@ -78,7 +78,7 @@ export default class AboutThisAppContent extends React.Component {
 						<i> <NavLink to="/pages/about">about page</NavLink> </i>
 						and my past experiences on the
 						<i> <NavLink to="/pages/past">past page</NavLink> </i>
-						need to be queried in from the persons and pasts table in the database. The frontend caches every HTTP API in the local storage, for at least 15 minutes to reduce the load on the server.
+						need to be queried in from the persons and pasts table in the database. (*The frontend does cache most of the HTTP APIs for at least 15 minutes to reduce the load on the server.)
 					</p>
 
 					<p>
