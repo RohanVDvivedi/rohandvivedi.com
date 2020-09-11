@@ -9,9 +9,9 @@ import (
 	"rohandvivedi.com/src/config"
 )
 
-var c *Cron = nil;
+var c *cron.Cron = nil;
 
-initializeSystemCron() {
+func initializeSystemCron() {
 	if(config.GetGlobalConfig().Enable_all_cron) {
 		c = cron.New()
 		c.AddFunc("CRON_TZ=Asia/Kolkata 30 20 * * *", mails.SendServerSystemStatsMail)
@@ -19,7 +19,7 @@ initializeSystemCron() {
 	}
 }
 
-deinitializeSystemCron() {
+func deinitializeSystemCron() {
 	if(config.GetGlobalConfig().Enable_all_cron) {
 		c.Stop()
 	}
