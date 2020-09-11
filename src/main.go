@@ -114,6 +114,12 @@ func main() {
 		ownerSessionId = "****No SessionStore, hence no OwnerSessionId****"
 	}
 
+	// initialize all cron for the system
+	if(config.GetGlobalConfig().Enable_all_cron) {
+		initializeSystemCron()
+		defer deinitializeSystemCron()
+	}
+
 	// initialize mail smtp client, and authenticate
 	if(config.GetGlobalConfig().Auth_mail_client) {
 		fmt.Println("Initializing and Authenticating SMTP mail client");

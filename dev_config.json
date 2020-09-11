@@ -7,6 +7,8 @@
 	"Send_deployment_mail": false,
 	"Send_server_status_mail": false,
 
+	"Enable_all_cron": false,
+
 	"Recreate_search_index": false,
 
 	"From_mailid": "",

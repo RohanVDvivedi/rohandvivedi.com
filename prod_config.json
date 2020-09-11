@@ -7,6 +7,8 @@
 	"Send_deployment_mail": true,
 	"Send_server_status_mail": true,
 
+	"Enable_all_cron": true,
+
 	"Recreate_search_index": true,
 
 	"From_mailid": "rohandvivedi@gmail.com",
