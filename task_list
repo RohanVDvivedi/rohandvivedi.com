@@ -5,6 +5,7 @@ Data injestion
  * (* today) add data for programming languages, libraries used and skill sets for all projects
 
 Database schema changes
+ * need long_descr and thumb_image for project table schema
  * need updated_at, pushed_at, created_at, etc datedness of projects entries in the projects table (* in far future)
 
 Front end
