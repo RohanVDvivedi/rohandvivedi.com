@@ -42,5 +42,8 @@ func ChatHandler(conn *websocket.Conn) {
 		}
 	}
 
+	// remove 
+	session.GlobalSessionStore.GetExistingSession(conn.Request()).RemoveValue("name");
+
 	delete(Chatters, name);
 }

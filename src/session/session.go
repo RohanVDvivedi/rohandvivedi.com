@@ -179,7 +179,7 @@ func (s *Session) SetValue(key string, value interface{}) {
 	s.Lock.Unlock()
 }
 
-func (s *Session) RemoveValue(key string, value interface{}) {
+func (s *Session) RemoveValue(key string) {
 	s.Lock.Lock()
 	s.LastAccessed =time.Now()
 	delete(s.Values, key);
