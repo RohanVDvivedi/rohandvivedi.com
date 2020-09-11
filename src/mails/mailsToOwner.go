@@ -11,6 +11,7 @@ import (
 	"rohandvivedi.com/src/config"
 	"rohandvivedi.com/src/mailManager"
 	"rohandvivedi.com/src/session"
+	"rohandvivedi.com/src/stat"
 )
 
 // api handlers in this file
@@ -28,6 +29,17 @@ func SendDeploymentMail(ownerSessionId string) {
 		mailBody += "\nrohandvivedi.com\n"
 		
 		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Deployment Mail", mailBody);
+		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
+	}
+}
+
+func SendServerSystemStatsMail() {
+	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_server_status_mail) {
+
+		json, _ := json.MarshalIndent(stat.GetServerSystemStats(), "", "    ")
+		mailBody := "Server System Stats:\n" + string(json)
+		
+		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Server System Stats Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 	}
 }

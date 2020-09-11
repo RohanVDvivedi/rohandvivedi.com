@@ -119,6 +119,7 @@ func main() {
 		fmt.Println("Initializing and Authenticating SMTP mail client");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
 		mails.SendDeploymentMail(ownerSessionId)
+		mails.SendServerSystemStatsMail()
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
