@@ -1,6 +1,5 @@
 Data injestion
  * (* today) add images to projects
- * (* today) link github project logic or add those code to github instead, do what ever you like but if you have source for your projects, then fucking get it out there
  * (* start by tomorrow) add appropriate description for all projects on github, complete github documentation with appropriate readmes for them, build power point presentation or pictured representationg for them for the gallery for them
  * (* today) document drone in flight video and upate it every where
  * (* today) add data for programming languages, libraries used and skill sets for all projects
@@ -10,7 +9,6 @@ Database schema changes
 
 Front end
  * (* today) show loading icon when search is loading
- * (* today) show programming languages, libraries used and etc data on front end, add margin to all this rounded tag like stuff
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in the modal (* future after injestion)
  * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
