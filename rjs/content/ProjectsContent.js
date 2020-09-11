@@ -20,6 +20,10 @@ class ProjectListerComponent extends React.Component {
     	var YoutubeVideos = hyperlinks.filter((link) => {return link.LinkType == "YOUTUBE"});
     	var ExternalLinks = hyperlinks.filter((link) => {return link.LinkType == "EXTERNAL_LINK"});
 
+    	var ProgrammingLanguages = (this.props.project.ProgrLangs == null) ? [] : this.props.project.ProgrLangs.split(',');
+    	var LibsBeingUsed = (this.props.project.LibsUsed == null) ? [] : this.props.project.LibsUsed.split(',');
+    	var SkillSetsAcquired = (this.props.project.SkillSets == null) ? [] : this.props.project.SkillSets.split(',');
+
     	var categories = (this.props.project.Categories == null) ? [] : 
     	this.props.project.Categories.map(function(categ){return removeAbbreviationInBrackets(categ.Category)}).sort(function(a, b){return a.length - b.length;});
 
@@ -33,11 +37,41 @@ class ProjectListerComponent extends React.Component {
 
 	            <h3 class="project-lister-element-description">{this.props.project.Descr}</h3>
 
-	            {this.props.project.Categories != null && this.props.project.Categories.length > 0 ? 
-		            (<div class="project-lister-element-categories">
+	            {ProgrammingLanguages != null && ProgrammingLanguages.length > 0 ? 
+		            (<div class="project-lister-element-tags-container">
+		            	<span>Language:</span> {
+		            		ProgrammingLanguages.map(function(p){
+		            			return (<span class="project-lister-element-tag"> {p} </span>)
+		            		})
+		            	}
+	    	        </div>) : ""
+	    	    }
+
+	    	    {LibsBeingUsed != null && LibsBeingUsed.length > 0 ? 
+		            (<div class="project-lister-element-tags-container">
+		            	<span>Libraries used:</span> {
+		            		LibsBeingUsed.map(function(l){
+		            			return (<span class="project-lister-element-tag"> {l} </span>)
+		            		})
+		            	}
+	    	        </div>) : ""
+	    	    }
+
+	    	    {SkillSetsAcquired != null && SkillSetsAcquired.length > 0 ? 
+		            (<div class="project-lister-element-tags-container">
+		            	<span>Skills:</span> {
+		            		SkillSetsAcquired.map(function(s){
+		            			return (<span class="project-lister-element-tag"> {s} </span>)
+		            		})
+		            	}
+	    	        </div>) : ""
+	    	    }
+
+	            {categories != null && categories.length > 0 ? 
+		            (<div class="project-lister-element-tags-container">
 		            	<span>Category:</span> {
-		            		categories.map(function(categ){
-		            			return (<span class="project-lister-element-category"> {categ} </span>)
+		            		categories.map(function(c){
+		            			return (<span class="project-lister-element-tag"> {c} </span>)
 		            		})
 		            	}
 	    	        </div>) : ""

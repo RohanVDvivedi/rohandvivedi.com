@@ -54,11 +54,12 @@ which is decided by the grid that is formed*/
 	width: 96%;
 }
 
-.project-lister-element-categories {
-
+.project-lister-element-tags-container {
+	padding: 2%;
 }
 
-.project-lister-element-categories .project-lister-element-category{
+.project-lister-element-tags-container .project-lister-element-tag{
+	margin: 1px;
 	display: inline-block;
 	padding: 2px 8px;
 	font-size: 16px;
