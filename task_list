@@ -26,5 +26,4 @@ Backend (* future)
 Maintenance features
  * (* future) mail yourself cron mails about server health and user count (from sessions), and setup cron to send yourself mails for this
  * (* future) setup cron to re build index if project readme have changed
- * (* future) build github projects dump table and build this table every 4-5 days
  * (* future) sessions garbage collection
