@@ -112,7 +112,7 @@ export default class ProjectSearchBar extends ApiComponent {
 		               		onClick={this.searchButtonClicked.bind(this)}>
 		               		Search
 		               	</div>
-		               	<div class={"search-loading" + ((this.props.loading)?"":"-hidden")}>
+		               	<div class={"loading-div" + ((this.props.loading)?"":"-hidden")}>
 		               		<Icon path="#" iconPath="/icon/loading.gif" height="50px" width="50px" padding="0px" />
 		            	</div>
 		            </div>
