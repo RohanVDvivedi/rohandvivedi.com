@@ -29,10 +29,14 @@ class Root extends React.Component {
 import "../css_raw/about.css"
 import "../css_raw/contact_form.css"
 import "../css_raw/content.css"
+import "../css_raw/drop_down.css"
+import "../css_raw/loading.css"
+import "../css_raw/modal.css"
 import "../css_raw/nav.css"
 import "../css_raw/past.css"
 import "../css_raw/projects.css"
 import "../css_raw/search.css"
+import "../css_raw/tool_tip.css"
 import "../css_raw/utility.css"
 
 // initialize the cache that you will be using to cache apis

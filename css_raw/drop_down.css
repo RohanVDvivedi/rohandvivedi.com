@@ -1,0 +1,35 @@
+/* Tool tip that pops up as soon as you hover over the tooltip-wrap*/
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-container .dropdown-content {
+  display: none;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  width: max-content;
+  position: absolute;
+  top: 100%;
+  right: 0%;
+  z-index: 100;
+}
+
+/* the dropdown content can show up, even if you add the show-dropdown-content class to the container class*/
+.dropdown-container.show-dropdown-content .dropdown-content, 
+.dropdown-container:hover .dropdown-content {
+  display: block;
+}
+
+
+/* usage 
+	<div class="dropdown-container">
+
+		<div>
+			<some title  for the dropdown or icon>
+		</div>
+
+		<div class="dropdown-content">
+			<this is the content that will show up if you hover on dropdown-container
+			or if the dropdown-container was instead "dropdown-container show-dropdown-content">
+		</div>
+	</div>
+*/

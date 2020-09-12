@@ -1,0 +1,31 @@
+/* below css for loading div or container */
+.loading-able-container {
+  position: relative;
+}
+.loading-div {
+  position: absolute;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:10000;
+  background-color: rgba(0,0,0,.4);
+  width: 100%;
+  height: 100%;
+}
+.loading-div-hidden {
+  display: none;
+}
+
+/* usage 
+  <div class="loading-able-container">
+
+    <div>
+      <content that has to be hidden while the data is loading>
+    </div>
+
+    <div class="loading-div">
+      <you need to make the loading-div to loading-div-hidden while you are loading content>
+    </div>
+  </div>
+*/

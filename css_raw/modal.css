@@ -1,0 +1,44 @@
+/* modal utilities */
+/* use below classes to build modals */
+/* modal back ground is a dummy div that cover and blurs the background */
+.modal-background {
+  /* position it relative to screen, and covering the screen */
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+
+  /* modal-background should be on top of everything, except the modal */
+  z-index:10000;
+
+  /* blur-out/hide the content of the body, using this background div */
+  background-color: rgba(0,0,0,.4);
+
+  /* display flex only for centering the internal modal */
+  display: flex;
+
+  /* center the modal div */
+  justify-content: center;
+  align-items: center;
+}
+/* at the same time modal is shown at the center of the screen */
+.modal-background .modal {
+  /* zindex must be higer than the modal back ground */
+  z-index:10001;
+
+  opacity: 1;
+
+  padding: 12px;
+}
+.modal .modal-header {
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header .modal-title {
+  font-family: Capriola, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* to check usage check Modal.js class file in rjs/utility */
