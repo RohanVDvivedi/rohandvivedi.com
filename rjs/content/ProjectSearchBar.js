@@ -2,6 +2,7 @@ import React from "react";
 
 import ApiComponent from "../utility/ApiComponent";
 import Icon from "../utility/Icon";
+import Loading from "../utility/Loading";
 
 export default class ProjectSearchBar extends ApiComponent {
 	constructor(props) {
@@ -112,9 +113,7 @@ export default class ProjectSearchBar extends ApiComponent {
 		               		onClick={this.searchButtonClicked.bind(this)}>
 		               		Search
 		               	</div>
-		               	<div class={"loading-div" + ((this.props.loading)?"":"-hidden")}>
-		               		<Icon path="#" iconPath="/icon/loading.gif" height="50px" width="50px" padding="0px" />
-		            	</div>
+		               	<Loading loading={this.props.loading}/>
 		            </div>
                 </div>);
 	}
