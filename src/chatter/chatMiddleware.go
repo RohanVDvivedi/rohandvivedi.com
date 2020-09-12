@@ -2,6 +2,7 @@ package chatter
 
 import (
 	"net/http"
+	"strings"
 	"golang.org/x/net/websocket"
 )
 
@@ -29,7 +30,9 @@ func AuthorizeChat(next http.Handler) http.Handler {
 				nameIntr, nameSessionExists := s.GetValue("name");
 				if(nameSessionExists) {
 					name, ok := nameIntr.(string)
-					if(ok && Chatters.GetChatUserByName(name) == nil) {
+					if(ok && !strings.Contains(name, "server") && 
+						!strings.Contains(name, "owner") && 
+						Chatters.GetChatUserByName(name) == nil) {
 						next.ServeHTTP(w, r)
 						return
 					}
