@@ -21,7 +21,7 @@ Backend
    * storage of public keys of client, and share public key
    * allow server commands
    * add chat groups
- * (* today) log user activity in separate log file instead of storing them in sessions (* future)
+ * (* today) log user activity in separate log file instead of storing them in sessions
  *
  * use separate database for sessions and separate database for other users (except the owner) in future (*in far future)
  * allow your self to build structured database backed blogging logic for your application (* far future)
