@@ -110,6 +110,10 @@ export default class ProjectSearchBar extends ApiComponent {
 	                	<div class="search-button generic-content-box-hovering-emboss-border" 
 	                		onClick={this.searchButtonClicked.bind(this)}>Search</div>
 	                </div>
+
+	                <div class={"search-loading" + ((this.props.loading)?"":"-hidden")}>
+	                	<Icon path="#" iconPath="/icon/Loading.gif" height="40px" width="40px" padding="2px" />
+	                </div>
                 </div>);
 	}
 }

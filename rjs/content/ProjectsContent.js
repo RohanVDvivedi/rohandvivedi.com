@@ -133,7 +133,8 @@ export default class ProjectsContent extends ApiComponent {
         return (
             <div class="content-root-container content-root-background">
                 
-                <ProjectSearchBar searchQueryStringBuiltCallback={this.searchQueryStringBuiltCallback.bind(this)}/>
+                <ProjectSearchBar searchQueryStringBuiltCallback={this.searchQueryStringBuiltCallback.bind(this)}
+                loading={this.state.api_waiting_response}/>
 
                 <div class="grid-container project-lister-contaier">
                 	{(projects != null && projects.length > 0) ?

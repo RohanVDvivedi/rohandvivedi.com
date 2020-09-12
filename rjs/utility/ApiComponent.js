@@ -6,6 +6,7 @@ export default class ApiComponent extends React.Component {
         super(props)
         // set default api response body in the satate state
         this.state = Object.assign({} ,this.state, {
+            api_waiting_response: false,
             api_response_body: this.bodyDataBeforeApiFirstResponds(),
         })
     }
@@ -46,13 +47,21 @@ export default class ApiComponent extends React.Component {
     // call this function in your event handlers to make api call
     // please please do not call this function inside the render function
     makeApiCallAndReRender() {
-    	// else make get call to server
+        // ask the component to render something like a api response waiting state
+        this.updateState({
+                api_waiting_response: true,
+            })
+
+    	// make api call to server
         fetch(window.location.origin.toString() + this.apiPath(), {
             method: this.apiMethod(),
             headers: this.apiHeaders(),
             body: this.apiBody()
         }).then(res => res.json()).then(json => {
-            this.updateState({api_response_body: json,});
+            this.updateState({
+                api_waiting_response: false,
+                api_response_body: json,
+            });
         })
     }
 }

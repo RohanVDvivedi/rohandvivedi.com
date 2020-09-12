@@ -73,3 +73,11 @@
 	background: -ms-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
 	background: linear-gradient(to bottom, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
 }
+
+/* below logic is used by loading icon */
+
+.search-loading {
+}
+.search-loading-hidden {
+	display: none;
+}
