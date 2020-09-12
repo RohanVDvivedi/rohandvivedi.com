@@ -113,7 +113,7 @@ export default class ProjectSearchBar extends ApiComponent {
 		               		Search
 		               	</div>
 		               	<div class={"search-loading" + ((this.props.loading)?"":"-hidden")}>
-		               		<Icon path="#" iconPath="/icon/Loading.gif" height="40px" width="40px" padding="0px" />
+		               		<Icon path="#" iconPath="/icon/loading.gif" height="50px" width="50px" padding="0px" />
 		            	</div>
 		            </div>
                 </div>);
