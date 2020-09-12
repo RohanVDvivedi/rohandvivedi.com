@@ -21,7 +21,6 @@ export default class ContactForm extends React.Component {
 			method: "post",
 			body: JSON.stringify({Subject:this.state.subject,Body:this.state.body})
 		}).then(res => res.json()).then(json => {
-			console.log(json)
 			this.setState(Object.assign({}, this.state, {api_resp: json}));
 		})
 	}
