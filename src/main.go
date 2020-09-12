@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"golang.org/x/net/websocket"
+	//"golang.org/x/net/websocket"
 )
 
 // maintains global configuration for the application
@@ -75,7 +75,7 @@ func main() {
 	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", AuthorizeIfHasSession(chatter.AuthorizeChat(CountApiHitsInSessionValues(websocket.Handler(chatter.ChatHandler)))));
+	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(chatter.AuthorizeAndStartChatHandler)));
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetPerson)));

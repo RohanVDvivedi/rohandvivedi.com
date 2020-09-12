@@ -10,25 +10,24 @@ import (
 
 // map of all the chat users 
 // from their name to the chatUser struct pointer
-var Chatters = map[string]*ChatUser{}
- 
-func ChatHandler(conn *websocket.Conn) {
-	defer conn.Close();
+var Chatters = Chatterers{Chatters:make(map[string]*ChatUser)}
 
-	// the user must have a Name
+
+// never call this functions outside
+func ChatConnectionHandler(conn *websocket.Conn) {
+	defer conn.Close();
 
 	nameIntr, _ := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("name")
 	name, _ := nameIntr.(string)
 
-	_, chatUserSameNameExists := Chatters[name]
-	if(chatUserSameNameExists) {
+	chatUser := Chatters.InsertUniqueChatUserByName(name, conn)
+	if(chatUser == nil) {
 		return
 	}
+	defer Chatters.DeleteChatUserByName(name);
 
-	chatUser := NewChatUser(name, conn)
-	defer chatUser.DestroyChatUser()
-
-	Chatters[name] = chatUser
+	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
+	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
 
 	for (true) {
 		msg, err := chatUser.ReceiveMessage()
@@ -36,14 +35,9 @@ func ChatHandler(conn *websocket.Conn) {
 		if(err != nil) {
 			break;
 		}
-		receiverUser, found := Chatters[msg.To]
-		if(found) {
+		receiverUser := Chatters.GetChatUserByName(msg.To)
+		if(receiverUser != nil) {
 			receiverUser.SendMessage(msg)
 		}
 	}
-
-	// remove 
-	session.GlobalSessionStore.GetExistingSession(conn.Request()).RemoveValue("name");
-
-	delete(Chatters, name);
 }

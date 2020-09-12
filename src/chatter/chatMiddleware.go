@@ -2,8 +2,8 @@ package chatter
 
 import (
 	"net/http"
-	/*"encoding/json"
 	"golang.org/x/net/websocket"
+	/*"encoding/json"
 	"time"
 	"fmt"*/
 )
@@ -13,6 +13,8 @@ import (
 	"rohandvivedi.com/src/config"
 )
 
+var AuthorizeAndStartChatHandler = AuthorizeChat(websocket.Handler(ChatConnectionHandler))
+
 func AuthorizeChat(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -21,15 +23,19 @@ func AuthorizeChat(next http.Handler) http.Handler {
 		if(config.GetGlobalConfig().Create_user_sessions) {
 			s := session.GlobalSessionStore.GetExistingSession(r);
 			if(s != nil) {
-				// if a name is present in the request, store it in the session values
-				if(existsName) {
+				if(existsName) { // if a name is present in the request, store it in the session values
 					s.SetValue("name", nameList[0]);
 				}
+
 				// allow the request to be served only if the name exists in the session values
-				_, nameSessionExists := s.GetValue("name");
+				// and a corresponding chat session does not exist
+				nameIntr, nameSessionExists := s.GetValue("name");
 				if(nameSessionExists) {
-					next.ServeHTTP(w, r)
-					return
+					name, ok := nameIntr.(string)
+					if(ok && Chatters.GetChatUserByName(name) == nil) {
+						next.ServeHTTP(w, r)
+						return
+					}
 				}
 			}
 		}
