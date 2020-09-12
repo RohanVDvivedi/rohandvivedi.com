@@ -77,6 +77,15 @@
 /* below logic is used by loading icon */
 
 .search-loading {
+	position: absolute;
+	padding: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index:10000;
+	background-color: rgba(0,0,0,.4);
+	width: 100%;
+    height: 100%;
 }
 .search-loading-hidden {
 	display: none;

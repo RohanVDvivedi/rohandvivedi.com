@@ -154,7 +154,7 @@ body {
   height: 100%;
   width: 100%;
 
-  /* modl background should be on top of everything, except the modal0 */
+  /* modal-background should be on top of everything, except the modal */
   z-index:10000;
 
   /* blur-out/hide the content of the body, using this background div */
