@@ -29,6 +29,9 @@ type Session struct {
 	LastAccessed	time.Time
 	Lock			sync.Mutex
 	Values			map[string]interface{}
+
+	next	*Session
+	prev	*Session
 }
 
 type SessionStore struct {
@@ -37,7 +40,11 @@ type SessionStore struct {
 											// it will be set on cookie's expiry, aswell as any cookie unused for MaxLifeTime will expire on server side
 	Lock			sync.Mutex				// lock to make Sessions map thread safe
 	Sessions		map[string]*Session		// the map -> it stores Session.SessionId vs Session
-	// session id creator function
+	
+	listLRU struct {						// a doubly linkedlist of session values
+		head 		*Session 				// head = Least recently used session
+		tail 		*Session 				// tail = Most recently used session
+	}
 }
 
 var GlobalSessionStore *SessionStore = nil;
@@ -47,7 +54,10 @@ func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 		CookieName: CookieName, 
 		MaxLifeDuration: MaxLifeDuration,
 		Sessions: make(map[string]*Session),
+		listLRU: struct {head *Session 
+		tail *Session}{head: nil, tail: nil},
 	};
+	go GlobalSessionStore.GarbageCollectionRoutine()
 	InitRand()
 }
 
@@ -74,6 +84,8 @@ func (ss *SessionStore) createNewSession() *Session {
 		FirstAccessed: time.Now(),
 		LastAccessed: time.Now(),
 		Values: make(map[string]interface{}),
+		next: nil,
+		prev: nil,
 	}
 	return session
 }
@@ -90,6 +102,46 @@ func (ss *SessionStore) createNewSessionCookie(session *Session) *http.Cookie {
 	}
 	return cookie
 }
+
+/* Below functions are required to manage lru */
+
+// unsafe
+func (ss *SessionStore) removeSessionFromLRU(session *Session) {
+	if(session.next != nil) {
+		session.next.prev = session.prev
+	}
+	if(session.prev != nil) {
+		session.prev.next = session.next
+	}
+	if(ss.listLRU.head == session) {
+		ss.listLRU.head = session.next
+	}
+	if(ss.listLRU.tail == session) {
+		ss.listLRU.head = session.prev
+	}
+	session.next = nil
+	session.prev = nil
+}
+
+// unsafe, the session must not already exist in lru
+func (ss *SessionStore) insertSessiontoLRUtail(session *Session) {
+	tailSess := ss.listLRU.tail
+	if(tailSess == nil) {
+		ss.listLRU.head = session
+	} else {
+		tailSess.next = session
+		session.prev = tailSess
+		session.next = nil
+	}
+	ss.listLRU.tail = session
+}
+
+// unsafe
+func (ss *SessionStore) getSessionFromLRUhead() *Session {
+	return ss.listLRU.head
+}
+
+/* Above functions are required to manage lru */
 
 func (ss *SessionStore) InitializeOwnerSession() *Session {
 	ss.Lock.Lock()
@@ -119,6 +171,10 @@ func (ss *SessionStore) GetExistingSession(r *http.Request) *Session {
 		session, serverSessionExists := ss.Sessions[sessionId]
 
 		if(serverSessionExists) { // if a session is found, return it
+			// if a server session exists and is found, you need to put it at the 
+			ss.removeSessionFromLRU(session)
+			ss.insertSessiontoLRUtail(session)
+
 			ss.Lock.Unlock()
 			return session;
 		}
@@ -142,13 +198,18 @@ func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Reques
 		session, serverSessionExists := ss.Sessions[sessionId]
 
 		if(serverSessionExists) { // if a session is found, return it
+			// if a server session exists and is found, you need to put it at the 
+			ss.removeSessionFromLRU(session)
+			ss.insertSessiontoLRUtail(session)
+
 			ss.Lock.Unlock()
 			return session;
 		}
 	}
 
-	// create a new session
+	// create a new session, and insert it at the tail of the lru
 	session := ss.createNewSession();
+	ss.insertSessiontoLRUtail(session)
 
 	// store the corresponding session, in the session store
 	ss.Sessions[session.SessionId] = session
@@ -162,6 +223,34 @@ func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Reques
 	ss.Lock.Unlock()
 	
 	return session
+}
+
+func (ss *SessionStore) GarbageCollectionRoutine() {
+	for (true) {
+		ss.Lock.Lock()
+
+		loop_exit := false
+		for(!loop_exit) {
+			LRUhead := ss.getSessionFromLRUhead()
+
+			if(LRUhead == nil) {
+				loop_exit = true
+			}
+
+			LRUhead.Lock.Lock()
+			// remove if the session has not been accessed for more than its life time amount of time
+			if(time.Now().Sub(LRUhead.LastAccessed) > ss.MaxLifeDuration) {
+				ss.removeSessionFromLRU(LRUhead)
+			} else {
+				loop_exit = true
+			}
+			LRUhead.Lock.Unlock()
+		}
+
+		ss.Lock.Unlock()
+
+		time.Sleep(5 * time.Minute)	// garbage collection running every 3 minutes
+	}
 }
 
 func (s *Session) GetValue(key string) (interface{}, bool) {
