@@ -87,7 +87,7 @@ export default class ProjectSearchBar extends ApiComponent {
 	render() {
 		// convert list of objects to list of strings
 		this.categories = this.state.api_response_body.map(function(category){return category.Category});
-		return (<div style={{position: "relative", display:"flex",justifyContent:"center"}}>
+		return (<div class="loading-able-container" style={{display:"flex",justifyContent:"center"}}>
 
 					<div class="search-container flex-row-container set_sub_content_background_color">
 		               	<input class="search-text-selector" type="text" 
