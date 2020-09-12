@@ -3,9 +3,6 @@ package chatter
 import (
 	"net/http"
 	"golang.org/x/net/websocket"
-	/*"encoding/json"
-	"time"
-	"fmt"*/
 )
 
 import (

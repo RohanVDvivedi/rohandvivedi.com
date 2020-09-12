@@ -19,6 +19,7 @@ func (c *Chatterers) InsertUniqueChatUserByName(name string, conn *websocket.Con
 	_, chatUserSameNameExists := c.Chatters[name]
 	if(!chatUserSameNameExists) {
 		chatUser = NewChatUser(name, conn)
+		c.Chatters[chatUser.Name] = chatUser
 	}
 	c.Lock.Unlock()
 	return chatUser
