@@ -227,28 +227,28 @@ func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Reques
 
 func (ss *SessionStore) GarbageCollectionRoutine() {
 	for (true) {
-		ss.Lock.Lock()
-
 		loop_exit := false
 		for(!loop_exit) {
-			LRUhead := ss.getSessionFromLRUhead()
+			ss.Lock.Lock()
 
+			LRUhead := ss.getSessionFromLRUhead()
 			if(LRUhead == nil) {
 				loop_exit = true
-			}
-
-			LRUhead.Lock.Lock()
-			// remove if the session has not been accessed for more than its life time amount of time
-			if(time.Now().Sub(LRUhead.LastAccessed) > ss.MaxLifeDuration) {
-				ss.removeSessionFromLRU(LRUhead)
 			} else {
-				loop_exit = true
+				LRUhead.Lock.Lock()
+
+				// remove if the session has not been accessed for more than its life time amount of time
+				if(time.Now().Sub(LRUhead.LastAccessed) > ss.MaxLifeDuration) {
+					ss.removeSessionFromLRU(LRUhead)
+				} else {
+					loop_exit = true
+				}
+				
+				LRUhead.Lock.Unlock()
 			}
-			LRUhead.Lock.Unlock()
+
+			ss.Lock.Unlock()
 		}
-
-		ss.Lock.Unlock()
-
 		time.Sleep(5 * time.Minute)	// garbage collection running every 3 minutes
 	}
 }
