@@ -27,7 +27,4 @@ Backend
  * allow your self to build structured database backed blogging logic for your application (* far future)
 
 Maintenance features
- * (* today) sessions garbage collection, build linkedlist and and pop element that is at the end of the list and has not been accessed for more than expiry number of days
- * (* today) mail yourself cron mails about user sessions
- *
  * (* future) setup cron to re build index if project readme have changed
