@@ -19,6 +19,8 @@ type Config struct {
 
 	Enable_all_cron 		bool
 
+	Enable_user_activity_logging bool
+
 	Recreate_search_index	bool
 
 	From_mailid 			string

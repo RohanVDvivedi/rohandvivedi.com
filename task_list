@@ -14,8 +14,6 @@ Front end
 
 Backend
  * (* today) sophisticated handling for chat server
-   * locking global chat user name pool
-   * storage of public keys of client, and share public key
    * allow server commands
    * add chat groups
  * (* today) log user activity in separate log file instead of storing them in sessions

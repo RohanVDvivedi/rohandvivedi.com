@@ -9,6 +9,8 @@
 
 	"Enable_all_cron": true,
 
+	"Enable_user_activity_logging": true,
+
 	"Recreate_search_index": true,
 
 	"From_mailid": "rohandvivedi@gmail.com",

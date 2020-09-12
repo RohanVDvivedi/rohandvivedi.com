@@ -9,6 +9,8 @@
 
 	"Enable_all_cron": false,
 
+	"Enable_user_activity_logging": false,
+
 	"Recreate_search_index": false,
 
 	"From_mailid": "",

@@ -8,13 +8,9 @@ import (
 	"strconv"
 )
 
-// maintains global configuration for the application
 import (
 	"rohandvivedi.com/src/config"
-)
-
-// maintains session, (in memory)
-import (
+	"rohandvivedi.com/src/useractlogger"
 	"rohandvivedi.com/src/session"
 )
 
@@ -46,19 +42,7 @@ func CountApiHitsInSessionValues(next http.Handler) http.Handler {
         if(config.GetGlobalConfig().Create_user_sessions) {
 	        // you must need a session to allow me to maintain the count
 	        s := session.GlobalSessionStore.GetOrCreateSession(w, r);
-			_ = s.ExecuteOnValues(func (SessionVals map[string]interface{}, add_par interface{}) interface{} {
-				reqPathCountKey := "<" + r.URL.Path + ">_count"		// this is the key we will use to store count of hits in session values
-				count, exists := SessionVals[reqPathCountKey]
-				if(exists) {
-					intCount, isInt := count.(int)
-					if isInt {
-						SessionVals[reqPathCountKey] = intCount + 1
-						return nil
-					}
-				}
-				SessionVals[reqPathCountKey] = 1
-				return nil
-			}, nil);
+	        useractlogger.LogUserActivity(s.SessionId, r.URL.Path, r.URL.RawQuery);
 		}
 
         next.ServeHTTP(w, r)
