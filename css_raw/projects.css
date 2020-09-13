@@ -11,8 +11,8 @@
 	/* using media queries to counter smaller result sizes in search */
 	grid-template-columns: repeat(3, 1fr);
 
-	margin-left: 10%;
-	margin-right: 10%;
+	margin-left: 7%;
+	margin-right: 7%;
 }
 /* tablet */
 @media (max-width: 768px) {
