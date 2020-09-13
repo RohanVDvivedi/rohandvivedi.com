@@ -1,10 +1,7 @@
 Data injestion
  * (* today) add images to projects
- * (* today) project lister element revamp
 
 Database schema changes
- * (* today) need long_descr and thumb_image for project table schema
- *
  * need updated_at, pushed_at, created_at, etc datedness of projects entries in the projects table (* in far future)
 
 Front end
