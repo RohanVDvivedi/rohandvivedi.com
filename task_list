@@ -1,22 +1,17 @@
 Data injestion
  * (* today) add images to projects
 
-Database schema changes
- * need updated_at, pushed_at, created_at, etc datedness of projects entries in the projects table (* in far future)
-
 Front end
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future after injestion)
- * build live-chat page, with no message store on the backend application, and end to end client to client encryption using the web crypto api (* future)
+ * build live-chat page, with no message store on the backend application, messages get stored only on the client side, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
 Backend
  * (* future) sophisticated handling for chat server
    * allow server commands
    * add chat groups
- * renew client sessions when little time is left
+   * build a chatter interface that is implemented by the server request servicer, chat group type and the chat user
+ * renew client sessions when little time is left until expiration
  * need to handle chat and owner session separately so as to not expire them
- * use separate database for sessions and separate database for other users (except the owner) in future (*in far future)
- * allow your self to build structured database backed blogging logic for your application (* far future)
-
-Maintenance features
- * (* future) setup cron to re build index if project readme have changed
+ * use separate database for sessions and users data for other users (except the owner) in future (*in far future)
+ * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
