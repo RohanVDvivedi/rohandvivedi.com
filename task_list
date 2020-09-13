@@ -1,6 +1,6 @@
 Data injestion
  * (* today) add images to projects
- * (* today) add data for programming languages, libraries used and skill sets for all projects
+ * (* today) project lister element revamp
 
 Database schema changes
  * (* today) need long_descr and thumb_image for project table schema
