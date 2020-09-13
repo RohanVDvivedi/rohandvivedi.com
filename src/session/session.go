@@ -228,6 +228,8 @@ func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Reques
 func (ss *SessionStore) GarbageCollectionRoutine() {
 	for (true) {
 		loop_exit := false
+		sessionsProcessed := 0
+
 		for(!loop_exit) {
 			ss.Lock.Lock()
 
@@ -237,10 +239,25 @@ func (ss *SessionStore) GarbageCollectionRoutine() {
 			} else {
 				LRUhead.Lock.Lock()
 
-				// remove if the session has not been accessed for more than its life time amount of time
-				if(time.Now().Sub(LRUhead.LastAccessed) > ss.MaxLifeDuration) {
+				/*valOwnerIntr, foundOwnerKey := s.Values["owner"]
+				valOwner, isBoolvalOwnerIntr := valOwnerIntr.(bool)
+
+				valChatActiveIntr, foundChatActiveKey := s.Values["chat_active"]
+				valChatActive, isBoolvalChatActiveIntr := valChatActiveIntr.(bool)*/
+
+				hasSessionExpiryElapsed := time.Now().Sub(LRUhead.LastAccessed) > ss.MaxLifeDuration
+
+				// bump the session in the list if it is an owner session or an active chat session
+				/*if((foundOwnerKey && isBoolvalOwnerIntr && valOwner) ||
+					(foundChatActiveKey && isBoolvalChatActiveIntr && valChatActive)) {
 					ss.removeSessionFromLRU(LRUhead)
-				} else {
+					ss.insertSessiontoLRUtail(LRUhead)
+				}*/
+				// remove if the session has not been accessed for more than its life time amount of time
+				/*else*/
+				if(hasSessionExpiryElapsed) {
+					ss.removeSessionFromLRU(LRUhead)
+				} else if (!hasSessionExpiryElapsed) {
 					loop_exit = true
 				}
 				
