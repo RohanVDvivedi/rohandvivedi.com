@@ -228,7 +228,6 @@ func (ss *SessionStore) GetOrCreateSession(w http.ResponseWriter, r *http.Reques
 func (ss *SessionStore) GarbageCollectionRoutine() {
 	for (true) {
 		loop_exit := false
-		sessionsProcessed := 0
 
 		for(!loop_exit) {
 			ss.Lock.Lock()

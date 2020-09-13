@@ -14,7 +14,7 @@ class ProjectListerComponent extends React.Component {
     render() {
     	var hyperlinks = (this.props.project.Hyperlinks == null) ? [] : this.props.project.Hyperlinks
     	var thumbImage = hyperlinks.find((link) => {return link.Name.toLowerCase() == "thumbnail" && link.LinkType == "IMAGE"})
-    	var GithubRepository = this.project.GithubRepositoryLink
+    	var GithubRepository = this.props.project.GithubRepositoryLink
 
     	var GithubRepositories = hyperlinks.filter((link) => {return link.LinkType == "GITHUB"});
     	var YoutubeVideos = hyperlinks.filter((link) => {return link.LinkType == "YOUTUBE"});
@@ -113,7 +113,7 @@ class ProjectListerComponent extends React.Component {
 export default class ProjectsContent extends ApiComponent {
 	constructor(props) {
 		super(props)
-		this.queryStringInit = "/api/project?get_hyperlinks=true&get_categories=true&get_all=true";
+		this.queryStringInit = "/api/project?get_hyperlinks=true&get_categories=true&get_github_repo_link=true&get_all=true";
 	}
 	searchQueryStringBuiltCallback(queryString) {
 		this.queryString = queryString;
