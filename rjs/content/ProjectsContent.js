@@ -14,7 +14,7 @@ class ProjectListerComponent extends React.Component {
     render() {
     	var hyperlinks = (this.props.project.Hyperlinks == null) ? [] : this.props.project.Hyperlinks
     	var thumbImage = hyperlinks.find((link) => {return link.Name.toLowerCase() == "thumbnail" && link.LinkType == "IMAGE"})
-    	var GithubRepository = hyperlinks.find((link) => {return link.Name == this.props.project.Name && link.LinkType == "GITHUB"})
+    	var GithubRepository = this.project.GithubRepositoryLink
 
     	var GithubRepositories = hyperlinks.filter((link) => {return link.LinkType == "GITHUB"});
     	var YoutubeVideos = hyperlinks.filter((link) => {return link.LinkType == "YOUTUBE"});
@@ -123,7 +123,7 @@ export default class ProjectsContent extends ApiComponent {
 		if(this.queryString == null) {
 			return this.queryStringInit;
 		}
-		return ["/api/search?get_hyperlinks=true&get_categories=true", this.queryString].join("&");
+		return ["/api/search?get_hyperlinks=true&get_categories=true&get_github_repo_link=true", this.queryString].join("&");
 	}
     bodyDataBeforeApiFirstResponds() {
     	return [{Name: "Loading",Descr: "Loading Description",}];
