@@ -16,6 +16,7 @@ Backend
  * (* future) sophisticated handling for chat server
    * allow server commands
    * add chat groups
+ * need to handle chat and owner session separately so as to not expire them
  * use separate database for sessions and separate database for other users (except the owner) in future (*in far future)
  * allow your self to build structured database backed blogging logic for your application (* far future)
 

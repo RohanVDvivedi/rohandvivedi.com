@@ -107,7 +107,7 @@ func main() {
 	ownerSessionId := ""
 	if(config.GetGlobalConfig().Create_user_sessions) {
 		fmt.Println("Initializing SessionStore");
-		session.InitGlobalSessionStore("r_sess_id", 8 * time.Hour)
+		session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
 		ownerSessionId = session.GlobalSessionStore.InitializeOwnerSession().SessionId
 	} else {
 		fmt.Println("Configuration declines setting up of SessionStore");
