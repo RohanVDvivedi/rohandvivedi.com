@@ -91,6 +91,7 @@ func (ss *SessionStore) acquireSession(w http.ResponseWriter, r *http.Request) *
 
 	// create a new cookie, with updated expiry, from the session itself and send it
 	cookie := ss.createNewSessionCookie(session)
+	r.AddCookie(cookie)
 	http.SetCookie(w, cookie)
 	
 	return session
