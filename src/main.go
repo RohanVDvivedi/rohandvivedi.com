@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	//"golang.org/x/net/websocket"
 )
 
 // maintains global configuration for the application
@@ -26,11 +25,6 @@ import (
     _ "github.com/mattn/go-sqlite3"
     "rohandvivedi.com/src/data"
     "rohandvivedi.com/src/searchindex"
-)
-
-// template manager to write templated html files as strings
-import (
-	"rohandvivedi.com/src/templateManager"
 )
 
 // mail client support for the application
@@ -60,9 +54,6 @@ func main() {
 
 	// initialize the global configuration form the appropriate config file, and initialize it
 	config.InitGlobalConfig(environment)
-
-	// this will ask the template manager to initialize the templates variable
-	templateManager.InitializeTemplateEngine()
 
 	// create a server mux
 	mux := http.NewServeMux();

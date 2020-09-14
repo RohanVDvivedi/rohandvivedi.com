@@ -7,7 +7,7 @@ import (
 
 var templates *template.Template
 
-func InitializeTemplateEngine() {
+func init() {
 	templates = template.Must(template.ParseGlob("public/templates/*.html"))
 }
 

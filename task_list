@@ -11,7 +11,5 @@ Backend
    * allow server commands
    * add chat groups
    * build a chatter interface that is implemented by the server request servicer, chat group type and the chat user
- * renew client sessions when little time is left until expiration
- * need to handle chat and owner session separately so as to not expire them
  * use separate database for sessions and users data for other users (except the owner) in future (*in far future)
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
