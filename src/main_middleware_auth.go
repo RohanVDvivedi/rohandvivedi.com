@@ -44,3 +44,17 @@ func AuthorizeIfOwner(next http.Handler) http.Handler {
 
 	})
 }
+
+func AuthorizeIfHasSession(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		s := session.GlobalSessionStore.GetExistingSession(r);
+		if(s != nil) {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("You are not an authorized owner of rohandvivedi.com"))
+	})
+}

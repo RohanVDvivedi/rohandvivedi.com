@@ -38,7 +38,9 @@ func SetRequestCacheControl(maxAge time.Duration, next http.Handler) http.Handle
 func LogUserActivity(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         s := session.GlobalSessionStore.GetExistingSession(r);
-        useractlogger.LogUserActivity(s.SessionId, r.URL.Path, r.URL.RawQuery);
+        if(s != nil) {
+            useractlogger.LogUserActivity("UNKNOWN_OR_NEW_USER", r.URL.Path, r.URL.RawQuery);
+        }
         next.ServeHTTP(w, r)
     })
 }

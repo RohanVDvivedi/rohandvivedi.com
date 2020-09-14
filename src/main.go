@@ -95,7 +95,7 @@ func main() {
 		
 		// allow anonymous mails only if user sessions are allowed to be created
 		if(config.GetGlobalConfig().Create_user_sessions) {
-			mux.Handle("/api/anon_mails", mails.SendAnonymousMail);
+			mux.Handle("/api/anon_mails", AuthorizeIfHasSession(mails.SendAnonymousMail));
 		}
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
