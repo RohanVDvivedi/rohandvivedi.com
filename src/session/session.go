@@ -30,7 +30,7 @@ func (ss *SessionStore) createNewSession() *Session {
 	return &Session{
 		SessionId: ss.createNewUniquelyRandomSessionId(),
 		LastAccessed: time.Now(),
-		ActiveRequestCount: 0
+		ActiveRequestCount: 0,
 		Values: make(map[string]interface{}),
 		next: nil,
 		prev: nil,

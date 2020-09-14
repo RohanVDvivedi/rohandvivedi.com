@@ -1,17 +1,18 @@
 package session
 
 import (
+	"time"
 	"net/http"
 )
 
 var GlobalSessionStore *SessionStore = nil;
 
 func InitializeGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
-	GlobalSessionStore := NewSessionStore(CookieName, MaxLifeDuration)
+	GlobalSessionStore = NewSessionStore(CookieName, MaxLifeDuration)
 }
 
 func InitializeOwnerSession() *Session {
-	GlobalSessionStore.Lock.Lock()
+	GlobalSessionStore.sLock.Lock()
 
 	// create a new session
 	session := GlobalSessionStore.createNewSession();
@@ -21,7 +22,7 @@ func InitializeOwnerSession() *Session {
 
 	session.SetValue("owner", true)
 
-	GlobalSessionStore.Lock.Unlock()
+	GlobalSessionStore.sLock.Unlock()
 
 	return session;
 }
@@ -29,11 +30,8 @@ func InitializeOwnerSession() *Session {
 func SessionManagerMiddleware(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		s = GlobalSessionStore.acquireSession(w,r);
-
+		s := GlobalSessionStore.acquireSession(w,r);
 		next.ServeHTTP(w, r)
-
-		GlobalSessionStore.releaseSession(s);
+		GlobalSessionStore.releaseAcquiredSession(s);
 	})
 }

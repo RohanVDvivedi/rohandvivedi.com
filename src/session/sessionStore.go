@@ -1,5 +1,12 @@
 package session
 
+import (
+	"time"
+	"sync"
+	"net/http"
+	"rohandvivedi.com/src/randstring"
+)
+
 type SessionStore struct {
 	CookieName		string 					// name of the cookie, against which session_id will be stored on client side
 	MaxLifeDuration	time.Duration 			// this is the maximum time a cookie session can and will survive	
@@ -14,7 +21,7 @@ type SessionStore struct {
 }
 
 func NewSessionStore(CookieName string, MaxLifeDuration time.Duration) *SessionStore {
-	ss = &SessionStore{
+	ss := &SessionStore{
 		CookieName: CookieName, 
 		MaxLifeDuration: MaxLifeDuration,
 		Sessions: make(map[string]*Session),
@@ -22,13 +29,13 @@ func NewSessionStore(CookieName string, MaxLifeDuration time.Duration) *SessionS
 		tail *Session}{head: nil, tail: nil},
 	};
 	go ss.garbageCollectionRoutine()
-	InitRand()
+	return ss
 }
 
 func (ss *SessionStore) GetExistingSession(r *http.Request) *Session {
 	sessionCookie, errUserCookie := r.Cookie(ss.CookieName)
 
-	ss.Lock.Lock()
+	ss.sLock.Lock()
 
 	if(errUserCookie == nil) {	// no error means client remembers the session_id as cookie
 		sessionId := sessionCookie.Value
@@ -37,12 +44,12 @@ func (ss *SessionStore) GetExistingSession(r *http.Request) *Session {
 		session, serverSessionExists := ss.Sessions[sessionId]
 
 		if(serverSessionExists) { // if a session is found, return it
-			ss.Lock.Unlock()
+			ss.sLock.Unlock()
 			return session;
 		}
 	}
 
-	ss.Lock.Unlock()
+	ss.sLock.Unlock()
 
 	return nil
 }
@@ -53,7 +60,7 @@ func (ss *SessionStore) acquireSession(w http.ResponseWriter, r *http.Request) *
 
 	ss.sLock.Lock()
 		// session pointer we found or we created
-		session := nil
+		var session *Session = nil
 
 		// try to find the session using the user provided session value
 		if(errUserCookie == nil) {
@@ -114,7 +121,7 @@ func (ss *SessionStore) garbageCollectionRoutine() {
 		loop_exit := false
 
 		for(!loop_exit) {
-			ss.Lock.Lock()
+			ss.sLock.Lock()
 
 			LRUhead := ss.getSessionFromLRUhead()
 			if(LRUhead == nil) {
@@ -136,7 +143,7 @@ func (ss *SessionStore) garbageCollectionRoutine() {
 				LRUhead.tLock.Unlock()
 			}
 
-			ss.Lock.Unlock()
+			ss.sLock.Unlock()
 		}
 		time.Sleep(5 * time.Minute)	// garbage collection running every 5 minutes
 	}
@@ -144,12 +151,12 @@ func (ss *SessionStore) garbageCollectionRoutine() {
 
 // unsafe
 func (ss *SessionStore) createNewUniquelyRandomSessionId() string {
-	const sessionIdLength := 40
+	const sessionIdLength = 40
 
-	sessionId := RandStringBytes(sessionIdLength)
+	sessionId := randstring.GetRandomString(sessionIdLength)
 	_, sessionIdExists := ss.Sessions[sessionId]
 	for(sessionIdExists) {
-		sessionId = RandStringBytes(sessionIdLength)
+		sessionId = randstring.GetRandomString(sessionIdLength)
 		_, sessionIdExists = ss.Sessions[sessionId]
 	}
 
