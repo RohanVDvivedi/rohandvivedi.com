@@ -69,23 +69,23 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", CountApiHitsInSessionValues(GzipCompressor(Send404OnFolderRequest(SetRequestCacheControl(24 * time.Hour, fs)))))
+	mux.Handle("/", GzipCompressor(Send404OnFolderRequest(SetRequestCacheControl(24 * time.Hour, fs))))
 
 	// attach all the handlers of all the pages here
-	mux.Handle("/pages/", CountApiHitsInSessionValues(GzipCompressor(page.PageHandler)));
+	mux.Handle("/pages/", GzipCompressor(page.PageHandler));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", AuthorizeIfHasSession(CountApiHitsInSessionValues(chatter.AuthorizeAndStartChatHandler)));
+	mux.Handle("/chat", AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
 
 	// attach all the handlers of all the apis here
-	mux.Handle("/api/person", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetPerson)));
-	mux.Handle("/api/project", 				CountApiHitsInSessionValues(SetRequestCacheControl(15 * time.Minute, api.FindProject)));
-	mux.Handle("/api/all_categories", 		CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetAllCategories)));
-	mux.Handle("/api/owner", 				CountApiHitsInSessionValues(SetRequestCacheControl(24 * time.Hour, api.GetOwner)));
+	mux.Handle("/api/person", 				SetRequestCacheControl(24 * time.Hour, api.GetPerson));
+	mux.Handle("/api/project", 				SetRequestCacheControl(15 * time.Minute, api.FindProject));
+	mux.Handle("/api/all_categories", 		SetRequestCacheControl(24 * time.Hour, api.GetAllCategories));
+	mux.Handle("/api/owner", 				SetRequestCacheControl(24 * time.Hour, api.GetOwner));
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/sys_stats", 			AuthorizeIfOwner(api.GetServerSystemStats));
-	mux.Handle("/api/search", 				CountApiHitsInSessionValues(api.ProjectsSearch));
-	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(CountApiHitsInSessionValues(mails.SendAnonymousMail)));
+	mux.Handle("/api/search", 				api.ProjectsSearch);
+	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(mails.SendAnonymousMail));
 	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
 
 	// setup database connection
@@ -129,15 +129,17 @@ func main() {
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
+
+	muxDefaultHandlers := LogUserActivity(mux)
 	
 	if(!config.GetGlobalConfig().SSL_enabled){
 		fmt.Println("Application starting with ssl disabled on port 80");
-		log.Fatal(http.ListenAndServe(":80", mux));
+		log.Fatal(http.ListenAndServe(":80", muxDefaultHandlers));
 	} else {
 		fmt.Println("Application starting with SSL enabled on port 443");
 		log.Fatal(http.ListenAndServeTLS(":443",
 			"/etc/letsencrypt/live/rohandvivedi.com/fullchain.pem",
-			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", mux))
+			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", muxDefaultHandlers))
 	}
 	fmt.Println("Application shutdown");
 }

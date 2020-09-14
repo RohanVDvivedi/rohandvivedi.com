@@ -35,8 +35,8 @@ func SetRequestCacheControl(maxAge time.Duration, next http.Handler) http.Handle
     })
 }
 
-// this middleware lets you maintain data regarding api access that each sessioned user has made
-func CountApiHitsInSessionValues(next http.Handler) http.Handler {
+// this middleware lets you maintain log data regarding api access that each sessioned user has made
+func LogUserActivity(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         
         if(config.GetGlobalConfig().Create_user_sessions) {

@@ -2,7 +2,7 @@ Data injestion
  * (* today) add images to projects
 
 Front end
- * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future after injestion)
+ * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
  * build live-chat page, with no message store on the backend application, messages get stored only on the client side, and end to end client to client encryption using the web crypto api (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
