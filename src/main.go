@@ -92,7 +92,11 @@ func main() {
 	if(config.GetGlobalConfig().Auth_mail_client) {
 		fmt.Println("Initializing and Authenticating SMTP mail client");
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
-		mux.Handle("/api/anon_mails", mails.SendAnonymousMail);
+		
+		// allow anonymous mails only if user sessions are allowed to be created
+		if(config.GetGlobalConfig().Create_user_sessions) {
+			mux.Handle("/api/anon_mails", mails.SendAnonymousMail);
+		}
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
