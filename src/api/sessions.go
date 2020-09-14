@@ -16,8 +16,6 @@ func printAllUserSessions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session.GlobalSessionStore.Lock.Lock()
 	json, _ := json.Marshal(session.GlobalSessionStore.Sessions);
-	session.GlobalSessionStore.Lock.Unlock()
 	w.Write(json);
 }

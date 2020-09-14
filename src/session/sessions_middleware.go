@@ -7,7 +7,7 @@ import (
 
 var GlobalSessionStore *SessionStore = nil;
 
-func InitializeGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
+func InitGlobalSessionStore(CookieName string, MaxLifeDuration time.Duration) {
 	GlobalSessionStore = NewSessionStore(CookieName, MaxLifeDuration)
 }
 

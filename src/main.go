@@ -75,18 +75,27 @@ func main() {
 	mux.Handle("/pages/", GzipCompressor(page.PageHandler));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
+	mux.Handle("/chat", chatter.AuthorizeAndStartChatHandler);
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				SetRequestCacheControl(24 * time.Hour, api.GetPerson));
 	mux.Handle("/api/project", 				SetRequestCacheControl(15 * time.Minute, api.FindProject));
 	mux.Handle("/api/all_categories", 		SetRequestCacheControl(24 * time.Hour, api.GetAllCategories));
 	mux.Handle("/api/owner", 				SetRequestCacheControl(24 * time.Hour, api.GetOwner));
+	mux.Handle("/api/search", 				SetRequestCacheControl(15 * time.Minute, api.ProjectsSearch));
+
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/sys_stats", 			AuthorizeIfOwner(api.GetServerSystemStats));
-	mux.Handle("/api/search", 				api.ProjectsSearch);
-	mux.Handle("/api/anon_mails", 			AuthorizeIfHasSession(mails.SendAnonymousMail));
 	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
+
+	// initialize mail smtp client, and authenticate, also add handler to send anonymous mails
+	if(config.GetGlobalConfig().Auth_mail_client) {
+		fmt.Println("Initializing and Authenticating SMTP mail client");
+		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
+		mux.Handle("/api/anon_mails", mails.SendAnonymousMail);
+	} else {
+		fmt.Println("Configuration declines setting up of SMTP mail client");
+	}
 
 	// setup database connection
 	data.Db, _ = sql.Open("sqlite3", config.GetGlobalConfig().SQLite3_database_file)
@@ -103,34 +112,37 @@ func main() {
 		}();
 	}
 
-	// set up session store
-	ownerSessionId := ""
-	if(config.GetGlobalConfig().Create_user_sessions) {
-		fmt.Println("Initializing SessionStore");
-		session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
-		ownerSessionId = session.GlobalSessionStore.InitializeOwnerSession().SessionId
-	} else {
-		fmt.Println("Configuration declines setting up of SessionStore");
-		ownerSessionId = "****No SessionStore, hence no OwnerSessionId****"
-	}
-
 	// initialize all cron for the system
 	if(config.GetGlobalConfig().Enable_all_cron) {
 		initializeSystemCron()
 		defer deinitializeSystemCron()
 	}
 
-	// initialize mail smtp client, and authenticate
-	if(config.GetGlobalConfig().Auth_mail_client) {
-		fmt.Println("Initializing and Authenticating SMTP mail client");
-		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
-		mails.SendDeploymentMail(ownerSessionId)
-		mails.SendServerSystemStatsMail()
+	muxDefaultHandlers := http.Handler(mux)
+
+	// set up session store, and enable user logging using the middleware functions if they are enables using the config
+	ownerSessionId := ""
+	if(config.GetGlobalConfig().Create_user_sessions) {
+		fmt.Println("Initializing SessionStore");
+		session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
+
+		if(config.GetGlobalConfig().Enable_user_activity_logging) {
+			muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(mux))
+		} else {
+			muxDefaultHandlers = session.SessionManagerMiddleware(mux)
+		}
+
+		ownerSessionId = session.InitializeOwnerSession().SessionId
 	} else {
-		fmt.Println("Configuration declines setting up of SMTP mail client");
+		fmt.Println("Configuration declines setting up of SessionStore");
+		ownerSessionId = "****No SessionStore, hence no OwnerSessionId****"
 	}
 
-	muxDefaultHandlers := LogUserActivity(mux)
+	// send deployment mail just before deployment
+	if(config.GetGlobalConfig().Auth_mail_client) {
+		mails.SendDeploymentMail(ownerSessionId)
+		mails.SendServerSystemStatsMail()
+	}
 	
 	if(!config.GetGlobalConfig().SSL_enabled){
 		fmt.Println("Application starting with ssl disabled on port 80");

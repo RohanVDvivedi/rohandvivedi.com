@@ -9,7 +9,6 @@ import (
 )
 
 import (
-	"rohandvivedi.com/src/config"
 	"rohandvivedi.com/src/useractlogger"
 	"rohandvivedi.com/src/session"
 )
@@ -37,14 +36,9 @@ func SetRequestCacheControl(maxAge time.Duration, next http.Handler) http.Handle
 
 // this middleware lets you maintain log data regarding api access that each sessioned user has made
 func LogUserActivity(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        
-        if(config.GetGlobalConfig().Create_user_sessions) {
-	        // you must need a session to allow me to maintain the count
-	        s := session.GlobalSessionStore.GetOrCreateSession(w, r);
-	        useractlogger.LogUserActivity(s.SessionId, r.URL.Path, r.URL.RawQuery);
-		}
-
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        s := session.GlobalSessionStore.GetExistingSession(r);
+        useractlogger.LogUserActivity(s.SessionId, r.URL.Path, r.URL.RawQuery);
         next.ServeHTTP(w, r)
     })
 }

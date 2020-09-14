@@ -70,7 +70,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s := session.GlobalSessionStore.GetOrCreateSession(w, r);
+	s := session.GlobalSessionStore.GetExistingSession(r);
 	userSessionId := s.SessionId
 
 	userAnonMailCountIntr := s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{} {
