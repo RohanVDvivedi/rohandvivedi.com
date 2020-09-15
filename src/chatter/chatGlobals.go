@@ -9,7 +9,7 @@ type Chatterers struct{
 	// lock to protect all the chat users
 	Lock sync.Mutex
 
-	Chatters map[string]*ChatUser
+	Chatters map[string]ChatterBox
 }
 
 // returns pointer to the created chat user is the user was created

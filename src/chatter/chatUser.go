@@ -13,16 +13,14 @@ type ChatUser struct {
 	// the active web socket connection to the user
 	Connection *websocket.Conn
 
-	// sender needs to write to this channel,
-	// if the message is referred to: to the given user identified by the Name
-	// the chat user's go rputing dedicated to the given user will read from the channel 
-	// and writ the message to the connection
+	// add a message here to send it to this user
 	InputMessage chan ChatMessage
 
 	// last message, received or sent or pinged
-	// this lets us identify id the user went idle, for a long time say 5 mins
-	// if so we close the connection
 	LastMessage time.Time
+
+	// ChatGroups involved in
+	ChatGroups []*ChatGroup
 }
 
 func NewChatUser(name string, connection *websocket.Conn) *ChatUser {
@@ -32,7 +30,7 @@ func NewChatUser(name string, connection *websocket.Conn) *ChatUser {
 		InputMessage:make(chan ChatMessage, 10),
 		LastMessage:time.Now(),
 	}
-	go user.LoopOverChannelToPassMessagesToThisUser()
+	go user.LoopOverChannelToPassMessages()
 	return user
 }
 
@@ -58,7 +56,7 @@ func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
 	return msg, nil
 }
 
-func (user *ChatUser) LoopOverChannelToPassMessagesToThisUser() {
+func (user *ChatUser) LoopOverChannelToPassMessages() {
 	for msg := range user.InputMessage {
 		if(msg.To == user.Name) {
 			err := ChatMessageCodec.Send(user.Connection, msg)
