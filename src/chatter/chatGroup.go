@@ -1,5 +1,9 @@
 package chatter
 
+import (
+	"time"
+)
+
 type ChatGroup struct {
 	// name of the chat group
 	Name string
@@ -8,7 +12,7 @@ type ChatGroup struct {
 	InputMessage chan ChatMessage
 
 	// any message received in the InputMessage is sent to every one except the sender
-	ChatUsers []*ChatUsers
+	ChatUsers []*ChatUser
 
 	// last message, received or sent or pinged
 	LastMessage time.Time
@@ -21,7 +25,7 @@ func NewChatGroup(name string, users []*ChatUser) *ChatGroup {
 		ChatUsers: users,
 		LastMessage:time.Now(),
 	}
-	go grp.LoopOverChannelToPassMessagesToThisUser()
+	go grp.LoopOverChannelToPassMessages()
 	return grp
 }
 
@@ -32,7 +36,7 @@ func (grp *ChatGroup) SendMessage(msg ChatMessage) {
 func (grp *ChatGroup) LoopOverChannelToPassMessages() {
 	for msg := range grp.InputMessage {
 		if(msg.To == grp.Name) {
-			for user := range grp.ChatUser {
+			for _, user := range grp.ChatUsers {
 				if(msg.From != user.Name) {
 					user.SendMessage(msg)
 				}

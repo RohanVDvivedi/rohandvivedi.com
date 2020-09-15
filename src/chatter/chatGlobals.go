@@ -26,23 +26,26 @@ func (c *Chatterers) InsertUniqueChatUserByName(name string, conn *websocket.Con
 }
 
 // returns true if the user is removed
-func (c *Chatterers) DeleteChatUserByName(name string) bool {
+func (c *Chatterers) DeleteChatterBoxByName(name string) bool {
 	c.Lock.Lock()
-	chatUser, found := c.Chatters[name]
+	chatterBox, found := c.Chatters[name]
 	if(found) {
-		chatUser.DestroyChatUser()
-		delete(c.Chatters, name);
+		chatUser, isChatUser := chatterBox.(*ChatUser)
+		if(isChatUser) {
+			chatUser.DestroyChatUser()
+			delete(c.Chatters, name);
+		}
 	}
 	c.Lock.Unlock()
 	return found
 }
 
-func (c *Chatterers) GetChatUserByName(name string) *ChatUser {
+func (c *Chatterers) GetChatUserByName(name string) ChatterBox {
 	c.Lock.Lock()
-	chatUser, found := c.Chatters[name]
+	chatterBox, found := c.Chatters[name]
 	c.Lock.Unlock()
 	if(found) {
-		return chatUser;
+		return chatterBox;
 	}
 	return nil
 }

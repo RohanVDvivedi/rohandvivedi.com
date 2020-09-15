@@ -10,7 +10,7 @@ import (
 
 // map of all the chat users 
 // from their name to the chatUser struct pointer
-var Chatters = Chatterers{Chatters:make(map[string]*ChatUser)}
+var Chatters = Chatterers{Chatters:make(map[string]ChatterBox)}
 
 
 // never call this functions outside
@@ -24,7 +24,7 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	if(chatUser == nil) {
 		return
 	}
-	defer Chatters.DeleteChatUserByName(name);
+	defer Chatters.DeleteChatterBoxByName(name);
 
 	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
 	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
