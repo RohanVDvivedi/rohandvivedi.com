@@ -5,43 +5,51 @@ import (
 )
 
 type ChatGroup struct {
-	// name of the chat group
+	Id string
 	Name string
 
-	// add a message here to send it to every one else in the group
-	InputMessage chan ChatMessage
+	MessagesToBeSent chan ChatMessage
 
-	// any message received in the InputMessage is sent to every one except the sender
-	ChatUsers []*ChatUser
+	ChatUsers map[string]*ChatUser
 
-	// last message, received or sent or pinged
 	LastMessage time.Time
 }
 
-func NewChatGroup(name string, users []*ChatUser) *ChatGroup {
+func NewChatGroup(name string) *ChatGroup {
 	grp := &ChatGroup{
-		Name:name,
-		InputMessage:make(chan ChatMessage, 10),
-		ChatUsers: users,
-		LastMessage:time.Now(),
+		Id: GetNewChatGroupId(),
+		Name: name,
+		MessagesToBeSent: make(chan ChatMessage, 10),
+		ChatUsers: make(map[string]*ChatUser),
+		LastMessage: time.Now(),
 	}
 	go grp.LoopOverChannelToPassMessages()
 	return grp
 }
 
+func (grp *ChatGroup) GetId() string {
+	return grp.Id
+}
+
+func (grp *ChatGroup) GetName() string {
+	return grp.Name
+}
+
 func (grp *ChatGroup) SendMessage(msg ChatMessage) {
-	grp.InputMessage <- msg
+	grp.MessagesToBeSent <- msg
 }
 
 func (grp *ChatGroup) LoopOverChannelToPassMessages() {
-	for msg := range grp.InputMessage {
-		if(msg.To == grp.Name) {
+	for msg := range grp.MessagesToBeSent {
+		if(msg.To == grp.Id) {
 			for _, user := range grp.ChatUsers {
-				if(msg.From != user.Name) {
-					user.SendMessage(msg)
-				}
+				go user.SendMessage(msg)
 			}
 			grp.LastMessage = time.Now()
 		}
 	}
+}
+
+func (grp *ChatGroup) Destroy() {
+	close(grp.MessagesToBeSent)
 }

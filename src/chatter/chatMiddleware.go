@@ -31,8 +31,7 @@ func AuthorizeChat(next http.Handler) http.Handler {
 				if(nameSessionExists) {
 					name, ok := nameIntr.(string)
 					if(ok && !strings.Contains(name, "server") && 
-						!strings.Contains(name, "owner") && 
-						Chatters.GetChatUserByName(name) == nil) {
+						!strings.Contains(name, "owner")) {
 						next.ServeHTTP(w, r)
 						return
 					}

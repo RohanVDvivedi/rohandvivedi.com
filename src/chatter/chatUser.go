@@ -7,40 +7,41 @@ import (
 )
 
 type ChatUser struct {
-	// name of the chat user client
+	Id string
 	Name string
+	PublicKey string
 
-	// the active web socket connection to the user
+	MessagesToBeSent chan ChatMessage
 	Connection *websocket.Conn
-
-	// add a message here to send it to this user
-	InputMessage chan ChatMessage
-
-	// last message, received or sent or pinged
 	LastMessage time.Time
 
-	// ChatGroups involved in
-	ChatGroups []*ChatGroup
+	ChatGroups map[string]*ChatGroup
 }
 
-func NewChatUser(name string, connection *websocket.Conn) *ChatUser {
+func NewChatUser(name string, publicKey string, connection *websocket.Conn) *ChatUser {
 	user := &ChatUser{
-		Name:name,
+		Id: GetNewChatUserId(),
+		Name: name,
+		MessagesToBeSent: make(chan ChatMessage, 10),
+		PublicKey:publicKey,
 		Connection:connection,
-		InputMessage:make(chan ChatMessage, 10),
 		LastMessage:time.Now(),
+		ChatGroups:make(map[string]*ChatGroup),
 	}
 	go user.LoopOverChannelToPassMessages()
 	return user
 }
 
-func (user *ChatUser) DestroyChatUser() {
-	close(user.InputMessage)
-	user.Connection.Close()
+func (user *ChatUser) GetId() string {
+	return user.Id
+}
+
+func (user *ChatUser) GetName() string {
+	return user.Name
 }
 
 func (user *ChatUser) SendMessage(msg ChatMessage) {
-	user.InputMessage <- msg
+	user.MessagesToBeSent <- msg
 }
 
 func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
@@ -57,14 +58,19 @@ func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
 }
 
 func (user *ChatUser) LoopOverChannelToPassMessages() {
-	for msg := range user.InputMessage {
+	for msg := range user.MessagesToBeSent {
 		if(msg.To == user.Name) {
 			err := ChatMessageCodec.Send(user.Connection, msg)
 			if(err != nil) { // this could mean, connection closed or lost
-				user.DestroyChatUser()
+				user.Destroy()
 				return
 			}
 			user.LastMessage = time.Now()
 		}
 	}
+}
+
+func (user *ChatUser) Destroy() {
+	close(user.MessagesToBeSent)
+	user.Connection.Close()
 }

@@ -2,7 +2,7 @@ package chatter
 
 import (
 	"sync"
-	"golang.org/x/net/websocket"
+	"time"
 )
 
 type Chatterers struct{
@@ -10,39 +10,72 @@ type Chatterers struct{
 	Lock sync.Mutex
 
 	Chatters map[string]ChatterBox
+
+	InputMessage chan ChatMessage
 }
 
-// returns pointer to the created chat user is the user was created
-func (c *Chatterers) InsertUniqueChatUserByName(name string, conn *websocket.Conn) *ChatUser {
-	var chatUser *ChatUser = nil
-	c.Lock.Lock()
-	_, chatUserSameNameExists := c.Chatters[name]
-	if(!chatUserSameNameExists) {
-		chatUser = NewChatUser(name, conn)
-		c.Chatters[chatUser.Name] = chatUser
-	}
-	c.Lock.Unlock()
-	return chatUser
-}
+func (c *Chatterers) ChatManagerRun() {
+	for msg := range c.InputMessage {
 
-// returns true if the user is removed
-func (c *Chatterers) DeleteChatterBoxByName(name string) bool {
-	c.Lock.Lock()
-	chatterBox, found := c.Chatters[name]
-	if(found) {
-		chatUser, isChatUser := chatterBox.(*ChatUser)
-		if(isChatUser) {
-			chatUser.DestroyChatUser()
-			delete(c.Chatters, name);
+		msgReply := ChatMessage{From: "server", SentAt: time.Now(), To: msg.From, Message: "ERROR"}
+
+		c.Lock.Lock()
+
+		replyToChatterBox, found := c.Chatters[msg.From]
+
+		if(found) {
+			switch msg.To {
+			case "server-get-chatter-box-name" : {
+				chatterBox, found := c.Chatters[msg.Message]
+				if(found) {
+					msgReply.Message = chatterBox.GetName()
+				}
+			}
+			case "server-get-chat-user-publickey" : {
+				chatterBox, found := c.Chatters[msg.Message]
+				if(found) {
+					chatUser, isChatUser := chatterBox.(*ChatUser)
+					if(isChatUser) {
+						msgReply.Message = chatUser.PublicKey
+					}
+				}
+			}
+			case "server-create-chat-group" : {
+			}
+			case "server-add-user-to-chat-group" : {
+			}
+			case "server-delete-chat-group" : {
+			}
+			}
 		}
+		c.Lock.Unlock()
+
+		if(found) {
+			go replyToChatterBox.SendMessage(msgReply)
+		}
+
 	}
-	c.Lock.Unlock()
-	return found
 }
 
-func (c *Chatterers) GetChatUserByName(name string) ChatterBox {
+func (c *Chatterers) InsertChatterBox(chatterBox ChatterBox) {
 	c.Lock.Lock()
-	chatterBox, found := c.Chatters[name]
+	c.Chatters[chatterBox.GetId()] = chatterBox
+	c.Lock.Unlock()
+}
+
+func (c *Chatterers) DeleteChatterBox(Id string) {
+	c.Lock.Lock()
+	chatterBox, found := c.Chatters[Id]
+	if(found) {
+		chatterBox.Destroy()
+		delete(c.Chatters, Id);
+	}
+	c.Lock.Unlock()
+}
+
+func (c *Chatterers) GetChatterBoxById(Id string) ChatterBox {
+	c.Lock.Lock()
+	chatterBox, found := c.Chatters[Id]
 	c.Lock.Unlock()
 	if(found) {
 		return chatterBox;

@@ -1,6 +1,9 @@
 package chatter
 
 type ChatterBox interface {
-    SendMessage(msg ChatMessage)
-    LoopOverChannelToPassMessages()
+	GetId() string
+	GetName() string
+	SendMessage(msg ChatMessage)
+	LoopOverChannelToPassMessages()
+	Destroy()
 }
