@@ -5,7 +5,8 @@ import (
 )
 
 type ChatGroup struct {
-	ChatterBoxIndentity
+	Id
+	Name
 
 	MessagesToBeSent chan ChatMessage
 
@@ -16,7 +17,8 @@ type ChatGroup struct {
 
 func NewChatGroup(name string) *ChatGroup {
 	grp := &ChatGroup{
-		ChatterBoxIndentity: ChatterBoxIndentity{Id: GetNewChatUserId(), Name: name},
+		Id: Id{GetNewChatUserId()},
+		Name: Name{name},
 		MessagesToBeSent: make(chan ChatMessage, 10),
 		ChatUsers: make(map[string]*ChatUser),
 		LastMessage: time.Now(),
@@ -33,7 +35,7 @@ func (grp *ChatGroup) LoopOverChannelToPassMessages() {
 	for msg := range grp.MessagesToBeSent {
 		if(msg.To == grp.Id) {
 			for _, user := range grp.ChatUsers {
-				go user.SendMessage(msg)
+				user.SendMessage(msg)
 			}
 			grp.LastMessage = time.Now()
 		}

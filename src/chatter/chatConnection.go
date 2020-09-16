@@ -8,6 +8,7 @@ import (
 )
 
 type ChatConnection struct {
+	Id
 	MessagesToBeSent* ChatMessageQueue
 	Connection *websocket.Conn
 	ConnectionCloseWait sync.WaitGroup
@@ -16,14 +17,15 @@ type ChatConnection struct {
 }
 
 func NewChatConnection() *ChatConnection {
-	return &ChatConnection{
+	return &ChatConnection {
+		Id:GetChatNewConnectionId(),
 		MessagesToBeSent: NewChatMessageQueue(),
 		LastMessage:time.Now(),
 		IsActive: false,
 	}
 }
 
-func (cconn *ChatConnection) Start(Connection *websocket.Conn, ReceivedMessages chan ChatMessage) {
+func (cconn *ChatConnection) Start(Connection *websocket.Conn) {
 	cconn.IsActive = true
 	cconn.Connection = Connection
 	cconn.ConnectionCloseWait.Add(1)

@@ -5,16 +5,16 @@ import (
 	"time"
 )
 
-type Chatterers struct{
+type ChatManager struct{
 	// lock to protect all the chat users
 	Lock sync.Mutex
 
-	Chatters map[string]ChatterBox
+	Chatters map[string]ChatterSendable
 
 	InputMessage chan ChatMessage
 }
 
-func (c *Chatterers) ChatManagerRun() {
+func (c *ChatManager) ChatManagerRun() {
 	for msg := range c.InputMessage {
 
 		msgReply := ChatMessage{From: "server", SentAt: time.Now(), To: msg.From, Message: "ERROR"}
@@ -26,9 +26,12 @@ func (c *Chatterers) ChatManagerRun() {
 		if(found) {
 			switch msg.To {
 			case "server-get-chatter-box-name" : {
-				chatterBox, found := c.Chatters[msg.Message]
+				chatterSendable, found := c.Chatters[msg.Message]
 				if(found) {
-					msgReply.Message = chatterBox.GetName()
+					chatterBox isChatterBox := chatterSendable.(ChatterBox)
+					if(isChatterBox) {
+						msgReply.Message = chatterBox.GetName()
+					}
 				}
 			}
 			case "server-get-chat-user-publickey" : {
@@ -57,13 +60,13 @@ func (c *Chatterers) ChatManagerRun() {
 	}
 }
 
-func (c *Chatterers) InsertChatterBox(chatterBox ChatterBox) {
+func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	c.Lock.Lock()
 	c.Chatters[chatterBox.GetId()] = chatterBox
 	c.Lock.Unlock()
 }
 
-func (c *Chatterers) DeleteChatterBox(Id string) {
+func (c *ChatManager) DeleteChatterer(Id string) {
 	c.Lock.Lock()
 	chatterBox, found := c.Chatters[Id]
 	if(found) {
@@ -73,12 +76,12 @@ func (c *Chatterers) DeleteChatterBox(Id string) {
 	c.Lock.Unlock()
 }
 
-func (c *Chatterers) GetChatterBoxById(Id string) ChatterBox {
+func (c *ChatManager) SendById(msg ChatMessage) bool {
 	c.Lock.Lock()
-	chatterBox, found := c.Chatters[Id]
-	c.Lock.Unlock()
+	chatterSendable, found := c.Chatters[msg.To]
 	if(found) {
-		return chatterBox;
+		chatterSendable.SendMessage(msg);
 	}
-	return nil
+	c.Lock.Unlock()
+	return found
 }

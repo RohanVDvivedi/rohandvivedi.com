@@ -7,11 +7,11 @@ import (
 )
 
 type ChatUser struct {
-	ChatterBoxIndentity
+	Id
+	Name
 	PublicKey string
 
-	MessagesToBeSent chan ChatMessage
-	MessagesReceived chan ChatMessage
+	MessagesPendingToBeSent *ChatMessageQueue
 
 	CConn *ChatConnection
 
@@ -20,39 +20,43 @@ type ChatUser struct {
 
 func NewChatUser(name string, publicKey string) *ChatUser {
 	user := &ChatUser{
-		ChatterBoxIndentity: ChatterBoxIndentity{Id: GetNewChatUserId(), Name: name},
-		PublicKey:publicKey,
-
-		MessagesToBeSent: make(chan ChatMessage, 10),
-		MessagesReceived: make(chan ChatMessage, 10),
-
-		ChatGroups:make(map[string]*ChatGroup),
+		Id: Id{GetNewChatUserId()},
+		Name: Name{name},
+		PublicKey: publicKey,
+		MessagesPendingToBeSent: NewChatMessageQueue(),
+		ChatGroups: make(map[string]*ChatGroup),
 	}
-	go user.LoopOverChannelToPassMessages()
 	return user
+}
+
+func (user *ChatUser) SetChatConnection(CConn *ChatConnection) {
+	user.CConn = CConn
+	go user.LoopOverChannelToPassMessages()
 }
 
 func (user *ChatUser) SendMessage(msg ChatMessage) {
 	if(msg.To == user.GetId()) {
-		user.CConn.SendMessage(msg)
+		if(user.CConn != nil) {
+			user.CConn.SendMessage(msg)
+		} else {
+			user.MessagesPendingToBeSent.Push(msg)
+		}
 	}
 }
 
 func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
-	msg <- user.CConn.MessagesReceived
-	err := ChatMessageCodec.Receive(user.Connection, &msg)
+	msg, err := user.CConn.ReceiveMessage()
 	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
 		return msg, err;
-	}
-	user.LastMessage = time.Now()
-	if(msg.From != user.Name) { // user maliciously pretending to be someone else
+	} else if(msg.From != user.GetId()) { // user maliciously pretending to be someone else
 		return ChatMessage{}, errors.New("Malicious user: wrong user name in from attribute")
 	}
 	return msg, nil
 }
 
 func (user *ChatUser) LoopOverChannelToPassMessages() {
-	for msg := range user.MessagesToBeSent {
+	for (true) {
+		msg := cconn.MessagesToBeSent.Top()
 		if(msg.To == user.Name) {
 			err := ChatMessageCodec.Send(user.Connection, msg)
 			if(err != nil) { // this could mean, connection closed or lost
@@ -61,6 +65,7 @@ func (user *ChatUser) LoopOverChannelToPassMessages() {
 			}
 			user.LastMessage = time.Now()
 		}
+		cconn.MessagesToBeSent.Pop()
 	}
 }
 

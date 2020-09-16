@@ -1,29 +1,36 @@
 package chatter
 
-type ChatterBox interface {
+// A Chatter sendable exists only inside chat manager
+type ChatterSendable interface {
 	GetId() string
-	GetName() string
-	SetName(name string)
 	SendMessage(msg ChatMessage)
-	LoopOverChannelToPassMessages()
 	Destroy()
 }
 
-type ChatterBoxIndentity struct {
+type ChatterBox interface {
+	ChatterSendable
+	GetName() string
+	SetName(name string)
+}
+
+type Id struct {
 	Id string
+}
+
+func (i *Id) GetId() string {
+	return i.Id
+}
+
+type Name struct {
 	Name string
 }
 
-func (c *ChatterBoxIndentity) GetId() string {
-	return c.Id
+func (n *Name) GetName() string {
+	return n.Name
 }
 
-func (c *ChatterBoxIndentity) GetName() string {
-	return c.Name
-}
-
-func (c *ChatterBoxIndentity) SetName(name string) {
-	c.Name = name
+func (n *Name) SetName(name string) {
+	n.Name = name
 }
 
 

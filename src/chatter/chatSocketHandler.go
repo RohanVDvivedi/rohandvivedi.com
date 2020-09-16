@@ -18,30 +18,35 @@ var Chatters = Chatterers{
 
 // never call this functions outside
 func ChatConnectionHandler(conn *websocket.Conn) {
-	defer conn.Close();
-
 	nameIntr, _ := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("name")
 	name, _ := nameIntr.(string)
 
-	chatUser := NewChatUser(name, "publicKey", conn)
+	var chatConnection *ChatConnection = nil
 
-	Chatters.InsertChatterBox(chatUser)
-	defer Chatters.DeleteChatterBox(chatUser.GetId());
+	chatConnectionIntr, found := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("chat_connection")
+	if(found) {
+		chatConnectionTemp, isChatConnectionType := chatConnectionIntr.(*ChatConnection)
+		if(isChatConnectionType) {
+			chatConnection = chatConnectionTemp
+		}
+	}
+	if(chatConnection == nil) {
+		chatConnection = NewChatConnection();
+		session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_connection", chatConnection)
+	}
 
-	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
-	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
+	chatConnection.Start(conn);
 
 	for (true) {
 		msg, err := chatUser.ReceiveMessage()
-		// if there happens to be any error in receiving a message, user created or not, we close the connection up
 		if(err != nil) {
-			break;
+			chatConnection.Stop();
 		}
-		receiverUser := Chatters.GetChatterBoxById(msg.To)
-		if(receiverUser != nil) {
-			go receiverUser.SendMessage(msg)
-		} else {
-			go receiverUser.SendMessage(msg)
-		}
+		receiverUser := Chatters.GetChatterBoxById(msg)
 	}
+
+	chatConnection.WaitForShutdown();
+	chatConnection.Stop();
+
+	Chatters.DeleteChatterer(chatConnection.GetId());
 }
