@@ -67,9 +67,13 @@ func (c *ChatManager) ChatManagerRun() {
 			}
 			case "server-login-as-chat-user" : {
 			}
+			case "server-logout" : {
+			}
 			case "server-add-user-to-chat-group" : {
 			}
 			case "server-delete-chat-group" : {
+			}
+			case "server-delete-chat-user" : {
 			}
 			case "server-notify-all" : {
 			}
