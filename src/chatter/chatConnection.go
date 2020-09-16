@@ -22,7 +22,11 @@ func NewChatConnection(Connection *websocket.Conn) *ChatConnection {
 }
 
 func (cconn *ChatConnection) SendMessage(msg ChatMessage) error {
-	return ChatMessageCodec.Send(cconn.Connection, msg)
+	// if this connection was responsible for generating the message, then do not send it again
+	if(msg.OriginConnection != cconn.GetId()) {
+		return ChatMessageCodec.Send(cconn.Connection, msg)
+	}
+	return nil
 }
 
 func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
