@@ -13,7 +13,7 @@ type ChatUser struct {
 
 	MessagesPendingToBeSent *ChatMessageQueue
 
-	CConn *ChatConnection
+	ChatConnections map[string]*ChatConnection
 
 	ChatGroups map[string]*ChatGroup
 }
@@ -23,47 +23,25 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 		Id: Id{GetNewChatUserId()},
 		Name: Name{name},
 		PublicKey: publicKey,
-		MessagesPendingToBeSent: NewChatMessageQueue(),
+		MessagesToBeSent: NewChatMessageQueue(),
 		ChatGroups: make(map[string]*ChatGroup),
 	}
 	return user
 }
 
-func (user *ChatUser) SetChatConnection(CConn *ChatConnection) {
-	user.CConn = CConn
-	go user.LoopOverChannelToPassMessages()
-}
-
 func (user *ChatUser) SendMessage(msg ChatMessage) {
 	if(msg.To == user.GetId()) {
-		if(user.CConn != nil) {
-			user.CConn.SendMessage(msg)
-		} else {
-			user.MessagesPendingToBeSent.Push(msg)
-		}
+		user.MessagesToBeSent.Push(msg)
 	}
 }
 
-func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
-	msg, err := user.CConn.ReceiveMessage()
-	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
-		return msg, err;
-	} else if(msg.From != user.GetId()) { // user maliciously pretending to be someone else
-		return ChatMessage{}, errors.New("Malicious user: wrong user name in from attribute")
-	}
-	return msg, nil
-}
-
-func (user *ChatUser) LoopOverChannelToPassMessages() {
+func (user *ChatUser) LoopToForwardMessages() {
 	for (true) {
 		msg := cconn.MessagesToBeSent.Top()
-		if(msg.To == user.Name) {
-			err := ChatMessageCodec.Send(user.Connection, msg)
-			if(err != nil) { // this could mean, connection closed or lost
-				user.Destroy()
-				return
+		if(msg.To == user.GetId()) {
+			for _, conn := range grp.ChatConnections {
+				conn.SendMessage(msg)
 			}
-			user.LastMessage = time.Now()
 		}
 		cconn.MessagesToBeSent.Pop()
 	}

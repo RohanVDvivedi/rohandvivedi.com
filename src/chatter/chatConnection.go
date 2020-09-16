@@ -12,16 +12,15 @@ type ChatConnection struct {
 	MessagesToBeSent* ChatMessageQueue
 	Connection *websocket.Conn
 	ConnectionCloseWait sync.WaitGroup
-	LastMessage time.Time
-	IsActive bool
+	
+	// this is the user that this connection belongs to
+	User *ChatUser
 }
 
 func NewChatConnection() *ChatConnection {
 	return &ChatConnection {
 		Id:GetChatNewConnectionId(),
 		MessagesToBeSent: NewChatMessageQueue(),
-		LastMessage:time.Now(),
-		IsActive: false,
 	}
 }
 
@@ -45,18 +44,18 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
 		return msg, err
 	}
-	cconn.LastMessage = time.Now()
 	return msg, nil
 }
 
 func (cconn *ChatConnection) LoopOverToPassMessages() {
 	for (true) {
 		msg := cconn.MessagesToBeSent.Top()
-		err := ChatMessageCodec.Send(cconn.Connection, msg)
-		if(err != nil) { // this could mean, connection closed or lost
-			break
+		if(msg.To == ccon.GetId()) {
+			err := ChatMessageCodec.Send(cconn.Connection, msg)
+			if(err != nil) { // this could mean, connection closed or lost
+				break
+			}
 		}
-		cconn.LastMessage = time.Now()
 		cconn.MessagesToBeSent.Pop()
 	}
 	cconn.ConnectionCloseWait.Done()

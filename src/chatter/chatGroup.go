@@ -8,37 +8,35 @@ type ChatGroup struct {
 	Id
 	Name
 
-	MessagesToBeSent chan ChatMessage
+	MessagesToBeSent ChatMessageQueue
 
 	ChatUsers map[string]*ChatUser
-
-	LastMessage time.Time
 }
 
 func NewChatGroup(name string) *ChatGroup {
 	grp := &ChatGroup{
 		Id: Id{GetNewChatUserId()},
 		Name: Name{name},
-		MessagesToBeSent: make(chan ChatMessage, 10),
+		MessagesToBeSent: NewChatMessageQueue(),
 		ChatUsers: make(map[string]*ChatUser),
-		LastMessage: time.Now(),
 	}
-	go grp.LoopOverChannelToPassMessages()
+	go grp.LoopToForwardMessages()
 	return grp
 }
 
 func (grp *ChatGroup) SendMessage(msg ChatMessage) {
-	grp.MessagesToBeSent <- msg
+	grp.MessagesToBeSent.Push(msg)
 }
 
-func (grp *ChatGroup) LoopOverChannelToPassMessages() {
-	for msg := range grp.MessagesToBeSent {
-		if(msg.To == grp.Id) {
+func (grp *ChatGroup) LoopToForwardMessages() {
+	for (true) {
+		msg := grp.MessagesToBeSent.Top()
+		if(msg.To == grp.GetId()) {
 			for _, user := range grp.ChatUsers {
 				user.SendMessage(msg)
 			}
-			grp.LastMessage = time.Now()
 		}
+		grp.MessagesToBeSent.Pop()
 	}
 }
 
