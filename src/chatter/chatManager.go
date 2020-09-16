@@ -92,6 +92,7 @@ func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 		}
 		c.Chatterers[chatterBox.GetName()][chatterBox.GetId()] = chatterBox
 	}
+	chatterer.SendMessage(ChatMessage{From:"server",To:Chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
 	c.Lock.Unlock()
 }
 
