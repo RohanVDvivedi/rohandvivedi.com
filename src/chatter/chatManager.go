@@ -15,6 +15,10 @@ type ChatManager struct{
 	// Chattereres => name => id => ChatterBox (chat groups and users)
 	Chatterers map[string]map[string]ChatterBox
 
+	// this is for authentication purpose
+	// chat users mapped with name+publickey -> chat user
+	ChatUsersMapped map[string]*ChatUser
+
 	ServerMessagesToBeProcessed *ChatMessageQueue
 }
 
@@ -83,7 +87,11 @@ func (c *ChatManager) ChatManagerRun() {
 
 func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	c.Lock.Lock()
+
+	// insert to the main map allowing us to send messages
 	c.Chatters[chatterer.GetId()] = chatterer
+
+	// insertions by name for groups and users for find by name stuff
 	chatterBox, isChatterBox := chatterer.(ChatterBox)
 	if(isChatterBox) {
 		_, chatterBoxesPresent := c.Chatterers[chatterBox.GetName()]
@@ -92,6 +100,13 @@ func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 		}
 		c.Chatterers[chatterBox.GetName()][chatterBox.GetId()] = chatterBox
 	}
+
+	// insertion by name and public key for authentication
+	chatUser, isChatUser:= chatterer.(*ChatUser)
+	if(isChatUser) {
+		c.ChatUsersMapped[chatUser.GetName() + chatUser.PublicKey] = chatUser
+	}
+
 	chatterer.SendMessage(ChatMessage{From:"server",To:chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
 	c.Lock.Unlock()
 }
@@ -100,11 +115,19 @@ func (c *ChatManager) DeleteChatterer(Id string) {
 	c.Lock.Lock()
 	chatterSendable, found := c.Chatters[Id]
 	if(found) {
+
 		delete(c.Chatters, Id);
+
 		chatterBox, isChatterBox := chatterSendable.(ChatterBox)
 		if(isChatterBox) {
 			delete(c.Chatterers[chatterBox.GetName()], chatterBox.GetId());
 		}
+
+		chatUser, isChatUser := chatterSendable.(*ChatUser)
+		if(isChatUser) {
+			delete(c.ChatUsersMapped, chatUser.GetName() + chatUser.PublicKey);
+		}
+
 		chatterSendable.Destroy()
 	}
 	c.Lock.Unlock()
