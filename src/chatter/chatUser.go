@@ -7,8 +7,7 @@ import (
 )
 
 type ChatUser struct {
-	Id string
-	Name string
+	ChatterBoxIndentity
 	PublicKey string
 
 	MessagesToBeSent chan ChatMessage
@@ -20,8 +19,7 @@ type ChatUser struct {
 
 func NewChatUser(name string, publicKey string, connection *websocket.Conn) *ChatUser {
 	user := &ChatUser{
-		Id: GetNewChatUserId(),
-		Name: name,
+		ChatterBoxIndentity: ChatterBoxIndentity{Id: GetNewChatUserId(), Name: name},
 		MessagesToBeSent: make(chan ChatMessage, 10),
 		PublicKey:publicKey,
 		Connection:connection,
@@ -30,14 +28,6 @@ func NewChatUser(name string, publicKey string, connection *websocket.Conn) *Cha
 	}
 	go user.LoopOverChannelToPassMessages()
 	return user
-}
-
-func (user *ChatUser) GetId() string {
-	return user.Id
-}
-
-func (user *ChatUser) GetName() string {
-	return user.Name
 }
 
 func (user *ChatUser) SendMessage(msg ChatMessage) {
