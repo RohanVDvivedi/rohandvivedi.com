@@ -55,7 +55,7 @@ window.ChatterStart = function(name) {
     }
 }
 
-window.ChatterSend = function(to, message) {
-    var payload = {From:window.ChatterName,To:to,Message:message,SentAt:new Date()}
+window.ChatterSend = function(frm ,to, message) {
+    var payload = {From:frm,To:to,Message:message,SentAt:new Date()}
     window.ChatterSocket.send(JSON.stringify(payload))
 }
