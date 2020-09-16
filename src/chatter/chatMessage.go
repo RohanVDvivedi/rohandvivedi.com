@@ -26,7 +26,7 @@ func (c *ChatMessage) IsValidChatMessage() bool {
 }
 
 func (c *ChatMessage) IsValidServerRequest() bool {
-	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && (strings.HasPrefix(c.To, "server")) {
+	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && (strings.HasPrefix(c.To, "server")) ) {
 		return true
 	}
 	return false

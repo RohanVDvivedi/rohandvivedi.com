@@ -2,7 +2,6 @@ package chatter
 
 import (
 	"net/http"
-	"strings"
 	"golang.org/x/net/websocket"
 )
 

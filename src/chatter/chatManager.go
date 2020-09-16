@@ -11,11 +11,20 @@ type ChatManager struct{
 
 	Chatters map[string]ChatterSendable
 
-	ServerMessagesToBeProcessed* ChatMessageQueue
+	ServerMessagesToBeProcessed *ChatMessageQueue
+}
+
+func NewChatManager() *ChatManager {
+	cm := &ChatManager{
+		Chatters: make(map[string]ChatterSendable),
+		ServerMessagesToBeProcessed: NewChatMessageQueue(),
+	}
+	return cm
 }
 
 func (c *ChatManager) ChatManagerRun() {
-	for msg := range c.InputMessage {
+	for (true) {
+		msg := c.ServerMessagesToBeProcessed.Top()
 
 		msgReply := ChatMessage{From: "server", SentAt: time.Now(), To: msg.From, Message: "ERROR"}
 
@@ -28,7 +37,7 @@ func (c *ChatManager) ChatManagerRun() {
 			case "server-get-chatter-box-name" : {
 				chatterSendable, found := c.Chatters[msg.Message]
 				if(found) {
-					chatterBox isChatterBox := chatterSendable.(ChatterBox)
+					chatterBox, isChatterBox := chatterSendable.(ChatterBox)
 					if(isChatterBox) {
 						msgReply.Message = chatterBox.GetName()
 					}
@@ -63,12 +72,13 @@ func (c *ChatManager) ChatManagerRun() {
 			go replyToChatterBox.SendMessage(msgReply)
 		}
 
+		c.ServerMessagesToBeProcessed.Top()
 	}
 }
 
 func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	c.Lock.Lock()
-	c.Chatters[chatterBox.GetId()] = chatterBox
+	c.Chatters[chatterer.GetId()] = chatterer
 	c.Lock.Unlock()
 }
 

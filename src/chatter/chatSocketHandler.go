@@ -10,10 +10,7 @@ import (
 
 // map of all the chat users 
 // from their name to the chatUser struct pointer
-var Chatters = ChatManager{
-	Chatters: make(map[string]ChatterBox),
-	InputMessage: NewChatMessageQueue(),
-}
+var Chatters = NewChatManager()
 
 
 // never call this functions outside

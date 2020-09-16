@@ -1,11 +1,5 @@
 package chatter
 
-import (
-	"golang.org/x/net/websocket"
-	"time"
-	"errors"
-)
-
 type ChatUser struct {
 	Id
 	Name
@@ -23,31 +17,30 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 		Id: Id{GetNewChatUserId()},
 		Name: Name{name},
 		PublicKey: publicKey,
-		MessagesToBeSent: NewChatMessageQueue(),
+		MessagesPendingToBeSent: NewChatMessageQueue(),
 		ChatGroups: make(map[string]*ChatGroup),
 	}
 	return user
 }
 
-func (user *ChatUser) SendMessage(msg ChatMessage) {
-	if(msg.To == user.GetId()) {
-		user.MessagesToBeSent.Push(msg)
-	}
-}
-
-func (user *ChatUser) LoopToForwardMessages() {
-	for (true) {
-		msg := cconn.MessagesToBeSent.Top()
-		if(msg.To == user.GetId()) {
-			for _, conn := range grp.ChatConnections {
-				conn.SendMessage(msg)
+func (user *ChatUser) SendMessage(msg ChatMessage) error {
+	_, usersGroup := user.ChatGroups[msg.To]
+	if(msg.To == user.GetId() || usersGroup) {
+		sentTo := 0
+		for _, cconn := range user.ChatConnections {
+			err := cconn.SendMessage(msg)
+			if(err != nil) {
+				sentTo += 1
+			} else {
+				cconn.Destroy()
 			}
 		}
-		cconn.MessagesToBeSent.Pop()
+		if(sentTo == 0) {
+			user.MessagesPendingToBeSent.Push(msg)
+		}
 	}
+	return nil
 }
 
 func (user *ChatUser) Destroy() {
-	close(user.MessagesToBeSent)
-	user.Connection.Close()
 }
