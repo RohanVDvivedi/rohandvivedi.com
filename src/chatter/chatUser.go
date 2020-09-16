@@ -20,8 +20,9 @@ type ChatUser struct {
 func NewChatUser(name string, publicKey string, connection *websocket.Conn) *ChatUser {
 	user := &ChatUser{
 		ChatterBoxIndentity: ChatterBoxIndentity{Id: GetNewChatUserId(), Name: name},
-		MessagesToBeSent: make(chan ChatMessage, 10),
 		PublicKey:publicKey,
+		
+		MessagesToBeSent: make(chan ChatMessage, 10),
 		Connection:connection,
 		LastMessage:time.Now(),
 		ChatGroups:make(map[string]*ChatGroup),
