@@ -11,7 +11,7 @@ type ChatManager struct{
 
 	Chatters map[string]ChatterSendable
 
-	InputMessage chan ChatMessage
+	ServerMessagesToBeProcessed* ChatMessageQueue
 }
 
 func (c *ChatManager) ChatManagerRun() {
@@ -45,9 +45,15 @@ func (c *ChatManager) ChatManagerRun() {
 			}
 			case "server-create-chat-group" : {
 			}
+			case "server-create-chat-user" : {
+			}
+			case "server-login-as-chat-user" : {
+			}
 			case "server-add-user-to-chat-group" : {
 			}
 			case "server-delete-chat-group" : {
+			}
+			case "server-notify-all" : {
 			}
 			}
 		}

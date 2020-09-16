@@ -10,9 +10,9 @@ import (
 
 // map of all the chat users 
 // from their name to the chatUser struct pointer
-var Chatters = Chatterers{
-	Chatters:make(map[string]ChatterBox),
-	InputMessage:make(chan ChatMessage, 10),
+var Chatters = ChatManager{
+	Chatters: make(map[string]ChatterBox),
+	InputMessage: NewChatMessageQueue(),
 }
 
 
@@ -46,7 +46,7 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 		if(msg.IsValidChatMessage()) {
 			receiverUser := Chatters.GetChatterBoxById(msg)
 		} else if (msg.IsValidServerRequest()) {
-			Chatters.InputMessage <- msg
+			Chatters.ServerMessagesToBeProcessed.Push(msg)
 		}
 	}
 
