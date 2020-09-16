@@ -11,20 +11,21 @@ type ChatUser struct {
 	PublicKey string
 
 	MessagesToBeSent chan ChatMessage
-	Connection *websocket.Conn
-	LastMessage time.Time
+	MessagesReceived chan ChatMessage
+
+	CConn *ChatConnection
 
 	ChatGroups map[string]*ChatGroup
 }
 
-func NewChatUser(name string, publicKey string, connection *websocket.Conn) *ChatUser {
+func NewChatUser(name string, publicKey string) *ChatUser {
 	user := &ChatUser{
 		ChatterBoxIndentity: ChatterBoxIndentity{Id: GetNewChatUserId(), Name: name},
 		PublicKey:publicKey,
-		
+
 		MessagesToBeSent: make(chan ChatMessage, 10),
-		Connection:connection,
-		LastMessage:time.Now(),
+		MessagesReceived: make(chan ChatMessage, 10),
+
 		ChatGroups:make(map[string]*ChatGroup),
 	}
 	go user.LoopOverChannelToPassMessages()
@@ -32,11 +33,13 @@ func NewChatUser(name string, publicKey string, connection *websocket.Conn) *Cha
 }
 
 func (user *ChatUser) SendMessage(msg ChatMessage) {
-	user.MessagesToBeSent <- msg
+	if(msg.To == user.GetId()) {
+		user.CConn.SendMessage(msg)
+	}
 }
 
 func (user *ChatUser) ReceiveMessage() (ChatMessage, error) {
-	msg := ChatMessage{}
+	msg <- user.CConn.MessagesReceived
 	err := ChatMessageCodec.Receive(user.Connection, &msg)
 	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
 		return msg, err;
