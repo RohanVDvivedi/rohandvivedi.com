@@ -9,7 +9,11 @@ type ChatManager struct{
 	// lock to protect all the chat users
 	Lock sync.Mutex
 
+	// Chatters => id => ChatterSendables (chat groups and users and even connections)
 	Chatters map[string]ChatterSendable
+
+	// Chattereres => name => id => ChatterBox (chat groups and users)
+	Chatterers map[string]map[string]ChatterBox
 
 	ServerMessagesToBeProcessed *ChatMessageQueue
 }
@@ -17,6 +21,7 @@ type ChatManager struct{
 func NewChatManager() *ChatManager {
 	cm := &ChatManager{
 		Chatters: make(map[string]ChatterSendable),
+		Chatterers: make(map[string]map[string]ChatterBox),
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
 	return cm
@@ -79,15 +84,27 @@ func (c *ChatManager) ChatManagerRun() {
 func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	c.Lock.Lock()
 	c.Chatters[chatterer.GetId()] = chatterer
+	chatterBox, isChatterBox := chatterer.(ChatterBox)
+	if(isChatterBox) {
+		_, chatterBoxesPresent := c.Chatterers[chatterBox.GetName()]
+		if(!chatterBoxesPresent) {
+			c.Chatterers[chatterBox.GetName()] = make(map[string]ChatterBox)
+		}
+		c.Chatterers[chatterBox.GetName()][chatterBox.GetId()] = chatterBox
+	}
 	c.Lock.Unlock()
 }
 
 func (c *ChatManager) DeleteChatterer(Id string) {
 	c.Lock.Lock()
-	chatterBox, found := c.Chatters[Id]
+	chatterSendable, found := c.Chatters[Id]
 	if(found) {
-		chatterBox.Destroy()
 		delete(c.Chatters, Id);
+		chatterBox, isChatterBox := chatterSendable.(ChatterBox)
+		if(isChatterBox) {
+			delete(c.Chatterers[chatterBox.GetName()], chatterBox.GetId());
+		}
+		chatterSendable.Destroy()
 	}
 	c.Lock.Unlock()
 }
