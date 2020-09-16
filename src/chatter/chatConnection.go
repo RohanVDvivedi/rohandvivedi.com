@@ -14,11 +14,10 @@ type ChatConnection struct {
 	User *ChatUser
 }
 
-func NewChatConnection(Connection *websocket.Conn, User *ChatUser) *ChatConnection {
+func NewChatConnection(Connection *websocket.Conn) *ChatConnection {
 	return &ChatConnection {
 		Id: Id{GetNewChatConnectionId()},
 		Connection: Connection,
-		User: User,
 	}
 }
 
@@ -34,7 +33,9 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 	err := ChatMessageCodec.Receive(cconn.Connection, &msg)
 	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
 		return msg, err
-	} else if (msg.From != cconn.GetId() && msg.From != cconn.User.GetId()) {
+	}
+	msgSenderFromFieldValid := (msg.From == cconn.GetId()) || (cconn.User != nil && msg.From == cconn.User.GetId())
+	if (!msgSenderFromFieldValid){
 		return ChatMessage{}, errors.New("ERROR user attempting identity theft")
 	}
 	return msg, nil

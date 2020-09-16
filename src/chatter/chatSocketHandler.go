@@ -18,37 +18,24 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	nameIntr, _ := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("name")
 	name, _ := nameIntr.(string)
 
-	var chatConnection *ChatConnection = nil
+	chatConnection = NewChatConnection(conn);
 
-	chatConnectionIntr, found := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("chat_connection")
-	if(found) {
-		chatConnectionTemp, isChatConnectionType := chatConnectionIntr.(*ChatConnection)
-		if(isChatConnectionType) {
-			chatConnection = chatConnectionTemp
-		}
-	}
-	if(chatConnection == nil) {
-		chatConnection = NewChatConnection();
-		session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_connection", chatConnection)
-	}
+	Chatters.InsertChatterer(chatConnection);
 
-	chatConnection.Start(conn);
+	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
+	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
 
 	for (true) {
-		msg, err := chatUser.ReceiveMessage()
+		msg, err := chatConnection.ReceiveMessage()
 		if(err != nil) {
-			chatConnection.Stop();
 			break
 		}
 		if(msg.IsValidChatMessage()) {
-			receiverUser := Chatters.GetChatterBoxById(msg)
+			receiverUser := Chatters.SendById(msg)
 		} else if (msg.IsValidServerRequest()) {
 			Chatters.ServerMessagesToBeProcessed.Push(msg)
 		}
 	}
-
-	chatConnection.WaitForShutdown();
-	chatConnection.Stop();
 
 	Chatters.DeleteChatterer(chatConnection.GetId());
 }
