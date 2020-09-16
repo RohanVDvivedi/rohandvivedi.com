@@ -22,10 +22,7 @@ func NewChatConnection(Connection *websocket.Conn) *ChatConnection {
 }
 
 func (cconn *ChatConnection) SendMessage(msg ChatMessage) error {
-	if(msg.To == cconn.GetId() || msg.To == cconn.User.GetId()) {
-		return ChatMessageCodec.Send(cconn.Connection, msg)
-	}
-	return errors.New("ERROR in routing")
+	return ChatMessageCodec.Send(cconn.Connection, msg)
 }
 
 func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
@@ -34,10 +31,14 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
 		return msg, err
 	}
+
+	// the message sender field must be empty or user id of the user
 	msgSenderFromFieldValid := (msg.From == cconn.GetId()) || (cconn.User != nil && msg.From == cconn.User.GetId())
 	if (!msgSenderFromFieldValid){
 		return ChatMessage{}, errors.New("ERROR user attempting identity theft")
 	}
+
+	msg.OriginConnection = cconn.GetId()
 	return msg, nil
 }
 
