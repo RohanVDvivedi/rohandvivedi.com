@@ -51,7 +51,7 @@ window.ChatterStart = function(name) {
         (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/chat?name=" + name);
     window.ChatterSocket.onmessage = function(event){
         var payload = JSON.parse(event.data)
-        console.log(payload.From + " : " + payload.Message)
+        console.log(payload.From + " -> " + payload.To + " : " + payload.Message)
     }
 }
 
