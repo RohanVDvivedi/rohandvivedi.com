@@ -3,6 +3,7 @@ package chatter
 import (
 	"time"
 	"golang.org/x/net/websocket"
+	"strings"
 )
 
 type ChatMessage struct {
@@ -16,16 +17,19 @@ func EmptyMessage() ChatMessage {
 	return ChatMessage{}
 }
 
-func (c *ChatMessage) IsValid() bool {
+func (c *ChatMessage) IsValidChatMessage() bool {
 	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && 
-	(IsChatId(c.To) || IsChatConnectionId(c.To) || IsChatGroupId(c.To)) ) {
+	(IsChatConnectionId(c.To) || IsChatUserId(c.To) || IsChatGroupId(c.To)) ) {
 		return true
 	}
 	return false
 }
 
 func (c *ChatMessage) IsValidServerRequest() bool {
-	if
+	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && (strings.HasPrefix(c.To, "server")) {
+		return true
+	}
+	return false
 }
 
 var ChatMessageCodec = websocket.JSON;

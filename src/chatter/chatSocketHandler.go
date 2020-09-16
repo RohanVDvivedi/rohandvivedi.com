@@ -41,8 +41,13 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 		msg, err := chatUser.ReceiveMessage()
 		if(err != nil) {
 			chatConnection.Stop();
+			break
 		}
-		receiverUser := Chatters.GetChatterBoxById(msg)
+		if(msg.IsValidChatMessage()) {
+			receiverUser := Chatters.GetChatterBoxById(msg)
+		} else if (msg.IsValidServerRequest()) {
+			Chatters.InputMessage <- msg
+		}
 	}
 
 	chatConnection.WaitForShutdown();
