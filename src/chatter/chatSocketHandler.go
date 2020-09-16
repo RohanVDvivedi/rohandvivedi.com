@@ -15,12 +15,12 @@ var Chatters = NewChatManager()
 
 // never call this functions outside
 func ChatConnectionHandler(conn *websocket.Conn) {
-	nameIntr, _ := session.GlobalSessionStore.GetExistingSession(conn.Request()).GetValue("name")
-	name, _ := nameIntr.(string)
 
-	chatConnection = NewChatConnection(conn);
+	chatConnection := NewChatConnection(conn);
+	defer chatConnection.Destroy()
 
 	Chatters.InsertChatterer(chatConnection);
+	defer Chatters.DeleteChatterer(chatConnection.GetId());
 
 	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
 	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
@@ -31,11 +31,9 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 			break
 		}
 		if(msg.IsValidChatMessage()) {
-			receiverUser := Chatters.SendById(msg)
+			Chatters.SendById(msg)
 		} else if (msg.IsValidServerRequest()) {
 			Chatters.ServerMessagesToBeProcessed.Push(msg)
 		}
 	}
-
-	Chatters.DeleteChatterer(chatConnection.GetId());
 }

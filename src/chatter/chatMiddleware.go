@@ -1,6 +1,7 @@
 package chatter
 
 import (
+	"fmt"
 	"net/http"
 	"golang.org/x/net/websocket"
 )
@@ -30,6 +31,7 @@ func AuthorizeChat(next http.Handler) http.Handler {
 				if(nameSessionExists) {
 					name, ok := nameIntr.(string)
 					if(ok) {
+						fmt.Println(name)
 						next.ServeHTTP(w, r)
 						return
 					}
