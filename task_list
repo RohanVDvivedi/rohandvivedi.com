@@ -8,7 +8,7 @@ Front end
  * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
 
 Backend
- * (* future) perform network io on check connection outside the main lock, formalize the chat users api atleast before merging to master
+ * (* future) perform network io on check connection outside the main lock, formalize the chat users api atleast before merging to master, name and certain details based user/group search
  * create url based owner login system, and an api to check if the client is owner, to allow client side to show different content
  * use separate database for sessions and users data for other users (except the owner) in future (*in far future), use in memeory separately hosted sql database, so we could keep the same schema (example memsql)
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
