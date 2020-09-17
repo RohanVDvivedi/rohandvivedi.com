@@ -66,8 +66,18 @@ func (c *ChatManager) ChatManagerRun() {
 			case "server-create-chat-user" : {
 			}
 			case "server-login-as-chat-user" : {
+				chatterSendable, foundChatConnection := c.Chatterers[msg.From]
+				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+				chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
+				if(foundChatConnection && isChatConnection && foundChatUser) {
+					chatUser.AddChatConnection(chatConnection)
+					chatConnection.AddChatUser(chatUser)
+					msgReply.To = chatUser.GetId()
+					msgReply.Message = "Logged in with " chatConnection.GetId()
+				}
 			}
 			case "server-logout" : {
+
 			}
 			case "server-add-user-to-chat-group" : {
 			}
@@ -108,7 +118,7 @@ func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	// insertion by name and public key for authentication
 	chatUser, isChatUser:= chatterer.(*ChatUser)
 	if(isChatUser) {
-		c.ChatUsersMapped[chatUser.GetName() + chatUser.PublicKey] = chatUser
+		c.ChatUsersMapped[chatUser.GetName() + "," + chatUser.PublicKey] = chatUser
 	}
 
 	chatterer.SendMessage(ChatMessage{From:"server",To:chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
@@ -129,7 +139,7 @@ func (c *ChatManager) DeleteChatterer(Id string) {
 
 		chatUser, isChatUser := chatterSendable.(*ChatUser)
 		if(isChatUser) {
-			delete(c.ChatUsersMapped, chatUser.GetName() + chatUser.PublicKey);
+			delete(c.ChatUsersMapped, chatUser.GetName() + "," + chatUser.PublicKey);
 		}
 
 		chatterSendable.Destroy()
