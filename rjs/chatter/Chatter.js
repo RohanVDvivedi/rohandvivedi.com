@@ -62,11 +62,34 @@ var Chatter = {
 		return true
 	},
 
+	// a true means a request to create a new user in was sent successfully
+	ReqCreateUser: function(name, publicKey) {
+		if(this.CurrentState != STATES.CONNECTED) {
+			return false
+		}
+
+		this.Connection.send(JSON.stringify({
+			From: this.ConnectionId,
+			To: "server-create-chat-user",
+			SentAt: new Date(),
+			Message: name + "," + publicKey,
+		}))
+
+		return true
+	},
+
 	// a true means a request to log you in was sent successfully
 	ReqLogin: function(name, publicKey) {
 		if(this.CurrentState != STATES.CONNECTED) {
 			return false
 		}
+
+		this.Connection.send(JSON.stringify({
+			From: this.ConnectionId,
+			To: "server-login-as-chat-user",
+			SentAt: new Date(),
+			Message: name + "," + publicKey,
+		}))
 
 		return true
 	},
@@ -106,6 +129,13 @@ var Chatter = {
 		if(this.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
+
+		this.Connection.send(JSON.stringify({
+			From: this.ConnectionId,
+			To: "server-logout",
+			SentAt: new Date(),
+			Message: "",
+		}))
 
 		return true
 	},
