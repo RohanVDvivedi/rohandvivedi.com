@@ -1,7 +1,6 @@
 package chatter
 
 import (
-	"fmt"
 	"net/http"
 	"golang.org/x/net/websocket"
 )
@@ -17,25 +16,19 @@ func AuthorizeChat(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		nameList, existsName := r.URL.Query()["name"];
+		publicKeyList, existsPublicKeyList := r.URL.Query()["publicKey"];
 
 		if(config.GetGlobalConfig().Create_user_sessions) {
 			s := session.GlobalSessionStore.GetExistingSession(r);
 			if(s != nil) {
-				if(existsName) { // if a name is present in the request, store it in the session values
-					s.SetValue("name", nameList[0]);
+				if(existsName && existsPublicKeyList) {
+					InsertNameAndPublicKeyToSession(s, nameList[0], publicKeyList[0])
+				} else if ( (existsName && !existsPublicKeyList) || (!existsName && existsPublicKeyList) ) {
+					RemoveNameAndPublicKeyFromSession(s)
 				}
 
-				// allow the request to be served only if the name exists in the session values
-				// and a corresponding chat session does not exist
-				nameIntr, nameSessionExists := s.GetValue("name");
-				if(nameSessionExists) {
-					name, ok := nameIntr.(string)
-					if(ok) {
-						fmt.Println(name)
-						next.ServeHTTP(w, r)
-						return
-					}
-				}
+				next.ServeHTTP(w, r)
+				return
 			}
 		}
 
@@ -43,4 +36,28 @@ func AuthorizeChat(next http.Handler) http.Handler {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("You are not authorized to chat on rohandvivedi.com"))
 	})
+}
+
+func GetNameAndPublicKeyFromSession(s *session.Session) (string, string, bool) {
+	nameIntr, foundName := s.GetValue("name")
+	publicKeyIntr, foundPublicKey := s.GetValue("publicKey")
+	if(foundName && foundPublicKey) {
+		name, nameOk := nameIntr.(string)
+		publicKey, publicKeyOk := publicKeyIntr.(string)
+		if(nameOk && publicKeyOk) {
+			return name, publicKey, true
+		}
+	}
+	RemoveNameAndPublicKeyFromSession(s)
+	return "", "", false
+}
+
+func InsertNameAndPublicKeyToSession(s *session.Session, name string, publicKey string) {
+	s.SetValue("name", name);
+	s.SetValue("publicKey", publicKey);
+}
+
+func RemoveNameAndPublicKeyFromSession(s *session.Session) {
+	s.RemoveValue("name");
+	s.RemoveValue("publicKey");
 }
