@@ -27,3 +27,11 @@ func (grp *ChatGroup) SendMessage(msg ChatMessage) error {
 
 func (grp *ChatGroup) Destroy() {
 }
+
+/* Joinery methods */
+func (grp *ChatGroup) AddChatUser(c *ChatUser) {
+	grp.ChatUsers[c.GetId()] = c
+}
+func (grp *ChatGroup) RemoveChatUser(c *ChatUser) {
+	delete(grp.ChatUsers, c.GetId())
+}

@@ -51,6 +51,15 @@ func (cconn *ChatConnection) Destroy() {
 	cconn.Connection.Close()
 }
 
+/* Joinery methods */
+func (cconn *ChatConnection) SetChatUser(c *ChatUser) {
+	cconn.User = c
+}
+func (cconn *ChatConnection) RemoveChatUser(c *ChatUser) {
+	cconn.User = nil
+}
+
+
 /* Below methods update modify session values and must be called only 
 while the corresponding socket connection is active  atleast as per the chat manager */
 

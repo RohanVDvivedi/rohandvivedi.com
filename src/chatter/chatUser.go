@@ -46,6 +46,21 @@ func (user *ChatUser) Destroy() {
 	user.MessagesPendingToBeSent = nil
 }
 
+/* Joinery methods */
+func (user *ChatUser) AddChatConnection(c *ChatConnection) {
+	user.ChatConnections[c.GetId()] = c
+}
+func (user *ChatUser) RemoveChatConnection(c *ChatConnection) {
+	delete(user.ChatConnections, c.GetId())
+}
+
+func (user *ChatUser) AddChatGroup(c *ChatGroup) {
+	user.ChatGroups[c.GetId()] = c
+}
+func (user *ChatUser) RemoveChatGroup(c *ChatGroup) {
+	delete(user.ChatGroups, c.GetId())
+}
+
 /* Below methods update modify session values, of all the chat connections of this chat user */
 func (user *ChatUser) GetNameAndPublicKey() (name string, publicKey string) {
 	return user.GetName(), user.PublicKey
