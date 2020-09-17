@@ -31,6 +31,10 @@ func NewChatManager() *ChatManager {
 	return cm
 }
 
+func GetStandardServerResponseMessage() ChatMessage {
+	return ChatMessage{}
+}
+
 func (c *ChatManager) ChatManagerRun() {
 	for (true) {
 		msg := c.ServerMessagesToBeProcessed.Top()
@@ -87,9 +91,6 @@ func (c *ChatManager) ChatManagerRun() {
 					chatUser.RemoveChatConnection(chatConnection)
 					chatConnection.SetChatUser(nil)
 					msgReply.To = chatUser.GetId()
-					msgReply.Message = "Logged out for " + chatUser.GetId()
-				} else {
-					msgReply.To = chatConnection.GetId()
 					msgReply.Message = "Logged out for " + chatUser.GetId()
 				}
 			}
