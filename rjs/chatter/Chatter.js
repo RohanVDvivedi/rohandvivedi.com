@@ -37,7 +37,7 @@ var Chatter = {
 		if(name != null) {queryParams[0] = "name=" + name}
 		if(publicKey != null) {queryParams[1] = "publicKey=" + publicKey }
 
-		var URL = [this.GetConnectionUrl, queryParams.join("&")].join("?")
+		var URL = [this.GetConnectionUrl(), queryParams.join("&")].join("?")
 
 		this.Connection = new WebSocket(URL);
 
@@ -159,7 +159,7 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 
 function ChatterConnectionHandler(chatter ,msgEvent) {
 
-	msg = JSON.parse(msgEvent.data)
+	var msg = JSON.parse(msgEvent.data)
 
 	if(msg.From.startsWith("server")) {
 		console.log("Server event", msg)

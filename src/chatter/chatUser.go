@@ -18,6 +18,7 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 		Name: Name{name},
 		PublicKey: publicKey,
 		MessagesPendingToBeSent: NewChatMessageQueue(),
+		ChatConnections: make(map[string]*ChatConnections),
 		ChatGroups: make(map[string]*ChatGroup),
 	}
 	return user
