@@ -33,7 +33,6 @@ func IsChatUserId(Id string) bool {
 	return strings.HasPrefix(Id, CHAT_USER_ID_PREFIX)
 }
 
-
 /* functions for group id */
 func GetNewChatGroupId() string {
 	return GetNewId(CHAT_GROUP_ID_PREFIX)
@@ -41,4 +40,9 @@ func GetNewChatGroupId() string {
 
 func IsChatGroupId(Id string) bool {
 	return strings.HasPrefix(Id, CHAT_GROUP_ID_PREFIX)
+}
+
+/* functions for server id */
+func IsChatManagerId(Id string) bool {
+	return strings.HasPrefix(Id, "server")
 }

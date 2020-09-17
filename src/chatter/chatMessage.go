@@ -3,7 +3,6 @@ package chatter
 import (
 	"time"
 	"golang.org/x/net/websocket"
-	"strings"
 )
 
 type ChatMessage struct {
@@ -22,15 +21,16 @@ func EmptyMessage() ChatMessage {
 }
 
 func (c *ChatMessage) IsValidChatMessage() bool {
-	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && 
-	(IsChatConnectionId(c.To) || IsChatUserId(c.To) || IsChatGroupId(c.To)) ) {
+	if( (IsChatConnectionId(c.From) && IsChatConnectionId(c.To)) 	|| 
+		(IsChatUserId(c.From) && IsChatUserId(c.To)) 				|| 
+		(IsChatUserId(c.From) && IsChatGroupId(c.To)) 					) {
 		return true
 	}
 	return false
 }
 
 func (c *ChatMessage) IsValidServerRequest() bool {
-	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && (strings.HasPrefix(c.To, "server")) ) {
+	if( (IsChatConnectionId(c.From) || IsChatUserId(c.From)) && (IsChatManagerId(c.To)) ) {
 		return true
 	}
 	return false

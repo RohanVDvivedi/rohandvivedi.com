@@ -22,8 +22,8 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	Chatters.InsertChatterer(chatConnection);
 	defer Chatters.DeleteChatterer(chatConnection.GetId());
 
-	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", true)
-	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_active", false)
+	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_conn_active", true)
+	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_conn_active", false)
 
 	for (true) {
 		msg, err := chatConnection.ReceiveMessage()
