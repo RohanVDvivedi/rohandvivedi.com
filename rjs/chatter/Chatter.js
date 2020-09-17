@@ -26,7 +26,7 @@ var Chatter = {
 
 	GetConnectionUrl: function() {
 		return (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/soc/chatter"
-	}
+	},
 
 	ReqConnection: function(name = null, publicKey = null) {
 		if(this.CurrentState != STATES.DISCONNECTED) {
@@ -60,7 +60,7 @@ var Chatter = {
 		}
 
 		return true
-	}
+	},
 
 	// a true means a request to log you in was sent successfully
 	ReqLogin: function(name, publicKey) {
@@ -69,12 +69,16 @@ var Chatter = {
 		}
 
 		return true
-	}
+	},
 
 	// a true means a request to send a mesage was successfull
 	// this does not ensure delivery
 	SendMessage(to, text) {
 		if(this.CurrentState == STATES.DISCONNECTED) {
+			return false
+		}
+
+		if(!(text instanceof String)) {
 			return false
 		}
 
@@ -90,12 +94,12 @@ var Chatter = {
 		this.Connection.send(JSON.stringify({
 			From: From,
 			To: to,
-			SentAt: new Date()
-			Message: text
+			SentAt: new Date(),
+			Message: text,
 		}))
 
 		return true
-	}
+	},
 
 	// a true means a request to log you out was sent successfully
 	ReqLogout: function() {
@@ -104,7 +108,7 @@ var Chatter = {
 		}
 
 		return true
-	}
+	},
 }
 
 export default Chatter;
