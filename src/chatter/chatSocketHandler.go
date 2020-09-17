@@ -25,7 +25,16 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_conn_active", true)
 	defer session.GlobalSessionStore.GetExistingSession(conn.Request()).SetValue("chat_conn_active", false)
 
-	
+	name, publicKey, isAuthenticatable := chatConnection.GetNameAndPublicKey()
+	if(isAuthenticatable) {
+		Chatters.ServerMessagesToBeProcessed.Push(
+			ChatMessage{
+				OriginConnection:chatConnection.GetId(),
+				From:chatConnection.GetId(),To:"server-login-as-chat-user",
+				Message:name + "," + publicKey,
+			}
+		)
+	}
 
 	for (true) {
 		msg, err := chatConnection.ReceiveMessage()
