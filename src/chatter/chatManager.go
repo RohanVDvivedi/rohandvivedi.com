@@ -3,6 +3,7 @@ package chatter
 import (
 	"sync"
 	"time"
+	"strings"
 )
 
 type ChatManager struct{
@@ -28,7 +29,7 @@ func NewChatManager() *ChatManager {
 		Chatterers: make(map[string]map[string]ChatterBox),
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
-	go ChatManagerProcessServerRequests()
+	go cm.ChatManagerProcessServerRequests()
 	return cm
 }
 
@@ -39,7 +40,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 		c.Lock.Lock()
 
 		serverReplies := []ChatMessage{}
-		stdReplyFrom := ChatMessage{From:msg.To, To:msg.From}
+		//stdReplyFrom := ChatMessage{From:msg.To, To:msg.From}
 		stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection}
 
 		switch msg.To {
@@ -61,7 +62,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				chatterBox, found := c.Chatters[msg.Message]
 				chatUser, isChatUser := chatterBox.(*ChatUser)
 				if(found && isChatUser) {
-					msgReply.Message = chatUser.PublicKey
+					reply.Message = chatUser.PublicKey
 				} else {
 					reply.Message = "ERROR"
 				}
@@ -80,8 +81,8 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					chatUser := NewChatUser(params[0], params[1])
 					chatUser.AddChatConnection(chatConnection)
 					chatConnection.SetChatUser(chatUser)
-					chatConnection.SetNameAndPublicKey(chatUser.Name, chatUser.PublicKey)
-					msgReply.Message = chatUser.GetId()
+					chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
+					reply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
 					reply.Message = "ERROR"
 				}
@@ -95,7 +96,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				if(foundChatConnection && isChatConnection && foundChatUser) {
 					chatUser.AddChatConnection(chatConnection)
 					chatConnection.SetChatUser(chatUser)
-					chatConnection.SetNameAndPublicKey(chatUser.Name, chatUser.PublicKey)
+					chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 					reply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
 					reply.Message = "ERROR"
@@ -103,6 +104,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				serverReplies = append(serverReplies, reply)
 			}
 			case "server-logout" : {
+				reply := stdReplyOrigin
 				chatterSendable, foundChatConnection := c.Chatters[msg.From]
 				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 				if(foundChatConnection && isChatConnection && chatConnection.User != nil) {
