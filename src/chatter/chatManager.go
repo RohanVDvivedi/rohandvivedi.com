@@ -69,7 +69,23 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 			}
 			case "server-create-chat-group" : {
 			}
+			// Message : contains name,publicKey
 			case "server-create-chat-user" : {
+				reply := stdReplyOrigin
+				chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
+				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+				_, foundChatUser := c.ChatUsersMapped[msg.Message]
+				params := strings.Split(msg.Message, ",")
+				if(foundChatConnection && isChatConnection && !foundChatUser && len(params) == 2) {
+					chatUser := NewChatUser(params[0], params[1])
+					chatUser.AddChatConnection(chatConnection)
+					chatConnection.SetChatUser(chatUser)
+					chatConnection.SetNameAndPublicKey(chatUser.Name, chatUser.PublicKey)
+					msgReply.Message = chatUser.GetId()
+				} else if (foundChatConnection && isChatConnection) {
+					reply.Message = "ERROR"
+				}
+				serverReplies = append(serverReplies, reply)
 			}
 			case "server-login-as-chat-user" : {
 				reply := stdReplyOrigin
@@ -79,7 +95,8 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				if(foundChatConnection && isChatConnection && foundChatUser) {
 					chatUser.AddChatConnection(chatConnection)
 					chatConnection.SetChatUser(chatUser)
-					msgReply.Message = chatUser.GetId()
+					chatConnection.SetNameAndPublicKey(chatUser.Name, chatUser.PublicKey)
+					reply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
 					reply.Message = "ERROR"
 				}
@@ -91,6 +108,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				if(foundChatConnection && isChatConnection && chatConnection.User != nil) {
 					chatConnection.User.RemoveChatConnection(chatConnection)
 					chatConnection.SetChatUser(nil)
+					chatConnection.RemoveNameAndPublicKey()
 					reply.Message = chatConnection.GetId()
 				} else {
 					reply.Message = "ERROR"
