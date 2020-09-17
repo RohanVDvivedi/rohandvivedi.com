@@ -28,71 +28,74 @@ func NewChatManager() *ChatManager {
 		Chatterers: make(map[string]map[string]ChatterBox),
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
+	go ChatManagerProcessServerRequests()
 	return cm
 }
 
-func GetStandardServerResponseMessage() ChatMessage {
-	return ChatMessage{}
-}
-
-func (c *ChatManager) ChatManagerRun() {
+func (c *ChatManager) ChatManagerProcessServerRequests() {
 	for (true) {
 		msg := c.ServerMessagesToBeProcessed.Top()
 
-		msgReply := ChatMessage{From: "server", SentAt: time.Now(), To: msg.From, Message: "ERROR"}
-
 		c.Lock.Lock()
 
-		replyToChatterBox, found := c.Chatters[msg.From]
+		serverReplies := []ChatMessage{}
+		stdReplyFrom := ChatMessage{From:msg.To, To:msg.From}
+		stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection}
 
-		if(found) {
-			switch msg.To {
+		switch msg.To {
+			// Message: Id of some one whose name is to be found
 			case "server-get-chatter-box-name" : {
+				reply := stdReplyOrigin
 				chatterSendable, found := c.Chatters[msg.Message]
-				if(found) {
-					chatterBox, isChatterBox := chatterSendable.(ChatterBox)
-					if(isChatterBox) {
-						msgReply.Message = chatterBox.GetName()
-					}
+				chatterBox, isChatterBox := chatterSendable.(ChatterBox)
+				if(found && isChatterBox) {
+					reply.Message = chatterBox.GetName()
+				} else {
+					reply.Message = "ERROR"
 				}
+				serverReplies = append(serverReplies, reply)
 			}
+			// Message: Id of some one whose public key is to be found
 			case "server-get-chat-user-publickey" : {
+				reply := stdReplyOrigin
 				chatterBox, found := c.Chatters[msg.Message]
-				if(found) {
-					chatUser, isChatUser := chatterBox.(*ChatUser)
-					if(isChatUser) {
-						msgReply.Message = chatUser.PublicKey
-					}
+				chatUser, isChatUser := chatterBox.(*ChatUser)
+				if(found && isChatUser) {
+					msgReply.Message = chatUser.PublicKey
+				} else {
+					reply.Message = "ERROR"
 				}
+				serverReplies = append(serverReplies, reply)
 			}
 			case "server-create-chat-group" : {
 			}
 			case "server-create-chat-user" : {
 			}
 			case "server-login-as-chat-user" : {
-				chatterSendable, foundChatConnection := c.Chatters[msg.From]
+				reply := stdReplyOrigin
+				chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
 				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 				chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
 				if(foundChatConnection && isChatConnection && foundChatUser) {
 					chatUser.AddChatConnection(chatConnection)
 					chatConnection.SetChatUser(chatUser)
-					msgReply.To = chatUser.GetId()
-					msgReply.Message = "Logged in with " + chatConnection.GetId()
+					msgReply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
-					msgReply.To = chatConnection.GetId()
-					msgReply.Message = "ERROR, Logged in failed"
+					reply.Message = "ERROR"
 				}
+				serverReplies = append(serverReplies, reply)
 			}
 			case "server-logout" : {
 				chatterSendable, foundChatConnection := c.Chatters[msg.From]
 				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 				if(foundChatConnection && isChatConnection && chatConnection.User != nil) {
-					chatUser := chatConnection.User
-					chatUser.RemoveChatConnection(chatConnection)
+					chatConnection.User.RemoveChatConnection(chatConnection)
 					chatConnection.SetChatUser(nil)
-					msgReply.To = chatUser.GetId()
-					msgReply.Message = "Logged out for " + chatUser.GetId()
+					reply.Message = chatConnection.GetId()
+				} else {
+					reply.Message = "ERROR"
 				}
+				serverReplies = append(serverReplies, reply)
 			}
 			case "server-add-user-to-chat-group" : {
 			}
@@ -102,15 +105,15 @@ func (c *ChatManager) ChatManagerRun() {
 			}
 			case "server-notify-all" : {
 			}
-			}
 		}
+
+		for _, msg := range serverReplies {
+			c.SendById_unsafe(msg)
+		}
+
 		c.Lock.Unlock()
 
-		if(found) {
-			go replyToChatterBox.SendMessage(msgReply)
-		}
-
-		c.ServerMessagesToBeProcessed.Top()
+		c.ServerMessagesToBeProcessed.Pop()
 	}
 }
 
@@ -162,12 +165,17 @@ func (c *ChatManager) DeleteChatterer(Id string) {
 	c.Lock.Unlock()
 }
 
-func (c *ChatManager) SendById(msg ChatMessage) bool {
-	c.Lock.Lock()
+func (c *ChatManager) SendById_unsafe(msg ChatMessage) bool {
 	chatterSendable, found := c.Chatters[msg.To]
 	if(found) {
 		chatterSendable.SendMessage(msg);
 	}
+	return found
+}
+
+func (c *ChatManager) SendById(msg ChatMessage) bool {
+	c.Lock.Lock()
+	found := c.SendById_unsafe(msg)
 	c.Lock.Unlock()
 	return found
 }
