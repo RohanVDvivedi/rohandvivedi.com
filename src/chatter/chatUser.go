@@ -43,4 +43,18 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 }
 
 func (user *ChatUser) Destroy() {
+	user.MessagesPendingToBeSent = nil
+}
+
+/* Below methods update modify session values, of all the chat connections of this chat user */
+func (user *ChatUser) GetNameAndPublicKey() (name string, publicKey string) {
+	return user.GetName(), user.PublicKey
+}
+
+func (user *ChatUser) SetNameAndPublicKey(name string, publicKey string) {
+	user.SetName(name)
+	user.PublicKey = publicKey
+	for _, cconn := range user.ChatConnections {
+		cconn.SetNameAndPublicKey(name, publicKey)
+	}
 }
