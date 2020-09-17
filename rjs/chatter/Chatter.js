@@ -18,7 +18,7 @@ var Chatter = {
 	onOpen: "Socket Connection is now open",
 	onConnected: "Chatter connection is now established",
 	onLogin: "User has been logged in",
-	onChatMessage: null,
+	onChatMessage: function(msg){console.log("Chat Message :", msg)},
 	onLogout: "User logged out",
 	onAddedToGroup: null,
 	onRemovedFromGroup: null,
@@ -47,7 +47,7 @@ var Chatter = {
 		}
 
 		this.Connection.onmessage = function(msgEvent) {
-			ChatterConnectionHandler(msgEvent)
+			ChatterConnectionHandler(this, msgEvent)
 		}
 
 		this.Connection.onerror = function(error) {
@@ -127,9 +127,13 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 /* Code below is meant to allow the chatter client to follow the standard state transitions and protocol for chattering */
 /* Access to below source is restricted to only those people who are familiar with chatter protocol */
 
-function ChatterConnectionHandler(msgEvent) {
+function ChatterConnectionHandler(chatter ,msgEvent) {
 
 	msg = JSON.parse(msgEvent.data)
 
-	console.log(msg)
+	if(msg.From.startsWith("server")) {
+		console.log("Server event", msg)
+	} else {
+		this.onChatMessage(msg)
+	}
 }
