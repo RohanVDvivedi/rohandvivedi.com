@@ -45,21 +45,5 @@ EffiCache.Init()
 
 ReactDOM.render(<Root />, document.getElementById("root"));
 
-window.ChatterStart = function(name, publicKey) {
-    var queryParams = []
-    if(name != null) {queryParams[0] = "name=" + name}
-    if(publicKey != null) {queryParams[1] = "publicKey=" + publicKey }
-    var baseUrl = (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host
-    var path = "/chat"
-    var URL = [baseUrl + path, queryParams.join("&")].join("?")
-    window.ChatterSocket = new WebSocket(URL);
-    window.ChatterSocket.onmessage = function(event){
-        var payload = JSON.parse(event.data)
-        console.log(payload.From + " -> " + payload.To + " : " + payload.Message)
-    }
-}
-
-window.ChatterSend = function(frm ,to, message) {
-    var payload = {From:frm,To:to,Message:message,SentAt:new Date()}
-    window.ChatterSocket.send(JSON.stringify(payload))
-}
+import Chatter from "./chatter/Chatter"
+window.Chatter = Chatter

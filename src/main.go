@@ -66,7 +66,7 @@ func main() {
 	mux.Handle("/pages/", GzipCompressor(page.PageHandler));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/chat", chatter.AuthorizeAndStartChatHandler);
+	mux.Handle("/soc/chatter", chatter.AuthorizeAndStartChatHandler);
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				SetRequestCacheControl(24 * time.Hour, api.GetPerson));
