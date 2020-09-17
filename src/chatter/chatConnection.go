@@ -3,6 +3,7 @@ package chatter
 import (
 	"golang.org/x/net/websocket"
 	"errors"
+	"rohandvivedi.com/src/session"
 )
 
 type ChatConnection struct {
@@ -48,4 +49,19 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 
 func (cconn *ChatConnection) Destroy() {
 	cconn.Connection.Close()
+}
+
+/* Below methods update modify session values and must be called only 
+while the corresponding socket connection is active  atleast as per the chat manager */
+
+func (cconn *ChatConnection) GetNameAndPublicKey() (string, string, bool) {
+	return GetNameAndPublicKeyFromSession(session.GlobalSessionStore.GetExistingSession(cconn.Connection.Request()))
+}
+
+func (cconn *ChatConnection) SetNameAndPublicKey(name string, publicKey string) {
+	InsertNameAndPublicKeyToSession(session.GlobalSessionStore.GetExistingSession(cconn.Connection.Request()), name, publicKey)
+}
+
+func (cconn *ChatConnection) RemoveNameAndPublicKey() {
+	RemoveNameAndPublicKeyFromSession(session.GlobalSessionStore.GetExistingSession(cconn.Connection.Request()))
 }
