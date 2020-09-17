@@ -74,10 +74,24 @@ func (c *ChatManager) ChatManagerRun() {
 					chatConnection.SetChatUser(chatUser)
 					msgReply.To = chatUser.GetId()
 					msgReply.Message = "Logged in with " + chatConnection.GetId()
+				} else if (foundChatConnection && isChatConnection) {
+					msgReply.To = chatConnection.GetId()
+					msgReply.Message = "ERROR, Logged in failed"
 				}
 			}
 			case "server-logout" : {
-
+				chatterSendable, foundChatConnection := c.Chatters[msg.From]
+				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+				if(foundChatConnection && isChatConnection && chatConnection.User != nil) {
+					chatUser := chatConnection.User
+					chatUser.RemoveChatConnection(chatConnection)
+					chatConnection.SetChatUser(nil)
+					msgReply.To = chatUser.GetId()
+					msgReply.Message = "Logged out for " + chatUser.GetId()
+				} else {
+					msgReply.To = chatConnection.GetId()
+					msgReply.Message = "Logged out for " + chatUser.GetId()
+				}
 			}
 			case "server-add-user-to-chat-group" : {
 			}
