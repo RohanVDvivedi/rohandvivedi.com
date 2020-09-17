@@ -66,14 +66,14 @@ func (c *ChatManager) ChatManagerRun() {
 			case "server-create-chat-user" : {
 			}
 			case "server-login-as-chat-user" : {
-				chatterSendable, foundChatConnection := c.Chatterers[msg.From]
+				chatterSendable, foundChatConnection := c.Chatters[msg.From]
 				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 				chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
 				if(foundChatConnection && isChatConnection && foundChatUser) {
 					chatUser.AddChatConnection(chatConnection)
-					chatConnection.AddChatUser(chatUser)
+					chatConnection.SetChatUser(chatUser)
 					msgReply.To = chatUser.GetId()
-					msgReply.Message = "Logged in with " chatConnection.GetId()
+					msgReply.Message = "Logged in with " + chatConnection.GetId()
 				}
 			}
 			case "server-logout" : {

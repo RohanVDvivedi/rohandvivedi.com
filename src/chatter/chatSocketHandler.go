@@ -27,13 +27,11 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 
 	name, publicKey, isAuthenticatable := chatConnection.GetNameAndPublicKey()
 	if(isAuthenticatable) {
-		Chatters.ServerMessagesToBeProcessed.Push(
-			ChatMessage{
+		Chatters.ServerMessagesToBeProcessed.Push(ChatMessage{
 				OriginConnection:chatConnection.GetId(),
 				From:chatConnection.GetId(),To:"server-login-as-chat-user",
 				Message:name + "," + publicKey,
-			}
-		)
+			})
 	}
 
 	for (true) {
