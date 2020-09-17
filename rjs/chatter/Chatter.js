@@ -96,12 +96,12 @@ var Chatter = {
 
 	// a true means a request to send a mesage was successfull
 	// this does not ensure delivery
-	SendMessage(to, text) {
+	SendMessage(to, textMsg) {
 		if(this.CurrentState == STATES.DISCONNECTED) {
 			return false
 		}
 
-		if(!(text instanceof String)) {
+		if(!(typeof(s) === 'string' || s instanceof String)) {
 			return false
 		}
 
@@ -110,15 +110,13 @@ var Chatter = {
 			From = this.ConnectionId;
 		} else if(this.CurrentState == STATES.LOGGED_IN) {
 			From = this.UserId;
-		} else {
-			return false
 		}
 
 		this.Connection.send(JSON.stringify({
 			From: From,
 			To: to,
 			SentAt: new Date(),
-			Message: text,
+			Message: textMsg,
 		}))
 
 		return true
@@ -164,6 +162,6 @@ function ChatterConnectionHandler(chatter ,msgEvent) {
 	if(msg.From.startsWith("server")) {
 		console.log("Server event", msg)
 	} else {
-		this.onChatMessage(msg)
+		chatter.onChatMessage(msg)
 	}
 }
