@@ -29,7 +29,8 @@ var Chatter = {
 	},
 
 	ReqConnection: function(name = null, publicKey = null) {
-		if(this.CurrentState != STATES.DISCONNECTED) {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.DISCONNECTED) {
 			return false
 		}
 
@@ -37,26 +38,27 @@ var Chatter = {
 		if(name != null) {queryParams[0] = "name=" + name}
 		if(publicKey != null) {queryParams[1] = "publicKey=" + publicKey }
 
-		var URL = [this.GetConnectionUrl(), queryParams.join("&")].join("?")
+		var URL = [thiz.GetConnectionUrl(), queryParams.join("&")].join("?")
 
-		this.Connection = new WebSocket(URL);
+		thiz.Connection = new WebSocket(URL);
 
-		this.Connection.onopen = function() {
-			this.CurrentState = STATES.CONNECTED
-			executeOnlyAFunctionIfNotNull(this.onOpen)
+		thiz.Connection.onopen = function() {
+			thiz.CurrentState = STATES.CONNECTED
+			executeOnlyAFunctionIfNotNull(thiz.onOpen)
+			console.log(thiz.onOpen)
 		}
 
-		this.Connection.onmessage = function(msgEvent) {
-			ChatterConnectionHandler(this, msgEvent)
+		thiz.Connection.onmessage = function(msgEvent) {
+			ChatterConnectionHandler(thiz, msgEvent)
 		}
 
-		this.Connection.onerror = function(error) {
+		thiz.Connection.onerror = function(error) {
 			console.log("Error: " + error.message)
 		}
 
-		this.Connection.onclose = function() {
-			this.CurrentState = STATES.DISCONNECTED
-			executeOnlyAFunctionIfNotNull(this.onDisconnected)
+		thiz.Connection.onclose = function() {
+			thiz.CurrentState = STATES.DISCONNECTED
+			executeOnlyAFunctionIfNotNull(thiz.onDisconnected)
 		}
 
 		return true
@@ -64,12 +66,13 @@ var Chatter = {
 
 	// a true means a request to create a new user in was sent successfully
 	ReqCreateUser: function(name, publicKey) {
-		if(this.CurrentState != STATES.CONNECTED) {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
 
-		this.Connection.send(JSON.stringify({
-			From: this.ConnectionId,
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.ConnectionId,
 			To: "server-create-chat-user",
 			SentAt: new Date(),
 			Message: name + "," + publicKey,
@@ -80,12 +83,13 @@ var Chatter = {
 
 	// a true means a request to log you in was sent successfully
 	ReqLogin: function(name, publicKey) {
-		if(this.CurrentState != STATES.CONNECTED) {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
 
-		this.Connection.send(JSON.stringify({
-			From: this.ConnectionId,
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.ConnectionId,
 			To: "server-login-as-chat-user",
 			SentAt: new Date(),
 			Message: name + "," + publicKey,
@@ -95,24 +99,25 @@ var Chatter = {
 	},
 
 	// a true means a request to send a mesage was successfull
-	// this does not ensure delivery
+	// thiz does not ensure delivery
 	SendMessage(to, textMsg) {
-		if(this.CurrentState == STATES.DISCONNECTED) {
+		var thiz = Chatter
+		if(thiz.CurrentState == STATES.DISCONNECTED) {
 			return false
 		}
 
-		if(!(typeof(s) === 'string' || s instanceof String)) {
+		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
 			return false
 		}
 
 		var From = "" 
-		if(this.CurrentState == STATES.CONNECTED) {
-			From = this.ConnectionId;
-		} else if(this.CurrentState == STATES.LOGGED_IN) {
-			From = this.UserId;
+		if(thiz.CurrentState == STATES.CONNECTED) {
+			From = thiz.ConnectionId;
+		} else if(thiz.CurrentState == STATES.LOGGED_IN) {
+			From = thiz.UserId;
 		}
 
-		this.Connection.send(JSON.stringify({
+		thiz.Connection.send(JSON.stringify({
 			From: From,
 			To: to,
 			SentAt: new Date(),
@@ -124,12 +129,13 @@ var Chatter = {
 
 	// a true means a request to log you out was sent successfully
 	ReqLogout: function() {
-		if(this.CurrentState != STATES.LOGGED_IN) {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
 
-		this.Connection.send(JSON.stringify({
-			From: this.ConnectionId,
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.ConnectionId,
 			To: "server-logout",
 			SentAt: new Date(),
 			Message: "",
@@ -146,7 +152,7 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 		funcN()
 		return true
 	} else {
-		console.log(funcN)
+		console.log("Not a function : ", funcN)
 		return false
 	}
 }
@@ -155,13 +161,55 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 /* Code below is meant to allow the chatter client to follow the standard state transitions and protocol for chattering */
 /* Access to below source is restricted to only those people who are familiar with chatter protocol */
 
-function ChatterConnectionHandler(chatter ,msgEvent) {
+function ChatterConnectionHandler(chatter, msgEvent) {
 
 	var msg = JSON.parse(msgEvent.data)
 
 	if(msg.From.startsWith("server")) {
 		console.log("Server event", msg)
+		switch(msg.From){
+			case "server-chatterer-created" : {
+				if(isChatConnectionId(msg.To)) {
+					chatter.ConnectionId = msg.To
+					chatter.CurrentState = STATES.CONNECTED
+					executeOnlyAFunctionIfNotNull(chatter.onConnected)
+					console.log("LOL1")
+				} else if(isChatUserId(msg.To)) {
+					chatter.UserId = msg.To
+					chatter.CurrentState = STATES.LOGGED_IN
+					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+					console.log("LOL2")
+				} else {
+					console.log("LOL3")
+				}
+				break;
+			}
+			case "server-login-as-chat-user" : {
+				if(!isErrorEvent(msg.Message)) {
+					chatter.UserId = msg.Message
+					chatter.CurrentState = STATES.LOGGED_IN
+					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+				}
+				break;
+			}
+		}
 	} else {
 		chatter.onChatMessage(msg)
 	}
+}
+
+function isChatConnectionId(Id) {
+	return Id.startsWith("CHAT_CONN-")
+}
+
+function isChatUserId(Id) {
+	return Id.startsWith("CHAT_USER-")
+}
+
+function isChatGroupId(Id) {
+	return Id.startsWith("CHAT_GRUP-")
+}
+
+function isErrorEvent(textMsg) {
+	return textMsg.startsWith("ERROR")
 }

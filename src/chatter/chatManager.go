@@ -27,6 +27,7 @@ func NewChatManager() *ChatManager {
 	cm := &ChatManager{
 		Chatters: make(map[string]ChatterSendable),
 		Chatterers: make(map[string]map[string]ChatterBox),
+		ChatUsersMapped: make(map[string]*ChatUser),
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
 	go cm.ChatManagerProcessServerRequests()
@@ -82,6 +83,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					chatUser.AddChatConnection(chatConnection)
 					chatConnection.SetChatUser(chatUser)
 					chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
+					c.InsertChatterer_unsafe(chatUser)
 					reply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
 					reply.Message = "ERROR"
@@ -137,9 +139,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 	}
 }
 
-func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
-	c.Lock.Lock()
-
+func (c *ChatManager) InsertChatterer_unsafe(chatterer ChatterSendable) {
 	// insert to the main map allowing us to send messages
 	c.Chatters[chatterer.GetId()] = chatterer
 
@@ -159,7 +159,12 @@ func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 		c.ChatUsersMapped[chatUser.GetName() + "," + chatUser.PublicKey] = chatUser
 	}
 
-	chatterer.SendMessage(ChatMessage{From:"server",To:chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
+	chatterer.SendMessage(ChatMessage{From:"server-chatterer-created",To:chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
+}
+
+func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
+	c.Lock.Lock()
+	c.InsertChatterer_unsafe(chatterer)
 	c.Lock.Unlock()
 }
 
