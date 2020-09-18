@@ -45,7 +45,6 @@ var Chatter = {
 		thiz.Connection.onopen = function() {
 			thiz.CurrentState = STATES.CONNECTED
 			executeOnlyAFunctionIfNotNull(thiz.onOpen)
-			console.log(thiz.onOpen)
 		}
 
 		thiz.Connection.onmessage = function(msgEvent) {
@@ -102,28 +101,13 @@ var Chatter = {
 	// thiz does not ensure delivery
 	SendMessage: function(to, textMsg) {
 		var thiz = Chatter
-		if(thiz.CurrentState == STATES.DISCONNECTED) {
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-
 		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
 			return false
 		}
-
-		var From = "" 
-		if(thiz.CurrentState == STATES.CONNECTED) {
-			From = thiz.ConnectionId;
-		} else if(thiz.CurrentState == STATES.LOGGED_IN) {
-			From = thiz.UserId;
-		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: From,
-			To: to,
-			SentAt: new Date(),
-			Message: textMsg,
-		}))
-
+		sendMessageInternal(thiz.UserId,to,textMsg,"","","")
 		return true
 	},
 
@@ -133,13 +117,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.ConnectionId,
-			To: "server-logout",
-			SentAt: new Date(),
-		}))
-
+		sendMessageInternal(thiz.ConnectionId,"server-logout","","","","")
 		return true
 	},
 
@@ -148,13 +126,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.UserId,
-			To: "server-get-all-users",
-			SentAt: new Date(),
-		}))
-
+		sendMessageInternal(thiz.UserId,"server-get-all-users","","","","")
 		return true
 	},
 
@@ -163,13 +135,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.UserId,
-			To: "server-get-all-my-groups",
-			SentAt: new Date(),
-		}))
-
+		sendMessageInternal(thiz.UserId,"server-get-all-my-groups","","","","")
 		return true
 	},
 
@@ -178,13 +144,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.UserId,
-			To: "server-get-all-my-active-connections",
-			SentAt: new Date(),
-		}))
-
+		sendMessageInternal(thiz.UserId,"server-get-all-my-active-connections","","","","")
 		return true
 	},
 }
@@ -199,6 +159,14 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 		console.log("Not a function : ", funcN)
 		return false
 	}
+}
+
+function sendMessageInternal(From,To,Message,Messages,MessageId,ContextId) {
+	Chatter.Connection.send(JSON.stringify({
+		From: From,To: To,SentAt: new Date(),
+		Message: Message,Messages: Messages,
+		MessageId: MessageId,ContextId: ContextId
+	}))
 }
 
 /* restricted access */
