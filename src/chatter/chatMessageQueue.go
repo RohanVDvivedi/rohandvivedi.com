@@ -35,14 +35,34 @@ func (cmq *ChatMessageQueue) Push(m ChatMessage) {
 
 func (cmq *ChatMessageQueue) Pop() {
 	cmq.holderLock.Lock()
-	for(len(cmq.Holder) == 0) {
-		cmq.holderEmptyWait.Wait()
+
+	// wait of queue holder is empty
+	for(len(cmq.Holder) == 0 || cmq.PausedToPop) {
+		if(len(cmq.Holder) == 0) {
+			cmq.holderEmptyWait.Wait()
+		} else if (cmq.PausedToPop) {
+			cmq.queuePausedWait.Wait()
+		}
 	}
+
 	cmq.Holder[0] = EmptyMessage()
 	cmq.Holder = cmq.Holder[1:]
 	if(len(cmq.Holder) > 0) {
 		cmq.holderEmptyWait.Signal()
 	}
+	cmq.holderLock.Unlock()
+}
+
+func (cmq *ChatMessageQueue) PausePop() {
+	cmq.holderLock.Lock()
+	cmq.PausedToPop = true
+	cmq.holderLock.Unlock()
+}
+
+func (cmq *ChatMessageQueue) ResumePop() {
+	cmq.holderLock.Lock()
+	cmq.PausedToPop = false
+	cmq.queuePausedWait.Brodacast()
 	cmq.holderLock.Unlock()
 }
 
