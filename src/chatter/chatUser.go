@@ -58,7 +58,7 @@ func (user *ChatUser) AddChatConnection(c *ChatConnection) {
 func (user *ChatUser) RemoveChatConnection(c *ChatConnection) {
 	delete(user.ChatConnections, c.GetId())
 }
-func (user *ChatUser) GetChatConnectionCount() uint {
+func (user *ChatUser) GetChatConnectionCount() int {
 	return len(user.ChatConnections)
 }
 
@@ -72,7 +72,7 @@ func (user *ChatUser) AddChatGroup(c *ChatGroup) {
 func (user *ChatUser) RemoveChatGroup(c *ChatGroup) {
 	delete(user.ChatGroups, c.GetId())
 }
-func (user *ChatUser) GetChatGroupCount() uint {
+func (user *ChatUser) GetChatGroupCount() int {
 	return len(user.ChatGroups)
 }
 
