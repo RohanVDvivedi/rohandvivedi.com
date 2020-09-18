@@ -62,7 +62,7 @@ func (cmq *ChatMessageQueue) PausePop() {
 func (cmq *ChatMessageQueue) ResumePop() {
 	cmq.holderLock.Lock()
 	cmq.PausedToPop = false
-	cmq.queuePausedWait.Brodacast()
+	cmq.queuePausedWait.Broadcast()
 	cmq.holderLock.Unlock()
 }
 

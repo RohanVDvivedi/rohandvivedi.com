@@ -193,7 +193,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				if(!isErrorEvent(msg.Message)) {
 					chatter.UserId = null
 					chatter.CurrentState = STATES.CONNECTED
-					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+					executeOnlyAFunctionIfNotNull(chatter.onLogout)
 				}
 				break;
 			}
