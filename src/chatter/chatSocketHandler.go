@@ -39,10 +39,6 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 		if(err != nil) {
 			break
 		}
-		if(msg.IsValidChatMessage()) {
-			Chatters.SendById(msg)
-		} else if (msg.IsValidServerRequest()) {
-			Chatters.ServerMessagesToBeProcessed.Push(msg)
-		}
+		Chatters.AddChatMessageToChatManagersProcessingQueue(msg)
 	}
 }
