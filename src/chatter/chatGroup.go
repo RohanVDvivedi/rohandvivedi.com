@@ -29,6 +29,10 @@ func (grp *ChatGroup) Destroy() {
 }
 
 /* Joinery methods */
+func (grp *ChatGroup) HasChatUser(c *ChatUser) bool {
+	_, found := grp.ChatUsers[c.GetId()]
+	return found
+}
 func (grp *ChatGroup) AddChatUser(c *ChatUser) {
 	grp.ChatUsers[c.GetId()] = c
 }

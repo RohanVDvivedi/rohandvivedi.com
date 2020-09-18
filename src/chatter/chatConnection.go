@@ -52,6 +52,9 @@ func (cconn *ChatConnection) Destroy() {
 }
 
 /* Joinery methods */
+func (cconn *ChatConnection) GetChatUser() *ChatUser {
+	return cconn.User
+}
 func (cconn *ChatConnection) SetChatUser(c *ChatUser) {
 	cconn.User = c
 }

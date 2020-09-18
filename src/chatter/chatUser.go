@@ -48,6 +48,10 @@ func (user *ChatUser) Destroy() {
 }
 
 /* Joinery methods */
+func (user *ChatUser) HasChatConnection(c *ChatConnection) bool {
+	_, found := user.ChatConnections[c.GetId()]
+	return found
+}
 func (user *ChatUser) AddChatConnection(c *ChatConnection) {
 	user.ChatConnections[c.GetId()] = c
 }
@@ -55,6 +59,10 @@ func (user *ChatUser) RemoveChatConnection(c *ChatConnection) {
 	delete(user.ChatConnections, c.GetId())
 }
 
+func (user *ChatUser) HasChatGroup(c *ChatGroup) bool {
+	_, found := user.ChatGroups[c.GetId()]
+	return found
+}
 func (user *ChatUser) AddChatGroup(c *ChatGroup) {
 	user.ChatGroups[c.GetId()] = c
 }
