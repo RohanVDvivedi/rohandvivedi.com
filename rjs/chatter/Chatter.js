@@ -174,20 +174,13 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 					chatter.CurrentState = STATES.CONNECTED
 					executeOnlyAFunctionIfNotNull(chatter.onConnected)
 				} else if(isChatUserId(msg.To)) {
-					chatter.UserId = msg.To
-					chatter.CurrentState = STATES.LOGGED_IN
-					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+					// user created
+				} else if (isChatGroupId(msg.To)) {
+					// group created
 				}
 				break;
 			}
-			case "server-create-and-login-as-chat-user" : {
-				if(!isErrorEvent(msg.Message)) {
-					chatter.UserId = msg.Message
-					chatter.CurrentState = STATES.LOGGED_IN
-					executeOnlyAFunctionIfNotNull(chatter.onLogin)
-				}
-				break;
-			}
+			case "server-create-and-login-as-chat-user" :
 			case "server-login-as-chat-user" : {
 				if(!isErrorEvent(msg.Message)) {
 					chatter.UserId = msg.Message
