@@ -55,7 +55,7 @@ func (cconn *ChatConnection) Destroy() {
 func (cconn *ChatConnection) SetChatUser(c *ChatUser) {
 	cconn.User = c
 }
-func (cconn *ChatConnection) RemoveChatUser(c *ChatUser) {
+func (cconn *ChatConnection) RemoveChatUser() {
 	cconn.User = nil
 }
 

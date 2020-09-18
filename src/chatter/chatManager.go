@@ -111,7 +111,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 				if(foundChatConnection && isChatConnection && chatConnection.User != nil) {
 					chatConnection.User.RemoveChatConnection(chatConnection)
-					chatConnection.SetChatUser(nil)
+					chatConnection.RemoveChatUser()
 					chatConnection.RemoveNameAndPublicKey()
 					reply.Message = chatConnection.GetId()
 				} else {
