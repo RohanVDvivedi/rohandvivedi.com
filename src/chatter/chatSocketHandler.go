@@ -32,11 +32,6 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 				From:chatConnection.GetId(),To:"server-login-as-chat-user",
 				Message:name + "," + publicKey,
 			})
-		defer Chatters.ServerMessagesToBeProcessed.Push(ChatMessage{
-				OriginConnection:chatConnection.GetId(),
-				From:chatConnection.GetId(),To:"server-logout",
-				Message:"",
-			})
 	}
 
 	for (true) {
