@@ -15,9 +15,13 @@ var Chatter = {
 	UserName: null,
 	UserPublicKey: null,
 
+	AllUsers: [],
+	AllGroups: [],
+
 	onOpen: "Socket Connection is now open",
 	onConnected: "Chatter connection is now established",
 	onLogin: "User has been logged in",
+	onChangeUsersList: function(){console.log("Users list :", Chatter.AllUsers)},
 	onChatMessage: function(msg){console.log("Chat Message :", msg)},
 	onLogout: "User logged out",
 	onAddedToGroup: null,
@@ -69,7 +73,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user",name + "," + publicKey,"","","")
+		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user",name + "," + publicKey)
 		return true
 	},
 
@@ -79,7 +83,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user",name + "," + publicKey,"","","")
+		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user",name + "," + publicKey)
 		return true
 	},
 
@@ -93,7 +97,7 @@ var Chatter = {
 		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
 			return false
 		}
-		sendMessageInternal(thiz.UserId,to,textMsg,"","","")
+		sendMessageInternal(thiz.UserId,to,textMsg)
 		return true
 	},
 
@@ -103,7 +107,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-logout","","","","")
+		sendMessageInternal(thiz.ConnectionId,"server-logout")
 		return true
 	},
 
@@ -112,7 +116,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.UserId,"server-get-all-users","","","","")
+		sendMessageInternal(thiz.UserId,"server-get-all-users")
 		return true
 	},
 
@@ -121,7 +125,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.UserId,"server-get-all-online-users","","","","")
+		sendMessageInternal(thiz.UserId,"server-get-all-online-users")
 		return true
 	},
 
@@ -130,7 +134,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.UserId,"server-get-all-my-groups","","","","")
+		sendMessageInternal(thiz.UserId,"server-get-all-my-groups")
 		return true
 	},
 
@@ -139,7 +143,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.UserId,"server-get-all-my-active-connections","","","","")
+		sendMessageInternal(thiz.UserId,"server-get-all-my-active-connections")
 		return true
 	},
 }
@@ -166,7 +170,7 @@ function executeOnlyAFunctionIfNotNull(funcN) {
 	}
 }
 
-function sendMessageInternal(From,To,Message,Messages,MessageId,ContextId) {
+function sendMessageInternal(From,To,Message = null,Messages = null,MessageId = null,ContextId = null) {
 	Chatter.Connection.send(JSON.stringify({
 		From: From,To: To,SentAt: new Date(),
 		Message: Message,Messages: Messages,
@@ -182,7 +186,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 
 	var msg = JSON.parse(msgEvent.data)
 
-	if(msg.From.startsWith("server")) {
+	if(isServerEvent(msg)) {
 		console.log("Server event", msg)
 		switch(msg.From){
 			case "server-chatterer-created" : {
@@ -199,18 +203,37 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			}
 			case "server-create-and-login-as-chat-user" :
 			case "server-login-as-chat-user" : {
-				if(!isErrorEvent(msg.Message)) {
+				if(!isErrorEvent(msg)) {
 					chatter.UserId = msg.Message
 					chatter.CurrentState = STATES.LOGGED_IN
 					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+					chatter.ReqGetAllUsers()
 				}
 				break;
 			}
 			case "server-logout" : {
-				if(!isErrorEvent(msg.Message)) {
+				if(!isErrorEvent(msg)) {
 					chatter.UserId = null
 					chatter.CurrentState = STATES.CONNECTED
+					chatter.AllUsers = []
 					executeOnlyAFunctionIfNotNull(chatter.onLogout)
+				}
+				break;
+			}
+			case "server-get-all-users" : {
+				if(!isErrorEvent(msg)) {
+					chatter.AllUsers = []
+					msg.Messages.forEach(function(userStr){
+						var userData = userStr.split(',')
+						if(userData.length == 3) {
+							chatter.AllUsers.push({
+								Id: userData[0],
+								Name: userData[1],
+								IsOnline: (userData[2] > 0),
+							})
+						}
+					})
+					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
 				}
 				break;
 			}
@@ -232,6 +255,10 @@ function isChatGroupId(Id) {
 	return Id.startsWith("CHAT_GRUP-")
 }
 
-function isErrorEvent(textMsg) {
-	return textMsg.startsWith("ERROR")
+function isServerEvent(Msg) {
+	return Msg.From.startsWith("server")
+}
+
+function isErrorEvent(Msg) {
+	return Msg.Message != null && Msg.Message.startsWith("ERROR")
 }

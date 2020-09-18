@@ -74,7 +74,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					if(IsChatUserId(msg.From)) {
 						for _, chatUser := range(c.ChatUsersMapped) {
 							if(chatUser.GetChatConnectionCount() > 0) {
-								reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName()
+								reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
 							}
 						}
 					} else {
