@@ -4,6 +4,7 @@ import (
 	"sync"
 	"time"
 	"strings"
+	"strconv"
 )
 
 type ChatManager struct{
@@ -53,6 +54,49 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 			stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId}
 
 			switch msg.To {
+				// returns id, name and public key of all users
+				case "server-get-all-users" : {
+					reply := stdReplyOrigin
+					reply.Messages = []string{}
+					if(IsChatUserId(msg.From)) {
+						for _, chatUser := range(c.ChatUsersMapped) {
+							reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + chatUser.PublicKey + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
+						}
+					} else {
+						reply.Message = "ERROR"
+					}
+					serverReplies = append(serverReplies, reply)
+				}
+				// returns id, name of all groups of the corresponding user
+				case "server-get-all-my-groups" : {
+					reply := stdReplyOrigin
+					reply.Messages = []string{}
+					chatterSendable, found := c.Chatters[msg.From]
+					chatUser, isChatUser := chatterSendable.(*ChatUser)
+					if(found && isChatUser) {
+						for _, chatGroup := range(chatUser.ChatGroups) {
+							reply.Messages = append(reply.Messages, chatGroup.GetId() + "," + chatGroup.GetName())
+						}
+					} else {
+						reply.Message = "ERROR"
+					}
+					serverReplies = append(serverReplies, reply)
+				}
+				// returns id, name of all groups of the corresponding user
+				case "server-get-all-my-active-connections" : {
+					reply := stdReplyOrigin
+					reply.Messages = []string{}
+					chatterSendable, found := c.Chatters[msg.From]
+					chatUser, isChatUser := chatterSendable.(*ChatUser)
+					if(found && isChatUser) {
+						for _, chatConnection := range(chatUser.ChatConnections) {
+							reply.Messages = append(reply.Messages, chatConnection.GetId())
+						}
+					} else {
+						reply.Message = "ERROR"
+					}
+					serverReplies = append(serverReplies, reply)
+				}
 				// Message: Id of some one whose name is to be found
 				case "server-get-chatter-box-name" : {
 					reply := stdReplyOrigin
@@ -76,8 +120,6 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 						reply.Message = "ERROR"
 					}
 					serverReplies = append(serverReplies, reply)
-				}
-				case "server-create-chat-group" : {
 				}
 				// Message : contains name,publicKey to create a corresponding user
 				case "server-create-and-login-as-chat-user" : {
@@ -122,6 +164,8 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 						reply.Message = "ERROR"
 					}
 					serverReplies = append(serverReplies, reply)
+				}
+				case "server-create-chat-group" : {
 				}
 				case "server-add-user-to-chat-group" : {
 				}

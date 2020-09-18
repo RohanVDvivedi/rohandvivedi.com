@@ -15,7 +15,8 @@ type ChatMessage struct {
 	SentAt time.Time 	`json:",omitempty"`	// when was the message sent (time stamp)
 
 	MessageId string 	`json:",omitempty"`	// string message id
-	Message string 							// string message content
+	Message string 		`json:",omitempty"`	// string message content
+	Messages []string 	`json:",omitempty"` // list of string messages content
 	ContextId string 	`json:",omitempty"` // string message context id
 
 	/* Things are getting a little shifty here */

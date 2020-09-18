@@ -100,7 +100,7 @@ var Chatter = {
 
 	// a true means a request to send a mesage was successfull
 	// thiz does not ensure delivery
-	SendMessage(to, textMsg) {
+	SendMessage: function(to, textMsg) {
 		var thiz = Chatter
 		if(thiz.CurrentState == STATES.DISCONNECTED) {
 			return false
@@ -138,7 +138,51 @@ var Chatter = {
 			From: thiz.ConnectionId,
 			To: "server-logout",
 			SentAt: new Date(),
-			Message: "",
+		}))
+
+		return true
+	},
+
+	ReqGetAllUsers: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.UserId,
+			To: "server-get-all-users",
+			SentAt: new Date(),
+		}))
+
+		return true
+	},
+
+	ReqGetAllMyGroups: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.UserId,
+			To: "server-get-all-my-groups",
+			SentAt: new Date(),
+		}))
+
+		return true
+	},
+
+	ReqGetAllMyActiveConnections: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+
+		thiz.Connection.send(JSON.stringify({
+			From: thiz.UserId,
+			To: "server-get-all-my-active-connections",
+			SentAt: new Date(),
 		}))
 
 		return true
