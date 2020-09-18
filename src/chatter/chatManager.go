@@ -37,6 +37,7 @@ func NewChatManager() *ChatManager {
 func (c *ChatManager) ChatManagerProcessServerRequests() {
 	for (true) {
 		msg := c.ServerMessagesToBeProcessed.Top()
+		c.ServerMessagesToBeProcessed.Pop()
 
 		c.Lock.Lock()
 
@@ -71,7 +72,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 			}
 			case "server-create-chat-group" : {
 			}
-			// Message : contains name,publicKey
+			// Message : contains name,publicKey to create a corresponding user
 			case "server-create-and-login-as-chat-user" : {
 				reply := stdReplyOrigin
 				chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
@@ -80,16 +81,16 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				params := strings.Split(msg.Message, ",")
 				if(foundChatConnection && isChatConnection && !foundChatUser && len(params) == 2) {
 					chatUser := NewChatUser(params[0], params[1])
-					chatUser.AddChatConnection(chatConnection)
-					chatConnection.SetChatUser(chatUser)
-					chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 					c.InsertChatterer_unsafe(chatUser)
+					JoinConnectionToUser(chatConnection, chatUser)
+					chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 					reply.Message = chatUser.GetId()
 				} else if (foundChatConnection && isChatConnection) {
 					reply.Message = "ERROR"
 				}
 				serverReplies = append(serverReplies, reply)
 			}
+			// Message : contains name,publicKey to login to that user
 			case "server-login-as-chat-user" : {
 				reply := stdReplyOrigin
 				chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
@@ -130,8 +131,6 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 		}
 
 		c.Lock.Unlock()
-
-		c.ServerMessagesToBeProcessed.Pop()
 	}
 }
 
