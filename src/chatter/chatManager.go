@@ -49,8 +49,8 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 
 		if(msg.IsValidServerRequest()) {
 			serverReplies := []ChatMessage{}
-			//stdReplyFrom := ChatMessage{From:msg.To, To:msg.From}
-			stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection}
+			//stdReplyFrom := ChatMessage{From:msg.To, To:msg.From 			  , ContextId: msg.MessageId}
+			stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId}
 
 			switch msg.To {
 				// Message: Id of some one whose name is to be found
