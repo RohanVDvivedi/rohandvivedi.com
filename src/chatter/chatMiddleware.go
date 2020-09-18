@@ -39,25 +39,38 @@ func AuthorizeChat(next http.Handler) http.Handler {
 }
 
 func GetNameAndPublicKeyFromSession(s *session.Session) (string, string, bool) {
-	nameIntr, foundName := s.GetValue("name")
-	publicKeyIntr, foundPublicKey := s.GetValue("publicKey")
-	if(foundName && foundPublicKey) {
-		name, nameOk := nameIntr.(string)
-		publicKey, publicKeyOk := publicKeyIntr.(string)
-		if(nameOk && publicKeyOk) {
-			return name, publicKey, true
+	name := ""
+	publicKey := ""
+	found := false
+	s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{} {
+		nameIntr, foundName := values["name"]
+		publicKeyIntr, foundPublicKey := values["publicKey"]
+		if(foundName && foundPublicKey) {
+			nameV, nameOk := nameIntr.(string)
+			publicKeyV, publicKeyOk := publicKeyIntr.(string)
+			if(nameOk && publicKeyOk) {
+				name = nameV
+				publicKey = publicKeyV
+				found = true
+			}
 		}
-	}
-	RemoveNameAndPublicKeyFromSession(s)
-	return "", "", false
+		return nil
+	}, nil)
+	return name, publicKey, found
 }
 
 func InsertNameAndPublicKeyToSession(s *session.Session, name string, publicKey string) {
-	s.SetValue("name", name);
-	s.SetValue("publicKey", publicKey);
+	s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{} {
+		values["name"] = name;
+		values["publicKey"] = publicKey;
+		return nil
+	}, nil)
 }
 
 func RemoveNameAndPublicKeyFromSession(s *session.Session) {
-	s.RemoveValue("name");
-	s.RemoveValue("publicKey");
+	s.ExecuteOnValues(func (values map[string]interface{}, additional_params interface{}) interface{} {
+		delete(values, "name");
+		delete(values, "publicKey");
+		return nil
+	}, nil)
 }
