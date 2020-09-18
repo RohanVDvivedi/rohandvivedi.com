@@ -69,14 +69,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.ConnectionId,
-			To: "server-create-and-login-as-chat-user",
-			SentAt: new Date(),
-			Message: name + "," + publicKey,
-		}))
-
+		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user",name + "," + publicKey,"","","")
 		return true
 	},
 
@@ -86,14 +79,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-
-		thiz.Connection.send(JSON.stringify({
-			From: thiz.ConnectionId,
-			To: "server-login-as-chat-user",
-			SentAt: new Date(),
-			Message: name + "," + publicKey,
-		}))
-
+		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user",name + "," + publicKey,"","","")
 		return true
 	},
 
