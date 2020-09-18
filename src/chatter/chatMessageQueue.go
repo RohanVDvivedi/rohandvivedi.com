@@ -7,12 +7,22 @@ import (
 type ChatMessageQueue struct {
 	holderLock sync.Mutex
 	Holder []ChatMessage
+
+	// when the queue is empty, wait here
+	// and you would be notified if anything is pushed to the queue
 	holderEmptyWait *sync.Cond
+
+	// set tot true of the queue must pause any consumption
+	// push operation can still be issued to this queue
+	PausedToPop bool
+	// wait on this condition varibale if you are performing a pop and the queue has been popped
+	queuePausedWait *sync.Cond
 }
 
 func NewChatMessageQueue() *ChatMessageQueue {
-	cmq := &ChatMessageQueue{Holder: make([]ChatMessage, 10)}
+	cmq := &ChatMessageQueue{Holder: make([]ChatMessage, 10), Paused: false}
 	cmq.holderEmptyWait = sync.NewCond(&(cmq.holderLock))
+	cmq.queuePausedWait = sync.NewCond(&(cmq.holderLock))
 	return cmq
 }
 
