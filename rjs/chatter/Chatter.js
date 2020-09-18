@@ -73,7 +73,7 @@ var Chatter = {
 
 		thiz.Connection.send(JSON.stringify({
 			From: thiz.ConnectionId,
-			To: "server-create-chat-user",
+			To: "server-create-and-login-as-chat-user",
 			SentAt: new Date(),
 			Message: name + "," + publicKey,
 		}))
@@ -173,14 +173,18 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 					chatter.ConnectionId = msg.To
 					chatter.CurrentState = STATES.CONNECTED
 					executeOnlyAFunctionIfNotNull(chatter.onConnected)
-					console.log("LOL1")
 				} else if(isChatUserId(msg.To)) {
 					chatter.UserId = msg.To
 					chatter.CurrentState = STATES.LOGGED_IN
 					executeOnlyAFunctionIfNotNull(chatter.onLogin)
-					console.log("LOL2")
-				} else {
-					console.log("LOL3")
+				}
+				break;
+			}
+			case "server-create-and-login-as-chat-user" : {
+				if(!isErrorEvent(msg.Message)) {
+					chatter.UserId = msg.Message
+					chatter.CurrentState = STATES.LOGGED_IN
+					executeOnlyAFunctionIfNotNull(chatter.onLogin)
 				}
 				break;
 			}
