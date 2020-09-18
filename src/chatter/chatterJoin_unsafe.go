@@ -1,14 +1,15 @@
 package chatter
 
 // all the methods below are chatMAnager unsafe and must be called only while holding the lock
-// all these functions return bool, which represent whether 
+// all these functions return bool, which represent whether the operation was completed or the result
+// the parameters must not be null
 
 /* ChatUser and ChatGroup */
-func isUserJoinedToGroup(cu *ChatUser, cg *ChatGroup) {
+func isUserJoinedToGroup(cu *ChatUser, cg *ChatGroup) bool {
 	return cu.HasChatGroup(cg) && cg.HasChatUser(cu)
 }
 
-func JoinUserToGroup(cu *ChatUser, cg *ChatGroup) {
+func JoinUserToGroup(cu *ChatUser, cg *ChatGroup) bool {
 	if(!isUserJoinedToGroup(cu, cg)) {
 		cu.AddChatGroup(cg)
 		cg.AddChatUser(cu)
@@ -17,7 +18,7 @@ func JoinUserToGroup(cu *ChatUser, cg *ChatGroup) {
 	return false
 }
 
-func BreakUserFromGroup(cu *ChatUser, cg *ChatGroup) {
+func BreakUserFromGroup(cu *ChatUser, cg *ChatGroup) bool {
 	if(isUserJoinedToGroup(cu, cg)) {
 		cu.RemoveChatGroup(cg)
 		cg.RemoveChatUser(cu)
@@ -42,7 +43,7 @@ func JoinConnectionToUser(cc *ChatConnection, cu *ChatUser) bool {
 
 func BreakConnectionFromUser(cc *ChatConnection, cu *ChatUser) bool {
 	if(isConnectionJoinedToUser(cc, cu)) {
-		cc.RemoveChatUser(cu)
+		cc.RemoveChatUser()
 		cu.RemoveChatConnection(cc)
 		return true
 	}
