@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 
 import NavBar from "./nav/NavBar";
 import ContentHash from "./ContentHash";
+import ChatWidget from "./chatUI/ChatWidget";
 
 class Root extends React.Component {
     render() {
@@ -19,6 +20,7 @@ class Root extends React.Component {
 		           		return (<Route path={ContentHash[buttonName]["route_path"]} component={ContentHash[buttonName]["component"]}/>)
 		        	})}
 	            </Switch>
+                <ChatWidget/>
             </BrowserRouter>
         );
     }
@@ -27,6 +29,7 @@ class Root extends React.Component {
 // ================================= >>>>
 
 import "../css_raw/about.css"
+import "../css_raw/chat_widget_chatter.css"
 import "../css_raw/contact_form.css"
 import "../css_raw/content.css"
 import "../css_raw/drop_down.css"
