@@ -58,6 +58,9 @@ func (user *ChatUser) AddChatConnection(c *ChatConnection) {
 func (user *ChatUser) RemoveChatConnection(c *ChatConnection) {
 	delete(user.ChatConnections, c.GetId())
 }
+func (user *ChatUser) GetChatConnectionCount() uint {
+	return len(user.ChatConnections)
+}
 
 func (user *ChatUser) HasChatGroup(c *ChatGroup) bool {
 	_, found := user.ChatGroups[c.GetId()]
@@ -68,6 +71,9 @@ func (user *ChatUser) AddChatGroup(c *ChatGroup) {
 }
 func (user *ChatUser) RemoveChatGroup(c *ChatGroup) {
 	delete(user.ChatGroups, c.GetId())
+}
+func (user *ChatUser) GetChatGroupCount() uint {
+	return len(user.ChatGroups)
 }
 
 /* Below methods update modify session values, of all the chat connections of this chat user */

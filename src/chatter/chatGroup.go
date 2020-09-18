@@ -39,3 +39,6 @@ func (grp *ChatGroup) AddChatUser(c *ChatUser) {
 func (grp *ChatGroup) RemoveChatUser(c *ChatUser) {
 	delete(grp.ChatUsers, c.GetId())
 }
+func (grp *ChatGroup) GetChatUsersCount() uint {
+	return len(user.ChatUsers)
+}
