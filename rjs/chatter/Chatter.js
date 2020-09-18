@@ -189,6 +189,14 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				}
 				break;
 			}
+			case "server-logout" : {
+				if(!isErrorEvent(msg.Message)) {
+					chatter.UserId = null
+					chatter.CurrentState = STATES.CONNECTED
+					executeOnlyAFunctionIfNotNull(chatter.onLogin)
+				}
+				break;
+			}
 		}
 	} else {
 		chatter.onChatMessage(msg)
