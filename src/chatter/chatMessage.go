@@ -8,15 +8,15 @@ import (
 type ChatMessage struct {
 	// this is set by a connection when ever a message is created
 	// the connection must set here its id
-	OriginConnection string
+	OriginConnection string 	`json:",omitempty"`
 
-	From string 		// id of the sender (can be a chat connection or a chat user)
-	To string 			// id of the receiver (can be a chat connection or a chat user or a chat group)
-	SentAt time.Time 	// when was the message sent (time stamp)
+	From string  		`json:",omitempty"`	// id of the sender (can be a chat connection or a chat user)
+	To string 			`json:",omitempty"`	// id of the receiver (can be a chat connection or a chat user or a chat group)
+	SentAt time.Time 	`json:",omitempty"`	// when was the message sent (time stamp)
 
-	MessageId string 	// string message id
-	Message string 		// string message content
-	ContextId string 	// string message context id
+	MessageId string 	`json:",omitempty"`	// string message id
+	Message string 							// string message content
+	ContextId string 	`json:",omitempty"` // string message context id
 
 	/* Things are getting a little shifty here */
 	// MessageId is an attribute to be used by chat users to uniquely identify a message
