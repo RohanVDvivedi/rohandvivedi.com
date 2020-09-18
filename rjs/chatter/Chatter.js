@@ -130,6 +130,15 @@ var Chatter = {
 		return true
 	},
 
+	ReqGetAllOnlineUsers: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+		sendMessageInternal(thiz.UserId,"server-get-all-online-users","","","","")
+		return true
+	},
+
 	ReqGetAllMyGroups: function() {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.LOGGED_IN) {

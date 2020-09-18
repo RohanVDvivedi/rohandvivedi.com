@@ -60,7 +60,22 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					reply.Messages = []string{}
 					if(IsChatUserId(msg.From)) {
 						for _, chatUser := range(c.ChatUsersMapped) {
-							reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + chatUser.PublicKey + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
+							reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
+						}
+					} else {
+						reply.Message = "ERROR"
+					}
+					serverReplies = append(serverReplies, reply)
+				}
+				// returns id, name and public key of all users
+				case "server-get-all-online-users" : {
+					reply := stdReplyOrigin
+					reply.Messages = []string{}
+					if(IsChatUserId(msg.From)) {
+						for _, chatUser := range(c.ChatUsersMapped) {
+							if(chatUser.GetChatConnectionCount() > 0) {
+								reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName()
+							}
 						}
 					} else {
 						reply.Message = "ERROR"
