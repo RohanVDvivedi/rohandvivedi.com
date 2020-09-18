@@ -28,6 +28,11 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 	return user
 }
 
+// a chat user is online if user has atleast 1 active chat connection
+func (user *ChatUser) IsOnline() bool {
+	return len(user.ChatConnections) > 0
+}
+
 func (user *ChatUser) SendMessage(msg ChatMessage) error {
 	_, usersGroup := user.ChatGroups[msg.To]
 	if(msg.To == user.GetId() || usersGroup) {
