@@ -151,7 +151,7 @@ func (ss *SessionStore) garbageCollectionRoutine() {
 
 // unsafe
 func (ss *SessionStore) createNewUniquelyRandomSessionId() string {
-	const sessionIdLength = 40
+	const sessionIdLength = 64
 
 	sessionId := randstring.GetRandomString(sessionIdLength)
 	_, sessionIdExists := ss.Sessions[sessionId]
