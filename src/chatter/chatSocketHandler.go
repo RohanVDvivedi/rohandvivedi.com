@@ -1,6 +1,7 @@
 package chatter
 
 import (
+	"fmt"
 	"golang.org/x/net/websocket"
 )
 
@@ -37,6 +38,7 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	for (true) {
 		msg, err := chatConnection.ReceiveMessage()
 		if(err != nil) {
+			fmt.Println(err)
 			break
 		}
 		Chatters.AddChatMessageToChatManagersProcessingQueue(msg)

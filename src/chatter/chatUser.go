@@ -1,5 +1,9 @@
 package chatter
 
+import (
+	"fmt"
+)
+
 type ChatUser struct {
 	Id
 	Name
@@ -30,9 +34,10 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 		sentTo := 0
 		for _, cconn := range user.ChatConnections {
 			err := cconn.SendMessage(msg)
-			if(err != nil) {
+			if(err == nil) {
 				sentTo += 1
 			} else {
+				fmt.Println(err)
 				cconn.Destroy()
 			}
 		}
