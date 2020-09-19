@@ -26,7 +26,7 @@ type ChatManager struct{
 
 func NewChatManager() *ChatManager {
 	cm := &ChatManager{
-		Chatters: make(map[string]ChatterSendable),
+		SendToMap: make(map[string]ChatterSendable),
 		Chatterers: make(map[string]map[string]ChatterBox),
 		ChatUsersMapped: make(map[string]*ChatUser),
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
@@ -41,6 +41,18 @@ func (c *ChatManager) AddChatMessageToChatManagersProcessingQueue(msg ChatMessag
 	}
 }
 
+func StdReplyToOrigin(ChatMessage msg) ChatMessage {
+	return ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId, Message: "", Messages: []string{}}
+}
+
+func StdReplyToSender(ChatMessage msg) ChatMessage {
+	return ChatMessage{From:msg.To, To:msg.From, ContextId: msg.MessageId, Message: "", Messages: []string{}}
+}
+
+func GetDetailsString(cs ChatterSendable) string {
+	return ""
+}
+
 func (c *ChatManager) ChatManagerProcessServerRequests() {
 	for (true) {
 		msg := c.ServerMessagesToBeProcessed.Top()
@@ -50,137 +62,48 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 
 		if(msg.IsValidServerRequest()) {
 			serverReplies := []ChatMessage{}
-			//stdReplyFrom := ChatMessage{From:msg.To, To:msg.From 			  , ContextId: msg.MessageId}
-			stdReplyOrigin := ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId}
-
+			
 			switch msg.To {
-				// returns id, name and public key of all users
+				// no params required
+				// huge queries allowed allowed to all users
 				case "server-get-all-users" : {
-					reply := stdReplyOrigin
-					reply.Messages = []string{}
-					if(IsChatUserId(msg.From)) {
-						for _, chatUser := range(c.ChatUsersMapped) {
-							reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
-						}
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.GetAllUsers(msg))
 				}
-				// returns id, name and public key of all users
+				case "server-get-all-groups" : {
+					serverReplies = append(serverReplies, c.GetAllGroups(msg))
+				}
 				case "server-get-all-online-users" : {
-					reply := stdReplyOrigin
-					reply.Messages = []string{}
-					if(IsChatUserId(msg.From)) {
-						for _, chatUser := range(c.ChatUsersMapped) {
-							if(chatUser.GetChatConnectionCount() > 0) {
-								reply.Messages = append(reply.Messages, chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
-							}
-						}
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.GetAllOnlineUsers(msg))
 				}
-				// returns id, name of all groups of the corresponding user
+
+				// no params required
+				// mid sized queries allowed to users to know their own groups and active connections
 				case "server-get-all-my-groups" : {
-					reply := stdReplyOrigin
-					reply.Messages = []string{}
-					chatterSendable, found := c.Chatters[msg.From]
-					chatUser, isChatUser := chatterSendable.(*ChatUser)
-					if(found && isChatUser) {
-						for _, chatGroup := range(chatUser.ChatGroups) {
-							reply.Messages = append(reply.Messages, chatGroup.GetId() + "," + chatGroup.GetName())
-						}
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.GetAllMyGroups(msg))
 				}
-				// returns id, name of all groups of the corresponding user
 				case "server-get-all-my-active-connections" : {
-					reply := stdReplyOrigin
-					reply.Messages = []string{}
-					chatterSendable, found := c.Chatters[msg.From]
-					chatUser, isChatUser := chatterSendable.(*ChatUser)
-					if(found && isChatUser) {
-						for _, chatConnection := range(chatUser.ChatConnections) {
-							reply.Messages = append(reply.Messages, chatConnection.GetId())
-						}
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.GetAllMyActiveConnections(msg))
 				}
-				// Message: Id of some one whose name is to be found
-				case "server-get-chatter-box-name" : {
-					reply := stdReplyOrigin
-					chatterSendable, found := c.Chatters[msg.Message]
-					chatterBox, isChatterBox := chatterSendable.(ChatterBox)
-					if(found && isChatterBox) {
-						reply.Message = chatterBox.GetName()
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+
+				// 1 params required in the message, which must be equal to id or name
+				// Message: Id or name of some one whose details you want
+				case "server-search-chatter-box" : {
+					serverReplies = append(serverReplies, c.SearchChatterBox(msg))
 				}
-				// Message: Id of some one whose public key is to be found
-				case "server-get-chat-user-publickey" : {
-					reply := stdReplyOrigin
-					chatterBox, found := c.Chatters[msg.Message]
-					chatUser, isChatUser := chatterBox.(*ChatUser)
-					if(found && isChatUser) {
-						reply.Message = chatUser.PublicKey
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
-				}
+				
+				// create, login, logout and delete user calls, these must be infrequent
 				// Message : contains name,publicKey to create a corresponding user
+				// Message must be comming from a chat connection only
 				case "server-create-and-login-as-chat-user" : {
-					reply := stdReplyOrigin
-					chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
-					chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
-					_, foundChatUser := c.ChatUsersMapped[msg.Message]
-					params := strings.Split(msg.Message, ",")
-					if(foundChatConnection && isChatConnection && !foundChatUser && len(params) == 2) {
-						chatUser := NewChatUser(params[0], params[1])
-						c.InsertChatterer_unsafe(chatUser)
-						JoinConnectionToUser(chatConnection, chatUser)
-						chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-						reply.Message = chatUser.GetId()
-					} else if (foundChatConnection && isChatConnection) {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.CreateAndLoginAsChatUser(msg))
 				}
-				// Message : contains name,publicKey to login to that user
 				case "server-login-as-chat-user" : {
-					reply := stdReplyOrigin
-					chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
-					chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
-					chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
-					if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
-						chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-						reply.Message = chatUser.GetId()
-						chatUser.ResendAllPendingMessages()
-					} else if (foundChatConnection && isChatConnection) {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+					serverReplies = append(serverReplies, c.LoginAsChatUser(msg))
 				}
-				case "server-logout" : {
-					reply := stdReplyOrigin
-					chatterSendable, foundChatConnection := c.Chatters[msg.From]
-					chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
-					if(foundChatConnection && isChatConnection && chatConnection.User != nil && BreakConnectionFromUser(chatConnection, chatConnection.User)) {
-						chatConnection.RemoveNameAndPublicKey()
-						reply.Message = chatConnection.GetId()
-					} else {
-						reply.Message = "ERROR"
-					}
-					serverReplies = append(serverReplies, reply)
+				case "server-logout-current-session-from-chat-user" : {
+					serverReplies = append(serverReplies, c.LogoutCurrentCessionFromChatUser(msg))
 				}
+
 				case "server-create-chat-group" : {
 				}
 				case "server-add-user-to-chat-group" : {
