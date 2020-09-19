@@ -1,5 +1,9 @@
 package chatter
 
+import(
+	"time"
+)
+
 // unsafe versions fo utility functions to be called from inside of other queries, when they have locks
 func (c *ChatManager) InsertChatterer_unsafe(chatterer ChatterSendable) {
 	// insert to the main map allowing us to send messages

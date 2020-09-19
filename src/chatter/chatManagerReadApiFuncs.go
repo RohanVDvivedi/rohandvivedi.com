@@ -3,9 +3,9 @@ package chatter
 // all the below queries must be called only after login and sent with the user_id as from field
 
 func (c *ChatManager) GetAllUsers(query ChatMessage) {
+	reply := StdReplyToOrigin(query)
 	c.Lock.Lock()
 
-	reply := StdReplyToOrigin(query)
 	if(IsChatUserId(query.From)) {
 		for _, chatUser := range(c.ChatUsersByLogin) {
 			reply.Messages = append(reply.Messages, GetDetailsAsString(chatUser))
@@ -19,9 +19,9 @@ func (c *ChatManager) GetAllUsers(query ChatMessage) {
 }
 
 func (c *ChatManager) GetAllGroups(query ChatMessage) {
+	reply := StdReplyToOrigin(query)
 	c.Lock.Lock()
 
-	reply := StdReplyToOrigin(query)
 	if(IsChatUserId(query.From)) {
 		for _, chatterBoxesByName := range(c.UsersAndGroups) {
 			for _, chatterBox := range(c.UsersAndGroups) {
