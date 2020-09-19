@@ -5,10 +5,6 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-import (
-	"rohandvivedi.com/src/session"
-)
-
 // map of all the chat users 
 // from their name to the chatUser struct pointer
 var Chatters = NewChatManager()
