@@ -4,8 +4,8 @@ func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
 	c.Lock.Lock() 	c.InsertChatterer_unsafe(chatterer) 	c.Lock.Unlock()
 }
 
-func (c *ChatManager) SendById(Id string) {
-	c.Lock.Lock()	c.SendById_unsafe(chatterer)			c.Lock.Unlock()
+func (c *ChatManager) SendById_unsafe(msg ChatMessage) bool {
+	c.Lock.Lock()	result := c.SendById_unsafe(chatterer)	c.Lock.Unlock(); return result;
 }
 
 func (c *ChatManager) DeleteChatterer(Id string) {

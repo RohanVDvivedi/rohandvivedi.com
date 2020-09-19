@@ -11,6 +11,10 @@ const CHAT_CONNECTION_ID_PREFIX = "CHAT_CONN-"
 
 const unique_id_part_length = 64;
 
+func IsChatId(Id string) bool {
+	return IsChatUserId(Id) || IsChatConnectionId(Id) || IsChatGroupId(Id)
+}
+
 func GetNewId(prefix string) string {
 	return prefix + randstring.GetRandomString(unique_id_part_length)
 }
