@@ -3,6 +3,7 @@ import React from "react";
 import { MessageList, ChatList, Input, Button } from 'react-chat-elements'
 import 'react-chat-elements/dist/main.css';
 import Icon from '../utility/Icon'
+import Chatter from '../chatter/Chatter'
 
 export default class ChatWidget extends React.Component {
 	updateState(objNew) {
@@ -17,80 +18,30 @@ export default class ChatWidget extends React.Component {
 				}
 	}
 	createChatWidgetObject(userId, userName, userPublicKey, userConnections, messageWidgetObjects) {
+		latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
 		return {
 					userId: userId,
+					userName: userName,
+					userPublicKey: userPublicKey,
+					isOnline: userConnections > 0,
 					avatar: null,
 					alt: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + userName,
 					title: userName,
-					subtitle: 'What are you doing?',
-					date: new Date(),
+					subtitle: latestMessage == null ? "" : latestMessage.text,
+					date: latestMessage == null ? "" : latestMessage.date,
 					unread: 0,
 					messages: messageWidgetObjects,
 				}
 	}
 	constructor(props) {
 		super(props)
+		Chatter.ReqConnection()
 		this.state = {
 			WindowOpen: false,
-			UserName: "Rohan",
-			UserId: "",
+			UserId: null,
+			UserName: null,
 			ActiveChat: null,
-			Chats : [
-				{
-					UserId: "user_id_1",
-					UserName: 'Jyotirmoy',
-
-					avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + "Jyotirmoy Pain",
-					alt: 'J',
-					title: 'Jyotirmoy',
-					subtitle: 'What are you doing?',
-					date: new Date(),
-					unread: 2,
-
-					Messages: [
-						{
-							position: 'left',
-							type: 'text',
-							text: 'etur adip sicing elit',
-							date: new Date(),
-						},
-						{
-							position: 'right',
-							type: 'text',
-							text: 'Lorem ipsum dolor sit ang icing el dol elit',
-							date: new Date(),
-						},
-					],
-				},
-				{
-					UserId: "user_id_1",
-					UserName: 'Parthiv',
-
-					avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + "Parthiv Kativarapu",
-					alt: 'P',
-					title: 'Parthiv',
-					subtitle: 'Lets go goa',
-					date: new Date(),
-					unread: 0,
-
-					Messages: [
-						{
-							position: 'left',
-							type: 'text',
-							text: 'Lorem ipsum tur adipisicing el dolor, consec tetur adipi tetur adip sicing elit',
-							date: new Date(),
-							status: "read",
-						},
-						{
-							position: 'right',
-							type: 'text',
-							text: 'Lorem ipsum dolor sit amet, cing el dolor, consec te consec isicing icing el dol elit',
-							date: new Date(),
-							status: "sent"
-						},
-					],
-				}
-			]
+			Chats : null
 		}
 	}
 	onChatBubbleClicked() {
