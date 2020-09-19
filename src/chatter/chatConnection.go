@@ -16,10 +16,24 @@ type ChatConnection struct {
 }
 
 func NewChatConnection(Connection *websocket.Conn) *ChatConnection {
-	return &ChatConnection {
+	cc := &ChatConnection {
 		Id: Id{GetNewChatConnectionId()},
 		Connection: Connection,
 	}
+
+	// add ChatConnection to the session values
+	session.GlobalSessionStore.GetExistingSession(conn.Request())
+	.ExecuteOnValues(func (values map[string]interface{}, add interface{}) interface{} {
+		chatConnsIntr, found := values["chat_conns"]
+		chatConns, isValid := chatConnsIntr.(map[string]*ChatConnection)
+		if(!found || !isValid) {
+			chatConns = map[string]*ChatConnection{}
+		}
+		chatConns[chatConnection.GetId()] = chatConnection
+		values["chat_conns"] = chatConns
+	}, nil)
+
+	return cc
 }
 
 func (cconn *ChatConnection) SendMessage(msg ChatMessage) error {
@@ -48,6 +62,16 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 }
 
 func (cconn *ChatConnection) Destroy() {
+	// remove chat connection from session store
+	session.GlobalSessionStore.GetExistingSession(conn.Request()).ExecuteOnValues(func (values map[string]interface{}, add interface{}) interface{} {
+		chatConnsIntr, found := values["chat_conns"]
+		chatConns, isValid := chatConnsIntr.(map[string]*ChatConnection)
+		if(!found || !isValid) {
+			chatConns = map[string]*ChatConnection{}
+		}
+		delete(chatConns, cconn.GetId())
+		values["chat_conns"] = chatConns
+	}, nil)
 	cconn.Connection.Close()
 }
 
