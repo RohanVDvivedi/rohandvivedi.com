@@ -73,7 +73,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user",name + "," + publicKey)
+		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user","",[name,publicKey])
 		return true
 	},
 
@@ -83,7 +83,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user",name + "," + publicKey)
+		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user","",[name,publicKey])
 		return true
 	},
 
@@ -107,7 +107,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-logout")
+		sendMessageInternal(thiz.ConnectionId,"server-logout-all-connections-from-chat-user")
 		return true
 	},
 
@@ -117,6 +117,15 @@ var Chatter = {
 			return false
 		}
 		sendMessageInternal(thiz.UserId,"server-get-all-users")
+		return true
+	},
+
+	ReqGetAllGroups: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+		sendMessageInternal(thiz.UserId,"server-get-all-groups")
 		return true
 	},
 
@@ -144,6 +153,15 @@ var Chatter = {
 			return false
 		}
 		sendMessageInternal(thiz.UserId,"server-get-all-my-active-connections")
+		return true
+	},
+
+	ReqSearch: function(query) {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+		sendMessageInternal(thiz.UserId,"server-search-chatter-box",query)
 		return true
 	},
 }
@@ -189,12 +207,12 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 	if(isServerEvent(msg)) {
 		console.log("Server event", msg)
 		switch(msg.From){
-			case "server-chatterer-created" : {
+			case "server-chatters-creator" : {
 				if(isChatConnectionId(msg.To)) {
 					chatter.ConnectionId = msg.To
 					chatter.CurrentState = STATES.CONNECTED
 					executeOnlyAFunctionIfNotNull(chatter.onConnected)
-				} else if(isChatUserId(msg.To)) {
+				} else if (isChatUserId(msg.To)) {
 					// user created
 				} else if (isChatGroupId(msg.To)) {
 					// group created
@@ -211,7 +229,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				}
 				break;
 			}
-			case "server-logout" : {
+			case "server-logout-all-connections-from-chat-user" : {
 				if(!isErrorEvent(msg)) {
 					chatter.UserId = null
 					chatter.CurrentState = STATES.CONNECTED
