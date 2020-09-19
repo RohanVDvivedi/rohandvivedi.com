@@ -121,7 +121,7 @@ export default class ChatWidget extends React.Component {
 
 			{(!this.state.WindowOpen) ? (<Icon onClick={this.onChatBubbleClicked.bind(this)} iconPath="/icon/chat-bubble.png" height="40px" width="40px" padding="5px"/>) : ""}
 
-			{ this.state.WindowOpen && this.UserId != null && this.state.ActiveChat != null ? 
+			{ this.state.WindowOpen && this.state.UserId != null && this.state.ActiveChat != null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div>{this.state.ActiveChat.UserName}</div>
@@ -133,7 +133,7 @@ export default class ChatWidget extends React.Component {
 				<Input className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" text='Send'/>}/>
 			</div>) : ""}
 
-			{ this.state.WindowOpen && this.UserId != null ? 
+			{ this.state.WindowOpen && this.state.UserId != null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">{this.state.UserName}</div>
@@ -145,7 +145,7 @@ export default class ChatWidget extends React.Component {
 				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search'/>}/>
 			</div>) : ""}
 
-			{ this.state.WindowOpen && this.UserId == null ? 
+			{ this.state.WindowOpen && this.state.UserId == null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">Join chat</div>
