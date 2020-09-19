@@ -38,15 +38,21 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
 	c.Lock.Lock()
 
-	chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
-	chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
-	chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
-	if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
-		chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-		reply.Message = chatUser.GetId()
-		chatUser.ResendAllPendingMessages()
-	} else if (foundChatConnection && isChatConnection) {
+	if(len(msg.Messages) != 2) {
 		reply.Message = "ERROR"
+	} else {
+		chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]
+		chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+
+		chatUser, foundChatUser := c.ChatUsersMapped[msg.Message]
+		if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
+			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
+			reply.Message = chatUser.GetId()
+			chatUser.ResendAllPendingMessages()
+		} else if (foundChatConnection && isChatConnection) {
+			reply.Message = "ERROR"
+		}
+
 	}
 
 	c.SendById_unsafe(reply)

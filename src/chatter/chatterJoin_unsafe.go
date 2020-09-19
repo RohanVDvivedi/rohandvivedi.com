@@ -33,7 +33,7 @@ func isConnectionJoinedToUser(cc *ChatConnection, cu *ChatUser) bool {
 }
 
 func JoinConnectionToUser(cc *ChatConnection, cu *ChatUser) bool {
-	if(!isConnectionJoinedToUser(cc, cu)) {
+	if(!isConnectionJoinedToUser(cc, cu) && cc.GetChatUser() == nil) {
 		cc.SetChatUser(cu)
 		cu.AddChatConnection(cc)
 		return true
