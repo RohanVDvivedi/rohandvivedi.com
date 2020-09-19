@@ -1,5 +1,17 @@
 package chatter
 
+func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
+	c.Lock.Lock() 	c.InsertChatterer_unsafe(chatterer) 	c.Lock.Unlock()
+}
+
+func (c *ChatManager) SendById(Id string) {
+	c.Lock.Lock()	c.SendById_unsafe(chatterer)			c.Lock.Unlock()
+}
+
+func (c *ChatManager) DeleteChatterer(Id string) {
+	c.Lock.Lock()	c.DeleteChatterer_unsafe(chatterer)		c.Lock.Unlock()
+}
+
 func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) ChatMessage {
 	reply := stdReplyOrigin
 					chatterSendable, foundChatConnection := c.Chatters[msg.OriginConnection]

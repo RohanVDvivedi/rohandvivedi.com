@@ -26,9 +26,16 @@ type ChatManager struct{
 
 func NewChatManager() *ChatManager {
 	cm := &ChatManager{
+		// All the chat connections, users and groups mapped together by their connection ids
 		SendToMap: make(map[string]ChatterSendable),
-		Chatterers: make(map[string]map[string]ChatterBox),
-		ChatUsersMapped: make(map[string]*ChatUser),
+
+		// chat users and groups mapped by name and then by id 
+		// UsersAndGroups[name][id] => ChatterBox, used for search by name
+		UsersAndGroups: make(map[string]map[string]ChatterBox),
+
+		// chat users mapped by login credentials, i.e. string(name + publicKey)
+		ChatUsersByLogin: make(map[string]*ChatUser),
+
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
 	go cm.ChatManagerProcessServerRequests()
@@ -41,39 +48,23 @@ func (c *ChatManager) AddChatMessageToChatManagersProcessingQueue(msg ChatMessag
 	}
 }
 
-func StdReplyToOrigin(ChatMessage msg) ChatMessage {
-	return ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId, Message: "", Messages: []string{}}
-}
-
-func StdReplyToSender(ChatMessage msg) ChatMessage {
-	return ChatMessage{From:msg.To, To:msg.From, ContextId: msg.MessageId, Message: "", Messages: []string{}}
-}
-
-func GetDetailsString(cs ChatterSendable) string {
-	return ""
-}
-
 func (c *ChatManager) ChatManagerProcessServerRequests() {
 	for (true) {
 		msg := c.ServerMessagesToBeProcessed.Top()
 		c.ServerMessagesToBeProcessed.Pop()
 
-		c.Lock.Lock()
-
 		if(msg.IsValidServerRequest()) {
-			serverReplies := []ChatMessage{}
-			
 			switch msg.To {
 				// no params required
 				// huge queries allowed allowed to all users
 				case "server-get-all-users" : {
-					serverReplies = append(serverReplies, c.GetAllUsers(msg))
+					c.GetAllUsers(msg)
 				}
 				case "server-get-all-groups" : {
-					serverReplies = append(serverReplies, c.GetAllGroups(msg))
+					c.GetAllGroups(msg)
 				}
 				case "server-get-all-online-users" : {
-					serverReplies = append(serverReplies, c.GetAllOnlineUsers(msg))
+					c.GetAllOnlineUsers(msg)
 				}
 
 				// no params required
@@ -103,85 +94,9 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				case "server-logout-current-session-from-chat-user" : {
 					serverReplies = append(serverReplies, c.LogoutCurrentCessionFromChatUser(msg))
 				}
-
-				case "server-create-chat-group" : {
-				}
-				case "server-add-user-to-chat-group" : {
-				}
-				case "server-delete-chat-group" : {
-				}
-				case "server-delete-chat-user" : {
-				}
-				case "server-notify-all" : {
-				}
-			}
-
-			for _, msg := range serverReplies {
-				c.SendById_unsafe(msg)
 			}
 		} else if(msg.IsValidChatMessage()) {
-			c.SendById_unsafe(msg)
+			c.SendById(msg)
 		}
-
-		c.Lock.Unlock()
 	}
-}
-
-func (c *ChatManager) InsertChatterer_unsafe(chatterer ChatterSendable) {
-	// insert to the main map allowing us to send messages
-	c.Chatters[chatterer.GetId()] = chatterer
-
-	// insertions by name for groups and users for find by name stuff
-	chatterBox, isChatterBox := chatterer.(ChatterBox)
-	if(isChatterBox) {
-		_, chatterBoxesPresent := c.Chatterers[chatterBox.GetName()]
-		if(!chatterBoxesPresent) {
-			c.Chatterers[chatterBox.GetName()] = make(map[string]ChatterBox)
-		}
-		c.Chatterers[chatterBox.GetName()][chatterBox.GetId()] = chatterBox
-	}
-
-	// insertion by name and public key for authentication
-	chatUser, isChatUser:= chatterer.(*ChatUser)
-	if(isChatUser) {
-		c.ChatUsersMapped[chatUser.GetName() + "," + chatUser.PublicKey] = chatUser
-	}
-
-	chatterer.SendMessage(ChatMessage{From:"server-chatterer-created",To:chatterer.GetId(),SentAt:time.Now(),Message:"Chatterer registered"})
-}
-
-func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
-	c.Lock.Lock()
-	c.InsertChatterer_unsafe(chatterer)
-	c.Lock.Unlock()
-}
-
-func (c *ChatManager) DeleteChatterer(Id string) {
-	c.Lock.Lock()
-	chatterSendable, found := c.Chatters[Id]
-	if(found) {
-
-		delete(c.Chatters, Id);
-
-		chatterBox, isChatterBox := chatterSendable.(ChatterBox)
-		if(isChatterBox) {
-			delete(c.Chatterers[chatterBox.GetName()], chatterBox.GetId());
-		}
-
-		chatUser, isChatUser := chatterSendable.(*ChatUser)
-		if(isChatUser) {
-			delete(c.ChatUsersMapped, chatUser.GetName() + "," + chatUser.PublicKey);
-		}
-
-		chatterSendable.Destroy()
-	}
-	c.Lock.Unlock()
-}
-
-func (c *ChatManager) SendById_unsafe(msg ChatMessage) bool {
-	chatterSendable, found := c.Chatters[msg.To]
-	if(found) {
-		chatterSendable.SendMessage(msg);
-	}
-	return found
 }
