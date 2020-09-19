@@ -111,6 +111,9 @@ export default class ChatWidget extends React.Component {
 	onUserSearch() {
 
 	}
+	onUserJoinClicked() {
+		console.log(this.refs.userName.input.value, this.refs.userEmail.input.value)
+	}
 	render() {
 		console.log(this.state)
 		return(
@@ -148,11 +151,13 @@ export default class ChatWidget extends React.Component {
 					<div class="identifier">Join chat</div>
 					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
-				<div class="chat-content">
-					<Input className="chat-input" placeholder="Name" multiline={false} />
-					<Input className="chat-input" placeholder="Email" multiline={false} />
+				<div class="login-signup-content flex-col-container">
+					<div class="lbl">Name :</div>
+					<Input className="chat-input" placeholder="Name" multiline={false} ref="userName"/>
+					<div class="lbl">Email :</div>
+					<Input className="chat-input" placeholder="Email (or `gibberish` allowed)" multiline={false} ref="userEmail" />
+					<Button className="chat-button" text='Join' onClick={this.onUserJoinClicked.bind(this)}/>
 				</div>
-				<Button className="chat-button" text='Join'/>
 			</div>) : ""}
 
 		</div>);
