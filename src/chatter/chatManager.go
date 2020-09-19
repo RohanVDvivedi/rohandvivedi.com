@@ -11,31 +11,24 @@ type ChatManager struct{
 	// lock to protect all the chat users
 	Lock sync.Mutex
 
-	// Chatters => id => ChatterSendables (chat groups and users and even connections)
-	Chatters map[string]ChatterSendable
+	// All the chat connections, users and groups mapped together by their connection ids
+	SendToMap map[string]ChatterSendable
 
-	// Chattereres => name => id => ChatterBox (chat groups and users)
-	Chatterers map[string]map[string]ChatterBox
+	// chat users and groups mapped by name and then by id 
+	// UsersAndGroups[name][id] => ChatterBox, used for search by name
+	UsersAndGroups map[string]map[string]ChatterBox
 
-	// this is for authentication purpose
-	// chat users mapped with name+publickey -> chat user
-	ChatUsersMapped map[string]*ChatUser
+	// chat users mapped by login credentials, i.e. string(name + publicKey)
+	ChatUsersByLogin map[string]*ChatUser
 
 	ServerMessagesToBeProcessed *ChatMessageQueue
 }
 
 func NewChatManager() *ChatManager {
 	cm := &ChatManager{
-		// All the chat connections, users and groups mapped together by their connection ids
 		SendToMap: make(map[string]ChatterSendable),
-
-		// chat users and groups mapped by name and then by id 
-		// UsersAndGroups[name][id] => ChatterBox, used for search by name
 		UsersAndGroups: make(map[string]map[string]ChatterBox),
-
-		// chat users mapped by login credentials, i.e. string(name + publicKey)
 		ChatUsersByLogin: make(map[string]*ChatUser),
-
 		ServerMessagesToBeProcessed: NewChatMessageQueue(),
 	}
 	go cm.ChatManagerProcessServerRequests()
