@@ -20,7 +20,7 @@ export default class ChatWidget extends React.Component {
 					UserId: "user_id_1",
 					UserName: 'Jyotirmoy',
 
-					avatar: '/avatar/avatar.svg',
+					avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + "Jyotirmoy Pain",
 					alt: 'J',
 					title: 'Jyotirmoy',
 					subtitle: 'What are you doing?',
@@ -46,7 +46,7 @@ export default class ChatWidget extends React.Component {
 					UserId: "user_id_1",
 					UserName: 'Parthiv',
 
-					avatar: '/avatar/avatar.svg',
+					avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + "Parthiv Kativarapu",
 					alt: 'P',
 					title: 'Parthiv',
 					subtitle: 'Lets go goa',
@@ -59,12 +59,14 @@ export default class ChatWidget extends React.Component {
 							type: 'text',
 							text: 'Lorem ipsum tur adipisicing el dolor, consec tetur adipi tetur adip sicing elit',
 							date: new Date(),
+							status: "read",
 						},
 						{
 							position: 'right',
 							type: 'text',
 							text: 'Lorem ipsum dolor sit amet, cing el dolor, consec te consec isicing icing el dol elit',
 							date: new Date(),
+							status: "sent"
 						},
 					],
 				}
@@ -97,27 +99,27 @@ export default class ChatWidget extends React.Component {
 			{(!this.state.WindowOpen) ? (<Icon onClick={this.onChatBubbleClicked.bind(this)} iconPath="/icon/chat-bubble.png" height="40px" width="40px" padding="5px"/>) : ""}
 
 			{ this.state.WindowOpen && this.state.ActiveChat != null ? 
-			(<div class="container">
-				<div class="header flex-row-container">
+			(<div class="chat-container">
+				<div class="chat-header flex-row-container">
 					<div>{this.state.ActiveChat.UserName}</div>
 					<Icon onClick={this.onPartyWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
-				<div class="content">
+				<div class="chat-content">
 					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={this.state.ActiveChat.Messages} />
 				</div>
-				<Input placeholder="Type here..." multiline={true} rightButtons={<Button color='white' backgroundColor='black' text='Send'/>}/>
+				<Input className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" color='white' text='Send'/>}/>
 			</div>) : ""}
 
 			{ this.state.WindowOpen ? 
-			(<div class="container">
-				<div class="header flex-row-container">
+			(<div class="chat-container">
+				<div class="chat-header flex-row-container">
 					<div class="identifier">{this.state.UserName}</div>
 					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
-				<div class="content">
+				<div class="chat-content">
 					<ChatList className='chat-list' dataSource={this.state.Chats} onClick={this.onChatListItemClicked.bind(this)}/>
 				</div>
-				<Input placeholder="Search user..." multiline={false} rightButtons={<Button color='white' backgroundColor='black' text='Search'/>}/>
+				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" color='white' text='Search'/>}/>
 			</div>) : ""}
 
 		</div>);

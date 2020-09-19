@@ -6,23 +6,42 @@
 
 	/* this will keep the chat always at the top */
     z-index:9999;
+
+    font-family: Capriola, Helvetica, sans-serif;
 }
 
-.chat-widget .container {
+.chat-widget .chat-container {
 	background-color: white;
 	width: 300px;
 	border-radius: 4%;
 	padding: 10px;
 }
 
-.container .header {
+.chat-container .chat-header {
 	justify-content: space-between;
     align-items: center;
     padding: 10px;
+    font-size: 18px;
 }
 
-.container .content {
+.chat-container .chat-content {
 	height: 300px;
 	overflow: auto;
 	padding: 10px;
+}
+
+.chat-container .chat-input {
+	font-style: inherit;
+}
+
+.chat-container .chat-button {
+	color: var(--nav_selected_font_color);
+
+    background: var(--nav_selected_background_color);
+	background: -moz-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, var(--nav_selected_background_color_light)), color-stop(100%, var(--nav_selected_background_color)));
+	background: -webkit-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -o-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: -ms-linear-gradient(top, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
+	background: linear-gradient(to bottom, var(--nav_selected_background_color_light) 0%, var(--nav_selected_background_color) 100%);
 }
