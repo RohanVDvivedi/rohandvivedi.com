@@ -33,8 +33,8 @@ func NewChatManager() *ChatManager {
 }
 
 func (c *ChatManager) AddChatMessageToChatManagersProcessingQueue(msg ChatMessage) {
-	if(msg.IsValidChatMessage() || msg.IsValidServerRequest()) {
-		Chatters.ServerMessagesToBeProcessed.Push(msg)
+	if(msg.IsValidChatMessage() || msg.IsValidServerRequest() || msg.IsValidServerResponse()) {
+		c.ServerMessagesToBeProcessed.Push(msg)
 	}
 }
 
@@ -85,7 +85,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					c.LogoutAllConnectionsFromChatUser(msg)
 				}
 			}
-		} else if(msg.IsValidChatMessage()) {
+		} else if(msg.IsValidChatMessage() || msg.IsValidServerResponse()) {
 			c.SendById(msg)
 		}
 	}

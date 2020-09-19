@@ -20,7 +20,7 @@ type ChatMessageQueue struct {
 }
 
 func NewChatMessageQueue() *ChatMessageQueue {
-	cmq := &ChatMessageQueue{Holder: make([]ChatMessage, 10), PausedToPop: false}
+	cmq := &ChatMessageQueue{Holder: make([]ChatMessage, 0, 16), PausedToPop: false}
 	cmq.holderEmptyWait = sync.NewCond(&(cmq.holderLock))
 	cmq.queuePausedWait = sync.NewCond(&(cmq.holderLock))
 	return cmq

@@ -48,4 +48,11 @@ func (c *ChatMessage) IsValidServerRequest() bool {
 	return false
 }
 
+func (c *ChatMessage) IsValidServerResponse() bool {
+	if( IsChatId(c.To) && IsChatManagerId(c.From) ) {
+		return true
+	}
+	return false
+}
+
 var ChatMessageCodec = websocket.JSON;
