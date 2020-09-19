@@ -8,6 +8,26 @@ export default class ChatWidget extends React.Component {
 	updateState(objNew) {
 		super.setState(Object.assign({}, this.state, objNew))
 	}
+	createMessageWidgetObject(msg) {
+		return {
+					position: msg.From == this.state.UserId ? 'right' : left,
+					type: 'text',
+					text: msg.Message,
+					date: msg.SentAt,
+				}
+	}
+	createChatWidgetObject(userId, userName, userPublicKey, userConnections, messageWidgetObjects) {
+		return {
+					userId: userId,
+					avatar: null,
+					alt: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + userName,
+					title: userName,
+					subtitle: 'What are you doing?',
+					date: new Date(),
+					unread: 0,
+					messages: messageWidgetObjects,
+				}
+	}
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -98,7 +118,7 @@ export default class ChatWidget extends React.Component {
 
 			{(!this.state.WindowOpen) ? (<Icon onClick={this.onChatBubbleClicked.bind(this)} iconPath="/icon/chat-bubble.png" height="40px" width="40px" padding="5px"/>) : ""}
 
-			{ this.state.WindowOpen && this.state.ActiveChat != null ? 
+			{ this.state.WindowOpen && this.UserId != null && this.state.ActiveChat != null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div>{this.state.ActiveChat.UserName}</div>
@@ -107,10 +127,10 @@ export default class ChatWidget extends React.Component {
 				<div class="chat-content">
 					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={this.state.ActiveChat.Messages} />
 				</div>
-				<Input className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" color='white' text='Send'/>}/>
+				<Input className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" text='Send'/>}/>
 			</div>) : ""}
 
-			{ this.state.WindowOpen ? 
+			{ this.state.WindowOpen && this.UserId != null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">{this.state.UserName}</div>
@@ -119,7 +139,20 @@ export default class ChatWidget extends React.Component {
 				<div class="chat-content">
 					<ChatList className='chat-list' dataSource={this.state.Chats} onClick={this.onChatListItemClicked.bind(this)}/>
 				</div>
-				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" color='white' text='Search'/>}/>
+				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search'/>}/>
+			</div>) : ""}
+
+			{ this.state.WindowOpen && this.UserId == null ? 
+			(<div class="chat-container">
+				<div class="chat-header flex-row-container">
+					<div class="identifier">Join chat</div>
+					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
+				</div>
+				<div class="chat-content">
+					<Input className="chat-input" placeholder="Name" multiline={false} />
+					<Input className="chat-input" placeholder="Email" multiline={false} />
+				</div>
+				<Button className="chat-button" text='Join'/>
 			</div>) : ""}
 
 		</div>);
