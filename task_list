@@ -2,14 +2,10 @@ Data injestion
  * (* today) add images to projects
 
 Front end
- * chat client aapi formalized, cache details about users and groups by connection id and name
- * allow edit button every where to the owner, and show it only if the client is owner
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
- * build live-chat page, with no message store on the backend application, messages get stored only on the client side, and end to end client to client encryption using the web crypto api (* future)
- * provide users with a portal to give them a very simple CV in google docs and in pdf (* future)
+ * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
 
 Backend
  * (* future) perform network io on check connection outside the main lock, by their name (cache names vs connection ids), notify all the users about another user event online or not, notify to all user's connections when the user fron a connection loggs in or out, use reader writer lock for the datastructure instead of the mutex, send to all users based server events, logout of all connections of a user session of a device, simultaneously, send user messages in async using a queue
- * create url based owner login system, and an api to check if the client is owner, to allow client side to show different content
- * use separate database for sessions and users data for other users (except the owner) in future (*in far future), use in memeory separately hosted sql database, so we could keep the same schema (example memsql)
+ * create url based owner login system
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
