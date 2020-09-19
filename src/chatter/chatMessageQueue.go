@@ -26,6 +26,13 @@ func NewChatMessageQueue() *ChatMessageQueue {
 	return cmq
 }
 
+func (cmq *ChatMessageQueue) MessageCount() int {
+	cmq.holderLock.Lock()
+	msgCount := len(cmq.Holder)
+	cmq.holderLock.Unlock()
+	return msgCount
+}
+
 func (cmq *ChatMessageQueue) Push(m ChatMessage) {
 	cmq.holderLock.Lock()
 	cmq.Holder = append(cmq.Holder, m)

@@ -33,6 +33,17 @@ func (user *ChatUser) IsOnline() bool {
 	return len(user.ChatConnections) > 0
 }
 
+func (user *ChatUser) ResendAllPendingMessages() {
+	oldMsgs := user.MessagesPendingToBeSent
+	count := oldMsgs.MessageCount()
+	for(count > 0) {
+		user.SendMessage(oldMsgs.Top())
+		oldMsgs.Pop()
+		count--
+	}
+	user.MessagesPendingToBeSent = NewChatMessageQueue()
+}
+
 func (user *ChatUser) SendMessage(msg ChatMessage) error {
 	_, usersGroup := user.ChatGroups[msg.To]
 	if(msg.To == user.GetId() || usersGroup) {

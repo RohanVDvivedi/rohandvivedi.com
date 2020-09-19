@@ -163,6 +163,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
 						chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 						reply.Message = chatUser.GetId()
+						chatUser.ResendAllPendingMessages()
 					} else if (foundChatConnection && isChatConnection) {
 						reply.Message = "ERROR"
 					}
