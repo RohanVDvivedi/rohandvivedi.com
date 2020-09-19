@@ -2,6 +2,7 @@ package chatter
 
 import(
 	"time"
+	"strconv"
 )
 
 // unsafe versions fo utility functions to be called from inside of other queries, when they have locks
@@ -54,27 +55,29 @@ func (c *ChatManager) DeleteChatterer_unsafe(Id string) {
 }
 
 // Utility functions to help other queries
-func StdReplyToOrigin(ChatMessage msg) ChatMessage {
+func StdReplyToOrigin(msg ChatMessage) ChatMessage {
 	return ChatMessage{From:msg.To, To:msg.OriginConnection, ContextId: msg.MessageId, Message: "", Messages: []string{}}
 }
 
-func StdReplyToSender(ChatMessage msg) ChatMessage {
+func StdReplyToSender(msg ChatMessage) ChatMessage {
 	return ChatMessage{From:msg.To, To:msg.From, ContextId: msg.MessageId, Message: "", Messages: []string{}}
 }
 
 func GetDetailsAsString(cs ChatterSendable) string {
-	chatConnection, isChatConnection := cs.(ChatConnection)
+	chatConnection, isChatConnection := cs.(*ChatConnection)
 	if(isChatConnection) {
 		return chatConnection.GetId()
 	}
 
-	chatUser, isChatUser := cs.(ChatUser)
+	chatUser, isChatUser := cs.(*ChatUser)
 	if(isChatUser) {
-		return chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount()))
+		return chatUser.GetId() + "," + chatUser.GetName() + "," + strconv.Itoa(chatUser.GetChatConnectionCount())
 	}
 
-	chatGroup, isChatGroup := cs.(ChatGroup)
+	chatGroup, isChatGroup := cs.(*ChatGroup)
 	if(isChatGroup) {
 		return chatGroup.GetId() + "," + chatGroup.GetName()
 	}
+
+	return ""
 }

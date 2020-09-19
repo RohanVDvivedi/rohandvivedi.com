@@ -24,10 +24,10 @@ func (c *ChatManager) GetAllGroups(query ChatMessage) {
 
 	if(IsChatUserId(query.From)) {
 		for _, chatterBoxesByName := range(c.UsersAndGroups) {
-			for _, chatterBox := range(c.UsersAndGroups) {
-				_, isChatGroup := chatterBox.(ChatGroup)
+			for _, chatterBox := range(chatterBoxesByName) {
+				_, isChatGroup := chatterBox.(*ChatGroup)
 				if(isChatGroup) {
-					reply.Messages = append(reply.Messages, GetDetailsAsString(chatBox))
+					reply.Messages = append(reply.Messages, GetDetailsAsString(chatterBox))
 				}
 			}
 		}
@@ -39,7 +39,7 @@ func (c *ChatManager) GetAllGroups(query ChatMessage) {
 	c.Lock.Unlock()
 }
 
-func (c *ChatManager) GetAllActiveUsers(query ChatMessage) {
+func (c *ChatManager) GetAllOnlineUsers(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
 	c.Lock.Lock()
 
@@ -108,8 +108,10 @@ func (c *ChatManager) SearchChatterBox(query ChatMessage) {
 			}
 		} else {
 			chatterBoxesByName, found := c.UsersAndGroups[query.Message]
-			for _, chatterBox := range chatterBoxesByName {
-				reply.Message = GetDetailsAsString(chatterBox)
+			if(found) {
+				for _, chatterBox := range chatterBoxesByName {
+					reply.Message = GetDetailsAsString(chatterBox)
+				}
 			}
 		}
 
