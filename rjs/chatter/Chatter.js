@@ -244,7 +244,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 					msg.Messages.forEach(function(userStr){
 						var userData = userStr.split(',')
 						if(userData.length == 3 && isChatUserId(userData[0])) {
-							user = {
+							var user = {
 								Id: userData[0],
 								Name: userData[1],
 								ConnectionCount: parseInt(userData[2], 10),
@@ -260,7 +260,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				if(!isErrorEvent(msg)) {
 					var userData = msg.Message.split(',')
 					if(userData.length == 3 && isChatUserId(userData[0])) {
-						user = {
+						var user = {
 							Id: userData[0],
 							Name: userData[1],
 							ConnectionCount: parseInt(userData[2], 10),
@@ -276,7 +276,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 					msg.Messages.forEach(function(userStr){
 						var userData = userStr.split(',')
 						if(userData.length == 3 && isChatUserId(userData[0])) {
-							user = {
+							var user = {
 								Id: userData[0],
 								Name: userData[1],
 								ConnectionCount: parseInt(userData[2], 10),
