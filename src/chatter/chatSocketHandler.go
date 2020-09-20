@@ -24,7 +24,7 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 		Chatters.ServerMessagesToBeProcessed.Push(ChatMessage{
 				OriginConnection:chatConnection.GetId(),
 				From:chatConnection.GetId(),To:"server-login-as-chat-user",
-				Message:name + "," + publicKey,
+				Messages: []string{name, publicKey},
 			})
 	}
 
