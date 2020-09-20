@@ -2,10 +2,11 @@ Data injestion
  * (* today) add images to projects
 
 Front end
+ * logout button, search button integrations, acknowledgement read receipts, , client side message storage using efficache for 10 days
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
 
 Backend
- * (* future) perform network io on check connection outside the main lock, by their name (cache names vs connection ids), notify all the users about another user event online or not, notify to all user's connections when the user fron a connection loggs in or out, use reader writer lock for the datastructure instead of the mutex, send to all users based server events, logout of all connections of a user session of a device, simultaneously, send user messages in async using a queue
+ * (* future) use reader writer lock for the datastructure instead of the mutex, use appropriate connection removal from user method, possibly while a chat connection is being deleted, revise logic to send async mesaage over connections, handle chat users very delicately
  * create url based owner login system
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
