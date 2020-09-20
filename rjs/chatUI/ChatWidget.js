@@ -183,7 +183,7 @@ function createMessageWidgetObject(msg) {
 }
 
 function createChatWidgetObject(chat) {
-	var latestMessage = chat.ChatMessageQueue.Length == 0 ? null : chat.ChatMessageQueue[chat.ChatMessageQueue.Length - 1]
+	var latestMessage = chat.ChatMessageQueue.length == 0 ? null : chat.ChatMessageQueue[chat.ChatMessageQueue.length - 1]
 	return {
 		Id: chat.User.Id,
 		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + chat.User.Name,
