@@ -36,18 +36,18 @@ export default class ChatWidget extends React.Component {
 	}
 	constructor(props) {
 		super(props)
-		Chatter.onLogin = function() {
+		Chatter.onLogin = (function() {
 			this.updateState({
 				UserId: Chatter.UserId,
-				UserName: Chatter.UserId,
+				UserName: Chatter.UserName,
 			})
-		}
-		Chatter.onLogout = function() {
+		}).bind(this)
+		Chatter.onLogout = (function() {
 			this.updateState({
 				UserId: null,
 				UserName: null,
 			})
-		}
+		}).bind(this)
 		Chatter.ReqConnection()
 		this.state = {
 			WindowOpen: false,
