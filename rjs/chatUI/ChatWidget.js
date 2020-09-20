@@ -7,7 +7,7 @@ import Chatter from '../chatter/Chatter'
 
 function createMessageWidgetObject(msg) {
 	return {
-		position: msg.From == Chatter.UserId ? 'right' : "left",
+		position: (msg.From == Chatter.UserId) ? "right" : "left",
 		type: 'text',
 		text: msg.Message,
 		date: msg.SentAt,

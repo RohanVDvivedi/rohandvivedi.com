@@ -183,6 +183,7 @@ function sendMessageInternal(From,To,Message = null,Messages = null,MessageId = 
 function ChatterConnectionHandler(chatter, msgEvent) {
 
 	var msg = JSON.parse(msgEvent.data)
+	msg.SentAt = Date.parse(msg.SentAt)
 
 	if(isServerEvent(msg)) {
 		console.log("Server event", msg)
