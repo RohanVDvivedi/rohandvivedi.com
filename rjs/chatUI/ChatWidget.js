@@ -5,43 +5,56 @@ import 'react-chat-elements/dist/main.css';
 import Icon from '../utility/Icon'
 import Chatter from '../chatter/Chatter'
 
+function createMessageWidgetObject(msg) {
+	return {
+		position: msg.From == this.state.UserId ? 'right' : left,
+		type: 'text',
+		text: msg.Message,
+		date: msg.SentAt,
+	}
+}
+function createChatWidgetObject(userId, userName, userPublicKey, userConnections, messageWidgetObjects) {
+	latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
+	return {
+		userId: userId,
+		userName: userName,
+		userPublicKey: userPublicKey,
+		isOnline: userConnections > 0,
+		avatar: null,
+		alt: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + userName,
+		title: userName,
+		subtitle: latestMessage == null ? "" : latestMessage.text,
+		date: latestMessage == null ? "" : latestMessage.date,
+		unread: 0,
+		messages: messageWidgetObjects,
+	}
+}
+
 export default class ChatWidget extends React.Component {
 	updateState(objNew) {
 		super.setState(Object.assign({}, this.state, objNew))
 	}
-	createMessageWidgetObject(msg) {
-		return {
-					position: msg.From == this.state.UserId ? 'right' : left,
-					type: 'text',
-					text: msg.Message,
-					date: msg.SentAt,
-				}
-	}
-	createChatWidgetObject(userId, userName, userPublicKey, userConnections, messageWidgetObjects) {
-		latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
-		return {
-					userId: userId,
-					userName: userName,
-					userPublicKey: userPublicKey,
-					isOnline: userConnections > 0,
-					avatar: null,
-					alt: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + userName,
-					title: userName,
-					subtitle: latestMessage == null ? "" : latestMessage.text,
-					date: latestMessage == null ? "" : latestMessage.date,
-					unread: 0,
-					messages: messageWidgetObjects,
-				}
-	}
 	constructor(props) {
 		super(props)
+		Chatter.onLogin = function() {
+			this.updateState({
+				UserId: Chatter.UserId,
+				UserName: Chatter.UserId,
+			})
+		}
+		Chatter.onLogout = function() {
+			this.updateState({
+				UserId: null,
+				UserName: null,
+			})
+		}
 		Chatter.ReqConnection()
 		this.state = {
 			WindowOpen: false,
 			UserId: null,
 			UserName: null,
 			ActiveChat: null,
-			Chats : null
+			ChatsById : null
 		}
 	}
 	onChatBubbleClicked() {
@@ -62,8 +75,14 @@ export default class ChatWidget extends React.Component {
 	onUserSearch() {
 
 	}
-	onUserJoinClicked() {
-		console.log(this.refs.userName.input.value, this.refs.userEmail.input.value)
+	onUserSignInClicked() {
+		Chatter.ReqLogin(this.refs.userName.input.value, this.refs.userEmail.input.value)
+	}
+	onUserSignUpClicked() {
+		Chatter.ReqCreateUser(this.refs.userName.input.value, this.refs.userEmail.input.value)
+	}
+	onUserSignoutClicked() {
+		Chatter.ReqLogout()
 	}
 	render() {
 		console.log(this.state)
@@ -107,7 +126,10 @@ export default class ChatWidget extends React.Component {
 					<Input className="chat-input" placeholder="Name" multiline={false} ref="userName"/>
 					<div class="lbl">Email :</div>
 					<Input className="chat-input" placeholder="Email (or `gibberish` allowed)" multiline={false} ref="userEmail" />
-					<Button className="chat-button" text='Join' onClick={this.onUserJoinClicked.bind(this)}/>
+					<div className="flex-row-container">
+						<Button className="chat-button" text='Sign in' onClick={this.onUserSignInClicked.bind(this)}/>
+						<Button className="chat-button" text='Sign up' onClick={this.onUserSignUpClicked.bind(this)}/>
+					</div>
 				</div>
 			</div>) : ""}
 
