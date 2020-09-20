@@ -126,7 +126,7 @@ export default class ChatWidget extends React.Component {
 					<Input className="chat-input" placeholder="Name" multiline={false} ref="userName"/>
 					<div class="lbl">Email :</div>
 					<Input className="chat-input" placeholder="Email (or `gibberish` allowed)" multiline={false} ref="userEmail" />
-					<div className="flex-row-container">
+					<div className="chat-button-container flex-row-container">
 						<Button className="chat-button" text='Sign in' onClick={this.onUserSignInClicked.bind(this)}/>
 						<Button className="chat-button" text='Sign up' onClick={this.onUserSignUpClicked.bind(this)}/>
 					</div>

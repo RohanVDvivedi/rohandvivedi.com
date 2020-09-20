@@ -59,8 +59,14 @@
 	align-self: flex-start;
 }
 
-.login-signup-content .chat-button {
+.login-signup-content .chat-button-container {
 	font-family: Capriola, Helvetica, sans-serif;
 	margin-top: 10px;
-	width: 20%;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+}
+
+.chat-button-container .chat-button {
+	width: 75px;
 }
