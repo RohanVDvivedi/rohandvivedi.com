@@ -73,26 +73,23 @@ var Chatter = {
 	ReqCreateUser: function(name, publicKey) {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.CONNECTED) {
-			return false
+			return null
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user","",[name,publicKey])
-		return true
+		return sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user","",[name,publicKey])
 	},
 	ReqLogin: function(name, publicKey) {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.CONNECTED) {
-			return false
+			return null
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user","",[name,publicKey])
-		return true
+		return sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user","",[name,publicKey])
 	},
 	ReqLogout: function() {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
+			return null
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-logout-from-chat-user")
-		return true
+		return sendMessageInternal(thiz.ConnectionId,"server-logout-from-chat-user")
 	},
 
 	// a true means a request to send a mesage was successfull
@@ -100,22 +97,20 @@ var Chatter = {
 	SendMessage: function(to, textMsg) {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
+			return null
 		}
 		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
-			return false
+			return null
 		}
-		sendMessageInternal(thiz.UserId,to,textMsg)
-		return true
+		return sendMessageInternal(thiz.UserId,to,textMsg)
 	},
 
 	RequestGenericQuery: function(serverReceiverName, queryParam = "") {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
+			return null
 		}
-		sendMessageInternal(thiz.UserId,serverReceiverName, queryParam)
-		return true
+		return sendMessageInternal(thiz.UserId,serverReceiverName, queryParam)
 	},
 
 	ReqGetAllUsers: function() {
@@ -172,11 +167,13 @@ function executeOnlyAFunctionIfNotNull(funcN, ...args) {
 }
 
 function sendMessageInternal(From,To,Message = null,Messages = null,MessageId = null,ContextId = null) {
-	Chatter.Connection.send(JSON.stringify({
+	var msg = {
 		From: From,To: To,SentAt: new Date(),
 		Message: Message,Messages: Messages,
 		MessageId: MessageId,ContextId: ContextId
-	}))
+	}
+	Chatter.Connection.send(JSON.stringify(msg))
+	return msg
 }
 
 /* restricted access */

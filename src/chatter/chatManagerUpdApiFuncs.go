@@ -72,7 +72,7 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 		chatUser, foundChatUser := c.ChatUsersByLogin[query.Messages[0] + query.Messages[1]]
 		if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
 			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-			reply.Message = chatUser.GetId()
+			reply.Message = GetDetailsAsString(chatUser)
 			chatUser.ResendAllPendingMessages()
 
 			if(chatUser.GetChatConnectionCount() == 1) {

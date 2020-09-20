@@ -7,7 +7,7 @@ import Chatter from '../chatter/Chatter'
 
 function createMessageWidgetObject(msg) {
 	return {
-		position: msg.From == this.state.UserId ? 'right' : left,
+		position: msg.From == Chatter.UserId ? 'right' : "left",
 		type: 'text',
 		text: msg.Message,
 		date: msg.SentAt,
@@ -41,7 +41,7 @@ export default class ChatWidget extends React.Component {
 			WindowOpen: false,
 			UserId: null,
 			UserName: null,
-			ActiveChat: null,
+			ActiveChatUserId: null,
 			ChatsById : null
 		}
 		Chatter.onLogin = (function() {
@@ -80,6 +80,11 @@ export default class ChatWidget extends React.Component {
 				UserName: null,
 			})
 		}).bind(this)
+		Chatter.onChatMessage = (function(msg) {
+			var ChatsById = Object.assign({}, this.state.ChatsById)
+			ChatsById[this.state.ActiveChatUserId].messages.push(createMessageWidgetObject(msg))
+			this.updateState({ChatsById: ChatsById})
+		}).bind(this)
 	}
 	componentDidMount() {
 		Chatter.ReqConnection()
@@ -88,7 +93,7 @@ export default class ChatWidget extends React.Component {
 		this.updateState({WindowOpen: true})
 	}
 	onPartyWindowCloseClicked() {
-		this.updateState({ActiveChat: null})
+		this.updateState({ActiveChatUserId: null})
 	}
 	onChatWindowCloseClicked() {
 		this.updateState({WindowOpen: false})
@@ -96,10 +101,17 @@ export default class ChatWidget extends React.Component {
 	onChatListItemClicked(c) {
 		var ChatsById = Object.assign({}, this.state.ChatsById)
 		ChatsById[c.userId].unread = 0
-		this.updateState({ActiveChat: c, ChatsById: ChatsById})
+		ChatsById[this.state.ActiveChatUserId] = false
+		ChatsById[c.userId].isActive = true
+		this.updateState({ActiveChatUserId: c.userId, ChatsById: ChatsById})
 	}
 	onMessageSend() {
-
+		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.input.value)
+		if(msg != null) {
+			var ChatsById = Object.assign({}, this.state.ChatsById)
+			ChatsById[this.state.ActiveChatUserId].messages.push(createMessageWidgetObject(msg))
+			this.updateState({ChatsById: ChatsById})
+		}
 	}
 	onUserSearch() {
 
@@ -124,16 +136,16 @@ export default class ChatWidget extends React.Component {
 
 			{(!this.state.WindowOpen) ? (<Icon onClick={this.onChatBubbleClicked.bind(this)} iconPath="/icon/chat-bubble.png" height="40px" width="40px" padding="5px"/>) : ""}
 
-			{ this.state.WindowOpen && this.state.UserId != null && this.state.ActiveChat != null ? 
+			{ this.state.WindowOpen && this.state.UserId != null && this.state.ActiveChatUserId != null && this.state.ChatsById[this.state.ActiveChatUserId] != null ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
-					<div>{this.state.ActiveChat.UserName}</div>
+					<div>{this.state.ChatsById[this.state.ActiveChatUserId].userName}</div>
 					<Icon onClick={this.onPartyWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
 				<div class="chat-content">
-					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={this.state.ActiveChat.Messages} />
+					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={this.state.ChatsById[this.state.ActiveChatUserId].messages} />
 				</div>
-				<Input className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" text='Send'/>}/>
+				<Input ref="userMessage" className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" text='Send' onClick={this.onMessageSend.bind(this)}/>}/>
 			</div>) : ""}
 
 			{ this.state.WindowOpen && this.state.UserId != null ? 
@@ -145,7 +157,7 @@ export default class ChatWidget extends React.Component {
 				<div class="chat-content">
 					<ChatList className='chat-list' dataSource={chatsArray} onClick={this.onChatListItemClicked.bind(this)}/>
 				</div>
-				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search'/>}/>
+				<Input ref="userSearch" className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search' onClick={this.onUserSearch.bind(this)}/>}/>
 			</div>) : ""}
 
 			{ this.state.WindowOpen && this.state.UserId == null ? 
