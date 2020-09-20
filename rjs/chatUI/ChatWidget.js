@@ -76,12 +76,13 @@ export default class ChatWidget extends React.Component {
 		// send read receipts until the last message
 	}
 	onMessageSend() {
-		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.value)
+		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.input.value)
 		if(msg != null) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
 			ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.push(msg)
 			this.updateState({ChatUsersById: ChatUsersById})
 		}
+		console.log(msg)
 	}
 	onUserSearch() {
 

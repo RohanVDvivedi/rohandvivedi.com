@@ -57,7 +57,7 @@ var Chatter = {
 
 		thiz.Connection.onclose = function() {
 			thiz.CurrentState = STATES.DISCONNECTED
-			executeOnlyAFunctionIfNotNull(thiz.onDisconnected)
+			executeOnlyAFunctionIfNotNull(thiz.onClose)
 		}
 
 		return true
