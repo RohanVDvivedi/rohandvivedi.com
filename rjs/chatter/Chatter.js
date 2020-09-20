@@ -5,35 +5,28 @@ const STATES = {
 		DISCONNECTED: "DISCONNECTED",	// messages can not be sent
 	}
 
+function getConnectionUrl() {
+	return (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/soc/chatter"
+}
+
 var Chatter = {
 	CurrentState: STATES.DISCONNECTED,
 
-	ConnectionId: null,
 	Connection: null,
-
-	UserId: null,
-	UserName: null,
-	UserPublicKey: null,
-	UserActiveConnectionCount: null,
-
-	AllUsersById: {},	// mapped by id
-	AllGroupsById: {},	// mapped by id
-
 	onOpen: "Socket Connection is now open",
+	onClose: "Socket Connection is now closed",
+
+	ConnectionId: null,
 	onConnected: "Chatter connection is now established",
+
+	User: null,
 	onLogin: "User has been logged in",
+	onChatMessage: function(msg){console.log("Chat Message :", msg)},
+	onLogout: "User logged out",
 
 	onChangeUsersList: function(userList){console.log("Users list :", userList)},
 	onUserNotification: function(user){console.log("User :", user)},
 	onSearchResultsReady: function(results){console.log("SearchResults :", results)},
-
-	onChatMessage: function(msg){console.log("Chat Message :", msg)},
-	onLogout: "User logged out",
-	onClose: "Socket Connection closed",
-
-	GetConnectionUrl: function() {
-		return (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/soc/chatter"
-	},
 
 	ReqConnection: function(name = null, publicKey = null) {
 		var thiz = Chatter
@@ -42,10 +35,10 @@ var Chatter = {
 		}
 
 		var queryParams = []
-		if(name != null) {queryParams[0] = "name=" + name}
-		if(publicKey != null) {queryParams[1] = "publicKey=" + publicKey }
+		if(name != null) {queryParams.push("name=" + name)}
+		if(publicKey != null) {queryParams.push("publicKey=" + publicKey)}
 
-		var URL = [thiz.GetConnectionUrl(), queryParams.join("&")].join("?")
+		var URL = [getConnectionUrl(), queryParams.join("&")].join("?")
 
 		thiz.Connection = new WebSocket(URL);
 
@@ -102,7 +95,7 @@ var Chatter = {
 		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
 			return null
 		}
-		return sendMessageInternal(thiz.UserId,to,textMsg)
+		return sendMessageInternal(thiz.User.Id,to,textMsg)
 	},
 
 	RequestGenericQuery: function(serverReceiverName, queryParam = "") {
@@ -110,7 +103,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return null
 		}
-		return sendMessageInternal(thiz.UserId,serverReceiverName, queryParam)
+		return sendMessageInternal(thiz.User.Id,serverReceiverName, queryParam)
 	},
 
 	ReqGetAllUsers: function() {
@@ -150,7 +143,7 @@ function GetRandomString(length) {
    var result           = '';
    var characters       = "+-/<[abcdefghijklmnopqrstuvwxyz](ABCDEFGHIJKLMNOPQRSTUVWXYZ){0123456789}>-_^#";
    var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
+   for ( var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
    return result;
@@ -159,10 +152,8 @@ function GetRandomString(length) {
 function executeOnlyAFunctionIfNotNull(funcN, ...args) {
 	if(funcN != null && funcN instanceof Function) { 
 		funcN.apply(null, args);
-		return true
 	} else {
 		console.log("Not a function : ", funcN)
-		return false
 	}
 }
 
@@ -203,23 +194,16 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			case "server-create-and-login-as-chat-user" :
 			case "server-login-as-chat-user" : {
 				if(!isErrorEvent(msg)) {
-					userData = msg.Message.split(',')
-					chatter.UserId = userData[0]
-					chatter.UserName = userData[1]
-					chatter.UserActiveConnectionCount = parseInt(userData[2], 10),
+					chatter.User = GetUserFromString(msg.Message)
 					chatter.CurrentState = STATES.LOGGED_IN
 					executeOnlyAFunctionIfNotNull(chatter.onLogin)
-					chatter.ReqGetAllUsers()
 				}
 				break;
 			}
 			case "server-logout-from-chat-user" : {
 				if(!isErrorEvent(msg)) {
-					chatter.UserId = null
-					chatter.UserName = null
-					chatter.UserActiveConnectionCount = null
+					chatter.User = null
 					chatter.CurrentState = STATES.CONNECTED
-					chatter.AllUsersById = {}
 					executeOnlyAFunctionIfNotNull(chatter.onLogout)
 				}
 				break;
@@ -228,17 +212,9 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				if(!isErrorEvent(msg)) {
 					chatter.AllUsersById = {}
 					var results = msg.Messages.map(function(userStr){
-						return userStr.split(',')
-					}).filter(function(userData){
-						return userData.length == 3 && isChatUserId(userData[0])
-					}).map(function(userData){
-						return {Id: userData[0],
-							Name: userData[1],
-							ConnectionCount: parseInt(userData[2], 10),
-						}
-					})
-					results.forEach(function(user){
-						chatter.AllUsersById[user.Id] = user
+						return GetUserFromString(userStr)
+					}).filter(function(user){
+						return user != null && user.Id != Chatter.User.Id
 					})
 					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList, results)
 				}
@@ -246,14 +222,8 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			}
 			case "server-new-user-notification" : {
 				if(!isErrorEvent(msg)) {
-					var userData = msg.Message.split(',')
-					if(userData.length == 3 && isChatUserId(userData[0])) {
-						var user = {
-							Id: userData[0],
-							Name: userData[1],
-							ConnectionCount: parseInt(userData[2], 10),
-						}
-						chatter.AllUsersById[user.Id] = user
+					var user = GetUserFromString(msg.Message)
+					if(user != null && user.Id != Chatter.User.Id) {
 						executeOnlyAFunctionIfNotNull(chatter.onUserNotification, user)
 					}
 				}
@@ -262,18 +232,9 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			case "server-search-chatter-box" : {
 				if(!isErrorEvent(msg)) {
 					var results = msg.Messages.map(function(userStr){
-						return userStr.split(',')
-					}).filter(function(userData){
-						return userData.length == 3 && isChatUserId(userData[0])
-					}).map(function(userData){
-						return {
-							Id: userData[0],
-							Name: userData[1],
-							ConnectionCount: parseInt(userData[2], 10),
-						}
-					})
-					results.forEach(function(user){
-						chatter.AllUsersById[user.Id] = user
+						return GetUserFromString(userStr)
+					}).filter(function(user){
+						return user != null
 					})
 					executeOnlyAFunctionIfNotNull(chatter.onSearchResultsReady, results)
 				}
@@ -283,6 +244,18 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 	} else {
 		chatter.onChatMessage(msg)
 	}
+}
+
+function GetUserFromString(userStr) {
+	var userData = userStr.split(',')
+	if(userData.length == 3 && isChatUserId(userData[0])) {
+		return {
+			Id: userData[0],
+			Name: userData[1],
+			ConnectionCount: parseInt(userData[2], 10),
+		}
+	}
+	return null
 }
 
 function isChatConnectionId(Id) {

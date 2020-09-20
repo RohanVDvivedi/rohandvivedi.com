@@ -2,34 +2,10 @@ import React from "react";
 
 import { MessageList, ChatList, Input, Button } from 'react-chat-elements'
 import 'react-chat-elements/dist/main.css';
-import Icon from '../utility/Icon'
-import Chatter from '../chatter/Chatter'
 
-function createMessageWidgetObject(msg) {
-	return {
-		position: (msg.From == Chatter.UserId) ? "right" : "left",
-		type: 'text',
-		text: msg.Message,
-		date: msg.SentAt,
-	}
-}
-function createChatWidgetObject(user, messageWidgetObjects) {
-	var latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
-	return {
-		userId: user.Id,
-		userName: user.Name,
-		userPublicKey: user.PublicKey,
-		isOnline: user.ConnectionCount > 0,
-		isActive: false,
-		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + user.Name,
-		alt: user.Name,
-		title: user.Name,
-		subtitle: latestMessage == null ? "" : latestMessage.text,
-		date: latestMessage == null ? "" : latestMessage.date,
-		unread: 0,
-		messages: messageWidgetObjects == null ? [] : messageWidgetObjects,
-	}
-}
+import Icon from '../utility/Icon'
+
+import Chatter from '../chatter/Chatter'
 
 export default class ChatWidget extends React.Component {
 	updateState(objNew) {
@@ -39,61 +15,36 @@ export default class ChatWidget extends React.Component {
 		super(props)
 		this.state = {
 			WindowOpen: false,
-			UserId: null,
-			UserName: null,
+			User: null,	// {}
 			ActiveChatUserId: null,
-			ChatsById : null
+			ChatUsersById : null,	//{ User.Id => {User, Unread, ChatMessageQueue}
 		}
-		Chatter.onLogin = (function() {
-			this.updateState({
-				UserId: Chatter.UserId,
-				UserName: Chatter.UserName,
-			})
-		}).bind(this)
+
+		Chatter.onLogin = (function() {this.updateState({User: Chatter.User}); Chatter.ReqGetAllUsers()}).bind(this)
+		Chatter.onLogout = (function() {this.updateState({User: null,})}).bind(this)
+		Chatter.onClose = (function() {this.updateState({WindowOpen:false,User: null})}).bind(this)
+
 		Chatter.onChangeUsersList = (function(userList) {
-			var ChatsById = {}
-			var oldState = Object.assign({}, this.state)
-			userList.filter(function(user){
-				return user.Id != oldState.UserId
-			}).forEach(function(user){
-				var oldMessageWidgets = (oldState.ChatsById == null || oldState.ChatsById[user.Id] == null) ? [] : oldState.ChatsById[user.Id].messages
-				ChatsById[user.Id] = createChatWidgetObject(user,oldMessageWidgets)
+			var ChatUsersById = {}
+			userList.forEach(function(user){
+				ChatUsersById[user.Id].User = user;
 			})
-			this.updateState({
-				ChatsById: ChatsById,
-			})
+			this.updateState({ChatUsersById: ChatUsersById})
 		}).bind(this)
 		Chatter.onUserNotification = (function(user) {
-			if(user.Id == this.state.UserId) {
-				return
-			}
-			var ChatsById = Object.assign({}, this.state.ChatsById)
-			var oldMessageWidgets = (this.state.ChatsById == null || this.state.ChatsById[user.Id] == null) ? [] : this.state.ChatsById[user.Id].messages
-			ChatsById[user.Id] = createChatWidgetObject(user,oldMessageWidgets)
-			this.updateState({
-				ChatsById: ChatsById,
-			})
+			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
+			ChatUsersById[user.Id].User = user;
+			this.updateState({ChatUsersById: ChatUsersById})
 		}).bind(this)
-		Chatter.onLogout = (function() {
-			this.updateState({
-				UserId: null,
-				UserName: null,
-			})
-		}).bind(this)
-		Chatter.onDisconnected = (function() {
-			this.updateState({
-				WindowOpen: false,
-				UserId: null,
-				UserName: null,
-			})
-		}).bind(this)
+		
 		Chatter.onChatMessage = (function(msg) {
-			var ChatsById = Object.assign({}, this.state.ChatsById)
-			ChatsById[msg.From].messages.push(createMessageWidgetObject(msg))
+			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
+			ChatUsersById[msg.From].ChatMessageQueue.push(msg)
 			if(msg.From != this.state.ActiveChatUserId) {
-				ChatsById[msg.From].unread += 1
+				ChatUsersById[msg.From].Unread += 1
+				// send read receipt directly here
 			}
-			this.updateState({ChatsById: ChatsById})
+			this.updateState({ChatUsersById: ChatUsersById})
 		}).bind(this)
 	}
 	componentDidMount() {
@@ -102,24 +53,24 @@ export default class ChatWidget extends React.Component {
 	onChatBubbleClicked() {
 		this.updateState({WindowOpen: true})
 	}
-	onPartyWindowCloseClicked() {
+	onChatMessagesWindowCloseClicked() {
 		this.updateState({ActiveChatUserId: null})
 	}
-	onChatWindowCloseClicked() {
+	onChatUsersWindowCloseClicked() {
 		this.updateState({WindowOpen: false})
 	}
 	onChatListItemClicked(c) {
-		var ChatsById = Object.assign({}, this.state.ChatsById)
-		ChatsById[c.userId].unread = 0
-		ChatsById[this.state.ActiveChatUserId] = false
-		ChatsById[c.userId].isActive = true
-		this.updateState({ActiveChatUserId: c.userId, ChatsById: ChatsById})
+		var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
+		ChatUsersById[c.userId].Unread = 0
+		this.updateState({ActiveChatUserId: c.User.Id, ChatUsersById: ChatUsersById})
+
+		// send read receipts until the last message
 	}
 	onMessageSend() {
-		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.input.value)
+		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.value)
 		if(msg != null) {
-			var ChatsById = Object.assign({}, this.state.ChatsById)
-			ChatsById[this.state.ActiveChatUserId].messages.push(createMessageWidgetObject(msg))
+			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
+			ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.push(msg)
 			this.updateState({ChatsById: ChatsById})
 		}
 	}
@@ -137,32 +88,45 @@ export default class ChatWidget extends React.Component {
 	}
 	render() {
 		console.log(this.state)
-		var chatsArray = []
-		for (const userId in this.state.ChatsById) {
-			chatsArray.push(this.state.ChatsById[userId])
+
+		var showChatwindow = this.state.WindowOpen && this.state.User != null && this.state.ActiveChatUserId != null && this.state.ChatsById[this.state.ActiveChatUserId] != null
+		var showUsersWindow = this.state.WindowOpen && this.state.User != null
+		var showLoginWindow = this.state.WindowOpen && this.state.UserId == null
+
+		var messagesArray = []
+		if(showChatwindow) {
+			messagesArray = this.state.ChatsById[this.state.ActiveChatUserId].ChatMessageQueue.map(createMessageWidgetObject)
 		}
+
+		var chatsArray = []
+		if(showUsersWindow) {
+			for (const userId in this.state.ChatsById) {
+				chatsArray.push(createChatWidgetObject(this.state.ChatsById[userId]))
+			}
+		}
+
 		return(
 		<div class="chat-widget flex-row-container">
 
 			{(!this.state.WindowOpen) ? (<Icon onClick={this.onChatBubbleClicked.bind(this)} iconPath="/icon/chat-bubble.png" height="40px" width="40px" padding="5px"/>) : ""}
 
-			{ this.state.WindowOpen && this.state.UserId != null && this.state.ActiveChatUserId != null && this.state.ChatsById[this.state.ActiveChatUserId] != null ? 
+			{ showChatwindow ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
-					<div>{this.state.ChatsById[this.state.ActiveChatUserId].userName}</div>
-					<Icon onClick={this.onPartyWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
+					<div>{this.state.ChatsById[this.state.ActiveChatUserId].User.Name}</div>
+					<Icon onClick={this.onChatMessagesWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
 				<div class="chat-content">
-					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={this.state.ChatsById[this.state.ActiveChatUserId].messages} />
+					<MessageList className='message-list' toBottomHeight={'100%'} dataSource={messagesArray} />
 				</div>
 				<Input ref="userMessage" className="chat-input" placeholder="Type here..." multiline={true} rightButtons={<Button className="chat-button" text='Send' onClick={this.onMessageSend.bind(this)}/>}/>
 			</div>) : ""}
 
-			{ this.state.WindowOpen && this.state.UserId != null ? 
+			{ showUsersWindow ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
-					<div class="identifier">{this.state.UserName}</div>
-					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
+					<div class="identifier">{this.state.User.Name}</div>
+					<Icon onClick={this.onChatUsersWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
 				<div class="chat-content">
 					<ChatList className='chat-list' dataSource={chatsArray} onClick={this.onChatListItemClicked.bind(this)}/>
@@ -170,7 +134,7 @@ export default class ChatWidget extends React.Component {
 				<Input ref="userSearch" className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search' onClick={this.onUserSearch.bind(this)}/>}/>
 			</div>) : ""}
 
-			{ this.state.WindowOpen && this.state.UserId == null ? 
+			{ showLoginWindow ? 
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">Join chat</div>
@@ -189,5 +153,29 @@ export default class ChatWidget extends React.Component {
 			</div>) : ""}
 
 		</div>);
+	}
+}
+
+function createMessageWidgetObject(msg) {
+	return {
+		Id: msg.MessageId,
+		position: (msg.From == Chatter.UserId) ? "right" : "left",
+		type: 'text',
+		text: msg.Message,
+		date: msg.SentAt,
+		status: null,
+	}
+}
+
+function createChatWidgetObject(chat) {
+	var latestMessage = chat.ChatMessageQueue.Length == 0 ? null : chat.ChatMessageQueue[chat.ChatMessageQueue.Length - 1]
+	return {
+		Id: chat.User.Id,
+		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + chat.User.Name,
+		alt: user.Name,
+		title: user.Name,
+		subtitle: latestMessage == null ? "" : latestMessage.Message,
+		date: latestMessage == null ? "" : latestMessage.SentAt,
+		unread: chat.Unread,
 	}
 }
