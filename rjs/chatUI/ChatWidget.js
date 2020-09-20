@@ -82,7 +82,10 @@ export default class ChatWidget extends React.Component {
 		}).bind(this)
 		Chatter.onChatMessage = (function(msg) {
 			var ChatsById = Object.assign({}, this.state.ChatsById)
-			ChatsById[this.state.ActiveChatUserId].messages.push(createMessageWidgetObject(msg))
+			ChatsById[msg.From].messages.push(createMessageWidgetObject(msg))
+			if(msg.From != this.state.ActiveChatUserId) {
+				ChatsById[msg.From].unread += 1
+			}
 			this.updateState({ChatsById: ChatsById})
 		}).bind(this)
 	}
