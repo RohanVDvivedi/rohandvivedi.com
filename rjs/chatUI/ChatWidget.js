@@ -186,11 +186,12 @@ function createChatWidgetObject(chat) {
 	var latestMessage = chat.ChatMessageQueue.length == 0 ? null : chat.ChatMessageQueue[chat.ChatMessageQueue.length - 1]
 	return {
 		Id: chat.User.Id,
-		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + chat.User.Name,
+		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&bold=true&name=' + chat.User.Name,
 		alt: chat.User.Name,
 		title: chat.User.Name,
 		subtitle: latestMessage == null ? "" : latestMessage.Message,
 		date: latestMessage == null ? "" : latestMessage.SentAt,
 		unread: chat.Unread,
+		statusColor: chat.User.ConnectionCount > 0 ? "#4CAF50" : "#f1f1f1",
 	}
 }
