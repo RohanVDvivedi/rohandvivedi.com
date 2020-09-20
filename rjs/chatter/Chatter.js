@@ -21,11 +21,13 @@ var Chatter = {
 	onOpen: "Socket Connection is now open",
 	onConnected: "Chatter connection is now established",
 	onLogin: "User has been logged in",
+
 	onChangeUsersList: function(){console.log("Users list :", Chatter.AllUsers)},
+	onUserNotification: function(user){console.log("User :", user)},
+	onSearchResultsReady: function(results){console.log("SearchResults :", results)},
+
 	onChatMessage: function(msg){console.log("Chat Message :", msg)},
 	onLogout: "User logged out",
-	onAddedToGroup: null,
-	onRemovedFromGroup: null,
 	onClose: "Socket Connection closed",
 
 	GetConnectionUrl: function() {
@@ -67,7 +69,6 @@ var Chatter = {
 		return true
 	},
 
-	// a true means a request to create a new user in was sent successfully
 	ReqCreateUser: function(name, publicKey) {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.CONNECTED) {
@@ -76,14 +77,20 @@ var Chatter = {
 		sendMessageInternal(thiz.ConnectionId,"server-create-and-login-as-chat-user","",[name,publicKey])
 		return true
 	},
-
-	// a true means a request to log you in was sent successfully
 	ReqLogin: function(name, publicKey) {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.CONNECTED) {
 			return false
 		}
 		sendMessageInternal(thiz.ConnectionId,"server-login-as-chat-user","",[name,publicKey])
+		return true
+	},
+	ReqLogout: function() {
+		var thiz = Chatter
+		if(thiz.CurrentState != STATES.LOGGED_IN) {
+			return false
+		}
+		sendMessageInternal(thiz.ConnectionId,"server-logout-all-connections-from-chat-user")
 		return true
 	},
 
@@ -101,68 +108,43 @@ var Chatter = {
 		return true
 	},
 
-	// a true means a request to log you out was sent successfully
-	ReqLogout: function() {
+	RequestGenericQuery: function(serverReceiverName, queryParam = "") {
 		var thiz = Chatter
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-logout-all-connections-from-chat-user")
+		sendMessageInternal(thiz.UserId,serverReceiverName, queryParam)
 		return true
 	},
 
 	ReqGetAllUsers: function() {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-get-all-users")
-		return true
+		return thiz.RequestGenericQuery("server-get-all-users")
 	},
 
 	ReqGetAllGroups: function() {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-get-all-groups")
-		return true
+		return thiz.RequestGenericQuery("server-get-all-groups")
 	},
 
 	ReqGetAllOnlineUsers: function() {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-get-all-online-users")
-		return true
+		return thiz.RequestGenericQuery("server-get-all-online-users")
 	},
 
 	ReqGetAllMyGroups: function() {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-get-all-my-groups")
-		return true
+		return thiz.RequestGenericQuery("server-get-all-my-groups")
 	},
 
 	ReqGetAllMyActiveConnections: function() {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-get-all-my-active-connections")
-		return true
+		return thiz.RequestGenericQuery("server-get-all-my-active-connections")
 	},
 
 	ReqSearch: function(query) {
 		var thiz = Chatter
-		if(thiz.CurrentState != STATES.LOGGED_IN) {
-			return false
-		}
-		sendMessageInternal(thiz.UserId,"server-search-chatter-box",query)
-		return true
+		return thiz.RequestGenericQuery("server-search-chatter-box",query)
 	},
 }
 
@@ -178,9 +160,9 @@ function GetRandomString(length) {
    return result;
 }
 
-function executeOnlyAFunctionIfNotNull(funcN) {
+function executeOnlyAFunctionIfNotNull(funcN, ...args) {
 	if(funcN != null && funcN instanceof Function) { 
-		funcN()
+		funcN.apply(null, args);
 		return true
 	} else {
 		console.log("Not a function : ", funcN)
@@ -240,19 +222,21 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			}
 			case "server-get-all-users" : {
 				if(!isErrorEvent(msg)) {
-					chatter.AllUsers = {}
-					msg.Messages.forEach(function(userStr){
-						var userData = userStr.split(',')
-						if(userData.length == 3 && isChatUserId(userData[0])) {
-							var user = {
-								Id: userData[0],
-								Name: userData[1],
-								ConnectionCount: parseInt(userData[2], 10),
-							}
-							chatter.AllUsersById.[user.Id] = user
+					chatter.AllUsersById = {}
+					var results = msg.Messages.map(function(userStr){
+						return userStr.split(',')
+					}).filter(function(userData){
+						return userData.length == 3 && isChatUserId(userData[0])
+					}).map(function(userData){
+						return {Id: userData[0],
+							Name: userData[1],
+							ConnectionCount: parseInt(userData[2], 10),
 						}
 					})
-					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
+					results.forEach(function(user){
+						chatter.AllUsersById[user.Id] = user
+					})
+					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList, chatter.AllUsersById)
 				}
 				break;
 			}
@@ -265,26 +249,29 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 							Name: userData[1],
 							ConnectionCount: parseInt(userData[2], 10),
 						}
-						chatter.AllUsersById.[user.Id] = user
+						chatter.AllUsersById[user.Id] = user
+						executeOnlyAFunctionIfNotNull(chatter.onUserNotification, user)
 					}
-					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
 				}
 				break;
 			}
 			case "server-search-chatter-box" : {
 				if(!isErrorEvent(msg)) {
-					msg.Messages.forEach(function(userStr){
-						var userData = userStr.split(',')
-						if(userData.length == 3 && isChatUserId(userData[0])) {
-							var user = {
-								Id: userData[0],
-								Name: userData[1],
-								ConnectionCount: parseInt(userData[2], 10),
-							}
-							chatter.AllUsersById.[user.Id] = user
+					var results = msg.Messages.map(function(userStr){
+						return userStr.split(',')
+					}).filter(function(userData){
+						return userData.length == 3 && isChatUserId(userData[0])
+					}).map(function(userData){
+						return {
+							Id: userData[0],
+							Name: userData[1],
+							ConnectionCount: parseInt(userData[2], 10),
 						}
 					})
-					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
+					results.forEach(function(user){
+						chatter.AllUsersById[user.Id] = user
+					})
+					executeOnlyAFunctionIfNotNull(chatter.onSearchResultsReady, results)
 				}
 				break;
 			}
