@@ -44,9 +44,13 @@ func (user *ChatUser) ResendAllPendingMessages() {
 	user.MessagesPendingToBeSent = NewChatMessageQueue()
 }
 
+// message must be sent to the user or one of the groups that the user is member of
+// message must be sent by the server, or any chat user or 
 func (user *ChatUser) SendMessage(msg ChatMessage) error {
-	_, usersGroup := user.ChatGroups[msg.To]
-	if(msg.To == user.GetId() || usersGroup) {
+	_, msgIsFromUsersConnections := user.ChatConnections[msg.From]
+	_, msgIsToAUsersGroupThatThisUserIsAPartOf := user.ChatGroups[msg.To]
+	if((msgIsFromUsersConnections || IsChatUserId(msg.From) || IsChatManagerId(msg.From)) && 
+	(msg.To == user.GetId() || msgIsToAUsersGroupThatThisUserIsAPartOf)) {
 		sentTo := 0
 		for _, cconn := range user.ChatConnections {
 			err := cconn.SendMessage(msg)
