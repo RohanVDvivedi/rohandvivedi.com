@@ -80,6 +80,13 @@ export default class ChatWidget extends React.Component {
 				UserName: null,
 			})
 		}).bind(this)
+		Chatter.onDisconnected = (function() {
+			this.updateState({
+				WindowOpen: false,
+				UserId: null,
+				UserName: null,
+			})
+		}).bind(this)
 		Chatter.onChatMessage = (function(msg) {
 			var ChatsById = Object.assign({}, this.state.ChatsById)
 			ChatsById[msg.From].messages.push(createMessageWidgetObject(msg))
