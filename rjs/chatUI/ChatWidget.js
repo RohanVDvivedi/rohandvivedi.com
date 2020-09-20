@@ -13,20 +13,21 @@ function createMessageWidgetObject(msg) {
 		date: msg.SentAt,
 	}
 }
-function createChatWidgetObject(userId, userName, userPublicKey, userConnections, messageWidgetObjects) {
-	latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
+function createChatWidgetObject(user, messageWidgetObjects) {
+	var latestMessage = messageWidgetObjects == null || messageWidgetObjects.Length == 0 ? null : messageWidgetObjects[messageWidgetObjects.Length - 1]
 	return {
-		userId: userId,
-		userName: userName,
-		userPublicKey: userPublicKey,
-		isOnline: userConnections > 0,
-		avatar: null,
-		alt: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + userName,
-		title: userName,
+		userId: user.Id,
+		userName: user.Name,
+		userPublicKey: user.PublicKey,
+		isOnline: user.ConnectionCount > 0,
+		isActive: false,
+		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&name=' + user.Name,
+		alt: user.Name,
+		title: user.Name,
 		subtitle: latestMessage == null ? "" : latestMessage.text,
 		date: latestMessage == null ? "" : latestMessage.date,
 		unread: 0,
-		messages: messageWidgetObjects,
+		messages: messageWidgetObjects == null ? [] : messageWidgetObjects,
 	}
 }
 
@@ -36,10 +37,41 @@ export default class ChatWidget extends React.Component {
 	}
 	constructor(props) {
 		super(props)
+		this.state = {
+			WindowOpen: false,
+			UserId: null,
+			UserName: null,
+			ActiveChat: null,
+			ChatsById : null
+		}
 		Chatter.onLogin = (function() {
 			this.updateState({
 				UserId: Chatter.UserId,
 				UserName: Chatter.UserName,
+			})
+		}).bind(this)
+		Chatter.onChangeUsersList = (function(userList) {
+			var ChatsById = {}
+			var oldState = Object.assign({}, this.state)
+			userList.filter(function(user){
+				return user.Id != oldState.UserId
+			}).forEach(function(user){
+				var oldMessageWidgets = (oldState.ChatsById == null || oldState.ChatsById[user.Id] == null) ? [] : oldState.ChatsById[user.Id].messages
+				ChatsById[user.Id] = createChatWidgetObject(user,oldMessageWidgets)
+			})
+			this.updateState({
+				ChatsById: ChatsById,
+			})
+		}).bind(this)
+		Chatter.onUserNotification = (function(user) {
+			if(user.Id == this.state.UserId) {
+				return
+			}
+			var ChatsById = Object.assign({}, this.state.ChatsById)
+			var oldMessageWidgets = (this.state.ChatsById == null || this.state.ChatsById[user.Id] == null) ? [] : this.state.ChatsById[user.Id].messages
+			ChatsById[user.Id] = createChatWidgetObject(user,oldMessageWidgets)
+			this.updateState({
+				ChatsById: ChatsById,
 			})
 		}).bind(this)
 		Chatter.onLogout = (function() {
@@ -48,14 +80,9 @@ export default class ChatWidget extends React.Component {
 				UserName: null,
 			})
 		}).bind(this)
+	}
+	componentDidMount() {
 		Chatter.ReqConnection()
-		this.state = {
-			WindowOpen: false,
-			UserId: null,
-			UserName: null,
-			ActiveChat: null,
-			ChatsById : null
-		}
 	}
 	onChatBubbleClicked() {
 		this.updateState({WindowOpen: true})
@@ -67,7 +94,9 @@ export default class ChatWidget extends React.Component {
 		this.updateState({WindowOpen: false})
 	}
 	onChatListItemClicked(c) {
-		this.updateState({ActiveChat: c})
+		var ChatsById = Object.assign({}, this.state.ChatsById)
+		ChatsById[c.userId].unread = 0
+		this.updateState({ActiveChat: c, ChatsById: ChatsById})
 	}
 	onMessageSend() {
 
@@ -86,6 +115,10 @@ export default class ChatWidget extends React.Component {
 	}
 	render() {
 		console.log(this.state)
+		var chatsArray = []
+		for (const userId in this.state.ChatsById) {
+			chatsArray.push(this.state.ChatsById[userId])
+		}
 		return(
 		<div class="chat-widget flex-row-container">
 
@@ -110,7 +143,7 @@ export default class ChatWidget extends React.Component {
 					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
 				<div class="chat-content">
-					<ChatList className='chat-list' dataSource={this.state.Chats} onClick={this.onChatListItemClicked.bind(this)}/>
+					<ChatList className='chat-list' dataSource={chatsArray} onClick={this.onChatListItemClicked.bind(this)}/>
 				</div>
 				<Input className="chat-input" placeholder="Search user..." multiline={false} rightButtons={<Button className="chat-button" text='Search'/>}/>
 			</div>) : ""}

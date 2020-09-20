@@ -41,7 +41,7 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 		
 			if(foundChatConnection && isChatConnection && JoinConnectionToUser(chatConnection, chatUser)) {
 				chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-				reply.Message = chatUser.GetId()
+				reply.Message = GetDetailsAsString(chatUser)
 				chatUser.ResendAllPendingMessages()
 
 				if(chatUser.GetChatConnectionCount() == 1) {

@@ -14,6 +14,7 @@ var Chatter = {
 	UserId: null,
 	UserName: null,
 	UserPublicKey: null,
+	UserActiveConnectionCount: null,
 
 	AllUsersById: {},	// mapped by id
 	AllGroupsById: {},	// mapped by id
@@ -22,7 +23,7 @@ var Chatter = {
 	onConnected: "Chatter connection is now established",
 	onLogin: "User has been logged in",
 
-	onChangeUsersList: function(){console.log("Users list :", Chatter.AllUsers)},
+	onChangeUsersList: function(userList){console.log("Users list :", userList)},
 	onUserNotification: function(user){console.log("User :", user)},
 	onSearchResultsReady: function(results){console.log("SearchResults :", results)},
 
@@ -204,7 +205,10 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			case "server-create-and-login-as-chat-user" :
 			case "server-login-as-chat-user" : {
 				if(!isErrorEvent(msg)) {
-					chatter.UserId = msg.Message
+					userData = msg.Message.split(',')
+					chatter.UserId = userData[0]
+					chatter.UserName = userData[1]
+					chatter.UserActiveConnectionCount = parseInt(userData[2], 10),
 					chatter.CurrentState = STATES.LOGGED_IN
 					executeOnlyAFunctionIfNotNull(chatter.onLogin)
 					chatter.ReqGetAllUsers()
@@ -214,8 +218,10 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			case "server-logout-from-chat-user" : {
 				if(!isErrorEvent(msg)) {
 					chatter.UserId = null
+					chatter.UserName = null
+					chatter.UserActiveConnectionCount = null
 					chatter.CurrentState = STATES.CONNECTED
-					chatter.AllUsers = []
+					chatter.AllUsersById = {}
 					executeOnlyAFunctionIfNotNull(chatter.onLogout)
 				}
 				break;
@@ -236,7 +242,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 					results.forEach(function(user){
 						chatter.AllUsersById[user.Id] = user
 					})
-					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList, chatter.AllUsersById)
+					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList, results)
 				}
 				break;
 			}
