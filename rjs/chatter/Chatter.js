@@ -90,7 +90,7 @@ var Chatter = {
 		if(thiz.CurrentState != STATES.LOGGED_IN) {
 			return false
 		}
-		sendMessageInternal(thiz.ConnectionId,"server-logout-all-connections-from-chat-user")
+		sendMessageInternal(thiz.ConnectionId,"server-logout-from-chat-user")
 		return true
 	},
 
@@ -211,7 +211,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				}
 				break;
 			}
-			case "server-logout-all-connections-from-chat-user" : {
+			case "server-logout-from-chat-user" : {
 				if(!isErrorEvent(msg)) {
 					chatter.UserId = null
 					chatter.CurrentState = STATES.CONNECTED

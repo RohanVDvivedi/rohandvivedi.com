@@ -81,7 +81,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 				case "server-login-as-chat-user" : {
 					c.LoginAsChatUser(msg)
 				}
-				case "server-logout-all-connections-from-chat-user" : {
+				case "server-logout-from-chat-user" : {
 					c.LogoutAllConnectionsFromChatUser(msg)
 				}
 			}
