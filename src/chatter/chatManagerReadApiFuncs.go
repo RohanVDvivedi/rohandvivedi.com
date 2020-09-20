@@ -104,13 +104,13 @@ func (c *ChatManager) SearchChatterBox(query ChatMessage) {
 		if(IsChatId(query.Message)) {
 			chatterSendable, found := c.SendToMap[query.Message]
 			if(found) {
-				reply.Message = GetDetailsAsString(chatterSendable)
+				reply.Messages = append(reply.Messages, GetDetailsAsString(chatterSendable))
 			}
 		} else {
 			chatterBoxesByName, found := c.UsersAndGroups[query.Message]
 			if(found) {
 				for _, chatterBox := range chatterBoxesByName {
-					reply.Message = GetDetailsAsString(chatterBox)
+					reply.Messages = append(reply.Messages, GetDetailsAsString(chatterBox))
 				}
 			}
 		}

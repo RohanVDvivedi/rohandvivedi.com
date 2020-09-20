@@ -15,8 +15,8 @@ var Chatter = {
 	UserName: null,
 	UserPublicKey: null,
 
-	AllUsers: [],
-	AllGroups: [],
+	AllUsersById: {},	// mapped by id
+	AllGroupsById: {},	// mapped by id
 
 	onOpen: "Socket Connection is now open",
 	onConnected: "Chatter connection is now established",
@@ -240,15 +240,48 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 			}
 			case "server-get-all-users" : {
 				if(!isErrorEvent(msg)) {
-					chatter.AllUsers = []
+					chatter.AllUsers = {}
 					msg.Messages.forEach(function(userStr){
 						var userData = userStr.split(',')
-						if(userData.length == 3) {
-							chatter.AllUsers.push({
+						if(userData.length == 3 && isChatUserId(userData[0])) {
+							user = {
 								Id: userData[0],
 								Name: userData[1],
-								IsOnline: (userData[2] > 0),
-							})
+								ConnectionCount: parseInt(userData[2], 10),
+							}
+							chatter.AllUsersById.[user.Id] = user
+						}
+					})
+					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
+				}
+				break;
+			}
+			case "server-new-user-notification" : {
+				if(!isErrorEvent(msg)) {
+					var userData = msg.Message.split(',')
+					if(userData.length == 3 && isChatUserId(userData[0])) {
+						user = {
+							Id: userData[0],
+							Name: userData[1],
+							ConnectionCount: parseInt(userData[2], 10),
+						}
+						chatter.AllUsersById.[user.Id] = user
+					}
+					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
+				}
+				break;
+			}
+			case "server-search-chatter-box" : {
+				if(!isErrorEvent(msg)) {
+					msg.Messages.forEach(function(userStr){
+						var userData = userStr.split(',')
+						if(userData.length == 3 && isChatUserId(userData[0])) {
+							user = {
+								Id: userData[0],
+								Name: userData[1],
+								ConnectionCount: parseInt(userData[2], 10),
+							}
+							chatter.AllUsersById.[user.Id] = user
 						}
 					})
 					executeOnlyAFunctionIfNotNull(chatter.onChangeUsersList)
