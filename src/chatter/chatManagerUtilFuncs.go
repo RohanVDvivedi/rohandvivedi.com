@@ -48,17 +48,10 @@ func (c *ChatManager) NotifyOnlineUsers_unsafe(notif ChatMessage) {
 func (c *ChatManager) DeleteChatterer_unsafe(Id string) {
 	chatterSendable, found := c.SendToMap[Id]
 	if(found) {
+		chatterSendable.Destroy(c);
 		delete(c.SendToMap, Id);
-
-		chatterBox, isChatterBox := chatterSendable.(ChatterBox)
-		if(isChatterBox) {
-			delete(c.UsersAndGroups[chatterBox.GetName()], chatterBox.GetId());
-		}
-
-		chatUser, isChatUser := chatterSendable.(*ChatUser)
-		if(isChatUser) {
-			delete(c.ChatUsersByLogin, chatUser.GetName() + chatUser.PublicKey);
-		}
+		delete(c.UsersAndGroups[chatterBox.GetName()], chatterBox.GetId());
+		delete(c.ChatUsersByLogin, chatUser.GetName() + chatUser.PublicKey);
 	}
 }
 

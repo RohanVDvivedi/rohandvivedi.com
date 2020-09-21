@@ -14,7 +14,6 @@ var Chatters = NewChatManager()
 func ChatConnectionHandler(conn *websocket.Conn) {
 
 	chatConnection := NewChatConnection(conn);
-	defer chatConnection.Destroy()
 
 	Chatters.InsertChatterer(chatConnection);
 	defer Chatters.DeleteChatterer(chatConnection.GetId());
@@ -22,10 +21,10 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 	name, publicKey, isAuthenticatable := chatConnection.GetNameAndPublicKey()
 	if(isAuthenticatable) {
 		Chatters.ServerMessagesToBeProcessed.Push(ChatMessage{
-				OriginConnection:chatConnection.GetId(),
-				From:chatConnection.GetId(),To:"server-login-as-chat-user",
-				Messages: []string{name, publicKey},
-			})
+			OriginConnection:chatConnection.GetId(),
+			From:chatConnection.GetId(),To:"server-login-as-chat-user",
+			Messages:[]string{name, publicKey},
+		})
 	}
 
 	for (true) {

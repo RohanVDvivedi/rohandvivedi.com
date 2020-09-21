@@ -63,8 +63,6 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 				sentTo += 1
 			} else {
 				fmt.Println(err)
-				BreakConnectionFromUser(cconn, user)
-				cconn.Destroy()
 			}
 		}
 		if(sentTo == 0) {
