@@ -12,7 +12,6 @@ var Chatters = NewChatManager()
 
 // never call this functions outside
 func ChatConnectionHandler(conn *websocket.Conn) {
-
 	chatConnection := NewChatConnection(conn);
 
 	Chatters.InsertChatterer(chatConnection);
@@ -20,7 +19,8 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 
 	name, publicKey, isAuthenticatable := chatConnection.GetNameAndPublicKey()
 	if(isAuthenticatable) {
-		Chatters.ServerMessagesToBeProcessed.Push(ChatMessage{
+		// draft a login server message and send it on behalf of the client
+		Chatters.ProcessMessage(ChatMessage{
 			OriginConnection:chatConnection.GetId(),
 			From:chatConnection.GetId(),To:"server-login-as-chat-user",
 			Messages:[]string{name, publicKey},
@@ -33,6 +33,6 @@ func ChatConnectionHandler(conn *websocket.Conn) {
 			fmt.Println(err)
 			break
 		}
-		Chatters.AddChatMessageToChatManagersProcessingQueue(msg)
+		Chatters.ProcessMessage(msg)
 	}
 }
