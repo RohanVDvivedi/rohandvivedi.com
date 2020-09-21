@@ -3,7 +3,7 @@ package chatter
 // A Chatter sendable exists only inside chat manager
 type ChatterSendable interface {
 	GetId() string
-	SendMessage(msg ChatMessage) error
+	SendMessage(msg ChatMessage)
 	Destroy()
 }
 

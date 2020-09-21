@@ -1,12 +1,15 @@
 package chatter
 
 import (
+	"sync"
 	"golang.org/x/net/websocket"
 	"errors"
 	"rohandvivedi.com/src/session"
 )
 
 type ChatConnection struct {
+	sync.RWMutex
+
 	Id
 
 	Connection *websocket.Conn

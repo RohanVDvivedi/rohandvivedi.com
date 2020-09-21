@@ -1,6 +1,12 @@
 package chatter
 
+import(
+	"sync"
+)
+
 type ChatGroup struct {
+	sync.RWMutex
+
 	Id
 	Name
 

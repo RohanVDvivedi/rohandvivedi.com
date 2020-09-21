@@ -1,10 +1,13 @@
 package chatter
 
 import (
+	"sync"
 	"fmt"
 )
 
 type ChatUser struct {
+	sync.RWMutex
+
 	Id
 	Name
 	PublicKey string

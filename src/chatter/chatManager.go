@@ -5,8 +5,7 @@ import (
 )
 
 type ChatManager struct{
-	// lock to protect all the chat users
-	Lock sync.Mutex
+	sync.RWMutex
 
 	// All the chat connections, users and groups mapped together by their connection ids
 	SendToMap map[string]ChatterSendable
