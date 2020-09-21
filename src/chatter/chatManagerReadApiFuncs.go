@@ -4,7 +4,7 @@ package chatter
 
 func (c *ChatManager) GetAllUsers(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	if(IsChatUserId(query.From)) {
 		for _, chatUser := range(c.ChatUsersByLogin) {
@@ -15,12 +15,12 @@ func (c *ChatManager) GetAllUsers(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.RUnlock()
 }
 
 func (c *ChatManager) GetAllGroups(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	if(IsChatUserId(query.From)) {
 		for _, chatterBoxesByName := range(c.UsersAndGroups) {
@@ -36,12 +36,12 @@ func (c *ChatManager) GetAllGroups(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.RUnlock()
 }
 
 func (c *ChatManager) GetAllOnlineUsers(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	if(IsChatUserId(query.From)) {
 		for _, chatUser := range(c.ChatUsersByLogin) {
@@ -54,12 +54,12 @@ func (c *ChatManager) GetAllOnlineUsers(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.RUnlock()
 }
 
 func (c *ChatManager) GetAllMyGroups(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	chatterSendable, found := c.SendToMap[query.From]
 	chatUser, isChatUser := chatterSendable.(*ChatUser)
@@ -72,12 +72,12 @@ func (c *ChatManager) GetAllMyGroups(query ChatMessage) {
 	}
 	
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.RUnlock()
 }
 
 func (c *ChatManager) GetAllMyActiveConnections(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	chatterSendable, found := c.SendToMap[query.From]
 	chatUser, isChatUser := chatterSendable.(*ChatUser)
@@ -90,12 +90,12 @@ func (c *ChatManager) GetAllMyActiveConnections(query ChatMessage) {
 	}
 	
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.RUnlock()
 }
 
 func (c *ChatManager) SearchChatterBox(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.RLock()
 
 	if(!IsChatUserId(query.From)) {
 		reply.Message = "ERROR"
@@ -118,5 +118,5 @@ func (c *ChatManager) SearchChatterBox(query ChatMessage) {
 		c.SendById_unsafe(reply)
 	}
 
-	c.Lock.Unlock()
+	c.RUnlock()
 }

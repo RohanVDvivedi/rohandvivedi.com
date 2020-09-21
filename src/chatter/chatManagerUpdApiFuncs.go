@@ -1,20 +1,20 @@
 package chatter
 
 func (c *ChatManager) InsertChatterer(chatterer ChatterSendable) {
-	c.Lock.Lock(); 	c.InsertChatterer_unsafe(chatterer); 	c.Lock.Unlock();
+	c.Lock(); 	c.InsertChatterer_unsafe(chatterer); 	c.Unlock();
 }
 
 func (c *ChatManager) SendById(msg ChatMessage) bool {
-	c.Lock.Lock();	result := c.SendById_unsafe(msg);		c.Lock.Unlock(); return result;
+	c.Lock();	result := c.SendById_unsafe(msg);		c.Unlock(); return result;
 }
 
 func (c *ChatManager) DeleteChatterer(Id string) {
-	c.Lock.Lock();	c.DeleteChatterer_unsafe(Id);			c.Lock.Unlock();
+	c.Lock();	c.DeleteChatterer_unsafe(Id);			c.Unlock();
 }
 
 func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.Lock()
 
 	if(len(query.Messages) != 2) {
 		reply.Message = "ERROR"
@@ -47,12 +47,12 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.Unlock()
 }
 
 func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.Lock()
 
 	if(len(query.Messages) != 2) {
 		reply.Message = "ERROR"
@@ -76,12 +76,12 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.Unlock()
 }
 
 func (c *ChatManager) LogoutAllConnectionsFromChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
-	c.Lock.Lock()
+	c.Lock()
 
 	chatterSendable, foundChatConnection := c.SendToMap[query.From]
 	chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
@@ -98,5 +98,5 @@ func (c *ChatManager) LogoutAllConnectionsFromChatUser(query ChatMessage) {
 	}
 
 	c.SendById_unsafe(reply)
-	c.Lock.Unlock()
+	c.Unlock()
 }
