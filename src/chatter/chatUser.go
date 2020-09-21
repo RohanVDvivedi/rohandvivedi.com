@@ -15,8 +15,6 @@ type ChatUser struct {
 	MessagesPendingToBeSent *ChatMessageQueue
 
 	ChatConnections map[string]*ChatConnection
-
-	ChatGroups map[string]*ChatGroup
 }
 
 func NewChatUser(name string, publicKey string) *ChatUser {
@@ -26,7 +24,6 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 		PublicKey: publicKey,
 		MessagesPendingToBeSent: NewChatMessageQueue(),
 		ChatConnections: make(map[string]*ChatConnection),
-		ChatGroups: make(map[string]*ChatGroup),
 	}
 	return user
 }
@@ -97,18 +94,4 @@ func (user *ChatUser) RemoveChatConnection(c *ChatConnection) {
 }
 func (user *ChatUser) GetChatConnectionCount() int {
 	return len(user.ChatConnections)
-}
-
-func (user *ChatUser) HasChatGroup(c *ChatGroup) bool {
-	_, found := user.ChatGroups[c.GetId()]
-	return found
-}
-func (user *ChatUser) AddChatGroup(c *ChatGroup) {
-	user.ChatGroups[c.GetId()] = c
-}
-func (user *ChatUser) RemoveChatGroup(c *ChatGroup) {
-	delete(user.ChatGroups, c.GetId())
-}
-func (user *ChatUser) GetChatGroupCount() int {
-	return len(user.ChatGroups)
 }

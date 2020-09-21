@@ -8,17 +8,12 @@ func (c *ChatManager) SendById(msg ChatMessage) bool {
 	c.RLock();	result := c.SendById_unsafe(msg);		c.RUnlock(); return result;
 }
 
-func (c *ChatManager) DeleteChatterer(Id string) {
-	c.Lock();	c.DeleteChatterer_unsafe(Id);			c.Unlock();
+func (c *ChatManager) NotifyOnlineUsers(notif ChatMessage) {
+	c.RLock();	c.NotifyOnlineUsers_unsafe(notif);		c.RUnlock();
 }
 
-func (c *ChatManager) NotifyOnlineUsers_unsafe(notif ChatMessage) {
-	for _, chatUser := range(c.ChatUsersByLogin) {
-		if(chatUser.IsOnline()) {
-			notif.To = chatUser.GetId()
-			c.AddChatMessageToChatManagersProcessingQueue(notif)
-		}
-	}
+func (c *ChatManager) DeleteChatterer(Id string) {
+	c.Lock();	c.DeleteChatterer_unsafe(Id);			c.Unlock();
 }
 
 func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {

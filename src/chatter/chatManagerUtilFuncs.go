@@ -37,6 +37,15 @@ func (c *ChatManager) SendById_unsafe(msg ChatMessage) bool {
 	return found
 }
 
+func (c *ChatManager) NotifyOnlineUsers_unsafe(notif ChatMessage) {
+	for _, chatUser := range(c.ChatUsersByLogin) {
+		if(chatUser.IsOnline()) {
+			notif.To = chatUser.GetId()
+			chatUser.SendMessage(notif)
+		}
+	}
+}
+
 func (c *ChatManager) DeleteChatterer_unsafe(Id string) {
 	chatterSendable, found := c.SendToMap[Id]
 	if(found) {
