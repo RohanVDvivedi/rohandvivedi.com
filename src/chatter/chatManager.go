@@ -81,7 +81,7 @@ func (c *ChatManager) ChatManagerProcessServerRequests() {
 					c.LoginAsChatUser(msg)
 				}
 				case "server-logout-from-chat-user" : {
-					c.LogoutAllConnectionsFromChatUser(msg)
+					c.LogoutFromChatUser(msg)
 				}
 			}
 		} else if(msg.IsValidChatMessage() || msg.IsValidServerResponse()) {
