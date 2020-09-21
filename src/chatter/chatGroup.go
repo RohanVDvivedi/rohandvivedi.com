@@ -16,6 +16,10 @@ func NewChatGroup(name string) *ChatGroup {
 	return grp
 }
 
+func (grp *ChatGroup) GetDetailsAsString() string {
+	return grp.GetId() + "," + grp.GetName()
+}
+
 // the message must be from a chat user who is part of the group or is the server
 func (grp *ChatGroup) SendMessage(msg ChatMessage) error {
 	_, senderIsGroupMember := grp.ChatUsers[msg.From]

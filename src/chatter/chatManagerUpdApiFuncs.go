@@ -41,11 +41,11 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 		
 			if(foundChatConnection && isChatConnection && JoinConnectionToUser(chatConnection, chatUser)) {
 				chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-				reply.Message = GetDetailsAsString(chatUser)
+				reply.Message = chatUser.GetDetailsAsString()
 				chatUser.ResendAllPendingMessages()
 
 				if(chatUser.GetChatConnectionCount() == 1) {
-					c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-new-user-notification",Message:GetDetailsAsString(chatUser)})
+					c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
 				}
 
 			} else {
@@ -72,11 +72,11 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 		chatUser, foundChatUser := c.ChatUsersByLogin[query.Messages[0] + query.Messages[1]]
 		if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
 			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-			reply.Message = GetDetailsAsString(chatUser)
+			reply.Message = chatUser.GetDetailsAsString()
 			chatUser.ResendAllPendingMessages()
 
 			if(chatUser.GetChatConnectionCount() == 1) {
-				c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:GetDetailsAsString(chatUser)})
+				c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
 			}
 
 		} else {
@@ -97,10 +97,10 @@ func (c *ChatManager) LogoutAllConnectionsFromChatUser(query ChatMessage) {
 	chatUser := chatConnection.User
 	if(foundChatConnection && isChatConnection && chatUser != nil && BreakConnectionFromUser(chatConnection, chatUser)) {
 		chatConnection.RemoveNameAndPublicKey()
-		reply.Message = chatConnection.GetId()
+		reply.Message = chatConnection.GetDetailsAsString()
 
 		if(chatUser.GetChatConnectionCount() == 0) {
-			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:GetDetailsAsString(chatUser)})
+			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
 		}
 	} else {
 		reply.Message = "ERROR"

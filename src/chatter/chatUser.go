@@ -2,6 +2,7 @@ package chatter
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type ChatUser struct {
@@ -26,6 +27,10 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 		ChatGroups: make(map[string]*ChatGroup),
 	}
 	return user
+}
+
+func (user *ChatUser) GetDetailsAsString() string {
+	return user.GetId() + "," + user.GetName() + "," + strconv.Itoa(user.GetChatConnectionCount())
 }
 
 // a chat user is online if user has atleast 1 active chat connection
