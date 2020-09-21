@@ -34,11 +34,7 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 				chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 				reply.Message = chatUser.GetDetailsAsString()
 				chatUser.ResendAllPendingMessages()
-
-				if(chatUser.GetChatConnectionCount() == 1) {
-					c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
-				}
-
+				c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
 			} else {
 				reply.Message = "ERROR"
 			}
@@ -65,11 +61,7 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 			reply.Message = chatUser.GetDetailsAsString()
 			chatUser.ResendAllPendingMessages()
-
-			if(chatUser.GetChatConnectionCount() == 1) {
-				c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
-			}
-
+			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-update-notification",Message:chatUser.GetDetailsAsString()})
 		} else {
 			reply.Message = "ERROR"
 		}
@@ -79,7 +71,7 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 	c.Unlock()
 }
 
-func (c *ChatManager) LogoutAllConnectionsFromChatUser(query ChatMessage) {
+func (c *ChatManager) LogoutFromChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
 	c.Lock()
 
@@ -89,10 +81,7 @@ func (c *ChatManager) LogoutAllConnectionsFromChatUser(query ChatMessage) {
 	if(foundChatConnection && isChatConnection && chatUser != nil && BreakConnectionFromUser(chatConnection, chatUser)) {
 		chatConnection.RemoveNameAndPublicKey()
 		reply.Message = chatConnection.GetDetailsAsString()
-
-		if(chatUser.GetChatConnectionCount() == 0) {
-			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
-		}
+		c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-update-notification",Message:chatUser.GetDetailsAsString()})
 	} else {
 		reply.Message = "ERROR"
 	}
