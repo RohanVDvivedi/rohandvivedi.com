@@ -1,3 +1,13 @@
+.chat-widget-container {
+	display: contents;
+}
+
+@media (max-width: 600px) {
+	.chat-widget-container {
+		display: none;
+	}
+}
+
 .chat-widget {
 	position: fixed;
 

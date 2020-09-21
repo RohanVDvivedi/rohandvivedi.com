@@ -57,6 +57,9 @@ export default class ChatWidget extends React.Component {
 		}).bind(this)
 	}
 	componentDidMount() {
+		if(window.screen.width < 600) {
+			return
+		}
 		Chatter.ReqConnection()
 	}
 	onChatBubbleClicked() {

@@ -20,7 +20,9 @@ class Root extends React.Component {
 		           		return (<Route path={ContentHash[buttonName]["route_path"]} component={ContentHash[buttonName]["component"]}/>)
 		        	})}
 	            </Switch>
-                <ChatWidget/>
+                <div class="chat-widget-container">
+                    <ChatWidget/>
+                </div>
             </BrowserRouter>
         );
     }
