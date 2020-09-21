@@ -12,15 +12,6 @@ func (c *ChatManager) DeleteChatterer(Id string) {
 	c.Lock.Lock();	c.DeleteChatterer_unsafe(Id);			c.Lock.Unlock();
 }
 
-func (c *ChatManager) NotifyOnlineUsers_unsafe(notif ChatMessage) {
-	for _, chatUser := range(c.ChatUsersByLogin) {
-		if(chatUser.IsOnline()) {
-			notif.To = chatUser.GetId()
-			c.AddChatMessageToChatManagersProcessingQueue(notif)
-		}
-	}
-}
-
 func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 	reply := StdReplyToOrigin(query)
 	c.Lock.Lock()
