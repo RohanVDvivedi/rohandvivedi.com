@@ -28,6 +28,9 @@ func (grp *ChatGroup) SendMessage(msg ChatMessage) error {
 }
 
 func (grp *ChatGroup) Destroy() {
+	for _, user := range grp.ChatUsers {
+		BreakUserFromGroup(user, grp)
+	}
 }
 
 /* Joinery methods */

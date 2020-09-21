@@ -75,6 +75,11 @@ func (cconn *ChatConnection) Destroy() {
 		values["chat_conns"] = chatConns
 		return nil
 	}, nil)
+
+	if(cconn.User != nil) {
+		BreakConnectionFromUser(cconn, cconn.User)
+	}
+
 	cconn.Connection.Close()
 }
 
