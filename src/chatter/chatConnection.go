@@ -40,7 +40,11 @@ func NewChatConnection(Connection *websocket.Conn) *ChatConnection {
 	return cconn
 }
 
-func (cconn *ChatConnection) SendMessage(msg ChatMessage) error {
+func (cconn *ChatConnection) GetDetailsAsString() string {
+	return cconn.GetId()
+}
+
+func (cconn *ChatConnection) SendMessage(msg ChatMessage) {
 	// if this connection was responsible for generating the message, then do not send it again
 	if(msg.OriginConnection != cconn.GetId()) {
 		return ChatMessageCodec.Send(cconn.Connection, msg)

@@ -8,7 +8,7 @@ func (c *ChatManager) GetAllUsers(query ChatMessage) {
 
 	if(IsChatUserId(query.From)) {
 		for _, chatUser := range(c.ChatUsersByLogin) {
-			reply.Messages = append(reply.Messages, GetDetailsAsString(chatUser))
+			reply.Messages = append(reply.Messages, chatUser.GetDetailsAsString())
 		}
 	} else {
 		reply.Message = "ERROR"
@@ -27,7 +27,7 @@ func (c *ChatManager) GetAllGroups(query ChatMessage) {
 			for _, chatterBox := range(chatterBoxesByName) {
 				_, isChatGroup := chatterBox.(*ChatGroup)
 				if(isChatGroup) {
-					reply.Messages = append(reply.Messages, GetDetailsAsString(chatterBox))
+					reply.Messages = append(reply.Messages, chatterBox.GetDetailsAsString())
 				}
 			}
 		}
@@ -46,7 +46,7 @@ func (c *ChatManager) GetAllOnlineUsers(query ChatMessage) {
 	if(IsChatUserId(query.From)) {
 		for _, chatUser := range(c.ChatUsersByLogin) {
 			if(chatUser.IsOnline()) {
-				reply.Messages = append(reply.Messages, GetDetailsAsString(chatUser))
+				reply.Messages = append(reply.Messages, chatUser.GetDetailsAsString())
 			}
 		}
 	} else {
@@ -65,7 +65,7 @@ func (c *ChatManager) GetAllMyGroups(query ChatMessage) {
 	chatUser, isChatUser := chatterSendable.(*ChatUser)
 	if(found && isChatUser) {
 		for _, chatGroup := range(chatUser.ChatGroups) {
-			reply.Messages = append(reply.Messages, GetDetailsAsString(chatGroup))
+			reply.Messages = append(reply.Messages, chatGroup.GetDetailsAsString())
 		}
 	} else {
 		reply.Message = "ERROR"
@@ -83,7 +83,7 @@ func (c *ChatManager) GetAllMyActiveConnections(query ChatMessage) {
 	chatUser, isChatUser := chatterSendable.(*ChatUser)
 	if(found && isChatUser) {
 		for _, chatConnection := range(chatUser.ChatConnections) {
-			reply.Messages = append(reply.Messages, GetDetailsAsString(chatConnection))
+			reply.Messages = append(reply.Messages, chatConnection.GetDetailsAsString())
 		}
 	} else {
 		reply.Message = "ERROR"
@@ -104,13 +104,13 @@ func (c *ChatManager) SearchChatterBox(query ChatMessage) {
 		if(IsChatId(query.Message)) {
 			chatterSendable, found := c.SendToMap[query.Message]
 			if(found) {
-				reply.Messages = append(reply.Messages, GetDetailsAsString(chatterSendable))
+				reply.Messages = append(reply.Messages, chatterSendable.GetDetailsAsString())
 			}
 		} else {
 			chatterBoxesByName, found := c.UsersAndGroups[query.Message]
 			if(found) {
 				for _, chatterBox := range chatterBoxesByName {
-					reply.Messages = append(reply.Messages, GetDetailsAsString(chatterBox))
+					reply.Messages = append(reply.Messages, chatterBox.GetDetailsAsString())
 				}
 			}
 		}

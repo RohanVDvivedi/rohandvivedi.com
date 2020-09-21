@@ -41,7 +41,7 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 		
 			if(foundChatConnection && isChatConnection && JoinConnectionToUser(chatConnection, chatUser)) {
 				chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-				reply.Message = GetDetailsAsString(chatUser)
+				reply.Message = chatUser.GetDetailsAsString()
 				chatUser.ResendAllPendingMessages()
 
 				if(chatUser.GetChatConnectionCount() == 1) {
@@ -72,7 +72,7 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 		chatUser, foundChatUser := c.ChatUsersByLogin[query.Messages[0] + query.Messages[1]]
 		if(foundChatConnection && isChatConnection && foundChatUser && JoinConnectionToUser(chatConnection, chatUser)) {
 			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
-			reply.Message = GetDetailsAsString(chatUser)
+			reply.Message = chatUser.GetDetailsAsString()
 			chatUser.ResendAllPendingMessages()
 
 			if(chatUser.GetChatConnectionCount() == 1) {
@@ -100,7 +100,7 @@ func (c *ChatManager) LogoutFromChatUser(query ChatMessage) {
 		reply.Message = chatConnection.GetId()
 
 		if(chatUser.GetChatConnectionCount() == 0) {
-			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:GetDetailsAsString(chatUser)})
+			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-new-user-notification",Message:chatUser.GetDetailsAsString()})
 		}
 	} else {
 		reply.Message = "ERROR"

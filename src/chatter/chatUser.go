@@ -31,6 +31,10 @@ func NewChatUser(name string, publicKey string) *ChatUser {
 	return user
 }
 
+func (user *ChatUser) GetDetailsAsString() string {
+	return user.GetId() + "," + user.GetName() + "," + strconv.Itoa(user.GetChatConnectionCount())
+}
+
 // a chat user is online if user has atleast 1 active chat connection
 func (user *ChatUser) IsOnline() bool {
 	return len(user.ChatConnections) > 0
@@ -47,13 +51,17 @@ func (user *ChatUser) ResendAllPendingMessages() {
 	user.MessagesPendingToBeSent = NewChatMessageQueue()
 }
 
-// message must be sent to the user or one of the groups that the user is member of
-// message must be sent by the server, or any chat user or 
-func (user *ChatUser) SendMessage(msg ChatMessage) error {
+func (user *ChatUser) SendMessage(msg ChatMessage) {
 	_, msgIsFromUsersConnections := user.ChatConnections[msg.From]
 	_, msgIsToAUsersGroupThatThisUserIsAPartOf := user.ChatGroups[msg.To]
 	if((msgIsFromUsersConnections || IsChatUserId(msg.From) || IsChatManagerId(msg.From)) && 
-	(msg.To == user.GetId() || msgIsToAUsersGroupThatThisUserIsAPartOf)) {
+				(msg.To == user.GetId() || msgIsToAUsersGroupThatThisUserIsAPartOf)) {
+		user.MessagesPendingToBeSent.Push(msg)
+	}
+}
+
+func (user *ChatUser) SendMessagesInLoop(msg ChatMessage) error {
+	for (true) {
 		sentTo := 0
 		for _, cconn := range user.ChatConnections {
 			err := cconn.SendMessage(msg)
@@ -103,17 +111,4 @@ func (user *ChatUser) RemoveChatGroup(c *ChatGroup) {
 }
 func (user *ChatUser) GetChatGroupCount() int {
 	return len(user.ChatGroups)
-}
-
-/* Below methods update modify session values, of all the chat connections of this chat user */
-func (user *ChatUser) GetNameAndPublicKey() (name string, publicKey string) {
-	return user.GetName(), user.PublicKey
-}
-
-func (user *ChatUser) SetNameAndPublicKey(name string, publicKey string) {
-	user.SetName(name)
-	user.PublicKey = publicKey
-	for _, cconn := range user.ChatConnections {
-		cconn.SetNameAndPublicKey(name, publicKey)
-	}
 }
