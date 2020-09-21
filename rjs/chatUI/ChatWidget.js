@@ -174,7 +174,7 @@ export default class ChatWidget extends React.Component {
 function createMessageWidgetObject(msg) {
 	return {
 		Id: msg.MessageId,
-		position: (msg.From == Chatter.UserId) ? "right" : "left",
+		position: (msg.From == Chatter.User.Id) ? "right" : "left",
 		type: 'text',
 		text: msg.Message,
 		date: msg.SentAt,

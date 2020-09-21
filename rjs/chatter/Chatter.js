@@ -220,7 +220,7 @@ function ChatterConnectionHandler(chatter, msgEvent) {
 				}
 				break;
 			}
-			case "server-new-user-notification" : {
+			case "server-event-update" : {
 				if(!isErrorEvent(msg)) {
 					var user = GetUserFromString(msg.Message)
 					if(user != null && user.Id != Chatter.User.Id) {

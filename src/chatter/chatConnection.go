@@ -88,6 +88,9 @@ func (cconn *ChatConnection) Destroy() {
 }
 
 /* Joinery methods */
+func (cconn *ChatConnection) HasChatUser() bool {
+	return cconn.User != nil
+}
 func (cconn *ChatConnection) GetChatUser() *ChatUser {
 	return cconn.User
 }

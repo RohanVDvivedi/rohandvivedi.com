@@ -48,7 +48,14 @@ func (c *ChatManager) NotifyOnlineUsers_unsafe(notif ChatMessage) {
 func (c *ChatManager) DeleteChatterer_unsafe(Id string) {
 	chatterSendable, found := c.SendToMap[Id]
 	if(found) {
+		var modifedChatUser *ChatUser = nil
+		chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+		if(isChatConnection && chatConnection.HasChatUser()) {
+			modifedChatUser = chatConnection.GetChatUser()
+		}
+
 		chatterSendable.Destroy();
+
 		delete(c.SendToMap, Id);
 		chatterBox, isChatterBox := chatterSendable.(ChatterBox)
 		if(isChatterBox) {
@@ -57,6 +64,10 @@ func (c *ChatManager) DeleteChatterer_unsafe(Id string) {
 		chatUser, isChatUser := chatterSendable.(*ChatUser)
 		if(isChatUser) {
 			delete(c.ChatUsersByLogin, chatUser.GetName() + chatUser.PublicKey);
+		}
+
+		if(modifedChatUser != nil) {
+			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-event-update",Message:modifedChatUser.GetDetailsAsString()})
 		}
 	}
 }
