@@ -144,6 +144,7 @@ export default class ChatWidget extends React.Component {
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">{this.state.User.Name}</div>
+					<Button className="chat-button" text='Sign out' onClick={this.onUserSignoutClicked.bind(this)}/>
 					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
 				</div>
 				<div class="chat-content">
