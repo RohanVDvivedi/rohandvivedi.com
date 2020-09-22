@@ -1,7 +1,6 @@
 package chatter
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -60,7 +59,7 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 		msgSent := false
 		activeConnectionCount := len(user.ChatConnections)
 		if(activeConnectionCount > 0) {
-			
+
 			sentTo := make(chan bool)
 			yetToSendComplete := activeConnectionCount
 			for _, cconn := range user.ChatConnections {
@@ -71,15 +70,12 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 					} else {
 						sentTo <- false
 					}
-				}
+				}()
 			}
 
 			for(!msgSent && yetToSendComplete > 0) {
-				result <- sentTo
-				if(result) {
-					msgSent = true
-				}
-				yetToSendComplete--;
+				msgSent = <- sentTo
+				yetToSendComplete--
 			}
 
 		}
