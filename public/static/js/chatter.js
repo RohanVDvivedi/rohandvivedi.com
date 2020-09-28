@@ -91,14 +91,14 @@ window.Chatter = {
 		return this.sendMessageRaw(this.ConnectionId,"server-logout-from-chat-user")
 	},
 
-	SendMessage(to, textMsg) {
+	SendMessage(to, textMsg, contextId = null) {
 		if(this.CurrentState != this.STATES.LOGGED_IN) {
 			return null
 		}
 		if(!(typeof(textMsg) === 'string' || textMsg instanceof String)) {
 			return null
 		}
-		return this.sendMessageRaw(this.User.Id,to,textMsg)
+		return this.sendMessageRaw(this.User.Id,to,textMsg,null,contextId)
 	},
 
 	RequestGenericQuery(serverReceiverName, queryParam = "") {
