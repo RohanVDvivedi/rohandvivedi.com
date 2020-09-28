@@ -137,7 +137,7 @@ window.Chatter = {
 	},
 }
 
-function GetRandomString(length) {
+function getRandomString(length) {
 	var result           = '';
 	var characters       = "+-/<[abcdefghijklmnopqrstuvwxyz](ABCDEFGHIJKLMNOPQRSTUVWXYZ){0123456789}>-_^#";
 	var charactersLength = characters.length;
@@ -155,11 +155,11 @@ function executeOnlyAFunctionIfNotNull(funcN, ...args) {
 	}
 }
 
-function sendMessageInternal(From,To,Message = null,Messages = null,MessageId = null,ContextId = null) {
+function sendMessageInternal(From,To,Message = null,Messages = null,ContextId = null) {
 	var msg = {
 		From: From,To: To,SentAt: new Date(),
 		Message: Message,Messages: Messages,
-		MessageId: MessageId,ContextId: ContextId
+		MessageId: getRandomString(64),ContextId: ContextId
 	}
 	Chatter.Connection.send(JSON.stringify(msg))
 	return msg
