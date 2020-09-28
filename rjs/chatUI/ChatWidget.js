@@ -143,8 +143,32 @@ export default class ChatWidget extends React.Component {
 		var chatsArray = []
 		if(showUsersWindow) {
 			for (const userId in this.state.ChatUsersById) {
-				chatsArray.push(createChatWidgetObject(this.state.ChatUsersById[userId]))
+				chatsArray.push(this.state.ChatUsersById[userId])
 			}
+			chatsArray = chatsArray.sort(function(a, b) {
+				if((a.User.ConnectionCount > 0 && b.User.ConnectionCount == 0) || (a.Unread > 0 && b.Unread == 0)) {
+					return -1;
+				} else if((a.User.ConnectionCount == 0 && b.User.ConnectionCount > 0) || (a.Unread == 0 && b.Unread > 0)) {
+					return 1;
+				} else {
+					if(a.Unread > 0 && b.Unread == 0) {
+						return -1;
+					} else if(a.Unread == 0 && b.Unread > 0) {
+						return 1;
+					} else {
+						var la = a.ChatMessageQueue.length == 0 ? null : a.ChatMessagesById[a.ChatMessageQueue[a.ChatMessageQueue.length - 1]]
+						var lb = b.ChatMessageQueue.length == 0 ? null : b.ChatMessagesById[b.ChatMessageQueue[b.ChatMessageQueue.length - 1]]
+						if(lb == null) {
+							return -1;
+						} else if (la == null) {
+							return 1;
+						} else {
+							return la.SentAt > lb.SentAt ? -1 : 1;
+						}
+					}
+				}
+			}).map(createChatWidgetObject)
+			console.log(chatsArray)
 		}
 
 		return(
