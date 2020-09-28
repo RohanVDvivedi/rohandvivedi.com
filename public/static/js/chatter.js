@@ -179,7 +179,7 @@ window.Chatter = {
 							return GetUserFromString(userStr)
 						}).filter(function(user){
 							return user != null && user.Id != this.User.Id
-						}).bind(this)
+						}.bind(this))
 						executeOnlyAFunctionIfNotNull(this.onChangeUsersList, results)
 					}
 					break;
