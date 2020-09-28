@@ -209,6 +209,7 @@ function createMessageWidgetObject(msg) {
 		text: msg.Message,
 		date: msg.SentAt,
 		status: msg.Status,
+		//replyButton: true,
 	}
 }
 
