@@ -63,6 +63,10 @@ func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 	}
 
 	msg.OriginConnection = cconn.GetId()
+
+	// the receive function is responsible to send the SENT receipt for every message, that is received and is processable
+	ChatMessageCodec.Send(cconn.Connection, ChatMessage{OriginConnection: cconn.GetId(), From: msg.To, To: cconn.GetId(), Message: msg.MessageId + "-SENT", ContextId: msg.MessageId})
+
 	return msg, nil
 }
 

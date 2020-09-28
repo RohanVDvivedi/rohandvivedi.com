@@ -49,11 +49,27 @@ export default class ChatWidget extends React.Component {
 		
 		Chatter.onChatMessage = (function(msg) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
-			ChatUsersById[msg.From].ChatMessagesById[msg.MessageId] = msg
-			ChatUsersById[msg.From].ChatMessageQueue.push(msg.MessageId)
-			if(msg.From != this.state.ActiveChatUserId) {
-				ChatUsersById[msg.From].Unread += 1
-				// send read receipt directly here
+			if(msg.ContextId == null) { // normal chat message
+				ChatUsersById[msg.From].ChatMessagesById[msg.MessageId] = msg
+				ChatUsersById[msg.From].ChatMessageQueue.push(msg.MessageId)
+				// send recv receipt here
+				Chatter.SendMessage(msg.From, msg.MessageId + "-RECV", msg.MessageId)
+				if(msg.From != this.state.ActiveChatUserId) {
+					ChatUsersById[msg.From].Unread += 1
+				} else {
+					// send read receipt directly here
+					Chatter.SendMessage(msg.From, msg.MessageId + "-READ", msg.MessageId)
+				}
+			} else { // is a sent, received or read receipt
+				if(msg.Message == msg.ContextId + "-SENT") {
+					ChatUsersById[msg.From].ChatMessagesById[msg.ContextId].Status = "sent"
+				} else if(msg.Message == msg.ContextId + "-RECV") {
+					ChatUsersById[msg.From].ChatMessagesById[msg.ContextId].Status = "received"
+				} else if(msg.Message == msg.ContextId + "-READ") {
+					ChatUsersById[msg.From].ChatMessagesById[msg.ContextId].Status = "read"
+				} else { // this message is a reply message
+
+				}
 			}
 			this.updateState({ChatUsersById: ChatUsersById})
 		}).bind(this)
@@ -75,13 +91,18 @@ export default class ChatWidget extends React.Component {
 	}
 	onChatListItemClicked(c) {
 		var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
-		ChatUsersById[c.Id].Unread = 0
-		this.updateState({ActiveChatUserId: c.Id, ChatUsersById: ChatUsersById})
 
 		// send read receipts until the last message
+		for (var i = 0; i < ChatUsersById[c.Id].Unread; i++) {
+			var msgId = ChatUsersById[c.Id].ChatMessageQueue[ChatUsersById[c.Id].ChatMessageQueue.length - 1 - i];
+			Chatter.SendMessage(c.Id, msgId + "-READ", msgId)
+		}
+		ChatUsersById[c.Id].Unread = 0
+		this.updateState({ActiveChatUserId: c.Id, ChatUsersById: ChatUsersById})
 	}
 	onMessageSend() {
 		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.input.value)
+		msg.Status = "waiting"
 		if(msg != null) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
 			ChatUsersById[this.state.ActiveChatUserId].ChatMessagesById[msg.MessageId] = msg
@@ -187,7 +208,7 @@ function createMessageWidgetObject(msg) {
 		type: 'text',
 		text: msg.Message,
 		date: msg.SentAt,
-		status: null,
+		status: msg.Status,
 	}
 }
 
