@@ -2,12 +2,12 @@ Data injestion
  ** add images to projects
 
 Front end
- ** ordering of chat users shown, showing owner at the top then the users are ordered by whether online and then by their number of unread messages
  ** search button integrations
  ** delete user button, or use dropdown for both
  * client side message storage using efficache for 10 days, web crypto api based auth and encryption for end to end client
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
+ * showing owner at the top of the chat
 
 Backend
  ** deletion and log out for chat users
