@@ -9,5 +9,9 @@ Front end
 
 Backend
  * deletion while loggin out for chat users, create group, delete group, add user to group, remove user from group
+ * login logout messages need appropriate ordering for sending these all different types of generated events and messages
+ * every message goes to queue and then to users or their connections
+ * users and groups are required to send sent receipts, if the message was comming from a user
+ * messages sent by a connection while being a user must reach all the connections
  * create url based owner login system
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
