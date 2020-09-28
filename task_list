@@ -2,12 +2,11 @@ Data injestion
  ** add images to projects
 
 Front end
- ** search button integrations
- ** delete user button, or use dropdown for both
+ ** delete user button, or use dropdown for both logout and logout plus delete
  * client side message storage using efficache for 10 days, web crypto api based auth and encryption for end to end client
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
- * showing owner at the top of the chat
+ * showing owner at the top of the chat, user search button integrations (as of now disabled, until functionality requirement is reviewed)
 
 Backend
  ** deletion and log out for chat users
