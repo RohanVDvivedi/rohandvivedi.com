@@ -34,7 +34,7 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 				chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 				reply.Message = chatUser.GetDetailsAsString()
 				chatUser.ResendAllPendingMessages()
-				c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-event-update",Message:chatUser.GetDetailsAsString()})
+				c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection,From:"server-event-update",Message:chatUser.GetDetailsAsString()})
 			} else {
 				reply.Message = "ERROR"
 			}
@@ -61,7 +61,7 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 			chatConnection.SetNameAndPublicKey(chatUser.GetName(), chatUser.PublicKey)
 			reply.Message = chatUser.GetDetailsAsString()
 			chatUser.ResendAllPendingMessages()
-			c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-event-update",Message:chatUser.GetDetailsAsString()})
+			c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-event-update",Message:chatUser.GetDetailsAsString()})
 		} else {
 			reply.Message = "ERROR"
 		}
@@ -81,7 +81,7 @@ func (c *ChatManager) LogoutFromChatUser(query ChatMessage) {
 	if(foundChatConnection && isChatConnection && chatUser != nil && BreakConnectionFromUser(chatConnection, chatUser)) {
 		chatConnection.RemoveNameAndPublicKey()
 		reply.Message = chatConnection.GetDetailsAsString()
-		c.NotifyOnlineUsers_unsafe(ChatMessage{From:"server-event-update",Message:chatUser.GetDetailsAsString()})
+		c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-event-update",Message:chatUser.GetDetailsAsString()})
 	} else {
 		reply.Message = "ERROR"
 	}
