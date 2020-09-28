@@ -11,6 +11,16 @@ export default class ChatWidget extends React.Component {
 	updateState(objNew) {
 		super.setState(Object.assign({}, this.state, objNew))
 	}
+	componentDidMount() {
+		if(window.screen.width < 600) {
+			return
+		}
+		Chatter.ReqConnection()
+		this.interval = setInterval(function(){this.setState(this.state)}.bind(this), 10000);
+	}
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -74,12 +84,6 @@ export default class ChatWidget extends React.Component {
 			this.updateState({ChatUsersById: ChatUsersById})
 		}).bind(this)
 	}
-	componentDidMount() {
-		if(window.screen.width < 600) {
-			return
-		}
-		Chatter.ReqConnection()
-	}
 	onChatBubbleClicked() {
 		this.updateState({WindowOpen: true})
 	}
@@ -124,7 +128,6 @@ export default class ChatWidget extends React.Component {
 		Chatter.ReqLogout()
 	}
 	render() {
-		console.log(this.state)
 
 		var showChatwindow = this.state.WindowOpen && this.state.User != null && this.state.ActiveChatUserId != null && this.state.ChatUsersById[this.state.ActiveChatUserId] != null
 		var showUsersWindow = this.state.WindowOpen && this.state.User != null
@@ -132,21 +135,16 @@ export default class ChatWidget extends React.Component {
 
 		var messagesArray = []
 		if(showChatwindow) {
-			console.log("show 1")
 			messagesArray = this.state.ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.map(function(MessageId) {
 				return createMessageWidgetObject(this.state.ChatUsersById[this.state.ActiveChatUserId].ChatMessagesById[MessageId])
 			}.bind(this))
-			console.log(messagesArray)
 		}
 
 		var chatsArray = []
 		if(showUsersWindow) {
-			console.log("show 2", this.state.ChatUsersById)
 			for (const userId in this.state.ChatUsersById) {
-				console.log("print build", userId)
 				chatsArray.push(createChatWidgetObject(this.state.ChatUsersById[userId]))
 			}
-			console.log(chatsArray)
 		}
 
 		return(
