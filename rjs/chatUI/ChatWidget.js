@@ -17,7 +17,7 @@ export default class ChatWidget extends React.Component {
 			WindowOpen: false,
 			User: null,	// {}
 			ActiveChatUserId: null,
-			ChatUsersById : null,	//{ User.Id => {User, Unread, ChatMessageQueue}
+			ChatUsersById : null,	//{ User.Id => {User, Unread, ChatMessageQueue, ChatMessagesById}
 		}
 
 		Chatter.onLogin = (function() {this.updateState({User: Chatter.User}); Chatter.ReqGetAllUsers()}).bind(this)
@@ -28,10 +28,11 @@ export default class ChatWidget extends React.Component {
 			var ChatUsersById = {}
 			var oldChatUsersById = Object.assign({}, this.state.ChatUsersById)
 			userList.forEach(function(user){
-				ChatUsersById[user.Id] = {User: user, Unread: 0, ChatMessageQueue: []}
+				ChatUsersById[user.Id] = {User: user, Unread: 0, ChatMessageQueue: [], ChatMessagesById: {}}
 				if(oldChatUsersById[user.Id] != null) {
 					ChatUsersById[user.Id].Unread = oldChatUsersById[user.Id].Unread
 					ChatUsersById[user.Id].ChatMessageQueue = oldChatUsersById[user.Id].ChatMessageQueue
+					ChatUsersById[user.Id].ChatMessagesById = oldChatUsersById[user.Id].ChatMessagesById
 				}
 			})
 			this.updateState({ChatUsersById: ChatUsersById})
@@ -39,7 +40,7 @@ export default class ChatWidget extends React.Component {
 		Chatter.onUserNotification = (function(user) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
 			if(ChatUsersById[user.Id] == null) {
-				ChatUsersById[user.Id] = {User: user, Unread: 0, ChatMessageQueue: []}
+				ChatUsersById[user.Id] = {User: user, Unread: 0, ChatMessageQueue: [], ChatMessagesById: {}}
 			} else {
 				ChatUsersById[user.Id].User = user;
 			}
@@ -48,7 +49,8 @@ export default class ChatWidget extends React.Component {
 		
 		Chatter.onChatMessage = (function(msg) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
-			ChatUsersById[msg.From].ChatMessageQueue.push(msg)
+			ChatUsersById[msg.From].ChatMessagesById[msg.MessageId] = msg
+			ChatUsersById[msg.From].ChatMessageQueue.push(msg.MessageId)
 			if(msg.From != this.state.ActiveChatUserId) {
 				ChatUsersById[msg.From].Unread += 1
 				// send read receipt directly here
@@ -82,7 +84,8 @@ export default class ChatWidget extends React.Component {
 		var msg = Chatter.SendMessage(this.state.ActiveChatUserId, this.refs.userMessage.input.value)
 		if(msg != null) {
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
-			ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.push(msg)
+			ChatUsersById[this.state.ActiveChatUserId].ChatMessagesById[msg.MessageId] = msg
+			ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.push(msg.MessageId)
 			this.updateState({ChatUsersById: ChatUsersById})
 		}
 		console.log(msg)
@@ -109,7 +112,9 @@ export default class ChatWidget extends React.Component {
 		var messagesArray = []
 		if(showChatwindow) {
 			console.log("show 1")
-			messagesArray = this.state.ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.map(createMessageWidgetObject)
+			messagesArray = this.state.ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.map(function(MessageId) {
+				return createMessageWidgetObject(this.state.ChatUsersById[this.state.ActiveChatUserId].ChatMessagesById[MessageId])
+			}.bind(this))
 			console.log(messagesArray)
 		}
 
@@ -187,7 +192,7 @@ function createMessageWidgetObject(msg) {
 }
 
 function createChatWidgetObject(chat) {
-	var latestMessage = chat.ChatMessageQueue.length == 0 ? null : chat.ChatMessageQueue[chat.ChatMessageQueue.length - 1]
+	var latestMessage = chat.ChatMessageQueue.length == 0 ? null : chat.ChatMessagesById[chat.ChatMessageQueue[chat.ChatMessageQueue.length - 1]]
 	return {
 		Id: chat.User.Id,
 		avatar: 'https://ui-avatars.com/api/?rounded=true&size=128&bold=true&name=' + chat.User.Name,
