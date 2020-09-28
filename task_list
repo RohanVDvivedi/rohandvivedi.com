@@ -9,9 +9,8 @@ Front end
  * showing owner at the top of the chat, user search button integrations (as of now disabled, until functionality requirement is reviewed)
 
 Backend
- ** deletion and log out for chat users
+ ** deletion and log out for chat users, login logout messages need appropriate ordering for sending these all different types of generated events, notifications and messages
  * chat group functionality : create group, delete group, add user to group, remove user from group
- * login logout messages need appropriate ordering for sending these all different types of generated events and messages
  * server side revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
  ** create url based owner login system
  * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
