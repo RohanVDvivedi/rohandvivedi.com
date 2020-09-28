@@ -5,7 +5,7 @@ import 'react-chat-elements/dist/main.css';
 
 import Icon from '../utility/Icon'
 
-import Chatter from '../chatter/Chatter'
+var Chatter = window.Chatter
 
 export default class ChatWidget extends React.Component {
 	updateState(objNew) {

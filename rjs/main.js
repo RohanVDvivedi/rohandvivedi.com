@@ -49,6 +49,3 @@ import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
 
 ReactDOM.render(<Root />, document.getElementById("root"));
-
-import Chatter from "./chatter/Chatter"
-window.Chatter = Chatter

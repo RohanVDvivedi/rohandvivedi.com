@@ -9,7 +9,7 @@ function getConnectionUrl() {
 	return (window.location.protocol.includes("https") ? "wss://" : "ws://") + window.location.host + "/soc/chatter"
 }
 
-var Chatter = {
+window.Chatter = {
 	CurrentState: STATES.DISCONNECTED,
 
 	Connection: null,
@@ -136,8 +136,6 @@ var Chatter = {
 		return thiz.RequestGenericQuery("server-search-chatter-box",query)
 	},
 }
-
-export default Chatter;
 
 function GetRandomString(length) {
    var result           = '';
