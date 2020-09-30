@@ -75,6 +75,13 @@ func main() {
 	mux.Handle("/api/owner", 				SetRequestCacheControl(24 * time.Hour, api.GetOwner));
 	mux.Handle("/api/search", 				SetRequestCacheControl(15 * time.Minute, api.ProjectsSearch));
 
+	// apis to login and log out as an owner
+	mux.Handle("/api/is_owner", 			(api.IsOwner));
+	mux.Handle("/api/req_login_owner_code", (api.ReqLoginOwnerCode));
+	mux.Handle("/api/login_owner",			(api.LoginOwner));
+	mux.Handle("/api/logout_owner",			AuthorizeIfOwner(api.LogoutOwner));
+
+	// apis authorized to only thw owner
 	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
 	mux.Handle("/api/sys_stats", 			AuthorizeIfOwner(api.GetServerSystemStats));
 	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
@@ -116,7 +123,6 @@ func main() {
 	muxDefaultHandlers := http.Handler(mux)
 
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config
-	ownerSessionId := ""
 	if(config.GetGlobalConfig().Create_user_sessions) {
 		fmt.Println("Initializing SessionStore");
 		session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
@@ -126,16 +132,13 @@ func main() {
 		} else {
 			muxDefaultHandlers = session.SessionManagerMiddleware(mux)
 		}
-
-		ownerSessionId = session.InitializeOwnerSession().SessionId
 	} else {
 		fmt.Println("Configuration declines setting up of SessionStore");
-		ownerSessionId = "****No SessionStore, hence no OwnerSessionId****"
 	}
 
 	// send deployment mail just before deployment
 	if(config.GetGlobalConfig().Auth_mail_client) {
-		mails.SendDeploymentMail(ownerSessionId)
+		mails.SendDeploymentMail()
 		mails.SendServerSystemStatsMail()
 	}
 	

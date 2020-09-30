@@ -17,7 +17,7 @@ import (
 // api handlers in this file
 var SendAnonymousMail = http.HandlerFunc(sendAnonymousMail)
 
-func SendDeploymentMail(ownerSessionId string) {
+func SendDeploymentMail() {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
 
 		temp := config.GetGlobalConfig()
@@ -25,8 +25,7 @@ func SendDeploymentMail(ownerSessionId string) {
 
 		jsonConfig, _ := json.MarshalIndent(temp, "", "    ")
 		mailBody := "Deployment Successfull\nconfig:\n" + string(jsonConfig)
-		mailBody += "\n\nSession Id : " + ownerSessionId + "\n"
-		mailBody += "\nrohandvivedi.com\n"
+		mailBody += "\n\nrohandvivedi.com\n"
 		
 		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Deployment Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
