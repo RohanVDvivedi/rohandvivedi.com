@@ -199,14 +199,16 @@ export default class ChatWidget extends React.Component {
 			(<div class="chat-container">
 				<div class="chat-header flex-row-container">
 					<div class="identifier">{this.state.User.Name}</div>
-					<div class={"dropdown-container" + (this.state.SettingsOpen ? " show-dropdown-content" : "")}>
-						<Icon onClick={this.onChatWindowSettingsClicked.bind(this)} iconPath="/icon/gear.png" height="20px" width="20px" padding="3px"/>
-						<div class="dropdown-content">
-							<div class="settings-button" onClick={this.onUserSignoutClicked.bind(this)}>Sign out</div>
-							<div class="settings-button" onClick={this.onUserSignoutAndDeleteUserClicked.bind(this)}>Delete user</div>
+					<div class="flex-row-container">
+						<div class={"dropdown-container" + (this.state.SettingsOpen ? " show-dropdown-content" : "")}>
+							<Icon onClick={this.onChatWindowSettingsClicked.bind(this)} iconPath="/icon/gear.png" height="20px" width="20px" padding="5px"/>
+							<div class="dropdown-content">
+								<div class="settings-button" onClick={this.onUserSignoutClicked.bind(this)}>Sign out</div>
+								<div class="settings-button" onClick={this.onUserSignoutAndDeleteUserClicked.bind(this)}>Delete user</div>
+							</div>
 						</div>
-					</div>				
-					<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="3px"/>
+						<Icon onClick={this.onChatWindowCloseClicked.bind(this)} iconPath="/icon/close.png" height="20px" width="20px" padding="5px"/>
+					</div>
 				</div>
 				<div class="chat-content">
 					<ChatList className='chat-list' dataSource={chatsArray} onClick={this.onChatListItemClicked.bind(this)}/>

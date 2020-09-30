@@ -15,7 +15,7 @@
 	bottom: 20px;
 
 	/* this will keep the chat always at the top */
-    z-index:9999;
+    z-index:100;
 
     font-family: Capriola, Helvetica, sans-serif;
 }

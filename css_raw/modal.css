@@ -10,7 +10,7 @@
   width: 100%;
 
   /* modal-background should be on top of everything, except the modal */
-  z-index:10000;
+  z-index:100;
 
   /* blur-out/hide the content of the body, using this background div */
   background-color: rgba(0,0,0,.4);

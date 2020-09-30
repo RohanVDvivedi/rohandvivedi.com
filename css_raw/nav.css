@@ -7,7 +7,7 @@
     width: 100%;
 
     /* this will keep the nav bar always at the top */
-    z-index:9999;
+    z-index:100;
 
     /* given you shaded pretty black type background */
     background: var(--nav_bar_background_color);
