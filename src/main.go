@@ -77,8 +77,8 @@ func main() {
 
 	// apis to login and log out as an owner
 	mux.Handle("/api/is_owner", 			(api.IsOwner));
-	mux.Handle("/api/req_login_owner_code", (api.ReqLoginOwnerCode));
-	mux.Handle("/api/login_owner",			(api.LoginOwner));
+	mux.Handle("/api/req_login_owner_code", AuthorizeIfHasSession(api.ReqLoginOwnerCode));
+	mux.Handle("/api/login_owner",			AuthorizeIfHasSession(api.LoginOwner));
 	mux.Handle("/api/logout_owner",			AuthorizeIfOwner(api.LogoutOwner));
 
 	// apis authorized to only thw owner

@@ -5,11 +5,6 @@ import (
 	"net/http"
 )
 
-// maintains global configuration for the application
-import (
-	"rohandvivedi.com/src/config"
-)
-
 // maintains session, (in memory)
 import (
 	"rohandvivedi.com/src/session"
@@ -48,6 +43,6 @@ func AuthorizeIfHasSession(next http.Handler) http.Handler {
 		}
 
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("You are not an authorized owner of rohandvivedi.com"))
+		w.Write([]byte("You are not an authorized to use this functionality of rohandvivedi.com, without a valid session id"))
 	})
 }
