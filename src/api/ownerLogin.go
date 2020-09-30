@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"encoding/json"
-	//"rohandvivedi.com/src/data"
+	"rohandvivedi.com/src/data"
 	"rohandvivedi.com/src/session"
 	"rohandvivedi.com/src/randstring"
-	//"rohandvivedi.com/src/config"
+	"rohandvivedi.com/src/config"
+	"rohandvivedi.com/src/mails"
 )
 
 // api handlers in this file
@@ -46,18 +47,27 @@ func reqLoginOwnerCode(w http.ResponseWriter, r *http.Request) {
 
 	if(logInCodeCanBeSent) {
 		loginCodeSent := false
-		messageLoginCodeString := "Your owner login code : " + loginCode
+		var ownerP *data.Person = nil
 
-		if(false) {
-			loginCodeSent = true
+		if(config.GetGlobalConfig().Auth_mail_client) {
+			if(ownerP == nil) {
+				ownerP = data.GetOwner()
+			}
+			if(ownerP.Email.Valid && ownerP.Email.String != "") {
+				loginCodeSent = mails.SendLoginCodeMail(loginCode)
+			}
 		}
 
+		smsLoginCodeString := "Your owner login code : " + loginCode
 		if(false) {
+			if(ownerP == nil) {
+				ownerP = data.GetOwner()
+			}
 			loginCodeSent = true
 		}
 
 		if(!loginCodeSent) {
-			fmt.Println(messageLoginCodeString)
+			fmt.Println(smsLoginCodeString)
 		}
 
 		w.Write(successTrueJson);

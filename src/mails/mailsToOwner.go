@@ -17,7 +17,7 @@ import (
 // api handlers in this file
 var SendAnonymousMail = http.HandlerFunc(sendAnonymousMail)
 
-func SendDeploymentMail() {
+func SendDeploymentMail() bool {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
 
 		temp := config.GetGlobalConfig()
@@ -29,7 +29,22 @@ func SendDeploymentMail() {
 		
 		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Deployment Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
+
+		return true
 	}
+	return false
+}
+
+func SendLoginCodeMail(loginCode string) bool {
+	if(config.GetGlobalConfig().Auth_mail_client) {
+
+		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid},
+			"Login code as requested", "\nYour owner login code : " + loginCode + "\n\nrohandvivedi.com\n");
+		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
+
+		return true
+	}
+	return false
 }
 
 func SendServerSystemStatsMail() {
