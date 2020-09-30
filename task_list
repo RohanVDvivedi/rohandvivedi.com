@@ -7,10 +7,11 @@ Front end
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
  * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
  * showing owner at the top of the chat, user search button integrations (as of now disabled, until functionality requirement is reviewed)
+ * setup Mardown language to HTML converter for converting to blog from apis as you get paragraphs, there is a ShowDown library in js, use that for this purpose
 
 Backend
  ** deletion and log out for chat users, login logout messages need appropriate ordering for sending these all different types of generated events, notifications and messages
  * chat group functionality : create group, delete group, add user to group, remove user from group
  * server side revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
  ** create url based owner login system
- * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality (* far future)
+ * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality, yhe blog gets stored as a MArdown Language in the database (* far future)
