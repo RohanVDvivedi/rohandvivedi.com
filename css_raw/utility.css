@@ -6,6 +6,13 @@ body {
   padding: 0;
 }
 
+/*
+    guide to set z-index : you must follow this;
+    fixed nav or modal or chat widget = 100
+    tooltip or dropdown = 200
+    loading = 300
+*/
+
 /* for font */
 @import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
 
