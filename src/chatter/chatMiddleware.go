@@ -7,7 +7,6 @@ import (
 
 import (
 	"rohandvivedi.com/src/session"
-	"rohandvivedi.com/src/config"
 )
 
 var AuthorizeAndStartChatHandler = AuthorizeChat(websocket.Handler(ChatConnectionHandler))
@@ -18,18 +17,16 @@ func AuthorizeChat(next http.Handler) http.Handler {
 		nameList, existsName := r.URL.Query()["name"];
 		publicKeyList, existsPublicKeyList := r.URL.Query()["publicKey"];
 
-		if(config.GetGlobalConfig().Create_user_sessions) {
-			s := session.GlobalSessionStore.GetExistingSession(r);
-			if(s != nil) {
-				if(existsName && existsPublicKeyList) {
-					InsertNameAndPublicKeyToSession(s, nameList[0], publicKeyList[0])
-				} else if ( (existsName && !existsPublicKeyList) || (!existsName && existsPublicKeyList) ) {
-					RemoveNameAndPublicKeyFromSession(s)
-				}
-
-				next.ServeHTTP(w, r)
-				return
+		s := session.GlobalSessionStore.GetExistingSession(r);
+		if(s != nil) {
+			if(existsName && existsPublicKeyList) {
+				InsertNameAndPublicKeyToSession(s, nameList[0], publicKeyList[0])
+			} else if ( (existsName && !existsPublicKeyList) || (!existsName && existsPublicKeyList) ) {
+				RemoveNameAndPublicKeyFromSession(s)
 			}
+
+			next.ServeHTTP(w, r)
+			return
 		}
 
 		// if any thing fails, just unautorize

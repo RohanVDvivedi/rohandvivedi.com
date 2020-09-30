@@ -10,7 +10,6 @@ type Config struct {
 	Environment				string
 
 	SSL_enabled				bool
-	Create_user_sessions	bool
 
 	Auth_mail_client 		bool
 

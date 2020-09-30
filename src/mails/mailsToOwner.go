@@ -54,7 +54,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 		Message 	string
 	}
 
-	if(!config.GetGlobalConfig().Auth_mail_client || !config.GetGlobalConfig().Create_user_sessions) {
+	if(!config.GetGlobalConfig().Auth_mail_client) {
 		json, _ := json.Marshal(ResponsePayload{false,"services offline"});
 		w.Write(json)
 		return;

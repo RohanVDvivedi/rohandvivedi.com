@@ -19,12 +19,6 @@ import (
 func AuthorizeIfOwner(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		// in the dev env, auth is to be bypassed
-		if(config.GetGlobalConfig().Environment == "dev") {
-			next.ServeHTTP(w, r)
-			return
-		}
-
 		// you must need a session to allow me to check if you are the owner of the website
 		s := session.GlobalSessionStore.GetExistingSession(r);
 		if(s != nil) {
@@ -48,8 +42,7 @@ func AuthorizeIfOwner(next http.Handler) http.Handler {
 func AuthorizeIfHasSession(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		s := session.GlobalSessionStore.GetExistingSession(r);
-		if(s != nil) {
+		if(session.GlobalSessionStore.GetExistingSession(r) != nil) {
 			next.ServeHTTP(w, r)
 			return
 		}

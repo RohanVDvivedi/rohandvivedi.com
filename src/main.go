@@ -66,7 +66,7 @@ func main() {
 	mux.Handle("/pages/", GzipCompressor(page.PageHandler));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/soc/chatter", chatter.AuthorizeAndStartChatHandler);
+	mux.Handle("/soc/chatter", AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
 
 	// attach all the handlers of all the apis here
 	mux.Handle("/api/person", 				SetRequestCacheControl(24 * time.Hour, api.GetPerson));
@@ -92,9 +92,7 @@ func main() {
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
 		
 		// allow anonymous mails only if user sessions are allowed to be created
-		if(config.GetGlobalConfig().Create_user_sessions) {
-			mux.Handle("/api/anon_mails", AuthorizeIfHasSession(mails.SendAnonymousMail));
-		}
+		mux.Handle("/api/anon_mails", AuthorizeIfHasSession(mails.SendAnonymousMail));
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
@@ -123,17 +121,11 @@ func main() {
 	muxDefaultHandlers := http.Handler(mux)
 
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config
-	if(config.GetGlobalConfig().Create_user_sessions) {
-		fmt.Println("Initializing SessionStore");
-		session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
-
-		if(config.GetGlobalConfig().Enable_user_activity_logging) {
-			muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(mux))
-		} else {
-			muxDefaultHandlers = session.SessionManagerMiddleware(mux)
-		}
+	session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
+	if(config.GetGlobalConfig().Enable_user_activity_logging) {
+		muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(mux))
 	} else {
-		fmt.Println("Configuration declines setting up of SessionStore");
+		muxDefaultHandlers = session.SessionManagerMiddleware(mux)
 	}
 
 	// send deployment mail just before deployment

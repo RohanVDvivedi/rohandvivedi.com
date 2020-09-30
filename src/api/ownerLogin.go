@@ -6,7 +6,7 @@ import (
 	"rohandvivedi.com/src/data"
 	"rohandvivedi.com/src/session"
 	"rohandvivedi.com/src/randstring"
-	"rohandvivedi.com/src/config"
+	//"rohandvivedi.com/src/config"
 )
 
 // api handlers in this file

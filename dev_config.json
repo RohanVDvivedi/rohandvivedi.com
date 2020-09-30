@@ -1,6 +1,5 @@
 {
 	"SSL_enabled": false,
-	"Create_user_sessions": true,
 
 	"Auth_mail_client": false,
 
