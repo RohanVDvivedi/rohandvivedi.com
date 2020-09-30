@@ -1,4 +1,4 @@
-.project-lister-contaier{
+.project-lister-container{
 	display: grid;
 
 	/* This line below funcking works out of the box
@@ -16,13 +16,13 @@
 }
 /* tablet */
 @media (max-width: 768px) {
-	.project-lister-contaier {
+	.project-lister-container {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 /* mobile */
 @media (max-width: 500px) {
-	.project-lister-contaier {
+	.project-lister-container {
 		grid-template-columns: repeat(1, 1fr);
 		margin-left: 5%;
 		margin-right: 5%;

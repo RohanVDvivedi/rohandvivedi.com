@@ -1,22 +1,22 @@
 /* Tool tip that pops up as soon as you hover over the tooltip-wrap*/
 .dropdown-container {
-  position: relative;
+	position: relative;
 }
 
 .dropdown-container .dropdown-content {
-  display: none;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  width: max-content;
-  position: absolute;
-  top: 100%;
-  right: 0%;
-  z-index: 100;
+	display: none;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	min-width: max-content;
+	position: absolute;
+	top: 100%;
+	right: 0%;
+	z-index: 100;
 }
 
 /* the dropdown content can show up, even if you add the show-dropdown-content class to the container class*/
 .dropdown-container.show-dropdown-content .dropdown-content, 
 .dropdown-container:hover .dropdown-content {
-  display: block;
+	display: block;
 }
 
 

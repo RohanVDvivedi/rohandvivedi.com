@@ -136,7 +136,7 @@ export default class ProjectsContent extends ApiComponent {
                 <ProjectSearchBar searchQueryStringBuiltCallback={this.searchQueryStringBuiltCallback.bind(this)}
                 loading={this.state.api_waiting_response}/>
 
-                <div class="grid-container project-lister-contaier">
+                <div class="grid-container project-lister-container">
                 	{(projects != null && projects.length > 0) ?
                         projects.map(function(project, i){return (<ProjectListerComponent project={project} />);}) : 
                         "Sorry, your search query returned no results..."}
