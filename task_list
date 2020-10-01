@@ -9,7 +9,6 @@ Front end
 Backend
  ** loginCode send also to owners phone number, setup sms gateway
  ** build default Rohan Dvivedi (owner) named chat client
- ** use index and database update apis related details form the database itself
  ** server side chat revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
 
 Far Future work
