@@ -1,6 +1,7 @@
 package chatter
 
 import (
+	"time"
 	"golang.org/x/net/websocket"
 )
 
@@ -12,8 +13,8 @@ var Chatters = NewChatManager()
 // never call this functions outside
 func ChatConnectionHandler(conn *websocket.Conn) {
 	chatConnection := NewChatConnection(conn);
-
 	Chatters.InsertChatterer(chatConnection);
+	chatConnection.SendMessage(ChatMessage{From:"server-chat-connection-created",To:chatConnection.GetId(),SentAt:time.Now(),Message:chatConnection.GetDetailsAsString()})
 	defer Chatters.DeleteChatterer(chatConnection.GetId());
 
 	name, publicKey, isAuthenticatable := chatConnection.GetNameAndPublicKey()

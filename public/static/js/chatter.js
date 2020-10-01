@@ -152,15 +152,11 @@ window.Chatter = {
 		if(isServerEvent(msg)) {
 			console.log("Server event", msg)
 			switch(msg.From){
-				case "server-chatters-creator" : {
+				case "server-chat-connection-created" : {
 					if(isChatConnectionId(msg.To)) {
 						this.ConnectionId = msg.To
 						this.CurrentState = this.STATES.CONNECTED
 						executeOnlyAFunctionIfNotNull(this.onConnected)
-					} else if (isChatUserId(msg.To)) {
-						// user created
-					} else if (isChatGroupId(msg.To)) {
-						// group created
 					}
 					break;
 				}

@@ -63,14 +63,14 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 			sentTo := make(chan bool)
 			yetToSendComplete := activeConnectionCount
 			for _, cconn := range user.ChatConnections {
-				go func() {
+				go func(cconn *ChatConnection) {
 					err := cconn.SendMessage(msg)
 					if(err == nil) {
 						sentTo <- true
 					} else {
 						sentTo <- false
 					}
-				}()
+				}(cconn)
 			}
 
 			for(!msgSent && yetToSendComplete > 0) {
