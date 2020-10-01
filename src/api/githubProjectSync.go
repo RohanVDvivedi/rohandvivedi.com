@@ -11,10 +11,18 @@ import (
 var SyncProjectFromGithubRepository = http.HandlerFunc(githubRepositorySyncUp)
 
 func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
-	ownerP = data.GetOwner()
+	ownerP := data.GetOwner()
 	if(ownerP == nil) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Website does not have an owner, fault in setup"))
+		return
+	}
+
+	// owner must have atleast 1 github account setup
+	ownerGithubSocials := ownerP.FindSocialsOfType("github")
+	if(len(ownerGithubSocials) == 0) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Owner does not have his github account setup on the portfolio"))
 		return
 	}
 
@@ -25,15 +33,12 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// find appropriate project on gihub of the owner
-	ownerGithubSocials := ownerP.FindSocialsByType("github")
-	if(len(ownerGithubSocials) > 0) {
-		projGithub, err := githubsync.GetGithubProject(ownerGithubSocials[0].Username, projectName[0]);
-		if(err != nil) {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("No such Github repository exists for the owner on his Github, has been found"))
-			return
-		}
+	// find appropriate project on github of the owner
+	projGithub, err := githubsync.GetGithubProject(ownerGithubSocials[0].Username.String, projectName[0]);
+	if(err != nil) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("No such Github repository exists for the owner on his Github, has been found"))
+		return
 	}
 
 	// this is the name that goes in the name of the project in project table
@@ -46,14 +51,14 @@ func githubRepositorySyncUp(w http.ResponseWriter, r *http.Request) {
 			Name: data.NewNullString(projectNameDb),
 			Descr: data.NewNullString(projGithub.Description),
 			ProgrLangs: data.NewNullString(projGithub.Language),
-			ProjectOwner: data.NewNullInt64(ownerP.Id),
+			ProjectOwner: data.NewNullInt64(ownerP.Id.Int64),
 		}
 		data.InsertProject(projdb)
 	} else {
 		projdb.Name = data.NewNullString(projectNameDb);
 		projdb.Descr = data.NewNullString(projGithub.Description);
 		projdb.ProgrLangs = data.NewNullString(projGithub.Language);
-		projdb.ProjectOwner = data.NewNullInt64(ownerP.Id);
+		projdb.ProjectOwner = data.NewNullInt64(ownerP.Id.Int64);
 		data.UpdateProject(projdb)
 	}
 
