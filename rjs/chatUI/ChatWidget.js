@@ -59,7 +59,15 @@ export default class ChatWidget extends React.Component {
 		}).bind(this)
 		
 		Chatter.onChatMessage = (function(msg) {
+			console.log("message received", msg)
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
+
+			// if the message is commming from an unknown user
+			// create dummy user and request for his credentials
+			if(ChatUsersById[msg.From] == null) {
+				ChatUsersById[msg.From] = {User: {Id: msg.From}, Unread: 0, ChatMessageQueue: [], ChatMessagesById: {}}
+			}
+
 			if(msg.ContextId == null) { // normal chat message
 				ChatUsersById[msg.From].ChatMessagesById[msg.MessageId] = msg
 				ChatUsersById[msg.From].ChatMessageQueue.push(msg.MessageId)
