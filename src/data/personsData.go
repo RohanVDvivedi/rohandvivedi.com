@@ -82,6 +82,19 @@ func (p *Person) FindSocials() []Social {
 	return s;
 }
 
+func (p *Person) FindSocialsOfType(socialType string) []Social {
+	s := []Social{}
+	rows, _ := Db.Query(socialSelectBaseQuery() + "where socials.person_id = ? and socials.link_type = ?", p.Id, socialType)
+	defer rows.Close()
+	for rows.Next() {
+		social_p := baseScanSocial(rows)
+		if social_p != nil {
+			s = append(s, *social_p)
+		}
+	}
+	return s;
+}
+
 // Person's Past-s
 type Past struct {
 	Id NullInt64

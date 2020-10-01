@@ -53,6 +53,7 @@ func InsertAllProjectsInSearchIndex() {
 
 func InsertProjectInSearchIndex(proj_db *data.Project) {
 	r := proj_db.GetProjectGithubRepositoryLink();
+	o := proj_db.GetProjectOwner();
 
 	p := projectSearchIndexObject{};
 
@@ -84,13 +85,20 @@ func InsertProjectInSearchIndex(proj_db *data.Project) {
 
 	p.ReadmeFiles = map[string]string{}
 
-	proj_db_hyperlinks := proj_db.GetProjectHyperlinks();
-	for _, proj_db_hyperlink := range proj_db_hyperlinks {
-		if(proj_db_hyperlink.Name.Valid && proj_db_hyperlink.LinkType.Valid && proj_db_hyperlink.LinkType.String == "GITHUB"){
-			readmeContent, err := githubsync.GetGithubFile("RohanVDvivedi", proj_db_hyperlink.Name.String, "README.md")
-			if(err == nil) {
-				p.ReadmeFiles[proj_db_hyperlink.Name.String] = readmeContent
+	if(o != nil) {
+		projectOwnerGithubSocials := o.FindSocialsOfType("GITHUB")
+		if(len(projectOwnerGithubSocials) > 0) {
+
+			proj_db_hyperlinks := proj_db.GetProjectHyperlinks();
+			for _, proj_db_hyperlink := range proj_db_hyperlinks {
+				if(proj_db_hyperlink.Name.Valid && proj_db_hyperlink.LinkType.Valid && proj_db_hyperlink.LinkType.String == "GITHUB"){
+					readmeContent, err := githubsync.GetGithubFile(projectOwnerGithubSocials[0].Username.String, proj_db_hyperlink.Name.String, "README.md")
+					if(err == nil) {
+						p.ReadmeFiles[proj_db_hyperlink.Name.String] = readmeContent
+					}
+				}
 			}
+
 		}
 	}
 

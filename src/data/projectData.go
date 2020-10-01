@@ -74,6 +74,10 @@ func InsertProject(p *Project) {
 	}
 }
 
+func (p *Project) GetProjectOwner() *Person {
+	return GetPersonById(int(p.ProjectOwner.Int64));
+} 
+
 // Project's hyperlinks
 type ProjectHyperlink struct {
 	Id NullInt64
