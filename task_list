@@ -2,7 +2,7 @@ Data injestion
  ** add images to projects
 
 Front end
- ** client side message storage using efficache for 10 days, web crypto api based auth and encryption for client side end to end encryption
+ ** client side message storage using efficache for 10 days, web crypto api based auth 
  ** showing chat user owner always at the top of the chat users list
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal
 
@@ -23,3 +23,4 @@ Far Future work
   * setup Mardown language to HTML converter for converting to blog from apis as you get paragraphs, there is a ShowDown library in js, use that for this purpose
   * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
   * simple login and logout admin page for the owner of the website, and to show owner api results/responses like cpu/memory stats, click to deploy option
+  * client side end to end double rachet encryption for chat messages
