@@ -115,20 +115,19 @@ func (c *ChatManager) LogoutFromAndDeleteChatUser(query ChatMessage) {
 	chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
 	chatUser := chatConnection.User
 	if(foundChatConnection && isChatConnection && chatUser != nil) {
+
+		reply.To = chatUser.GetId()
+		c.SendById_unsafe(reply)
 		
 		for _, CUConn := range(chatUser.ChatConnections) {
-			if(BreakConnectionFromUser(chatConnection, CUConn)) {
+			if(BreakConnectionFromUser(CUConn, chatUser)) {
 				CUConn.RemoveNameAndPublicKey()
 			}
 		}
 
-		reply.Message = chatConnection.GetDetailsAsString()
-		c.SendById_unsafe(reply)
-
-		reply = StdReplyToFrom(query)
-		c.SendById_unsafe(reply)
-
 		c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-event-update",Message:chatUser.GetDetailsAsString()})
+
+		c.DeleteChatterer_unsafe(chatUser.GetId());
 
 		errorOccurred = false
 	}
