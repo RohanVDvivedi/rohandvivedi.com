@@ -86,7 +86,7 @@ func InsertProjectInSearchIndex(proj_db *data.Project) {
 	p.ReadmeFiles = map[string]string{}
 
 	if(o != nil) {
-		projectOwnerGithubSocials := o.FindSocialsOfType("GITHUB")
+		projectOwnerGithubSocials := o.FindSocialsOfType("github")
 		if(len(projectOwnerGithubSocials) > 0) {
 
 			proj_db_hyperlinks := proj_db.GetProjectHyperlinks();
