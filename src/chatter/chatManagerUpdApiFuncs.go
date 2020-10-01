@@ -105,3 +105,29 @@ func (c *ChatManager) LogoutFromChatUser(query ChatMessage) {
 
 	c.Unlock()
 }
+
+func (c *ChatManager) LogoutFromAndDeleteChatUser(query ChatMessage) {
+	reply := StdReplyToOrigin(query)
+	errorOccurred := true
+	c.Lock()
+
+	chatterSendable, foundChatConnection := c.SendToMap[query.From]
+	chatConnection, isChatConnection := chatterSendable.(*ChatConnection)
+	chatUser := chatConnection.User
+	if(foundChatConnection && isChatConnection && chatUser != nil && BreakConnectionFromUser(chatConnection, chatUser)) {
+		chatConnection.RemoveNameAndPublicKey()
+		reply.Message = chatConnection.GetDetailsAsString()
+
+		c.SendById_unsafe(reply)
+		c.NotifyOnlineUsers_unsafe(ChatMessage{OriginConnection: query.OriginConnection, From:"server-event-update",Message:chatUser.GetDetailsAsString()})
+
+		errorOccurred = false
+	}
+
+	if(errorOccurred) {
+		reply.Message = "ERROR"
+		c.SendById_unsafe(reply)
+	}
+
+	c.Unlock()
+}

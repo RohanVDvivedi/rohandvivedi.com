@@ -140,7 +140,7 @@ export default class ChatWidget extends React.Component {
 		Chatter.ReqLogout()
 	}
 	onUserSignoutAndDeleteUserClicked() {
-		Chatter.ReqLogout()
+		Chatter.ReqLogoutAndDeleteUser()
 	}
 	render() {
 

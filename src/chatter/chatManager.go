@@ -69,6 +69,9 @@ func (c *ChatManager) ProcessMessage(msg ChatMessage) {
 			case "server-logout-from-chat-user" : {
 				c.LogoutFromChatUser(msg)
 			}
+			case "server-logout-from-and-delete-chat-user" : {
+				c.LogoutFromAndDeleteChatUser(msg)
+			}
 		}
 	} else if(msg.IsValidChatMessage() || msg.IsValidServerResponse()) {
 		c.SendById(msg)

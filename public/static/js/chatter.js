@@ -16,8 +16,10 @@ window.Chatter = {
 	onConnected: "Chatter connection is now established",
 
 	User: null,
+	onCreateUser: "User created",
 	onLogin: "User has been logged in",
 	onChatMessage: function(msg){console.log("Chat Message :", msg)},
+	onDeleteUser: "User deleted",
 	onLogout: "User logged out",
 
 	onChangeUsersList: function(userList){console.log("Users list :", userList)},
@@ -90,6 +92,12 @@ window.Chatter = {
 		}
 		return this.sendMessageRaw(this.ConnectionId,"server-logout-from-chat-user")
 	},
+	ReqLogoutAndDeleteUser() {
+		if(this.CurrentState != this.STATES.LOGGED_IN) {
+			return null
+		}
+		return this.sendMessageRaw(this.ConnectionId,"server-logout-from-and-delete-chat-user")
+	},
 
 	SendMessage(to, textMsg, contextId = null) {
 		if(this.CurrentState != this.STATES.LOGGED_IN) {
@@ -156,7 +164,15 @@ window.Chatter = {
 					}
 					break;
 				}
-				case "server-create-and-login-as-chat-user" :
+				case "server-create-and-login-as-chat-user" : {
+					if(!isErrorEvent(msg)) {
+						this.User = GetUserFromString(msg.Message)
+						this.CurrentState = this.STATES.LOGGED_IN
+						executeOnlyAFunctionIfNotNull(this.onCreateUser)
+						executeOnlyAFunctionIfNotNull(this.onLogin)
+					}
+					break;
+				}
 				case "server-login-as-chat-user" : {
 					if(!isErrorEvent(msg)) {
 						this.User = GetUserFromString(msg.Message)
@@ -170,6 +186,15 @@ window.Chatter = {
 						this.User = null
 						this.CurrentState = this.STATES.CONNECTED
 						executeOnlyAFunctionIfNotNull(this.onLogout)
+					}
+					break;
+				}
+				case "server-logout-from-and-delete-chat-user" : {
+					if(!isErrorEvent(msg)) {
+						this.User = null
+						this.CurrentState = this.STATES.CONNECTED
+						executeOnlyAFunctionIfNotNull(this.onLogout)
+						executeOnlyAFunctionIfNotNull(this.onDeleteUser)
 					}
 					break;
 				}
