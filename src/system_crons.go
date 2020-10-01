@@ -14,7 +14,7 @@ var c *cron.Cron = nil;
 func initializeSystemCron() {
 	if(config.GetGlobalConfig().Enable_all_cron) {
 		c = cron.New()
-		c.AddFunc("CRON_TZ=Asia/Kolkata 40 20 * * *", mails.SendServerSystemStatsMail)
+		c.AddFunc("CRON_TZ=Asia/Kolkata 40 20 * * *", func(){mails.SendServerSystemStatsMail()})
 		c.Start()
 	}
 }

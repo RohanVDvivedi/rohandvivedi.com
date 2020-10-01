@@ -9,6 +9,7 @@ import (
 
 import (
 	"rohandvivedi.com/src/config"
+	"rohandvivedi.com/src/data"
 	"rohandvivedi.com/src/mailManager"
 	"rohandvivedi.com/src/session"
 	"rohandvivedi.com/src/stat"
@@ -20,6 +21,11 @@ var SendAnonymousMail = http.HandlerFunc(sendAnonymousMail)
 func SendDeploymentMail() bool {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_deployment_mail) {
 
+		ownerP := data.GetOwner()
+		if(ownerP == nil || !ownerP.Email.Valid || ownerP.Email.String == "") {
+			return false
+		}
+
 		temp := config.GetGlobalConfig()
 		temp.From_password = "********"
 
@@ -27,7 +33,7 @@ func SendDeploymentMail() bool {
 		mailBody := "Deployment Successfull\nconfig:\n" + string(jsonConfig)
 		mailBody += "\n\nrohandvivedi.com\n"
 		
-		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Deployment Mail", mailBody);
+		msg := mailManager.WritePlainEmail([]string{ownerP.Email.String}, "Deployment Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 
 		return true
@@ -38,7 +44,12 @@ func SendDeploymentMail() bool {
 func SendLoginCodeMail(loginCode string) bool {
 	if(config.GetGlobalConfig().Auth_mail_client) {
 
-		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid},
+		ownerP := data.GetOwner()
+		if(ownerP == nil || !ownerP.Email.Valid || ownerP.Email.String == "") {
+			return false
+		}
+
+		msg := mailManager.WritePlainEmail([]string{ownerP.Email.String},
 			"Login code as requested", "\nYour owner login code : " + loginCode + "\n\nrohandvivedi.com\n");
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 
@@ -47,15 +58,22 @@ func SendLoginCodeMail(loginCode string) bool {
 	return false
 }
 
-func SendServerSystemStatsMail() {
+func SendServerSystemStatsMail() bool {
 	if(config.GetGlobalConfig().Auth_mail_client && config.GetGlobalConfig().Send_server_status_mail) {
+
+		ownerP := data.GetOwner()
+		if(ownerP == nil || !ownerP.Email.Valid || ownerP.Email.String == "") {
+			return false
+		}
 
 		json, _ := json.MarshalIndent(stat.GetServerSystemStats(), "", "    ")
 		mailBody := "Server System Stats:\n" + string(json)
 		
-		msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, "Server System Stats Mail", mailBody);
+		msg := mailManager.WritePlainEmail([]string{ownerP.Email.String}, "Server System Stats Mail", mailBody);
 		mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
+		return true
 	}
+	return false
 }
 
 func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +88,13 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if(!config.GetGlobalConfig().Auth_mail_client) {
+		json, _ := json.Marshal(ResponsePayload{false,"services offline"});
+		w.Write(json)
+		return;
+	}
+
+	ownerP := data.GetOwner()
+	if(ownerP == nil || !ownerP.Email.Valid || ownerP.Email.String == "") {
 		json, _ := json.Marshal(ResponsePayload{false,"services offline"});
 		w.Write(json)
 		return;
@@ -124,7 +149,7 @@ func sendAnonymousMail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	msg := mailManager.WritePlainEmail([]string{config.GetGlobalConfig().From_mailid}, 
+	msg := mailManager.WritePlainEmail([]string{ownerP.Email.String}, 
 	"Anonymous User \"" + userSessionId + "\" : " + pld.Subject + " -> " + strconv.Itoa(userAnonMailCount), pld.Body);
 	mailManager.SendMail([]string{config.GetGlobalConfig().From_mailid}, msg)
 

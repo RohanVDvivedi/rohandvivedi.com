@@ -2,18 +2,25 @@ Data injestion
  ** add images to projects
 
 Front end
- ** simple login and logout admin page for the owner of the website
- ** client side message storage using efficache for 10 days, web crypto api based auth and encryption for end to end client
- ** showing owner always at the top of the chat users list
- * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal (* future)
- * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
- * user search button integrations (as of now disabled, until functionality requirement is reviewed)
- * setup Mardown language to HTML converter for converting to blog from apis as you get paragraphs, there is a ShowDown library in js, use that for this purpose
+ ** client side message storage using efficache for 10 days, web crypto api based auth and encryption for client side end to end encryption
+ ** showing chat user owner always at the top of the chat users list
+ * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal
 
 Backend
- ** deletion and log out for chat users functionality and its integration, login logout messages need appropriate ordering for sending these all different types of generated events, notifications and messages, beuild default owner named chat client
- ** use index and database update apis related details form the database itself
- * chat group functionality : create group, delete group, add user to group, remove user from group
- ** server side revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
  ** loginCode send also to owners phone number, setup sms gateway
- * allow your self to build structured database backed blogging logic for your application, which includes like, share, comment functionality, yhe blog gets stored as a MArdown Language in the database (* far future)
+ ** build default Rohan Dvivedi (owner) named chat client
+ ** use index and database update apis related details form the database itself
+ ** server side chat revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
+
+Far Future work
+ DB schema changes
+  * allow yourself to build structured database backed blogging logic for your application, which includes like, share, comment functionality, yhe blog gets stored as a MArdown Language in the database
+
+ Backend
+  * chat group functionality : create group, delete group, add user to group, remove user from group
+  * enable go offline option for chat users
+
+ Frontend tasks
+  * setup Mardown language to HTML converter for converting to blog from apis as you get paragraphs, there is a ShowDown library in js, use that for this purpose
+  * provide users with a portal to give them a very simple CV in google docs and in pdf by colleting their data, rendering it in multiple available templates and even latex, and allow then to easily switch between them (* future)
+  * simple login and logout admin page for the owner of the website, and to show owner api results/responses like cpu/memory stats, click to deploy option
