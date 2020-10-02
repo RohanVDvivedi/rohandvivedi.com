@@ -57,27 +57,12 @@ func (user *ChatUser) SendMessage(msg ChatMessage) error {
 	(msg.To == user.GetId() || msgIsToAUsersGroupThatThisUserIsAPartOf)) {
 		
 		msgSent := false
-		activeConnectionCount := len(user.ChatConnections)
-		if(activeConnectionCount > 0) {
-
-			sentTo := make(chan bool)
-			yetToSendComplete := activeConnectionCount
+		if(len(user.ChatConnections) > 0) {
 			for _, cconn := range user.ChatConnections {
-				go func(cconn *ChatConnection) {
-					err := cconn.SendMessage(msg)
-					if(err == nil) {
-						sentTo <- true
-					} else {
-						sentTo <- false
-					}
-				}(cconn)
+				if(cconn.SendMessage(msg) == nil) {
+					msgSent = true
+				}
 			}
-
-			for(!msgSent && yetToSendComplete > 0) {
-				msgSent = <- sentTo
-				yetToSendComplete--
-			}
-
 		}
 		if(!msgSent) {
 			user.MessagesPendingToBeSent.Push(msg)

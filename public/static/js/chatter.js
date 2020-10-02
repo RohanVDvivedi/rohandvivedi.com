@@ -145,12 +145,10 @@ window.Chatter = {
 	/* Access to below source is restricted to only those people who are familiar with chatter protocol */
 
 	chatterConnectionHandler(msgEvent) {
-
 		var msg = JSON.parse(msgEvent.data)
 		msg.SentAt = Date.parse(msg.SentAt)
 
 		if(isServerEvent(msg)) {
-			console.log("Server event", msg)
 			switch(msg.From){
 				case "server-chat-connection-created" : {
 					if(isChatConnectionId(msg.To)) {

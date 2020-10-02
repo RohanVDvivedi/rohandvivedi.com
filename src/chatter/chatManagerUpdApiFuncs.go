@@ -45,7 +45,6 @@ func (c *ChatManager) CreateAndLoginAsChatUser(query ChatMessage) {
 		c.SendById_unsafe(reply)
 	}
 
-	c.SendById_unsafe(reply)
 	c.Unlock()
 }
 
@@ -76,7 +75,6 @@ func (c *ChatManager) LoginAsChatUser(query ChatMessage) {
 		c.SendById_unsafe(reply)
 	}
 
-	c.SendById_unsafe(reply)
 	c.Unlock()
 }
 

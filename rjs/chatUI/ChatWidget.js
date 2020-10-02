@@ -31,9 +31,9 @@ export default class ChatWidget extends React.Component {
 			ChatUsersById : null,	//{ User.Id => {User, Unread, ChatMessageQueue, ChatMessagesById}
 		}
 
-		Chatter.onLogin = (function() {this.updateState({User: Chatter.User}); Chatter.ReqGetAllUsers()}).bind(this)
-		Chatter.onLogout = (function() {this.updateState({User: null,})}).bind(this)
-		Chatter.onClose = (function() {this.updateState({WindowOpen:false,User: null})}).bind(this)
+		Chatter.onLogin = (function() {this.updateState({User: Chatter.User, ActiveChatUserId: null, ChatUsersById: {}}); Chatter.ReqGetAllUsers()}).bind(this)
+		Chatter.onLogout = (function() {this.updateState({User: null, ActiveChatUserId: null, ChatUsersById: null})}).bind(this)
+		Chatter.onClose = (function() {this.updateState({WindowOpen: false, SettingsOpen: false, User: null, ActiveChatUserId: null, ChatUsersById: null})}).bind(this)
 
 		Chatter.onChangeUsersList = (function(userList) {
 			var ChatUsersById = {}
@@ -59,7 +59,6 @@ export default class ChatWidget extends React.Component {
 		}).bind(this)
 		
 		Chatter.onChatMessage = (function(msg) {
-			console.log("message received", msg)
 			var ChatUsersById = Object.assign({}, this.state.ChatUsersById)
 
 			// if the message is commming from an unknown user
@@ -94,13 +93,13 @@ export default class ChatWidget extends React.Component {
 		}).bind(this)
 	}
 	onChatBubbleClicked() {
-		this.updateState({WindowOpen: true})
+		this.updateState({WindowOpen: true, SettingsOpen: false})
 	}
 	onChatMessagesWindowCloseClicked() {
 		this.updateState({ActiveChatUserId: null})
 	}
 	onChatWindowCloseClicked() {
-		this.updateState({WindowOpen: false})
+		this.updateState({WindowOpen: false, ActiveChatUserId: null})
 	}
 	onChatWindowSettingsClicked() {
 		this.updateState({SettingsOpen: !this.state.SettingsOpen})
@@ -125,7 +124,6 @@ export default class ChatWidget extends React.Component {
 			ChatUsersById[this.state.ActiveChatUserId].ChatMessageQueue.push(msg.MessageId)
 			this.updateState({ChatUsersById: ChatUsersById})
 		}
-		console.log(msg)
 	}
 	onUserSearch() {
 
@@ -183,7 +181,6 @@ export default class ChatWidget extends React.Component {
 					}
 				}
 			}).map(createChatWidgetObject)
-			console.log(chatsArray)
 		}
 
 		return(

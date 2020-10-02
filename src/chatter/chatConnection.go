@@ -42,30 +42,30 @@ func (cconn *ChatConnection) GetDetailsAsString() string {
 }
 
 func (cconn *ChatConnection) SendMessage(msg ChatMessage) error {
-	// if this connection was responsible for generating the message, then do not send it again
-	if(msg.OriginConnection != cconn.GetId()) {
-		return ChatMessageCodec.Send(cconn.Connection, msg)
-	}
-	return nil
+	msg.OriginConnection = ""
+	return ChatMessageCodec.Send(cconn.Connection, msg)
 }
 
 func (cconn *ChatConnection) ReceiveMessage() (ChatMessage, error) {
 	msg := ChatMessage{}
 	err := ChatMessageCodec.Receive(cconn.Connection, &msg)
-	if(err != nil) {	// this could mean, connection closed or malformed chatMessage packet
+	if(err != nil) {
+		// this could mean, connection closed or malformed chatMessage packet, both of which are fatal
 		return msg, err
 	}
+	msg.OriginConnection = cconn.GetId()
 
-	// the message sender field must be empty or user id of the user
+	// the message sender field must be empty or user id of the user, if he/she is logged in, No fraud must be allowed
 	msgSenderFromFieldValid := (msg.From == cconn.GetId()) || (cconn.User != nil && msg.From == cconn.User.GetId())
 	if (!msgSenderFromFieldValid){
 		return ChatMessage{}, errors.New("ERROR user attempting identity theft")
 	}
 
-	msg.OriginConnection = cconn.GetId()
-
+	// # TODO this needs to be moved to users logic, because if a message is sent to or not is a users responsibility to acknoledge
 	// the receive function is responsible to send the SENT receipt for every message, that is received and is processable
-	ChatMessageCodec.Send(cconn.Connection, ChatMessage{OriginConnection: cconn.GetId(), From: msg.To, To: cconn.GetId(), Message: msg.MessageId + "-SENT", ContextId: msg.MessageId})
+	if(IsChatId(msg.To)) {
+		ChatMessageCodec.Send(cconn.Connection, ChatMessage{From: msg.To, To: cconn.GetId(), Message: msg.MessageId + "-SENT", ContextId: msg.MessageId})
+	}
 
 	return msg, nil
 }
