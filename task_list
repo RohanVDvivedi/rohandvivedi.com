@@ -7,6 +7,7 @@ Front end
  * show gallery of project image on clicking, enlarge images in clicking in a modal or start youtube embed video in that modal
 
 Backend
+ ** cookie secure true, and SameSite=Lax, security purposes
  ** loginCode send also to owners phone number, setup sms gateway
  ** build default Rohan Dvivedi (owner) named chat client
  ** server side chat revamp on new branch :->every message goes to queue and then to users or their connections, users and groups thhemselves are required to send sent receipts, if the message was comming from a user, messages sent by a connection while being a user must reach all the connections
