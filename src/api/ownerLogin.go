@@ -55,16 +55,14 @@ func reqLoginOwnerCode(w http.ResponseWriter, r *http.Request) {
 				ownerP = data.GetOwner()
 			}
 			if(ownerP.Email.Valid && ownerP.Email.String != "") {
-				fmt.Println("seding mail")
 				loginCodeSent = mails.SendLoginCodeMail(loginCode)
 			}
 		}
 
-		if(config.GetGlobalConfig().Fast2SMS_auth != "") {
+		if(false && config.GetGlobalConfig().Fast2SMS_auth != "") {
 			if(ownerP == nil) {
 				ownerP = data.GetOwner()
 			}
-			fmt.Println("sending sms")
 			loginCodeSent = loginCodeSent || sms.SendLoginCode("6352496059", loginCode)
 		}
 
