@@ -27,6 +27,8 @@ type Config struct {
 
 	SQLite3_database_file	string
 	Bleve_search_index_file	string
+
+	Fast2SMS_auth 			string
 }
 
 var configGlobal *Config = nil;

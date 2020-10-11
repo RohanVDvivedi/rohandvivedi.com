@@ -16,5 +16,7 @@
 	"From_password": "",
 
 	"SQLite3_database_file": "./db/data-mod.db",
-	"Bleve_search_index_file" : "./db/dev-project_search.bleve"
+	"Bleve_search_index_file" : "./db/dev-project_search.bleve",
+
+	"Fast2SMS_auth": ""
 }
