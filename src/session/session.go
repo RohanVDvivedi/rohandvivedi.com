@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+import (
+	"rohandvivedi.com/src/config"
+)
+
 // this is a per user session struct
 // the Values map will store a map to key values that we will use to store certain data corresponding to the user
 type Session struct {
@@ -44,7 +48,9 @@ func (ss *SessionStore) createNewSessionCookie(session *Session) *http.Cookie {
 		Value: session.SessionId,
 		Expires: session.LastAccessed.Add(ss.MaxLifeDuration),
 		HttpOnly: true,
+		Secure: config.GetGlobalConfig().SSL_enabled,
 		Path: "/",
+		SameSite: http.SameSiteLaxMode,
 	}
 }
 
