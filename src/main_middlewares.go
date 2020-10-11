@@ -17,7 +17,14 @@ import (
 // i.e. request path ending in "/"
 func Send404OnFolderRequest(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        if strings.HasSuffix(r.URL.Path, "/") && len(r.URL.Path) != 1 {
+        // if some one is asking for a folder
+        if((strings.HasSuffix(r.URL.Path, "/") && len(r.URL.Path) != 1) ||
+
+        // or if some one is asking for hidden or any path reference from ./ or ../ or ~
+            strings.Contains(r.URL.Path, "~") ||
+            strings.Contains(r.URL.Path, "..") ||
+            strings.Contains(r.URL.Path, "./") ||
+            strings.Contains(r.URL.Path, "/.")) {
             http.NotFound(w, r)
             return
         }
