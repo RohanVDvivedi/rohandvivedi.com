@@ -9,6 +9,7 @@ import (
 	"rohandvivedi.com/src/randstring"
 	"rohandvivedi.com/src/config"
 	"rohandvivedi.com/src/mails"
+	"rohandvivedi.com/src/sms"
 )
 
 // api handlers in this file
@@ -54,20 +55,21 @@ func reqLoginOwnerCode(w http.ResponseWriter, r *http.Request) {
 				ownerP = data.GetOwner()
 			}
 			if(ownerP.Email.Valid && ownerP.Email.String != "") {
+				fmt.Println("seding mail")
 				loginCodeSent = mails.SendLoginCodeMail(loginCode)
 			}
 		}
 
-		smsLoginCodeString := "Your owner login code : " + loginCode
-		if(false) {
+		if(config.GetGlobalConfig().Fast2SMS_auth != "") {
 			if(ownerP == nil) {
 				ownerP = data.GetOwner()
 			}
-			loginCodeSent = true
+			fmt.Println("sending sms")
+			loginCodeSent = loginCodeSent || sms.SendLoginCode("6352496059", loginCode)
 		}
 
 		if(!loginCodeSent) {
-			fmt.Println(smsLoginCodeString)
+			fmt.Println("owner login code : " + loginCode)
 		}
 
 		w.Write(successTrueJson);
