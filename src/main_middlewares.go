@@ -15,7 +15,7 @@ import (
 
 // this function is a middleware to send 404 response, if the requested path is a folder
 // i.e. request path ending in "/"
-func Send404OnFolderRequest(next http.Handler) http.Handler {
+func SanitizeFileRequestPath(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         // if some one is asking for a folder
         if((strings.HasSuffix(r.URL.Path, "/") && len(r.URL.Path) != 1) ||

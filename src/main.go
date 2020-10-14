@@ -60,10 +60,10 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", GzipCompressor(Send404OnFolderRequest(SetRequestCacheControl(24 * time.Hour, fs))))
+	mux.Handle("/", GzipCompressor(SanitizeFileRequestPath(SetRequestCacheControl(24 * time.Hour, fs))))
 
 	// attach all the handlers of all the pages here
-	mux.Handle("/pages/", GzipCompressor(page.PageHandler));
+	mux.Handle("/pages/", GzipCompressor(SanitizeFileRequestPath(page.PageHandler)));
 
 	// attach all the handlers for websockets here
 	mux.Handle("/soc/chatter", AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
