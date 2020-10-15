@@ -47,6 +47,7 @@ import "../css_raw/utility.css"
 import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
 
+// cloud flare trace tracing
 fetch("https://www.cloudflare.com/cdn-cgi/trace").then(res => res.text())
 .then(json => {fetch(window.location.origin.toString() + "/api/cloudflare_trace", {method: "post",body: json})})
 
