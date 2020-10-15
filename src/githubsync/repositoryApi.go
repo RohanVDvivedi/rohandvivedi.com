@@ -115,6 +115,7 @@ func GetGithubProject(userName string, projectName string) (*GithubProject, erro
 	GetApiRequestPath := getGithubRepositoryApiUrl(userName, projectName)
 
 	resp, err := http.Get(GetApiRequestPath)
+	defer resp.Body.Close()
 	if(err != nil) {
 		return nil, err
 	}

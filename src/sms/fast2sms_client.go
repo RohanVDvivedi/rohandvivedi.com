@@ -53,6 +53,7 @@ func SendLoginCode(dest string, loginCode string) bool {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
     req.Header.Add("Cache-Control", "no-cache")
 	resp, err := client.Do(req)
+	defer resp.Body.Close()
 	if(err != nil || resp.StatusCode != 200) {
 		return false
 	}

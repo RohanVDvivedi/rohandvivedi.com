@@ -15,6 +15,7 @@ func GetGithubFile(userName string, projectName string, fileName string) (string
 	GetApiRequestPath := getGithubRawFileDownloadLink(userName, projectName, fileName)
 
 	resp, err := http.Get(GetApiRequestPath)
+	defer resp.Body.Close()
 	if(err != nil) {
 		return "", err
 	}
