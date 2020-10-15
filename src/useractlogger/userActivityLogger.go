@@ -13,7 +13,7 @@ func init() {
     if err != nil {
         log.Fatal(err)
     }
-	llog = log.New(file, "", log.Ldate|log.Ltime)
+	llog = log.New(file, "", log.Ldate|log.Ltime|log.LUTC)
 }
 
 func LogUserActivity(sId string, path string, data string) bool {
