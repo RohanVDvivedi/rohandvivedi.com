@@ -75,6 +75,8 @@ func main() {
 	mux.Handle("/api/owner", 				SetRequestCacheControl(24 * time.Hour, api.GetOwner));
 	mux.Handle("/api/search", 				SetRequestCacheControl(15 * time.Minute, api.ProjectsSearch));
 
+	mux.Handle("/api/cloudflare_trace", 	api.CloudflareTrace);
+
 	// apis to login and log out as an owner
 	mux.Handle("/api/is_owner", 			(api.IsOwner));
 	mux.Handle("/api/req_login_owner_code", AuthorizeIfHasSession(api.ReqLoginOwnerCode));
@@ -118,15 +120,9 @@ func main() {
 		defer deinitializeSystemCron()
 	}
 
-	muxDefaultHandlers := http.Handler(mux)
-
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config
 	session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
-	if(config.GetGlobalConfig().Enable_user_activity_logging) {
-		muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(mux))
-	} else {
-		muxDefaultHandlers = session.SessionManagerMiddleware(mux)
-	}
+	muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(http.Handler(mux)))
 
 	// send deployment mail just before deployment
 	if(config.GetGlobalConfig().Auth_mail_client) {

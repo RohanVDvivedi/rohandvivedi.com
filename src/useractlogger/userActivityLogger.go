@@ -3,6 +3,7 @@ package useractlogger
 import (
 	"os"
 	"log"
+	"rohandvivedi.com/src/config"
 )
 
 var llog *log.Logger = nil
@@ -15,6 +16,8 @@ func init() {
 	llog = log.New(file, "", log.Ldate|log.Ltime)
 }
 
-func LogUserActivity(sId string, path string, data string) {
-	llog.Printf("%s %s %s\n", sId, path, data);
+func LogUserActivity(sId string, path string, data string) bool {
+	if(config.GetGlobalConfig().Enable_user_activity_logging) {
+		llog.Printf("%s %s %s\n", sId, path, data);
+	}
 }

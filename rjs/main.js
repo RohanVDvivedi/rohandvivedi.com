@@ -8,18 +8,18 @@ import ChatWidget from "./chatUI/ChatWidget";
 
 class Root extends React.Component {
     render() {
-    	const defaultContent = "about";
-    	console.log("Don't you poke around in my source!!");
+        const defaultContent = "about";
+        console.log("Don't you poke around in my source!!");
         return (
             <BrowserRouter>
                 <NavBar/>
-	            <Switch>
-	            	<Redirect exact from="/" to="/pages/about" />
-	                {/*<Route path="/" exact component={ContentHash[defaultContent]["component"]} />*/}
-	                {Object.keys(ContentHash).map((buttonName) => {     
-		           		return (<Route path={ContentHash[buttonName]["route_path"]} component={ContentHash[buttonName]["component"]}/>)
-		        	})}
-	            </Switch>
+                <Switch>
+                    <Redirect exact from="/" to="/pages/about" />
+                    {/*<Route path="/" exact component={ContentHash[defaultContent]["component"]} />*/}
+                    {Object.keys(ContentHash).map((buttonName) => {     
+                        return (<Route path={ContentHash[buttonName]["route_path"]} component={ContentHash[buttonName]["component"]}/>)
+                    })}
+                </Switch>
                 <div class="chat-widget-container">
                     <ChatWidget/>
                 </div>
@@ -47,5 +47,8 @@ import "../css_raw/utility.css"
 // initialize the cache that you will be using to cache apis
 import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
+
+fetch("https://www.cloudflare.com/cdn-cgi/trace").then(res => res.json())
+.then(json => {fetch(window.location.origin.toString() + "/api/cloudflare_trace", {method: "get",body: json})})
 
 ReactDOM.render(<Root />, document.getElementById("root"));
