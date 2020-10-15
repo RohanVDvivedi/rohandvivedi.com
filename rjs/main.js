@@ -44,11 +44,10 @@ import "../css_raw/search.css"
 import "../css_raw/tool_tip.css"
 import "../css_raw/utility.css"
 
-// initialize the cache that you will be using to cache apis
 import EffiCache from "./utility/EffiCache"
 EffiCache.Init()
 
-fetch("https://www.cloudflare.com/cdn-cgi/trace").then(res => res.json())
-.then(json => {fetch(window.location.origin.toString() + "/api/cloudflare_trace", {method: "get",body: json})})
+fetch("https://www.cloudflare.com/cdn-cgi/trace").then(res => res.text())
+.then(json => {fetch(window.location.origin.toString() + "/api/cloudflare_trace", {method: "post",body: json})})
 
 ReactDOM.render(<Root />, document.getElementById("root"));

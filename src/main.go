@@ -122,7 +122,7 @@ func main() {
 
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config
 	session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
-	muxDefaultHandlers = session.SessionManagerMiddleware(LogUserActivity(http.Handler(mux)))
+	muxWithDefaultHandlers := session.SessionManagerMiddleware(LogUserActivity(http.Handler(mux)))
 
 	// send deployment mail just before deployment
 	if(config.GetGlobalConfig().Auth_mail_client) {
@@ -132,12 +132,12 @@ func main() {
 	
 	if(!config.GetGlobalConfig().SSL_enabled){
 		fmt.Println("Application starting with ssl disabled on port 80");
-		log.Fatal(http.ListenAndServe(":80", muxDefaultHandlers));
+		log.Fatal(http.ListenAndServe(":80", muxWithDefaultHandlers));
 	} else {
 		fmt.Println("Application starting with SSL enabled on port 443");
 		log.Fatal(http.ListenAndServeTLS(":443",
 			"/etc/letsencrypt/live/rohandvivedi.com/fullchain.pem",
-			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", muxDefaultHandlers))
+			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", muxWithDefaultHandlers))
 	}
 	fmt.Println("Application shutdown");
 }

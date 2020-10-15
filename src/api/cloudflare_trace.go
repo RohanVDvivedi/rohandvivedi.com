@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"encoding/json"
 	"rohandvivedi.com/src/useractlogger"
 	"rohandvivedi.com/src/session"
 	"io/ioutil"
@@ -13,9 +12,9 @@ import (
 var CloudflareTrace = http.HandlerFunc(cloudflareTrace)
 
 func cloudflareTrace(w http.ResponseWriter, r *http.Request) {
-	traceString, traceStringError := r.Body
-	if(traceStringError == nil) {
-		traceString = strings.Join(strings.Fields(strings.TrimSpace(traceString)), " ")
+	traceData, traceDataError := ioutil.ReadAll(r.Body)
+	if(traceDataError == nil || len(traceData) == 0) {
+		traceString := strings.Join(strings.Fields(strings.TrimSpace(string(traceData))), " ")
 
 		// store the cloudflare trace in the session of the user
 		s := session.GlobalSessionStore.GetExistingSession(r);

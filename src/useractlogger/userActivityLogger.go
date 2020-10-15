@@ -19,5 +19,7 @@ func init() {
 func LogUserActivity(sId string, path string, data string) bool {
 	if(config.GetGlobalConfig().Enable_user_activity_logging) {
 		llog.Printf("%s %s %s\n", sId, path, data);
+		return true
 	}
+	return false
 }
