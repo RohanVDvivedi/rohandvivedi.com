@@ -1,6 +1,5 @@
 Data injestion
  ** add images to projects
- ** add most recent quadF32 youtube video to the project
 
 Front end
  ** client side message storage using efficache for 10 days, web crypto api based auth 
