@@ -12,7 +12,7 @@ go mod tidy
 # install for newly added node packages 
 npm install --no-optional
 
-# we own the Fucking server, kill any other application that is competing for 80 or 443 port
+# we own the server, kill any other application that is competing for 80 or 443 port
 
 # kill the application that is running currently on port 80
 APP_PIDS_RUNNING_ON_PORT_80=`sudo lsof -t -i tcp:80`
