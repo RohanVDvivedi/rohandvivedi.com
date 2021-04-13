@@ -14,7 +14,7 @@ require (
 	github.com/mackerelio/go-osstat v0.1.0
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/tecbot/gorocksdb v0.0.0-20191217155057-f0fad39f321c // indirect
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc
 )
