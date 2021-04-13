@@ -1,7 +1,3 @@
 node_modules
 v8-compile-cache-0
-public/static/*/bundle*
-src/proto/*.pb.go
-#db/*.db
-#db/*.bleve
 .DS_Store
