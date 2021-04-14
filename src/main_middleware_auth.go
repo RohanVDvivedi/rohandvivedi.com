@@ -1,4 +1,4 @@
-package middleware
+package main
 
 // go utilities
 import (

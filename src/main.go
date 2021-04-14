@@ -44,11 +44,6 @@ import (
 	"rohandvivedi.com/src/api"
 )
 
-// middleware functions for api handlers
-import (
-	mw "rohandvivedi.com/src/middleware"
-)
-
 // web socket handler for chatting 
 import (
 	"rohandvivedi.com/src/chatter"
@@ -70,33 +65,33 @@ func main() {
 
 	// we use a FileServer to host the static contents of the website (js, css, img)
 	fs := http.FileServer(http.Dir("public/static"))
-	mux.Handle("/", mw.GzipCompressor(mw.SanitizeFileRequestPath(mw.SetRequestCacheControl(24 * time.Hour, fs))))
+	mux.Handle("/", GzipCompressor(SanitizeFileRequestPath(SetRequestCacheControl(24 * time.Hour, fs))))
 
 	// attach all the handlers of all the pages here
-	mux.Handle("/pages/", mw.GzipCompressor(mw.SanitizeFileRequestPath(page.PageHandler)));
+	mux.Handle("/pages/", GzipCompressor(SanitizeFileRequestPath(page.PageHandler)));
 
 	// attach all the handlers for websockets here
-	mux.Handle("/soc/chatter", mw.AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
+	mux.Handle("/soc/chatter", AuthorizeIfHasSession(chatter.AuthorizeAndStartChatHandler));
 
 	// attach all the handlers of all the apis here
-	mux.Handle("/api/person", 				mw.SetRequestCacheControl(24 * time.Hour, api.GetPerson));
-	mux.Handle("/api/project", 				mw.SetRequestCacheControl(15 * time.Minute, api.FindProject));
-	mux.Handle("/api/all_categories", 		mw.SetRequestCacheControl(24 * time.Hour, api.GetAllCategories));
-	mux.Handle("/api/owner", 				mw.SetRequestCacheControl(24 * time.Hour, api.GetOwner));
-	mux.Handle("/api/search", 				mw.SetRequestCacheControl(15 * time.Minute, api.ProjectsSearch));
+	mux.Handle("/api/person", 				SetRequestCacheControl(24 * time.Hour, api.GetPerson));
+	mux.Handle("/api/project", 				SetRequestCacheControl(15 * time.Minute, api.FindProject));
+	mux.Handle("/api/all_categories", 		SetRequestCacheControl(24 * time.Hour, api.GetAllCategories));
+	mux.Handle("/api/owner", 				SetRequestCacheControl(24 * time.Hour, api.GetOwner));
+	mux.Handle("/api/search", 				SetRequestCacheControl(15 * time.Minute, api.ProjectsSearch));
 
 	mux.Handle("/api/cloudflare_trace", 	api.CloudflareTrace);
 
 	// apis to login and log out as an owner
 	mux.Handle("/api/is_owner", 			(api.IsOwner));
-	mux.Handle("/api/req_login_owner_code", mw.AuthorizeIfHasSession(api.ReqLoginOwnerCode));
-	mux.Handle("/api/login_owner",			mw.AuthorizeIfHasSession(api.LoginOwner));
-	mux.Handle("/api/logout_owner",			mw.AuthorizeIfOwner(api.LogoutOwner));
+	mux.Handle("/api/req_login_owner_code", AuthorizeIfHasSession(api.ReqLoginOwnerCode));
+	mux.Handle("/api/login_owner",			AuthorizeIfHasSession(api.LoginOwner));
+	mux.Handle("/api/logout_owner",			AuthorizeIfOwner(api.LogoutOwner));
 
 	// apis authorized to only thw owner
-	mux.Handle("/api/sessions", 			mw.AuthorizeIfOwner(api.PrintAllUserSessions));
-	mux.Handle("/api/sys_stats", 			mw.AuthorizeIfOwner(api.GetServerSystemStats));
-	mux.Handle("/api/project_github_syncup",mw.AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
+	mux.Handle("/api/sessions", 			AuthorizeIfOwner(api.PrintAllUserSessions));
+	mux.Handle("/api/sys_stats", 			AuthorizeIfOwner(api.GetServerSystemStats));
+	mux.Handle("/api/project_github_syncup",AuthorizeIfOwner(api.SyncProjectFromGithubRepository));
 
 	// initialize mail smtp client, and authenticate, also add handler to send anonymous mails
 	if(config.GetGlobalConfig().Auth_mail_client) {
@@ -104,7 +99,7 @@ func main() {
 		mailManager.InitMailClient(config.GetGlobalConfig().From_mailid, config.GetGlobalConfig().From_password)
 		
 		// allow anonymous mails only if user sessions are allowed to be created
-		mux.Handle("/api/anon_mails", mw.AuthorizeIfHasSession(mails.SendAnonymousMail));
+		mux.Handle("/api/anon_mails", AuthorizeIfHasSession(mails.SendAnonymousMail));
 	} else {
 		fmt.Println("Configuration declines setting up of SMTP mail client");
 	}
@@ -132,7 +127,7 @@ func main() {
 
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config
 	session.InitGlobalSessionStore("r_sess_id", 31 * 24 * time.Hour)
-	muxWithDefaultHandlers := session.SessionManagerMiddleware(mw.LogUserActivity(http.Handler(mux)))
+	muxWithDefaultHandlers := session.SessionManagerMiddleware(LogUserActivity(http.Handler(mux)))
 
 	// send deployment mail just before deployment
 	if(config.GetGlobalConfig().Auth_mail_client) {
