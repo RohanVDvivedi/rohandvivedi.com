@@ -14,12 +14,17 @@ import (
 	"rohandvivedi.com/src/config"
 )
 
+// initializes system cron jobs
+import (
+	"rohandvivedi.com/src/sysCron"
+)
+
 // maintains session, (in memory)
 import (
 	"rohandvivedi.com/src/session"
 )
 
-// data / databse
+// data / database
 import (
     "database/sql"
     _ "github.com/mattn/go-sqlite3"
@@ -116,8 +121,8 @@ func main() {
 
 	// initialize all cron for the system
 	if(config.GetGlobalConfig().Enable_all_cron) {
-		initializeSystemCron()
-		defer deinitializeSystemCron()
+		sysCron.InitializeSystemCron()
+		defer sysCron.DeinitializeSystemCron()
 	}
 
 	// set up session store, and enable user logging using the middleware functions if they are enables using the config

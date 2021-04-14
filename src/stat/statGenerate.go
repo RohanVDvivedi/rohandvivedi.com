@@ -21,8 +21,7 @@ type SystemStat struct {
 }
 
 func GetServerSystemStats() SystemStat {
-	s := SystemStat{36,24,36,0,
-					36,24,36};
+	s := SystemStat{0,0,0,0,0.0,0.0,0.0};
 
 	before, errBc := cpu.Get()
 	if errBc == nil {
