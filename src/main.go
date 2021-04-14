@@ -135,11 +135,18 @@ func main() {
 		mails.SendServerSystemStatsMail()
 	}
 	
+	port := os.Getenv("PORT");
 	if(!config.GetGlobalConfig().SSL_enabled){
-		fmt.Println("Application starting with ssl disabled on port 80");
-		log.Fatal(http.ListenAndServe(":80", muxWithDefaultHandlers));
+		if(port == "") {
+			port = "80"
+		}
+		fmt.Println("Application starting with ssl disabled on port " + port);
+		log.Fatal(http.ListenAndServe(":" + port, muxWithDefaultHandlers));
 	} else {
-		fmt.Println("Application starting with SSL enabled on port 443");
+		if(port == "") {
+			port = "443"
+		}
+		fmt.Println("Application starting with SSL enabled on port " + port);
 		log.Fatal(http.ListenAndServeTLS(":443",
 			"/etc/letsencrypt/live/rohandvivedi.com/fullchain.pem",
 			"/etc/letsencrypt/live/rohandvivedi.com/privkey.pem", muxWithDefaultHandlers))
